@@ -93,9 +93,11 @@
         <el-form-item label="店铺名" prop="name">
           <el-input v-model="form.name" placeholder="请输入店铺名" />
         </el-form-item>
-<!--        <el-form-item label="店铺平台" prop="remark">-->
-<!--          <el-input v-model="form.remark" placeholder="请输入店铺平台" />-->
-<!--        </el-form-item>-->
+        <el-form-item label="平台" prop="type">
+          <el-select v-model="form.type" placeholder="请选择店铺平台">
+            <el-option label="私域渠道" value="999" ></el-option>
+          </el-select>
+        </el-form-item>
 
         <el-form-item label="店铺备注" prop="remark">
           <el-input type="textarea" v-model="form.remark" placeholder="请输入描述" />
@@ -112,10 +114,10 @@
 </template>
 
 <script>
-import { listShop, getShop, delShop, addShop, updateShop } from "@/api/offline/shop";
 
+import { listShop,addShop,getShop,updateShop,delShop } from "@/api/shop/shop";
 export default {
-  name: "Shop",
+  name: "OfflineShop",
   data() {
     return {
       // 遮罩层
@@ -140,10 +142,12 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        name: null
+        name: null,
+        platform: 999
       },
       // 表单参数
       form: {
+        type: '999'
       },
       // 获取token表单
       tokenForm:{
@@ -153,7 +157,7 @@ export default {
       // 表单校验
       rules: {
         name: [{ required: true, message: "店铺名不能为空", trigger: "blur" }],
-        platform: [{ required: true, message: "请选择平台", trigger: "change" }],
+        type: [{ required: true, message: "请选择平台", trigger: "change" }],
       }
     };
   },
@@ -180,6 +184,7 @@ export default {
     // 表单重置
     reset() {
       this.form = {
+        type: '999'
       };
       this.resetForm("form");
     },

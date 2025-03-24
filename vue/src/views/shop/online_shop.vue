@@ -217,7 +217,7 @@ import {getTaoOAuthUrl, getTaoToken} from "@/api/tao/shop";
 import {float} from "quill/ui/icons";
 import {getPddOAuthUrl,getPddToken} from "@/api/pdd/shop";
 export default {
-  name: "Shop",
+  name: "OnlineShop",
   data() {
     return {
       // 遮罩层

@@ -79,6 +79,9 @@ public class ShopController extends BaseController {
     @PostMapping("/shop")
     public AjaxResult add(@RequestBody OShop shop)
     {
+        if(shop.getType()==null) return AjaxResult.error("请选择店铺平台");
+        shop.setModifyOn(System.currentTimeMillis()/1000);
+
 //        shop.setCreateTime(new Date());
         return toAjax(shopService.save(shop));
     }
