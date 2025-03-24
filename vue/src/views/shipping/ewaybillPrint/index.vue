@@ -23,11 +23,11 @@
 </template>
 
 <script>
-import printWei  from "@/views/shop/wei/ewaybill/index.vue";
-import printTao from "@/views/shop/tao/ewaybill/index.vue";
-import printPdd from "@/views/shop/pdd/ewaybill/index.vue";
-import printDou from "@/views/shop/dou/ewaybill/index.vue";
-import PrintJd from "@/views/shop/jd/ewaybill/index.vue";
+import printWei  from "@/views/wei/ewaybill/index.vue";
+import printTao from "@/views/tao/ewaybill/index.vue";
+import printPdd from "@/views/pdd/ewaybill/index.vue";
+import printDou from "@/views/dou/ewaybill/index.vue";
+import PrintJd from "@/views/jd/ewaybill/index.vue";
 
 
 export default {

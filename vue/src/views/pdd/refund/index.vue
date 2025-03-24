@@ -48,7 +48,7 @@
       <el-col :span="1.5">
         <el-button
           :loading="pullLoading"
-          type="danger"
+          type="success"
           plain
           icon="el-icon-download"
           size="mini"
@@ -63,7 +63,7 @@
           size="mini"
           :disabled="multiple"
           @click="handlePushOms"
-        >手动将选中退款推送到售后中心</el-button>
+        >手动推送售后</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -157,6 +157,7 @@ export default {
       multiple: true,
       // 显示搜索条件
       showSearch: true,
+      pullLoading: false,
       // 总条数
       total: 0,
       // 淘宝退款订单表格数据
@@ -171,10 +172,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         refundId: null,
-        afterSalesType: null,
-        tid: null,
-        oid: null,
-
+        afterSalesType: null
       },
       // 表单参数
       form: {},
@@ -196,7 +194,7 @@ export default {
     };
   },
   created() {
-    listShop({type: 300}).then(response => {
+    listShop({platform: 5}).then(response => {
       this.shopList = response.rows;
       if (this.shopList && this.shopList.length > 0) {
         this.queryParams.shopId = this.shopList[0].id

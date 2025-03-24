@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import GoodsTao  from "@/views/shop/tao/goods/index";
-import GoodsJd  from "@/views/shop/jd/goods/index";
-import GoodsDou  from "@/views/shop/dou/goods/index";
-import GoodsPdd  from "@/views/shop/pdd/goods/index";
-import GoodsWei  from "@/views/shop/wei/goods/index";
+import GoodsTao  from "@/views/tao/goods/index";
+import GoodsJd  from "@/views/jd/goods/index";
+import GoodsDou  from "@/views/dou/goods/index";
+import GoodsPdd  from "@/views/pdd/goods/index";
+import GoodsWei  from "@/views/wei/goods/index";
 export default {
   name: "ShopGoods",
   components:{GoodsTao,GoodsJd,GoodsDou,GoodsPdd,GoodsWei},

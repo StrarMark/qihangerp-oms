@@ -44,7 +44,6 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          :loading="pullLoading"
           type="success"
           plain
           icon="el-icon-download"
@@ -109,8 +108,8 @@
     <!-- 添加或修改商品管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="商品库SkuId" prop="erpGoodsSkuId">
-          <el-input v-model.number="form.erpGoodsSkuId" placeholder="请输入商品库SkuId" />
+        <el-form-item label="ERP商品SkuId" prop="erpGoodsSkuId">
+          <el-input v-model.number="form.erpGoodsSkuId" placeholder="请输入ERP商品SkuId" />
         </el-form-item>
 
       </el-form>
@@ -145,7 +144,6 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      pullLoading: false,
       // 商品管理表格数据
       goodsList: [],
       shopList: [],
@@ -176,7 +174,7 @@ export default {
     };
   },
   created() {
-    listShop({type: 500}).then(response => {
+    listShop({platform: 2}).then(response => {
       this.shopList = response.rows;
       if (this.shopList && this.shopList.length > 0) {
         this.queryParams.shopId = this.shopList[0].id

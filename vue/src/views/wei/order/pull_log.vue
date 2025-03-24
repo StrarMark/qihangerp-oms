@@ -108,7 +108,7 @@ export default {
     };
   },
   created() {
-    listShop({type: 500}).then(response => {
+    listShop({}).then(response => {
         this.shopList = response.rows;
       });
     this.getList();
