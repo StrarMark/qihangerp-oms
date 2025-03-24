@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/oms-api/refund")
+@RequestMapping("/refund")
 public class RefundController extends BaseController
 {
 
