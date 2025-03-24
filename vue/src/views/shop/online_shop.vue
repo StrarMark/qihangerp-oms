@@ -9,8 +9,8 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-       <el-form-item label="平台" prop="platform">
-        <el-select v-model="queryParams.platform" placeholder="请选择平台" clearable>
+       <el-form-item label="平台" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择平台" clearable>
          <el-option
             v-for="item in typeList"
             :key="item.id"
@@ -34,41 +34,27 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['shop:shop:add']"
         >新增</el-button>
       </el-col>
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="success"-->
-<!--          plain-->
-<!--          icon="el-icon-edit"-->
-<!--          size="mini"-->
-<!--          :disabled="single"-->
-<!--          @click="handleUpdate"-->
-<!--          v-hasPermi="['shop:shop:edit']"-->
-<!--        >修改</el-button>-->
-<!--      </el-col>-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="danger"-->
-<!--          plain-->
-<!--          icon="el-icon-delete"-->
-<!--          size="mini"-->
-<!--          :disabled="multiple"-->
-<!--          @click="handleDelete"-->
-<!--          v-hasPermi="['shop:shop:remove']"-->
-<!--        >删除</el-button>-->
-<!--      </el-col>-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="warning"-->
-<!--          plain-->
-<!--          icon="el-icon-download"-->
-<!--          size="mini"-->
-<!--          @click="handleExport"-->
-<!--          v-hasPermi="['shop:shop:export']"-->
-<!--        >导出</el-button>-->
-<!--      </el-col>-->
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+        >修改</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+        >删除</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -76,35 +62,38 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="店铺ID" align="center" prop="id" />
       <el-table-column label="店铺名" align="center" prop="name" />
-      <!-- <el-table-column label="店铺别名" align="center" prop="nickName" /> -->
-      <!-- <el-table-column label="标识" align="center" prop="ename" /> -->
-      <!-- <el-table-column label="店铺主体" align="center" prop="company" /> -->
-      <el-table-column label="平台" align="center" prop="platform" >
+      <el-table-column label="平台" align="center" prop="type" >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.platform === 1">1688</el-tag>
-          <el-tag v-if="scope.row.platform === 2">视频号小店</el-tag>
-          <el-tag v-if="scope.row.platform === 3">京东</el-tag>
-          <el-tag v-if="scope.row.platform === 4">淘系店铺</el-tag>
-          <el-tag v-if="scope.row.platform === 5">拼多多</el-tag>
-          <el-tag v-if="scope.row.platform === 6">抖店</el-tag>
-          <el-tag v-if="scope.row.platform === 7">小红书</el-tag>
-          <el-tag v-if="scope.row.platform === 8">快手小店</el-tag>
-          <el-tag v-if="scope.row.platform === 99">其他</el-tag>
+          <el-tag >{{typeList.find(x=>x.id === scope.row.type)?typeList.find(x=>x.id === scope.row.type).name:''}}</el-tag>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="店铺url" align="center" prop="url" /> -->
-      <!-- <el-table-column label="排序" align="center" prop="orderNum" /> -->
-      <!-- <el-table-column label="是否删除0否1是" align="center" prop="isDelete" /> -->
-      <!-- <el-table-column label="是否显示(0：是1否）" align="center" prop="isShow" /> -->
-      <!-- <el-table-column label="更新时间" align="center" prop="modifyOn" /> -->
+       <el-table-column label="店铺ID" align="center" prop="sellerId" />
+       <el-table-column label="accessToken" align="center" prop="accessToken" />
       <el-table-column label="描述" align="center" prop="remark" />
-      <!-- <el-table-column label="第三方平台店铺id，淘宝天猫开放平台使用" align="center" prop="sellerUserId" /> -->
-      <!-- <el-table-column label="卖家userId" align="center" prop="sellerUserIdStr" /> -->
-       <el-table-column label="AccessToken" align="center" prop="accessToken" />
-      <!-- <el-table-column label="Appkey暂时抖音用" align="center" prop="appkey" /> -->
-      <!-- <el-table-column label="Appsercet暂时抖音用" align="center" prop="appSercet" /> -->
+      <el-table-column label="状态" align="center" prop="status" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status===1">启用</el-tag>
+          <el-tag v-if="scope.row.status===0">禁用</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+
+<!--            <el-button-->
+<!--              type="primary"-->
+<!--              plain-->
+<!--              icon="el-icon-s-goods"-->
+<!--              size="mini"-->
+<!--              @click="handleGoodsList(scope.row)"-->
+<!--            >店铺商品管理</el-button>-->
+<!--          <el-button-->
+<!--            type="primary"-->
+<!--            plain-->
+<!--            icon="el-icon-edit"-->
+<!--            size="mini"-->
+<!--            @click="handleLogistics(scope.row)"-->
+<!--          >快递公司库</el-button>-->
+
           <el-row>
           <el-button
             size="mini"
@@ -121,16 +110,14 @@
             v-hasPermi="['shop:shop:remove']"
           >删除</el-button>
           </el-row>
-          <el-button
-            v-if="scope.row.platform !== 99"
-            type="success"
-            plain
-            icon="el-icon-refresh"
-            size="mini"
-            @click="handleUpdateToken(scope.row)"
-          >更新AccessToken</el-button>
-
-
+                      <el-button
+                        v-if="scope.row.type===100 || scope.row.type===200 || scope.row.type===280 || scope.row.type===300"
+                        type="success"
+                        plain
+                        icon="el-icon-refresh"
+                        size="mini"
+                        @click="handleUpdateToken(scope.row)"
+                      >更新AccessToken</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -145,12 +132,12 @@
 
     <!-- 添加或修改店铺对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="128px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="店铺名" prop="name">
           <el-input v-model="form.name" placeholder="请输入店铺名" />
         </el-form-item>
-        <el-form-item label="平台" prop="platform">
-          <el-select v-model="form.platform" placeholder="请选择店铺平台">
+        <el-form-item label="平台" prop="type">
+          <el-select v-model="form.type" placeholder="请选择平台">
            <el-option
               v-for="item in typeList"
               :key="item.id"
@@ -159,26 +146,19 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="店铺别名" prop="nickName">
-          <el-input v-model="form.nickName" placeholder="请输入店铺别名" />
-        </el-form-item>
-        <el-form-item label="平台店铺ID" prop="sellerShopId">
-          <el-input v-model="form.sellerShopId" placeholder="请输入平台ShopId" />
-        </el-form-item>
-        <el-form-item label="视频号appKey" prop="appKey" v-if="form.platform === 2">
-          <el-input v-model="form.appKey" placeholder="请输入视频号appKey" />
-        </el-form-item>
-        <el-form-item label="视频号appSercet" prop="appSercet" v-if="form.platform === 2">
-          <el-input v-model="form.appSercet" placeholder="请输入视频号appSercet" />
-        </el-form-item>
-        <el-form-item label="AccessToken" prop="accessToken" >
-          <el-input v-model="form.accessToken" type="textarea" placeholder="请输入accessToken" />
+        <el-form-item label="卖家Id" prop="sellerId">
+          <el-input v-model="form.sellerId" placeholder="请输入卖家Id名" />
         </el-form-item>
 
         <el-form-item label="描述" prop="remark">
           <el-input type="textarea" v-model="form.remark" placeholder="请输入描述" />
         </el-form-item>
-
+        <el-form-item label="状态" prop="status">
+          <el-select v-model="form.status" placeholder="状态">
+            <el-option label="启用" value="1"></el-option>
+            <el-option label="禁用" value="0"></el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -186,16 +166,21 @@
       </div>
     </el-dialog>
 
-
     <el-dialog :title="title" :visible.sync="authOpen" width="500px" append-to-body>
-      <el-form ref="tokenForm" :model="tokenForm"  :rules="rules" label-width="80px">
+      <el-form ref="tokenForm" :model="tokenForm"  :rules="rules" label-width="120px">
         <el-descriptions >
-          <el-descriptions-item label="授权URL："> {{ tokenForm.url }}</el-descriptions-item>
+        <el-descriptions-item label="授权URL"> {{ tokenForm.url }}</el-descriptions-item>
+        </el-descriptions>
+        <el-descriptions v-if="tokenForm.shopType === 100">
+          <el-descriptions-item label="请设置淘宝开放平台回调URL"> http://127.0.0.1:8088/api/open-api/tao/code_callback</el-descriptions-item>
         </el-descriptions>
         <div slot="footer" class="dialog-footer">
           请手动复制上面的URL到浏览器中访问
         </div>
-        <el-form-item label="code" prop="code">
+        <el-form-item label="top_session" prop="code" v-if="tokenForm.shopType===100">
+          <el-input type="textarea" v-model="tokenForm.code" placeholder="请复制淘宝授权后跳转页面的top_session参数值到这里" />
+        </el-form-item>
+        <el-form-item label="code" prop="code" v-if="tokenForm.shopType!==100">
           <el-input type="textarea" v-model="tokenForm.code" placeholder="请把授权后的code复制到这里" />
         </el-form-item>
       </el-form>
@@ -203,21 +188,22 @@
         <el-button type="primary" @click="getTokenSubmit">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
-      <!--      <div slot="footer" class="dialog-footer">-->
-      <!--        请手动复制上面的URL到浏览器中访问-->
-      <!--      </div>-->
+<!--      <div slot="footer" class="dialog-footer">-->
+<!--        请手动复制上面的URL到浏览器中访问-->
+<!--      </div>-->
     </el-dialog>
+
   </div>
 </template>
 
 <script>
-import {listShop, getShop, delShop, addShop, updateShop, listPlatform} from "@/api/shop/shop";
+import { listShop,listPlatform, getShop, delShop, addShop, updateShop } from "@/api/shop/shop";
 import {getJdOAuthUrl, getJdToken} from "@/api/jd/shop";
-import {getTaoOAuthUrl, getTaoToken} from "@/api/tao/shop";
-import {float} from "quill/ui/icons";
+import {getTaoOAuthUrl,saveSessionKey} from "@/api/tao/shop_api";
 import {getPddOAuthUrl,getPddToken} from "@/api/pdd/shop";
+
 export default {
-  name: "OnlineShop",
+  name: "Shop",
   data() {
     return {
       // 遮罩层
@@ -239,46 +225,39 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      apiOpen: false,
       authOpen: false,
+      apiOpen: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         name: null,
-        platform: null
+        type: null
       },
       // 表单参数
       form: {
-        platform:null
+        type:null
       },
       // 获取token表单
       tokenForm:{
         shopId: null,
-        shopType: null
+        shopType: null,
+        code:null
       },
       // 表单校验
       rules: {
-        name: [
-          { required: true, message: "店铺名不能为空", trigger: "blur" }
-        ],
-        platform: [{ required: true, message: "请选择平台", trigger: "change" }],
-        sellerShopId: [{ required: true, message: "不能为空", trigger: "change" }],
+        name: [{ required: true, message: "店铺名不能为空", trigger: "blur" }],
+        type: [{ required: true, message: "请选择平台", trigger: "change" }],
+        sellerId: [{ required: true, message: "不能为空", trigger: "change" }],
         code: [{ required: true, message: "不能为空", trigger: "change" }],
-
       }
     };
   },
   created() {
-    listPlatform().then(res=>{
+    listPlatform().then(res => {
       this.typeList = res.rows;
-      if(this.$route.query.platform){
-        this.queryParams.platform = parseInt(this.$route.query.platform)
-      }
-      this.getList();
     })
-
-
+    this.getList();
   },
   methods: {
     /** 查询店铺列表 */
@@ -294,29 +273,12 @@ export default {
     cancel() {
       this.open = false;
       this.apiOpen = false;
-      this.authOpen = false
+      this.authOpen = false;
       this.reset();
     },
     // 表单重置
     reset() {
       this.form = {
-        id: null,
-        name: null,
-        nickName: null,
-        ename: null,
-        company: null,
-        type: null,
-        url: null,
-        orderNum: null,
-        isDelete: null,
-        isShow: null,
-        modifyOn: null,
-        remark: null,
-        sellerUserId: null,
-        sellerUserIdStr: null,
-        sessionKey: null,
-        appkey: null,
-        appSercet: null
       };
       this.resetForm("form");
     },
@@ -342,22 +304,53 @@ export default {
       this.open = true;
       this.title = "添加店铺";
     },
+    handleUpdateToken(row){
+     console.log("获取token",row)
+      if(row.type === 200 || row.type === 280){
+        getJdOAuthUrl({shopId:row.id}).then(response => {
+          console.log("获取token=====jd ",response)
+          this.authOpen = true;
+          this.title = "更新店铺授权";
+          this.tokenForm.url = response.data
+          this.tokenForm.shopId = row.id
+          this.tokenForm.shopType = row.type
+        })
+      }else if(row.type ===100){
+        getTaoOAuthUrl({shopId:row.id}).then(response => {
+          console.log("获取token=====tao ",response)
+          this.authOpen = true;
+          this.title = "更新店铺授权";
+          this.tokenForm.url = response.data
+          this.tokenForm.shopId = row.id
+          this.tokenForm.shopType = row.type
+        })
+      }else if(row.type ===300){
+        getPddOAuthUrl({shopId:row.id}).then(response => {
+          console.log("获取token=====pdd ",response)
+          this.authOpen = true;
+          this.title = "更新店铺授权";
+          this.tokenForm.url = response.data
+          this.tokenForm.shopId = row.id
+          this.tokenForm.shopType = row.type
+        })
+      }
+
+    },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
       getShop(id).then(response => {
         this.form = response.data;
-        this.$nextTick(()=>{
-          this.form.type = response.data.type+'';
-        })
+        this.form.status = response.data.status+''
+        // this.$nextTick(()=>{
+        //   this.form.type = response.data.type;
+        // })
 
         this.open = true;
         this.title = "修改店铺";
       });
     },
-
-
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -379,6 +372,32 @@ export default {
         }
       });
     },
+    getTokenSubmit(){
+      this.$refs["tokenForm"].validate(valid => {
+        if (valid) {
+          console.log("=====更新token=====",this.tokenForm)
+          if(this.tokenForm.shopType === 100){
+            saveSessionKey(this.tokenForm).then(resp=>{
+              this.authOpen = false
+              this.$modal.msgSuccess("SessionKey保存成功");
+              this.getList()
+            });
+          } else if(this.tokenForm.shopType === 200 || this.tokenForm.shopType === 280){
+            getJdToken(this.tokenForm).then(response => {
+              this.authOpen = false
+              this.$modal.msgSuccess("授权成功");
+              this.getList()
+            });
+          }else if(this.tokenForm.shopType === 300){
+            getPddToken(this.tokenForm).then(response => {
+              this.authOpen = false
+              this.$modal.msgSuccess("授权成功");
+              this.getList()
+            });
+          }
+        }
+      })
+    },
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
@@ -389,67 +408,29 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    handleUpdateToken(row){
-      console.log("获取token",row)
-      if(row.platform === 2){
-        this.$modal.msgSuccess("视频号小店后台会自动获取token，无需手动授权！");
+    handleGoodsList(row){
+      console.log('=======商品list=====',row)
+      if(row.type === 1){
+        this.$router.push({path:'/shop/goods/tao_goods_list',query:{shopId:row.id}})
+      }else if(row.type === 2){
+        this.$router.push({path:'/shop/goods/jd_goods_list',query:{shopId:row.id}})
+      }else if(row.type === 3){
+        this.$router.push({path:'/shop/goods/dou_goods_list',query:{shopId:row.id}})
+      }else if(row.type === 4){
+        this.$router.push({path:'/shop/goods/pdd_goods_list',query:{shopId:row.id}})
       }
-      if(row.platform === 3){
-        getJdOAuthUrl({shopId:row.id}).then(response => {
-          console.log("获取token=====jd ",response)
-          this.authOpen = true;
-          this.title = "更新店铺授权";
-          this.tokenForm.url = response.data
-          this.tokenForm.shopId = row.id
-          this.tokenForm.platform = row.platform
-        })
-      }else if(row.platform === 4){
-        getTaoOAuthUrl({shopId:row.id}).then(response => {
-          console.log("获取token=====tao ",response)
-          this.authOpen = true;
-          this.title = "更新店铺授权";
-          this.tokenForm.url = response.data
-          this.tokenForm.shopId = row.id
-          this.tokenForm.platform = row.platform
-        })
-      }else if(row.platform ===5){
-        getPddOAuthUrl({shopId:row.id}).then(response => {
-          console.log("获取token=====pdd ",response)
-          this.authOpen = true;
-          this.title = "更新店铺授权";
-          this.tokenForm.url = response.data
-          this.tokenForm.shopId = row.id
-          this.tokenForm.platform = row.platform
-        })
-      }else if(row.platform === 6){
-        this.$modal.msgSuccess("抖店后台会自动获取token，无需手动授权！");
-      }else if(row.platform === 7){
-        this.$modal.msgError("还未实现小红书接入！敬请期待！");
-      }else if(row.platform === 8){
-        this.$modal.msgError("还未实现快手小店接入！敬请期待！");
+    },
+    handleLogistics(row) {
+      if(row.type === 1){
+        this.$router.push({path:"/shop/logistics_companies",query:{id:row.type}})
+      }else  if(row.type === 2){
+        this.$router.push({path:"/shop/logistics_companies",query:{id:row.type,shopId:row.id}})
+      } else  if(row.type === 3){
+        this.$router.push({path:"/shop/logistics_companies",query:{id:row.type,shopId:row.id}})
+      } else  if(row.type === 4){
+        this.$router.push({path:"/shop/logistics_companies",query:{id:row.type,shopId:row.id}})
       }
-
-    },
-    getTokenSubmit(){
-      this.$refs["tokenForm"].validate(valid => {
-        if (valid) {
-          console.log("=====更新token=====",this.tokenForm)
-          if(this.tokenForm.platform === 3){
-            getJdToken(this.tokenForm).then(response => {
-              this.authOpen = false
-              this.$modal.msgSuccess("授权成功");
-
-            });
-          }else if(this.tokenForm.platform === 4){
-            getTaoToken(this.tokenForm).then(response => {
-              this.authOpen = false
-              this.$modal.msgSuccess("授权成功");
-
-            });
-          }
-        }
-      })
-    },
+    }
   }
 };
 </script>
