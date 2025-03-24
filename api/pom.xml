@@ -19,7 +19,7 @@
         <module>oms-api</module>
         <module>sys-api</module>
         <module>open-api</module>
-
+        <module>eureka-server</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

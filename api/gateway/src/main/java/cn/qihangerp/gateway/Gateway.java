@@ -14,7 +14,7 @@ public class Gateway
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello api! " );
+        System.out.println( "Hello gateway! " );
         SpringApplication.run(Gateway.class, args);
     }
 

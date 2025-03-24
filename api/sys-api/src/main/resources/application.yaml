@@ -15,8 +15,8 @@ spring:
 #      serverAddr: 127.0.0.1:8848
       discovery:
         server-addr: 127.0.0.1:8848
-        username: nacos
-        passowrd: nacos
+#        username: nacos
+#        passowrd: nacos
   data:
     # redis 配置
     redis:

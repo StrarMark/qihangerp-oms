@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/open-api/pdd/refund")
+@RequestMapping("/pdd/refund")
 public class RefundFeignController {
     private final PddRefundService refundService;
     @GetMapping(value = "/get_detail")

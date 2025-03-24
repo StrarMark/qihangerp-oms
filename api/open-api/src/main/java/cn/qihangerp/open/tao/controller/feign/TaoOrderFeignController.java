@@ -1,8 +1,8 @@
-package cn.qihangerp.open.pdd.controller.feign;
+package cn.qihangerp.open.tao.controller.feign;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.pdd.domain.PddOrder;
-import cn.qihangerp.module.open.pdd.service.PddOrderService;
+import cn.qihangerp.module.open.tao.domain.TaoOrder;
+import cn.qihangerp.module.open.tao.service.TaoOrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/pdd/order")
-public class OrderFeignController  {
-    private final PddOrderService orderService;
+@RequestMapping("/tao/order")
+public class TaoOrderFeignController {
+    private final TaoOrderService orderService;
     @GetMapping(value = "/get_detail")
-    public AjaxResult getInfo(String sn)
+    public AjaxResult getInfo(String tid)
     {
-        PddOrder order = orderService.queryDetailBySn(sn);
+        TaoOrder order = orderService.queryDetailByTid(tid);
         if(order==null) return AjaxResult.error(404,"没有找到订单");
         else return AjaxResult.success(order);
     }
