@@ -38,7 +38,7 @@
 import OrderDou  from "@/views/dou/order/index";
 import OrderPdd  from "@/views/pdd/order/index";
 import OrderWei  from "@/views/wei/order/index";
-import OrderOffline  from "@/views/offline/order/index";
+import OrderOffline  from "@/views/order/private/index";
 import {listPlatform} from "@/api/shop/shop";
 export default {
   name: "Order",
