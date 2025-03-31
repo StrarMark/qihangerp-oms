@@ -1,16 +1,14 @@
 package cn.qihangerp.oms.controller;
 
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.PageResult;
+import cn.qihangerp.domain.OLogisticsCompany;
 import cn.qihangerp.domain.OShopPlatform;
+import cn.qihangerp.module.service.OLogisticsCompanyService;
 import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.domain.OShop;
-
-
 import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.oms.domain.ShopBo;
-
-
-
-import cn.qihangerp.oms.service.SysLogisticsCompanyService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
@@ -18,7 +16,6 @@ import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/shop")
 public class ShopController extends BaseController {
-    private final SysLogisticsCompanyService logisticsCompanyService;
+    private final OLogisticsCompanyService logisticsCompanyService;
     private final OShopService shopService;
     private final OShopPlatformService platformService;
 
@@ -118,4 +115,18 @@ public class ShopController extends BaseController {
         return toAjax(shopService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
 
+    @GetMapping("/logistics_status")
+    public TableDataInfo logisticsStatusList(Integer status, Integer shopType, Integer shopId)
+    {
+        return getDataTable(logisticsCompanyService.queryListByStatus(status,shopType, shopId));
+    }
+    /**
+     * 查询店铺列表logistics
+     */
+    @GetMapping("/logistics")
+    public TableDataInfo logisticsList(Integer type, Integer shopId, PageQuery pageQuery)
+    {
+        PageResult<OLogisticsCompany> result = logisticsCompanyService.queryPageList(type, shopId, pageQuery);
+        return getDataTable(result);
+    }
 }

@@ -10,7 +10,7 @@
 <!--        />-->
 <!--      </el-form-item>-->
       <el-form-item label="平台" prop="type">
-        <el-select v-model="queryParams.id" placeholder="请选择平台" clearable>
+        <el-select v-model="queryParams.id" placeholder="请选择平台" clearable @change="handleQuery">
           <el-option
             v-for="item in typeList"
             :key="item.id"

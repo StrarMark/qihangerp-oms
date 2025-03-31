@@ -46,8 +46,7 @@
 
 + 后端技术及组件
   + Nacos 注册中心
-  + Redis 
-  + Kafka 消息队列
+  + Redis
 
 ## 二、关键流程
 
@@ -140,7 +139,6 @@ graph TD
 
 + MySQL8
 + Redis：7.x
-+ Kafka(消息队列)
 + Nacos：2.3.1（注册中心）
 + Sentinel（分布式流量治理组件）
 
@@ -214,12 +212,7 @@ oms主功能微服务，主要功能包括：
    `java -Dserver.port=8888 -Dcsp.sentinel.dashboard.server=localhost:8888 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard.jar`
 4. 启动Nacos（注册中心）
 
-5. 启动Kafka（消息队列）
-`启动KRaft模式kafka`
-   + 0 进入kafka解压目录
-   + 1 生成UUID`bin\windows\kafka-storage.bat random-uuid`
-   + 2 格式化`bin\windows\kafka-storage.bat format -t 7HZlayMPQdmMVcXnsFk8dg -c config\kraft\server.properties`
-   + 3 启动`bin\windows\kafka-server-start.bat config\kraft\server.properties`
+
 
 #### 3.2、导入数据库
 + 创建数据库`qihang-oms`
