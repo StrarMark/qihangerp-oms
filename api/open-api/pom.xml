@@ -144,9 +144,9 @@
         <dependency>
             <groupId>cn.qihangerp.open</groupId>
             <artifactId>open-sdk</artifactId>
-            <version>1.0</version>
+            <version>1.0.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/open-sdk-1.0.jar</systemPath>
+            <systemPath>${project.basedir}/libs/open-sdk-1.0.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
