@@ -8,7 +8,7 @@ import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.domain.OShop;
 import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;
-import cn.qihangerp.open.wei.response.WeiTokenResponse;
+import cn.qihangerp.open.wei.WeiTokenResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
