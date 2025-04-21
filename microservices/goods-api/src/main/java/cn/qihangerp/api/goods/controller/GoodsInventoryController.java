@@ -1,10 +1,9 @@
-package cn.qihangerp.oms.controller;
+package cn.qihangerp.api.goods.controller;
 
-
-import cn.qihangerp.common.PageQuery;
-import cn.qihangerp.common.PageResult;
 
 import cn.qihangerp.common.AjaxResult;
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.module.goods.domain.OGoodsInventory;
 import cn.qihangerp.module.goods.domain.OGoodsInventoryBatch;

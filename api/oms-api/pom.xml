@@ -63,21 +63,33 @@
             <artifactId>security</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
-            <groupId>cn.qihangerp.module</groupId>
-            <artifactId>goods</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.qihangerp.module</groupId>
-            <artifactId>order</artifactId>
-            <version>1.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.qihangerp.module</groupId>-->
+<!--            <artifactId>goods</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>cn.qihangerp.module</groupId>-->
+<!--            <artifactId>order</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>cn.qihangerp.module</groupId>
             <artifactId>stock</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.qihangerp.services</groupId>
+            <artifactId>goods-api</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.qihangerp.services</groupId>
+            <artifactId>order-api</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

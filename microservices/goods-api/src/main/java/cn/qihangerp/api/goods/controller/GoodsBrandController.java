@@ -1,15 +1,11 @@
-package cn.qihangerp.oms.controller;
-
+package cn.qihangerp.api.goods.controller;
 
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
-
-
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.module.goods.domain.OGoodsBrand;
 import cn.qihangerp.module.goods.service.OGoodsBrandService;
-
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

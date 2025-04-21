@@ -9,11 +9,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @MapperScan({"cn.qihangerp.module.*.mapper"})
-public class MybatisPlusConfig {
-    @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); //注意使用哪种数据库
-        return interceptor;
-    }
+public class GoodsApiMybatisPlusConfig {
+
+//    @Bean(name = "mybatisPlusInterceptorGoodsApi")
+//    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+//        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+//        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); //注意使用哪种数据库
+//        return interceptor;
+//    }
 }

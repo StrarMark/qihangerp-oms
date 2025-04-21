@@ -1,4 +1,4 @@
-package cn.qihangerp.oms.controller;
+package cn.qihangerp.api.goods.controller;
 
 
 

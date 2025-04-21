@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.zhijian.FrameworkAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.qihangerp.api.goods.GoodsApiAutoConfiguration

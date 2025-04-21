@@ -1,34 +1,19 @@
-package cn.qihangerp.oms.controller;
+package cn.qihangerp.api.goods.controller;
 
-
-
-import cn.qihangerp.common.PageQuery;
-import cn.qihangerp.common.PageResult;
-import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.TableDataInfo;
-
-
+import cn.qihangerp.common.*;
 import cn.qihangerp.module.goods.domain.OGoods;
 import cn.qihangerp.module.goods.domain.OGoodsSku;
 import cn.qihangerp.module.goods.domain.bo.GoodsAddBo;
 import cn.qihangerp.module.goods.domain.vo.GoodsSpecListVo;
 import cn.qihangerp.module.goods.service.OGoodsService;
-
-
 import cn.qihangerp.module.goods.service.OGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.AllArgsConstructor;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.NumberToTextConverter;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -158,90 +143,90 @@ public class GoodsController extends BaseController
         else return AjaxResult.error();
     }
 
-    @RequestMapping(value = "/goods_sku_import", method = RequestMethod.POST)
-    public AjaxResult orderSendExcel(@RequestPart("file") MultipartFile file) throws IOException, InvalidFormatException {
-
-        String fileName = file.getOriginalFilename();
-        String dir = System.getProperty("user.dir");
-        String destFileName = dir + File.separator + "/import/uploadedfiles_" + fileName;
-        System.out.println(destFileName);
-        File destFile = new File(destFileName);
-        file.transferTo(destFile);
-        InputStream fis = null;
-        fis = new FileInputStream(destFileName);
-        if (fis == null) return AjaxResult.error("没有文件");
-
-        Workbook workbook = null;
-
-        try {
-            if (fileName.toLowerCase().endsWith("xlsx")) {
-                workbook = new XSSFWorkbook(fis);
-            } else if (fileName.toLowerCase().endsWith("xls")) {
-                workbook = new HSSFWorkbook(fis);
-            }
-            // workbook = new HSSFWorkbook(fis);
-        } catch (Exception ex) {
-            return AjaxResult.error(ex.getMessage());
-        }
-
-        if (workbook == null) return AjaxResult.error(502, "未读取到Excel文件");
-
-        /****************开始处理excel****************/
-        int success = 0;
-        int fail = 0;
-        Sheet sheet = null;
-        try {
-            sheet = workbook.getSheetAt(0);
-            int lastRowNum = sheet.getLastRowNum();//最后一行索引
-            Row row = null;
-
-            for (int i = 1; i <= lastRowNum; i++) {
-                row = sheet.getRow(i);
-                //数据
-                OGoodsSku  sku = new OGoodsSku();
-                for(int c=0;c<6;c++){
-                    Cell cell = row.getCell(c);
-                    String cellValue = "";
-                    if (cell != null) {
-                        if (cell.getCellType() == CellType.STRING) {
-                            cellValue = cell.getStringCellValue().replace("\t", "");
-                        } else if (cell.getCellType() == CellType.NUMERIC) {
-                            cellValue = NumberToTextConverter.toText(cell.getNumericCellValue()).replace("\t", "");
-                        }
-                    }
-                    if(c == 1) {
-                        if(StringUtils.hasText(cellValue) ){
-                            sku.setOuterErpGoodsId(cellValue);
-                        }else {
-                            sku.setOuterErpGoodsId("0");
-                        }
-                    }
-                    if(StringUtils.hasText(cellValue)) {
-                        if (c == 0) {
-                            sku.setOuterErpSkuId(cellValue);
-                        } else if (c == 2) {
-                            sku.setSkuCode(cellValue);
-                        } else if (c == 3) {
-                            sku.setSkuName(cellValue);
-                        } else if (c == 4) {
-                            sku.setColorImage(cellValue);
-                        } else if (c == 5) {
-                            sku.setRemark(cellValue);
-                        }
-                    }
-                }
-                goodsService.insertGoodsSku(sku);
-                success++;
-            }
-
-
-        } catch (Exception ex) {
-           fail++;
-            ex.printStackTrace();
-        }
-        Map<String, Integer> result = new HashMap<>();
-        result.put("success",success);
-        result.put("fail",fail);
-        return AjaxResult.success(result);
-    }
+//    @RequestMapping(value = "/goods_sku_import", method = RequestMethod.POST)
+//    public AjaxResult orderSendExcel(@RequestPart("file") MultipartFile file) throws IOException, InvalidFormatException {
+//
+//        String fileName = file.getOriginalFilename();
+//        String dir = System.getProperty("user.dir");
+//        String destFileName = dir + File.separator + "/import/uploadedfiles_" + fileName;
+//        System.out.println(destFileName);
+//        File destFile = new File(destFileName);
+//        file.transferTo(destFile);
+//        InputStream fis = null;
+//        fis = new FileInputStream(destFileName);
+//        if (fis == null) return AjaxResult.error("没有文件");
+//
+//        Workbook workbook = null;
+//
+//        try {
+//            if (fileName.toLowerCase().endsWith("xlsx")) {
+//                workbook = new XSSFWorkbook(fis);
+//            } else if (fileName.toLowerCase().endsWith("xls")) {
+//                workbook = new HSSFWorkbook(fis);
+//            }
+//            // workbook = new HSSFWorkbook(fis);
+//        } catch (Exception ex) {
+//            return AjaxResult.error(ex.getMessage());
+//        }
+//
+//        if (workbook == null) return AjaxResult.error(502, "未读取到Excel文件");
+//
+//        /****************开始处理excel****************/
+//        int success = 0;
+//        int fail = 0;
+//        Sheet sheet = null;
+//        try {
+//            sheet = workbook.getSheetAt(0);
+//            int lastRowNum = sheet.getLastRowNum();//最后一行索引
+//            Row row = null;
+//
+//            for (int i = 1; i <= lastRowNum; i++) {
+//                row = sheet.getRow(i);
+//                //数据
+//                OGoodsSku  sku = new OGoodsSku();
+//                for(int c=0;c<6;c++){
+//                    Cell cell = row.getCell(c);
+//                    String cellValue = "";
+//                    if (cell != null) {
+//                        if (cell.getCellType() == CellType.STRING) {
+//                            cellValue = cell.getStringCellValue().replace("\t", "");
+//                        } else if (cell.getCellType() == CellType.NUMERIC) {
+//                            cellValue = NumberToTextConverter.toText(cell.getNumericCellValue()).replace("\t", "");
+//                        }
+//                    }
+//                    if(c == 1) {
+//                        if(StringUtils.hasText(cellValue) ){
+//                            sku.setOuterErpGoodsId(cellValue);
+//                        }else {
+//                            sku.setOuterErpGoodsId("0");
+//                        }
+//                    }
+//                    if(StringUtils.hasText(cellValue)) {
+//                        if (c == 0) {
+//                            sku.setOuterErpSkuId(cellValue);
+//                        } else if (c == 2) {
+//                            sku.setSkuCode(cellValue);
+//                        } else if (c == 3) {
+//                            sku.setSkuName(cellValue);
+//                        } else if (c == 4) {
+//                            sku.setColorImage(cellValue);
+//                        } else if (c == 5) {
+//                            sku.setRemark(cellValue);
+//                        }
+//                    }
+//                }
+//                goodsService.insertGoodsSku(sku);
+//                success++;
+//            }
+//
+//
+//        } catch (Exception ex) {
+//           fail++;
+//            ex.printStackTrace();
+//        }
+//        Map<String, Integer> result = new HashMap<>();
+//        result.put("success",success);
+//        result.put("fail",fail);
+//        return AjaxResult.success(result);
+//    }
 }
