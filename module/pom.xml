@@ -24,6 +24,7 @@
         <module>jd</module>
         <module>dou</module>
         <module>tao</module>
+        <module>pdd</module>
 
     </modules>
     <properties>

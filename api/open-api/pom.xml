@@ -114,7 +114,11 @@
             <artifactId>tao-api</artifactId>
             <version>1.0.6</version>
         </dependency>
-
+        <dependency>
+            <groupId>cn.qihangerp.services</groupId>
+            <artifactId>pdd-api</artifactId>
+            <version>1.0.6</version>
+        </dependency>
 
 
 
