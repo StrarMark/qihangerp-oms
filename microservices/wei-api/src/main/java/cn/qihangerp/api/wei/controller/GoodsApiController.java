@@ -1,15 +1,17 @@
-package cn.qihangerp.open.wei.controller;
+package cn.qihangerp.api.wei.controller;
 
 
+import cn.qihangerp.api.wei.PullRequest;
+import cn.qihangerp.api.wei.WeiApiCommon;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
+
 import cn.qihangerp.module.open.wei.domain.OmsWeiGoods;
 import cn.qihangerp.module.open.wei.domain.OmsWeiGoodsSku;
 import cn.qihangerp.module.open.wei.service.OmsWeiGoodsService;
-import cn.qihangerp.open.PullRequest;
 import cn.qihangerp.open.common.ApiResultVo;
-import cn.qihangerp.open.wei.WeiApiCommon;
+
 import cn.qihangerp.open.wei.WeiGoodsApiService;
 import cn.qihangerp.open.wei.model.Product;
 import com.alibaba.fastjson2.JSONObject;

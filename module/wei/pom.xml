@@ -7,10 +7,10 @@
         <version>1.0</version>
     </parent>
     <groupId>cn.qihangerp.module</groupId>
-    <artifactId>open</artifactId>
+    <artifactId>wei</artifactId>
     <packaging>jar</packaging>
 
-    <name>open</name>
+    <name>wei</name>
     <url>http://maven.apache.org</url>
 
     <properties>

@@ -1,16 +1,18 @@
-package cn.qihangerp.open.wei.controller;
+package cn.qihangerp.api.wei.controller;
 
 
 
+import cn.qihangerp.api.wei.PullRequest;
+import cn.qihangerp.api.wei.WeiApiCommon;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.module.open.wei.domain.OmsWeiOrder;
 import cn.qihangerp.module.open.wei.domain.OmsWeiOrderItem;
 import cn.qihangerp.module.open.wei.service.OmsWeiOrderService;
-import cn.qihangerp.open.PullRequest;
+
 import cn.qihangerp.open.common.ApiResultVo;
-import cn.qihangerp.open.wei.WeiApiCommon;
+
 import cn.qihangerp.open.wei.WeiOrderApiHelper;
 import cn.qihangerp.open.wei.model.Order;
 import cn.qihangerp.open.wei.model.OrderDetailDeliverInfoAddress;

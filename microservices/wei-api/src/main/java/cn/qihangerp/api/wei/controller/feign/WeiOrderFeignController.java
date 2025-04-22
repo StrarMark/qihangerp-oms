@@ -1,4 +1,4 @@
-package cn.qihangerp.open.wei.controller.feign;
+package cn.qihangerp.api.wei.controller.feign;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.module.open.wei.domain.OmsWeiOrder;

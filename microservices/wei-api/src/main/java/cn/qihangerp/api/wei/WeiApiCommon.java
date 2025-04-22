@@ -1,4 +1,4 @@
-package cn.qihangerp.open.wei;
+package cn.qihangerp.api.wei;
 
 
 import cn.qihangerp.common.ResultVo;
@@ -8,6 +8,7 @@ import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.domain.OShop;
 import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;
+import cn.qihangerp.open.wei.WeiTokenApiHelper;
 import cn.qihangerp.open.wei.WeiTokenResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
