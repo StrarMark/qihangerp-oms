@@ -109,6 +109,17 @@
             <artifactId>dou-api</artifactId>
             <version>1.0.6</version>
         </dependency>
+        <dependency>
+            <groupId>cn.qihangerp.services</groupId>
+            <artifactId>tao-api</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+
+
+
+
+
+
 
         <dependency>
             <groupId>cn.qihangerp.module</groupId>

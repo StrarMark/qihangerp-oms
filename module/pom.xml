@@ -23,6 +23,7 @@
         <module>stock</module>
         <module>jd</module>
         <module>dou</module>
+        <module>tao</module>
 
     </modules>
     <properties>
