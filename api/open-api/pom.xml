@@ -97,6 +97,19 @@
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>cn.qihangerp.services</groupId>
+            <artifactId>jd-api</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.qihangerp.services</groupId>
+            <artifactId>dou-api</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+
         <dependency>
             <groupId>cn.qihangerp.module</groupId>
             <artifactId>open</artifactId>

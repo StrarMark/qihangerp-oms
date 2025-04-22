@@ -21,6 +21,8 @@
         <module>shop</module>
         <module>open</module>
         <module>stock</module>
+        <module>jd</module>
+        <module>dou</module>
 
     </modules>
     <properties>
