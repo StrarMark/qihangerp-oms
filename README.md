@@ -230,6 +230,8 @@ oms主功能微服务，主要功能包括：
 + 运行`npm install` 
 + 运行`npm run dev`
 + 浏览网页`http://localhost:88`
++ 登录账号：`admin`
++ 登录密码：`admin123`
 
 ### 4、项目部署
 
