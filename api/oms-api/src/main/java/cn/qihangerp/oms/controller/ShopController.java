@@ -8,7 +8,7 @@ import cn.qihangerp.module.service.OLogisticsCompanyService;
 import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.domain.OShop;
 import cn.qihangerp.module.service.OShopService;
-import cn.qihangerp.oms.domain.ShopBo;
+import cn.qihangerp.oms.request.ShopBo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
@@ -17,7 +17,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
