@@ -40,7 +40,7 @@ public class ShopController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(ShopBo shop)
     {
-        LambdaQueryWrapper<OShop> qw = new LambdaQueryWrapper<OShop>().eq(shop.getPlatform()!=null,OShop::getType,shop.getPlatform());
+        LambdaQueryWrapper<OShop> qw = new LambdaQueryWrapper<OShop>().eq(shop.getType()!=null,OShop::getType,shop.getType());
         List<OShop> list = shopService.list(qw);
         return getDataTable(list);
     }

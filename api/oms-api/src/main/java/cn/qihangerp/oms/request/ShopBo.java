@@ -20,7 +20,7 @@ public class ShopBo implements Serializable {
     /**
      * 对应第三方平台Id
      */
-    private Integer platform;
+    private Integer type;
 
 
 
