@@ -5,6 +5,7 @@ import cn.qihangerp.module.order.domain.OOrder;
 import cn.qihangerp.module.order.domain.vo.OrderDiscountVo;
 import cn.qihangerp.module.order.domain.vo.SalesDailyVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 
 import java.util.List;
@@ -21,6 +22,7 @@ public interface OOrderMapper extends BaseMapper<OOrder> {
 
     List<SalesDailyVo> salesDaily();
     SalesDailyVo getTodaySalesDaily();
+    Integer getWaitShipOrderAllCount();
 }
 
 

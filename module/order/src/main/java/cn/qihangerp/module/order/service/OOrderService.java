@@ -39,11 +39,12 @@ public interface OOrderService extends IService<OOrder> {
 
     /**
      * 手动添加订单
-     * @param bo
+     * @param
      * @return
      */
 //    int insertErpOrder(OrderCreateBo bo,String createBy);
 
     List<SalesDailyVo> salesDaily();
     SalesDailyVo getTodaySalesDaily();
+    Integer getWaitShipOrderAllCount();
 }

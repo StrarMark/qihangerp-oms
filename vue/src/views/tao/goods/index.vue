@@ -60,7 +60,16 @@
           @click="handlePull"
         >API拉取商品数据</el-button>
       </el-col>
-
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-refresh"
+          size="mini"
+          :disabled="multiple"
+          @click="handlePushOms"
+        >推送到商品库&一键关联</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -143,6 +152,7 @@ export default {
       goodsList:[],
       shopList:[],
       skuList:[],
+
       // 是否显示弹出层
       detailOpen:false,
       skuListLoading:false,
