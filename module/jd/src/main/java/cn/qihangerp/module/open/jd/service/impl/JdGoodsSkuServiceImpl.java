@@ -2,7 +2,9 @@ package cn.qihangerp.module.open.jd.service.impl;
 
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
+import cn.qihangerp.module.goods.domain.OGoods;
 import cn.qihangerp.module.goods.domain.OGoodsSku;
+import cn.qihangerp.module.goods.service.OGoodsService;
 import cn.qihangerp.module.goods.service.OGoodsSkuService;
 import cn.qihangerp.module.open.jd.domain.JdGoods;
 import cn.qihangerp.module.open.jd.mapper.JdGoodsMapper;
@@ -36,6 +38,7 @@ public class JdGoodsSkuServiceImpl extends ServiceImpl<JdGoodsSkuMapper, JdGoods
     private final JdGoodsSkuMapper mapper;
     private final JdGoodsMapper jdGoodsMapper;
     private final OGoodsSkuService oGoodsSkuService;
+    private final OGoodsService oGoodsService;
     @Override
     public PageResult<JdGoodsSkuListVo> queryPageList(JdGoodsBo bo, PageQuery pageQuery) {
         if(StringUtils.hasText(bo.getOuterId())){
@@ -50,6 +53,12 @@ public class JdGoodsSkuServiceImpl extends ServiceImpl<JdGoodsSkuMapper, JdGoods
     public ResultVo linkErpGoodsSku(LinkErpGoodsSkuBo bo) {
         OGoodsSku oGoodsSku = oGoodsSkuService.getById(bo.getErpGoodsSkuId());
         if(oGoodsSku == null) return ResultVo.error("未找到系统商品sku");
+
+        OGoods oGoods=oGoodsService.getById(oGoodsSku.getGoodsId());
+        if(oGoods == null){
+            return ResultVo.error("未找到系统商品");
+        }
+
         JdGoodsSku taoGoodsSku = mapper.selectById(bo.getId());
         if(taoGoodsSku == null) {
             return ResultVo.error("JD商品sku数据不存在");
@@ -61,6 +70,7 @@ public class JdGoodsSkuServiceImpl extends ServiceImpl<JdGoodsSkuMapper, JdGoods
 
         JdGoodsSku sku = new JdGoodsSku();
         sku.setId(bo.getId());
+        sku.setLogo(oGoodsSku.getColorImage());
         sku.setErpGoodsId(oGoodsSku.getGoodsId());
         sku.setErpGoodsSkuId(oGoodsSku.getId());
         mapper.updateById(sku);
@@ -68,6 +78,7 @@ public class JdGoodsSkuServiceImpl extends ServiceImpl<JdGoodsSkuMapper, JdGoods
         JdGoods goodsUp=new JdGoods();
         goodsUp.setId(jdGoods.get(0).getId());
         goodsUp.setErpGoodsId(oGoodsSku.getGoodsId());
+        goodsUp.setLogo(oGoods.getImage());
         jdGoodsMapper.updateById(goodsUp);
         return ResultVo.success();
     }

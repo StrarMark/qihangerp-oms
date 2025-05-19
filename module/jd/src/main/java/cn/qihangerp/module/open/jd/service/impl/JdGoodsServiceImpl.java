@@ -43,6 +43,11 @@ public class JdGoodsServiceImpl extends ServiceImpl<JdGoodsMapper, JdGoods>
                 .eq(bo.getShopId()!=null,JdGoods::getShopId,bo.getShopId());
 
         Page<JdGoods> goodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
+        if(goodsPage.getRecords()!=null && goodsPage.getRecords().size()>0){
+            for(JdGoods goods : goodsPage.getRecords()){
+                goods.setSkuList(skuMapper.selectList(new LambdaQueryWrapper<JdGoodsSku>().eq(JdGoodsSku::getWareId,goods.getWareId())));
+            }
+        }
         return PageResult.build(goodsPage);
     }
 
