@@ -55,10 +55,9 @@
 
     <el-table v-loading="loading" :data="shopList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="店铺ID" align="center" prop="id" />
-      <el-table-column label="店铺名" align="center" prop="name" />
+      <el-table-column label="店铺ID" align="center" prop="id" width="100" />
+      <el-table-column label="店铺名" align="left" prop="name" />
       <el-table-column label="店铺备注" align="center" prop="remark" />
-
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -143,7 +142,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         name: null,
-        platform: 999
+        type: 999
       },
       // 表单参数
       form: {
