@@ -43,6 +43,11 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
                 .eq(bo.getShopId()!=null,TaoGoods::getShopId,bo.getShopId());
 
         Page<TaoGoods> taoGoodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
+        if(taoGoodsPage.getRecords()!=null && taoGoodsPage.getRecords().size()>0){
+            for(TaoGoods taoGoods : taoGoodsPage.getRecords()){
+                taoGoods.setSkus(skuMapper.selectList(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getTaoGoodsId,taoGoods.getId())));
+            }
+        }
         return PageResult.build(taoGoodsPage);
     }
 

@@ -166,7 +166,7 @@ public class TaoGoods implements Serializable {
     /**
      * erp商品id
      */
-    private Integer erpGoodsId;
+    private String erpGoodsId;
 
     /**
      * 创建时间
@@ -609,14 +609,14 @@ public class TaoGoods implements Serializable {
     /**
      * erp商品id
      */
-    public Integer getErpGoodsId() {
+    public String getErpGoodsId() {
         return erpGoodsId;
     }
 
     /**
      * erp商品id
      */
-    public void setErpGoodsId(Integer erpGoodsId) {
+    public void setErpGoodsId(String erpGoodsId) {
         this.erpGoodsId = erpGoodsId;
     }
 

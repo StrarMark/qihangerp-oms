@@ -1,6 +1,16 @@
 import request from '@/utils/request'
 
-// 查询淘宝订单列表
+
+// 查询淘宝商品列表
+export function listGoods(query) {
+  return request({
+    url: '/api/open-api/tao/goods/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询淘宝商品sku列表
 export function listGoodsSku(query) {
   return request({
     url: '/api/open-api/tao/goods/skuList',

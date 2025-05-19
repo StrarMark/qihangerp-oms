@@ -110,6 +110,7 @@ export default {
         orderCount:302,
         shopCount:8
       }
+
     }
   },
   mounted() {
