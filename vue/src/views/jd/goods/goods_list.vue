@@ -55,26 +55,30 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="goodsList" >
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
+    <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
+       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="商品ID" align="center" prop="wareId" />
-      <el-table-column label="Sku Id" align="center" prop="skuId" />
-      <el-table-column label="sku名称" align="center" prop="skuName" />
-<!--      <el-table-column label="图片" align="center" prop="logo" width="100">-->
-<!--        <template slot-scope="scope">-->
-<!--          <image-preview :src="scope.row.logo" :width="50" :height="50"/>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-
-<!--      <el-table-column label="店铺" align="center" prop="categoryId" >-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-tag size="small">{{categoryList.find(x=>x.id === scope.row.categoryId).name}}</el-tag>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-       <el-table-column label="商家编码" align="center" prop="outerId" />
-      <el-table-column label="京东价" align="center" prop="jdPrice" />
-      <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
+      <el-table-column label="图片" align="center" prop="logo" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.logo" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="标题" align="left" prop="title" />
+      <el-table-column label="平台商品ID" align="center" prop="wareId" />
+<!--       <el-table-column label="商家编码" align="center" prop="outerId" />-->
+       <el-table-column label="商家编码" align="center" prop="itemNum" />
+      <el-table-column label="京东价" align="center" prop="jdPrice" :formatter="amountFormatter"/>
+      <el-table-column label="SKU" align="center" >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-info"
+            @click="handleViewSkuList(scope.row)"
+          >{{scope.row.skus.length +' 个SKU'}}</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="ERP商品ID" align="center" prop="erpGoodsId" />
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.status === 1">销售中</el-tag>
@@ -127,6 +131,7 @@ import {listGoods,getGoodsSku,linkErpGoodsSkuId,pullGoodsList} from "@/api/jd/go
 import {listShop} from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
+import {amountFormatter} from "@/utils/zhijian";
 
 export default {
   name: "GoodsListJd",
@@ -188,6 +193,13 @@ export default {
     // this.getList();
   },
   methods: {
+    amountFormatter,
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },
     /** 查询商品管理列表 */
     getList() {
       this.loading = true;

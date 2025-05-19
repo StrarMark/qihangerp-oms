@@ -1,6 +1,8 @@
 package cn.qihangerp.module.goods.service.impl;
 
 
+import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.module.goods.domain.OGoodsSku;
 import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
 import cn.qihangerp.module.goods.service.OGoodsSkuService;
@@ -21,6 +23,7 @@ import java.util.List;
 public class OGoodsSkuServiceImpl extends ServiceImpl<OGoodsSkuMapper, OGoodsSku>
     implements OGoodsSkuService {
     private final OGoodsSkuMapper skuMapper;
+
     @Override
     public List<OGoodsSku> searchGoodsSpec(String keyword) {
         LambdaQueryWrapper<OGoodsSku> queryWrapper =
@@ -34,6 +37,8 @@ public class OGoodsSkuServiceImpl extends ServiceImpl<OGoodsSkuMapper, OGoodsSku
         queryWrapper.last("LIMIT 10");
         return skuMapper.selectList(queryWrapper);
     }
+
+
 }
 
 
