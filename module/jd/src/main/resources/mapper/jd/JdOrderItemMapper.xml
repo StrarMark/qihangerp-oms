@@ -6,25 +6,27 @@
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.module.open.jd.domain.JdOrderItem">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="orderId" column="order_id" jdbcType="BIGINT"/>
+            <result property="jdOrderId" column="jd_order_id" jdbcType="BIGINT"/>
+            <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
             <result property="skuId" column="sku_id" jdbcType="VARCHAR"/>
             <result property="outerSkuId" column="outer_sku_id" jdbcType="VARCHAR"/>
             <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
             <result property="jdPrice" column="jd_price" jdbcType="VARCHAR"/>
             <result property="giftPoint" column="gift_point" jdbcType="VARCHAR"/>
             <result property="wareId" column="ware_id" jdbcType="VARCHAR"/>
-            <result property="itemTotal" column="item_total" jdbcType="VARCHAR"/>
+            <result property="itemTotal" column="item_total" jdbcType="INTEGER"/>
             <result property="productNo" column="product_no" jdbcType="VARCHAR"/>
             <result property="serviceName" column="service_name" jdbcType="VARCHAR"/>
             <result property="newStoreId" column="new_store_id" jdbcType="VARCHAR"/>
-            <result property="oGoodsId" column="o_goods_id" jdbcType="BIGINT"/>
-            <result property="oGoodsSkuId" column="o_goods_sku_id" jdbcType="VARCHAR"/>
+            <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
+            <result property="erpGoodsSkuId" column="erp_goods_sku_id" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,order_id,sku_id,
-        outer_sku_id,sku_name,jd_price,
-        gift_point,ware_id,item_total,
-        product_no,service_name,new_store_id,o_goods_id,o_goods_sku_id
+        id,jd_order_id,order_id,
+        sku_id,outer_sku_id,sku_name,
+        jd_price,gift_point,ware_id,
+        item_total,product_no,service_name,
+        new_store_id,erp_goods_id,erp_goods_sku_id
     </sql>
 </mapper>

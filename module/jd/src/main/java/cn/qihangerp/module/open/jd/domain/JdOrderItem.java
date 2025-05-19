@@ -1,16 +1,18 @@
 package cn.qihangerp.module.open.jd.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
- * 
- * @TableName jd_order_item
+ * 京东订单明细表
+ * @TableName oms_jd_order_item
  */
-@TableName("oms_jd_order_item")
+@TableName(value ="oms_jd_order_item")
+@Data
 public class JdOrderItem implements Serializable {
     /**
      * 
@@ -19,7 +21,12 @@ public class JdOrderItem implements Serializable {
     private Long id;
 
     /**
-     *
+     * 外键id（jd_order表id）
+     */
+    private Long jdOrderId;
+
+    /**
+     * 京东平台订单id
      */
     private String orderId;
 
@@ -56,7 +63,7 @@ public class JdOrderItem implements Serializable {
     /**
      * 数量
      */
-    private String itemTotal;
+    private Integer itemTotal;
 
     /**
      * 
@@ -74,199 +81,15 @@ public class JdOrderItem implements Serializable {
     private String newStoreId;
 
     /**
-     * erp商品id
+     * 商品id(o_goods外键)
      */
-    private String oGoodsId;
+    private Long erpGoodsId;
 
     /**
-     * erp商品sku id
+     * 商品skuid(o_goods_sku外键)
      */
-    private Long oGoodsSkuId;
+    private Long erpGoodsSkuId;
 
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
-    public String getoGoodsId() {
-        return oGoodsId;
-    }
-
-    public void setoGoodsId(String oGoodsId) {
-        this.oGoodsId = oGoodsId;
-    }
-
-    public Long getoGoodsSkuId() {
-        return oGoodsSkuId;
-    }
-
-    public void setoGoodsSkuId(Long oGoodsSkuId) {
-        this.oGoodsSkuId = oGoodsSkuId;
-    }
-
-    /**
-     * 
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * 
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     *
-     */
-    public String getOrderId() {
-        return orderId;
-    }
-
-    /**
-     * 外键id（jd_order表id）
-     */
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    /**
-     * 京东内部SKU的ID
-     */
-    public String getSkuId() {
-        return skuId;
-    }
-
-    /**
-     * 京东内部SKU的ID
-     */
-    public void setSkuId(String skuId) {
-        this.skuId = skuId;
-    }
-
-    /**
-     * SKU外部ID（极端情况下不保证返回，建议从商品接口获取
-     */
-    public String getOuterSkuId() {
-        return outerSkuId;
-    }
-
-    /**
-     * SKU外部ID（极端情况下不保证返回，建议从商品接口获取
-     */
-    public void setOuterSkuId(String outerSkuId) {
-        this.outerSkuId = outerSkuId;
-    }
-
-    /**
-     * 商品的名称+SKU规格
-     */
-    public String getSkuName() {
-        return skuName;
-    }
-
-    /**
-     * 商品的名称+SKU规格
-     */
-    public void setSkuName(String skuName) {
-        this.skuName = skuName;
-    }
-
-    /**
-     * SKU的京东价
-     */
-    public String getJdPrice() {
-        return jdPrice;
-    }
-
-    /**
-     * SKU的京东价
-     */
-    public void setJdPrice(String jdPrice) {
-        this.jdPrice = jdPrice;
-    }
-
-    /**
-     * 赠送积分
-     */
-    public String getGiftPoint() {
-        return giftPoint;
-    }
-
-    /**
-     * 赠送积分
-     */
-    public void setGiftPoint(String giftPoint) {
-        this.giftPoint = giftPoint;
-    }
-
-    /**
-     * 	京东内部商品ID（极端情况下不保证返回，建议从商品接口获取）
-     */
-    public String getWareId() {
-        return wareId;
-    }
-
-    /**
-     * 	京东内部商品ID（极端情况下不保证返回，建议从商品接口获取）
-     */
-    public void setWareId(String wareId) {
-        this.wareId = wareId;
-    }
-
-    /**
-     * 数量
-     */
-    public String getItemTotal() {
-        return itemTotal;
-    }
-
-    /**
-     * 数量
-     */
-    public void setItemTotal(String itemTotal) {
-        this.itemTotal = itemTotal;
-    }
-
-    /**
-     * 
-     */
-    public String getProductNo() {
-        return productNo;
-    }
-
-    /**
-     * 
-     */
-    public void setProductNo(String productNo) {
-        this.productNo = productNo;
-    }
-
-    /**
-     * 
-     */
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    /**
-     * 
-     */
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    /**
-     * 
-     */
-    public String getNewStoreId() {
-        return newStoreId;
-    }
-
-    /**
-     * 
-     */
-    public void setNewStoreId(String newStoreId) {
-        this.newStoreId = newStoreId;
-    }
-
 }
