@@ -23,14 +23,14 @@
     <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="id" width="100" />
-      <el-table-column label="任务名称" align="center" prop="taskName"  />
+      <el-table-column label="任务名称" align="left" prop="taskName"  />
       <el-table-column label="表达式（-表示不运行）" align="center" prop="cron" />
       <el-table-column label="执行函数" align="center" prop="method" />
 
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="100">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="150">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

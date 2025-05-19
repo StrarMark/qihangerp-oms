@@ -60,9 +60,9 @@
 
     <el-table v-loading="loading" :data="shopList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="店铺ID" align="center" prop="id" />
-      <el-table-column label="店铺名" align="center" prop="name" />
-      <el-table-column label="平台" align="center" prop="type" >
+      <el-table-column label="店铺ID" align="center" prop="id" width="100" />
+      <el-table-column label="店铺名" align="left" prop="name" />
+      <el-table-column label="平台" align="left" prop="type" >
         <template slot-scope="scope">
           <el-tag >{{typeList.find(x=>x.id === scope.row.type)?typeList.find(x=>x.id === scope.row.type).name:''}}</el-tag>
         </template>

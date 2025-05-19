@@ -9,12 +9,12 @@
 
     <el-table v-loading="loading" :data="shopList" >
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="平台" align="center" prop="name" />
-       <el-table-column label="AppKey" align="center" prop="appKey" />
-       <el-table-column label="AppSecret" align="center" prop="appSecret" />
-       <el-table-column label="回调URL" align="center" prop="redirectUri" />
-      <el-table-column label="接口请求URL" align="center" prop="serverUrl" />
+      <el-table-column label="ID" align="center" prop="id" width="100"/>
+      <el-table-column label="平台" align="left" prop="name" />
+       <el-table-column label="AppKey" align="left" prop="appKey" />
+       <el-table-column label="AppSecret" align="left" prop="appSecret" />
+       <el-table-column label="回调URL" align="left" prop="redirectUri" />
+      <el-table-column label="接口请求URL" align="left" prop="serverUrl" />
       <el-table-column label="状态" align="center" width="100">
         <template slot-scope="scope">
           <el-switch
