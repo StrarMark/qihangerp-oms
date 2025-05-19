@@ -52,6 +52,16 @@
         @click="handlePull"
       >API拉取商品数据</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          :disabled="multiple"
+          icon="el-icon-refresh"
+          size="mini"
+          @click="handlePushOms"
+        >推送到商品库</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 

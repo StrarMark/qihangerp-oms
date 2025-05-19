@@ -1,5 +1,7 @@
 package cn.qihangerp.module.open.dou.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -15,6 +17,7 @@ public class DouGoodsSku implements Serializable {
     /**
      * 商品sku_id;抖店系统生成。
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

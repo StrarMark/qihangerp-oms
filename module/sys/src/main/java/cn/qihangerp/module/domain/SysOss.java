@@ -16,7 +16,7 @@ public class SysOss implements Serializable {
     /**
      * 文件id
      */
-    @TableId(value = "oss_id", type = IdType.NONE)
+    @TableId(value = "oss_id", type = IdType.AUTO)
     private Long ossId;
 
     /**

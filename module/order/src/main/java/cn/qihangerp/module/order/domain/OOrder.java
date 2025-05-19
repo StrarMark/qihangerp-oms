@@ -2,8 +2,10 @@ package cn.qihangerp.module.order.domain;
 
 import cn.qihangerp.module.order.domain.vo.OrderDiscountVo;
 import cn.qihangerp.module.order.domain.vo.OrderItemListVo;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,6 +22,7 @@ public class OOrder implements Serializable {
     /**
      * 订单id，自增
      */
+    @TableId(type = IdType.AUTO)
     private String id;
 
     /**

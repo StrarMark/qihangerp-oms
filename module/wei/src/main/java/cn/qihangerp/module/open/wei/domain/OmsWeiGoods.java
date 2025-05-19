@@ -3,7 +3,9 @@ package cn.qihangerp.module.open.wei.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -15,6 +17,7 @@ public class OmsWeiGoods implements Serializable {
     /**
      * 
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

@@ -42,16 +42,26 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
+
       <el-col :span="1.5">
-      <el-button
-        :loading="pullLoading"
-        type="success"
-        plain
-        icon="el-icon-download"
-        size="mini"
-        @click="handlePull"
-      >API拉取商品数据</el-button>
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-refresh"
+          size="mini"
+          @click="handleLinkOms"
+        >一键关联商品库SKU</el-button>
       </el-col>
+      <!--      <el-col :span="1.5">-->
+<!--      <el-button-->
+<!--        :loading="pullLoading"-->
+<!--        type="success"-->
+<!--        plain-->
+<!--        icon="el-icon-download"-->
+<!--        size="mini"-->
+<!--        @click="handlePull"-->
+<!--      >API拉取商品数据</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -75,7 +85,7 @@
 <!--        </template>-->
 <!--      </el-table-column>-->
        <el-table-column label="商家编码" align="center" prop="outerId" />
-      <el-table-column label="京东价" align="center" prop="jdPrice" />
+      <el-table-column label="京东价" align="center" prop="jdPrice" :formatter="amountFormatter"/>
       <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
@@ -129,6 +139,7 @@ import {listGoodsSku,getGoodsSku,linkErpGoodsSkuId,pullGoodsList} from "@/api/jd
 import {listShop} from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
+import {amountFormatter} from "@/utils/zhijian";
 
 export default {
   name: "GoodsSkuJd",
@@ -190,6 +201,7 @@ export default {
     // this.getList();
   },
   methods: {
+    amountFormatter,
     /** 查询商品管理列表 */
     getList() {
       this.loading = true;
