@@ -28,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -182,27 +184,33 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
             String styleValue="";
             // 规格数组，最多取3个
             String[] specArray = sku.getPropertiesName().split(";");
-            int index=0;
-            for(String spec:specArray){
-                String[] specVal = spec.split(":");
-                if(specVal[2].indexOf("颜色")>0){
+            List<String> specList = Arrays.stream(specArray).toList();
+            List<String> specList1 = new ArrayList<>();
+
+            for(int i=0;i<specList.size();i++){
+                String[] specVal = specList.get(i).split(":");
+                if(specVal[2].indexOf("颜色")>-1){
                     colorLabel = specVal[2];
                     colorValue = specVal[3];
-                }else if(specVal[2].indexOf("尺寸")>0){
+                }else if(specVal[2].indexOf("尺寸")>-1){
                     sizeLabel = specVal[2];
                     sizeValue = specVal[3];
+                }else{
+                    specList1.add( specList.get(i));
                 }
-                else {
-                    if(index==0){
-                        colorLabel = specVal[2];
-                        colorValue = specVal[3];
-                    }else if(index==1){
-                        sizeLabel = specVal[2];
-                        sizeValue = specVal[3];
-                    }else if(index==2){
-                        styleLabel = specVal[2];
-                        styleValue = specVal[3];
-                    }
+            }
+            int index=0;
+            for(int i=0;i<specList1.size();i++) {
+                String[] specVal = specList.get(i).split(":");
+                if (org.springframework.util.StringUtils.isEmpty(colorValue)) {
+                    colorLabel = specVal[2];
+                    colorValue = specVal[3];
+                } else if (org.springframework.util.StringUtils.isEmpty(sizeValue)) {
+                    sizeLabel = specVal[2];
+                    sizeValue = specVal[3];
+                } else if (org.springframework.util.StringUtils.isEmpty(styleValue)) {
+                    styleLabel = specVal[2];
+                    styleValue = specVal[3];
                 }
             }
             erpGoodsSku.setColorId(0L);

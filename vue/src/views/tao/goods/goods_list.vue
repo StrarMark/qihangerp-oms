@@ -121,7 +121,7 @@
 <!--        <el-table-column label="商品名称" align="left" prop="goodsName" width="288px"/>-->
         <el-table-column label="属性" align="center" prop="propertiesName" >
           <template slot-scope="scope">
-            {{scope.row.propertiesName.split(':')[3]}}
+            {{getSkuProper(scope.row.propertiesName)}}
           </template>
         </el-table-column>
         <el-table-column label="价格" align="center" prop="price" :formatter="amountFormatter"/>
@@ -246,6 +246,15 @@ export default {
   methods: {
     parseTime,
     amountFormatter,
+    getSkuProper(proper){
+      const pArr =proper.split(';');
+      console.log('====',pArr)
+      let skuName=""
+      for(let p of pArr){
+        skuName+=p.split(":")[3]+'  '
+      }
+      return skuName;
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)

@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -115,11 +117,13 @@ public class OGoodsSku implements Serializable {
     /**
      * 预计采购价格
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
     private BigDecimal purPrice;
 
     /**
      * 建议零售价
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
     private BigDecimal retailPrice;
 
     /**

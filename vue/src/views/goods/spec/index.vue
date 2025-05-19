@@ -59,17 +59,19 @@
 
     <el-table v-loading="loading" :data="goodsSpecList" @selection-change="handleSelectionChange">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="SkuId" align="center" prop="id" />
-      <el-table-column label="外部ErpSkuId" align="center" prop="outerErpSkuId" />
-      <el-table-column label="商品名" align="center" prop="goodsName" />
-      <el-table-column label="Sku名" align="center" prop="skuName" />
-      <el-table-column label="Sku编码" align="center" prop="skuCode" />
-      <el-table-column label="规格1" align="center" prop="colorValue" />
+      <el-table-column label="SkuId" align="center" prop="id"  width="80" />
       <el-table-column label="图片" align="center" prop="colorImage" width="100">
         <template slot-scope="scope">
           <image-preview :src="scope.row.colorImage" :width="50" :height="50"/>
         </template>
       </el-table-column>
+      <el-table-column label="商品名" align="left" prop="goodsName" />
+      <el-table-column label="外部ErpSkuId" align="center" prop="outerErpSkuId" />
+
+<!--      <el-table-column label="Sku名" align="center" prop="skuName" />-->
+      <el-table-column label="Sku编码" align="center" prop="skuCode" />
+      <el-table-column label="规格1" align="center" prop="colorValue" />
+
       <el-table-column label="规格2" align="center" prop="sizeValue" />
       <el-table-column label="规格3" align="center" prop="styleValue" />
       <el-table-column label="建议零售价" align="center" prop="retailPrice" :formatter="amountFormatter"/>

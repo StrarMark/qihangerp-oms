@@ -115,13 +115,14 @@
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="商品名称" align="left" prop="name" width="300"/>
+      <el-table-column label="ID" align="center" prop="id" width="80" />
       <el-table-column label="商品图片" align="center" prop="image" width="100">
         <template slot-scope="scope">
           <image-preview :src="scope.row.image" :width="50" :height="50"/>
         </template>
       </el-table-column>
+      <el-table-column label="商品名称" align="left" prop="name" width="300"/>
+
       <el-table-column label="商品编号" align="center" prop="goodsNum" />
       <!-- <el-table-column label="单位名称" align="center" prop="unitName" /> -->
       <el-table-column label="商品分类" align="center" prop="categoryId" >
@@ -130,14 +131,14 @@
         </template>
       </el-table-column>
       <!-- <el-table-column label="条码" align="center" prop="barCode" /> -->
-      <el-table-column label="SKU明细" align="center" >
+      <el-table-column label="SKU" align="center" >
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-info"
             @click="handleViewSkuList(scope.row)"
-          >查看SKU明细</el-button>
+          >{{scope.row.skuList.length}} 条SKU</el-button>
         </template>
       </el-table-column>
 
@@ -216,19 +217,22 @@
       </el-upload>
     </el-dialog>
 
-    <el-dialog :title="title" :visible.sync="skuOpen" width="1000px" append-to-body>
+    <el-dialog :title="title" :visible.sync="skuOpen" width="1200px" append-to-body>
       <el-table v-loading="loading" :data="skuList">
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
-        <el-table-column label="Sku Id" align="center" prop="id" />
-        <el-table-column label="商品名称" align="center" prop="goodsName" />
-        <el-table-column label="SKU名称" align="center" prop="skuName" />
+        <el-table-column label="Sku Id" align="center" prop="id" width="80" />
+        <el-table-column label="商品名称" align="left" prop="goodsName" />
+<!--        <el-table-column label="SKU名称" align="center" prop="skuName" />-->
         <el-table-column label="SKU编码" align="center" prop="skuCode" />
         <el-table-column label="商品图片" align="center" prop="colorImage" width="100">
           <template slot-scope="scope">
             <image-preview :src="scope.row.colorImage" :width="50" :height="50"/>
           </template>
         </el-table-column>
-        <el-table-column label="预计采购价" align="center" prop="purPrice" />
+        <el-table-column label="颜色属性" align="left" prop="colorValue" />
+        <el-table-column label="尺寸属性" align="left" prop="sizeValue" />
+        <el-table-column label="款式属性" align="left" prop="styleValue" />
+        <el-table-column label="零售价" align="center" prop="retailPrice" />
         <el-table-column label="状态" align="center" prop="status" >
           <template slot-scope="scope">
             <el-tag size="small" v-if="scope.row.status === 1">销售中</el-tag>
