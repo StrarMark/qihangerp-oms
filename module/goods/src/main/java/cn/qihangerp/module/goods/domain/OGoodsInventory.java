@@ -1,5 +1,9 @@
 package cn.qihangerp.module.goods.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -8,12 +12,14 @@ import lombok.Data;
  * 商品库存表
  * @TableName o_goods_inventory
  */
+@TableName(value ="o_goods_inventory")
 @Data
 public class OGoodsInventory implements Serializable {
     /**
      * 主键ID
      */
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     /**
      * 商品id
@@ -26,6 +32,16 @@ public class OGoodsInventory implements Serializable {
     private String goodsNum;
 
     /**
+     * 商品名
+     */
+    private String goodsName;
+
+    /**
+     * 商品图片
+     */
+    private String goodsImg;
+
+    /**
      * 商品规格id
      */
     private Long skuId;
@@ -34,6 +50,11 @@ public class OGoodsInventory implements Serializable {
      * 规格编码（唯一）
      */
     private String skuCode;
+
+    /**
+     * SKU名
+     */
+    private String skuName;
 
     /**
      * 当前库存
@@ -65,5 +86,6 @@ public class OGoodsInventory implements Serializable {
      */
     private String updateBy;
 
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

@@ -2,6 +2,7 @@ package cn.qihangerp.module.open.tao.service;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
+import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.module.open.tao.domain.TaoGoods;
 import cn.qihangerp.module.open.tao.domain.bo.TaoGoodsBo;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -16,4 +17,6 @@ public interface TaoGoodsService extends IService<TaoGoods> {
     PageResult<TaoGoods> queryPageList(TaoGoodsBo bo, PageQuery pageQuery);
 
     int saveAndUpdateGoods(Long shopId,TaoGoods goods);
+
+    ResultVo pushToOms(Long taoGoodsId);
 }

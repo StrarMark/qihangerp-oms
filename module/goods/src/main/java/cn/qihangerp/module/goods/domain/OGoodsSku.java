@@ -1,38 +1,51 @@
 package cn.qihangerp.module.goods.domain;
 
-//import com.baomidou.mybatisplus.annotation.IdType;
-//import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
+import lombok.Data;
 
 /**
- * 商品规格库存管理
+ * OMS商品SKU表
  * @TableName o_goods_sku
  */
+@TableName(value ="o_goods_sku")
 @Data
 public class OGoodsSku implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "id", type= IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 外键（o_goods）
+     */
     private Long goodsId;
 
     /**
-     * 商品id
+     * 外部erp系统商品id
      */
     private String outerErpGoodsId;
 
-
     /**
-     * skuId(唯一)
+     * 外部erp系统skuId(唯一)
      */
     private String outerErpSkuId;
+
+    /**
+     * 商品名
+     */
     private String goodsName;
+
+    /**
+     * 商品编码
+     */
+    private String goodsNum;
 
     /**
      * 规格名
@@ -43,6 +56,11 @@ public class OGoodsSku implements Serializable {
      * 规格编码
      */
     private String skuCode;
+
+    /**
+     * 颜色label
+     */
+    private String colorLabel;
 
     /**
      * 颜色id
@@ -60,14 +78,24 @@ public class OGoodsSku implements Serializable {
     private String colorImage;
 
     /**
+     * 尺码label
+     */
+    private String sizeLabel;
+
+    /**
      * 尺码id
      */
     private Long sizeId;
 
     /**
-     * 尺码值
+     * 尺码值(材质)
      */
     private String sizeValue;
+
+    /**
+     * 款式label
+     */
+    private String styleLabel;
 
     /**
      * 款式id
@@ -84,12 +112,15 @@ public class OGoodsSku implements Serializable {
      */
     private String barCode;
 
+    /**
+     * 预计采购价格
+     */
+    private BigDecimal purPrice;
 
     /**
      * 建议零售价
      */
     private BigDecimal retailPrice;
-    private BigDecimal purPrice;
 
     /**
      * 单位成本
@@ -116,7 +147,21 @@ public class OGoodsSku implements Serializable {
      */
     private Integer highQty;
 
+    /**
+     * erp商品体积
+     */
     private String volume;
-    private static final long serialVersionUID = 1L;
 
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

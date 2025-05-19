@@ -175,7 +175,7 @@
 import { listShop } from "@/api/shop/shop";
 import { searchSku } from "@/api/goods/goods";
 import {MessageBox} from "element-ui";
-import {getGoodsSku, linkErpGoodsSkuId, listGoods, pullGoodsList} from "@/api/tao/goods";
+import {getGoodsSku, linkErpGoodsSkuId, listGoods, pullGoodsList,pushToOms} from "@/api/tao/goods";
 import {amountFormatter, parseTime} from "@/utils/zhijian";
 
 export default {
@@ -325,7 +325,19 @@ export default {
 
     },
     handlePushOms(){
-
+      this.$confirm('确认同步所有商品到商品库吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        pushToOms( this.ids ).then(response => {
+          this.$message.success('商品同步成功')
+          this.getList()
+        }).finally(() => {
+          this.loading = false
+        })
+      })
     },
     /** 提交按钮 */
     submitForm() {
