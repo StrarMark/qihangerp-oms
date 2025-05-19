@@ -51,7 +51,7 @@ public class DouGoodsController extends BaseController {
     @PostMapping(value = "/sku/linkErp")
     public AjaxResult linkErp(@RequestBody LinkErpGoodsSkuBo bo)
     {
-        if(StringUtils.isBlank(bo.getId())){
+        if(bo.getId()!=null){
             return AjaxResult.error(500,"缺少参数Id");
         }
         if(StringUtils.isBlank(bo.getErpGoodsSkuId())){
@@ -60,7 +60,7 @@ public class DouGoodsController extends BaseController {
         OGoodsSku oGoodsSku = oGoodsSkuService.getById(bo.getErpGoodsSkuId());
         if(oGoodsSku == null) return AjaxResult.error(1500,"未找到系统商品sku");
         DouGoodsSku sku = new DouGoodsSku();
-        sku.setId(Long.parseLong(bo.getId()));
+        sku.setId(bo.getId());
         sku.setOGoodsSkuId(bo.getErpGoodsSkuId());
         skuService.updateById(sku);
         return success();

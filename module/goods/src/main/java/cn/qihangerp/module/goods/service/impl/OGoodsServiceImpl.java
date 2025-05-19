@@ -223,7 +223,7 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
 
         }
 //        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        return ResultVo.success(Long.parseLong(goods.getId()));
+        return ResultVo.success(goods.getId());
     }
 
     @Override
@@ -264,10 +264,10 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
                 if (oGoods != null && oGoods.size() > 0) {
                     goodsSku.setGoodsId(oGoods.get(0).getId());
                 } else {
-                    goodsSku.setGoodsId("0");
+                    goodsSku.setGoodsId(0L);
                 }
             } else {
-                goodsSku.setGoodsId("0");
+                goodsSku.setGoodsId(0L);
             }
             return skuMapper.insert(goodsSku);
         }

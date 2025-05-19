@@ -55,8 +55,8 @@ public class TaoGoodsSkuServiceImpl extends ServiceImpl<TaoGoodsSkuMapper, TaoGo
         }
         TaoGoodsSku sku = new TaoGoodsSku();
         sku.setId(bo.getId());
-        sku.setOGoodsId(oGoodsSku.getGoodsId());
-        sku.setOGoodsSkuId(bo.getErpGoodsSkuId());
+        sku.setErpGoodsId(oGoodsSku.getGoodsId());
+        sku.setErpGoodsSkuId(oGoodsSku.getId());
         mapper.updateById(sku);
 
         TaoGoods goodsUp=new TaoGoods();

@@ -19,8 +19,8 @@ public class OGoodsSku implements Serializable {
      * 主键id
      */
     @TableId(value = "id", type= IdType.AUTO)
-    private String id;
-    private String goodsId;
+    private Long id;
+    private Long goodsId;
 
     /**
      * 商品id

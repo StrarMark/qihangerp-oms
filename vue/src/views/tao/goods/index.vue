@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
       <el-tab-pane label="店铺商品" name="LogisticsCompany" >
        <goods-tao-index></goods-tao-index>
       </el-tab-pane>

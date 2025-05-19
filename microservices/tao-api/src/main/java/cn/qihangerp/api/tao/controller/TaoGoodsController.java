@@ -55,7 +55,7 @@ public class TaoGoodsController extends BaseController {
     @PostMapping(value = "/sku/linkErp")
     public AjaxResult linkErp(@RequestBody LinkErpGoodsSkuBo bo)
     {
-        if(StringUtils.isBlank(bo.getId())){
+        if(bo.getId()==null){
             return AjaxResult.error(500,"缺少参数Id");
         }
         if(StringUtils.isBlank(bo.getErpGoodsSkuId())){

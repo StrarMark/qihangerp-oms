@@ -55,10 +55,10 @@ public class TaoRefundServiceImpl extends ServiceImpl<TaoRefundMapper, TaoRefund
             update.setId(taoRefunds.get(0).getId());
             if(refund.getSkuId()!=null){
                 update.setSkuId(refund.getSkuId());
-                List<TaoGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, refund.getSkuId()));
-                if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                    update.setOGoodsId(pddGoodsSku.get(0).getOGoodsId());
-                    update.setOGoodsSkuId(pddGoodsSku.get(0).getOGoodsSkuId());
+                List<TaoGoodsSku> taoGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, refund.getSkuId()));
+                if (taoGoodsSkus != null && !taoGoodsSkus.isEmpty()) {
+                    update.setOGoodsId(taoGoodsSkus.get(0).getErpGoodsId());
+                    update.setOGoodsSkuId(taoGoodsSkus.get(0).getErpGoodsSkuId());
                 }
             }
             update.setOuterId(refund.getOuterId());
@@ -76,8 +76,8 @@ public class TaoRefundServiceImpl extends ServiceImpl<TaoRefundMapper, TaoRefund
             if(refund.getSkuId()!=null) {
                 List<TaoGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, refund.getSkuId()));
                 if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                    refund.setOGoodsId(pddGoodsSku.get(0).getOGoodsId());
-                    refund.setOGoodsSkuId(pddGoodsSku.get(0).getOGoodsSkuId());
+                    refund.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId());
+                    refund.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId());
                 }
             }
             refund.setCreateTime(new Date());

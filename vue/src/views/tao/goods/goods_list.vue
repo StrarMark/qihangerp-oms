@@ -57,16 +57,17 @@
         <el-button
           type="primary"
           plain
+          :disabled="multiple"
           icon="el-icon-refresh"
           size="mini"
           @click="handlePushOms"
-        >推送到商品库&一键关联</el-button>
+        >推送到商品库</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="goodsList" >
-<!--      <el-table-column type="selection" width="55" align="center" />-->
+    <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主图" width="100">
         <template slot-scope="scope">
 <!--          <el-image  style="width: 70px; height: 70px;" :src="scope.row.picUrl"></el-image>-->
@@ -125,7 +126,7 @@
         </el-table-column>
         <el-table-column label="价格" align="center" prop="price" :formatter="amountFormatter"/>
         <el-table-column label="数量" align="center" prop="quantity" />
-        <el-table-column label="ERP SKU ID" align="center" prop="ogoodsSkuId" />
+        <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
         <el-table-column label="状态" align="center" prop="status" >
           <template slot-scope="scope">
             <el-tag size="small" v-if="scope.row.status === 'normal'">正常</el-tag>
@@ -187,6 +188,12 @@ export default {
       total: 0,
       // 遮罩层
       loading: true,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
       pullLoading: false,
       goodsList:[],
       shopList:[],
@@ -239,6 +246,12 @@ export default {
   methods: {
     parseTime,
     amountFormatter,
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },
     /** 查询淘宝订单列表 */
     getList() {
       this.loading = true;
