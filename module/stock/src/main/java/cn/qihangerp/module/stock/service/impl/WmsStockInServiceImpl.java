@@ -73,7 +73,9 @@ public class WmsStockInServiceImpl extends ServiceImpl<WmsStockInMapper, WmsStoc
             request.setStockInOperator(userName);
         }
 
-        Map<String, List<StockInCreateItem>> goodsGroup = request.getItemList().stream().collect(Collectors.groupingBy(x -> x.getGoodsId()));
+        Map<Long, List<StockInCreateItem>> goodsGroup =
+                request.getItemList().stream().collect
+                (Collectors.groupingBy(x -> x.getGoodsId()));
         Long total = request.getItemList().stream().mapToLong(StockInCreateItem::getQuantity).sum();
         //添加主表信息
         WmsStockIn insert = new WmsStockIn();

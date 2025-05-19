@@ -150,9 +150,9 @@
       <el-table-column label="重量" align="center" prop="weight" />
       <el-table-column label="0启用   1禁用" align="center" prop="disable" />
       <el-table-column label="保质期" align="center" prop="period" /> -->
-      <el-table-column label="预计采购价格" align="center" prop="purPrice" />
-      <el-table-column label="建议批发价" align="center" prop="wholePrice" />
-      <el-table-column label="建议零售价" align="center" prop="retailPrice" />
+      <el-table-column label="采购价" align="center" prop="purPrice" />
+<!--      <el-table-column label="建议批发价" align="center" prop="wholePrice" />-->
+      <el-table-column label="零售价" align="center" prop="retailPrice" />
       <!-- <el-table-column label="单位成本" align="center" prop="unitCost" /> -->
       <el-table-column label="供应商" align="center" prop="supplierId" >
         <template slot-scope="scope">
@@ -238,8 +238,8 @@
       </el-table>
     </el-dialog>
     <!-- 添加或修改商品管理对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="130px">
         <el-form-item label="商品名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入商品名称" />
         </el-form-item>
@@ -289,13 +289,13 @@
         <!--        <el-form-item label="保质期" prop="period">-->
         <!--          <el-input v-model="form.period" placeholder="请输入保质期" />-->
         <!--        </el-form-item>-->
-        <el-form-item label="预计采购价格" prop="purPrice">
+        <el-form-item label="采购价" prop="purPrice">
           <el-input v-model="form.purPrice" placeholder="请输入预计采购价格" />
         </el-form-item>
-        <el-form-item label="建议批发价" prop="wholePrice">
-          <el-input v-model="form.wholePrice" placeholder="请输入建议批发价" />
-        </el-form-item>
-        <el-form-item label="建议零售价" prop="retailPrice">
+<!--        <el-form-item label="建议批发价" prop="wholePrice">-->
+<!--          <el-input v-model="form.wholePrice" placeholder="请输入建议批发价" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="零售价" prop="retailPrice">
           <el-input v-model="form.retailPrice" placeholder="请输入建议零售价" />
         </el-form-item>
         <!--        <el-form-item label="单位成本" prop="unitCost">-->

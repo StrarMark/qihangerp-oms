@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class StockInCreateItem {
-    private String skuId;
-    private String goodsId;
+    private Long skuId;
+    private Long goodsId;
     private Integer quantity;
     private String skuCode;
     private String goodsName;

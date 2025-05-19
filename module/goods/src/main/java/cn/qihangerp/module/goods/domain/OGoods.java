@@ -4,6 +4,7 @@ package cn.qihangerp.module.goods.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -120,6 +121,7 @@ public class OGoods implements Serializable {
     /**
      * 预计采购价格
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
     private BigDecimal purPrice;
 
     /**
@@ -130,6 +132,7 @@ public class OGoods implements Serializable {
     /**
      * 建议零售价
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
     private BigDecimal retailPrice;
 
     /**
@@ -140,7 +143,7 @@ public class OGoods implements Serializable {
     /**
      * 供应商id
      */
-    private Long supplierId;
+    private String supplierId;
 
     /**
      * 品牌id

@@ -53,12 +53,12 @@ public class OGoodsInventoryBatch implements Serializable {
     /**
      * 规格id
      */
-    private String skuId;
+    private Long skuId;
 
     /**
      * 商品id
      */
-    private String goodsId;
+    private Long goodsId;
 
     /**
      * sku编码

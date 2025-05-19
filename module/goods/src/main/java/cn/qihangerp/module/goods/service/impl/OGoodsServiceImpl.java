@@ -123,7 +123,7 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
         goods.setWholePrice(bo.getWholePrice());
         goods.setRetailPrice(bo.getRetailPrice());
         goods.setUnitCost(bo.getUnitCost());
-        goods.setSupplierId(bo.getSupplierId());
+        goods.setSupplierId(bo.getSupplierId().toString());
         goods.setBrandId(bo.getBrandId());
         goods.setLinkUrl(bo.getLinkUrl());
         goods.setLowQty(0);
