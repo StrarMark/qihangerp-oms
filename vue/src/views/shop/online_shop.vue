@@ -52,6 +52,7 @@
           plain
           icon="el-icon-delete"
           size="mini"
+          @click="handleDelete"
           :disabled="multiple"
         >删除</el-button>
       </el-col>
