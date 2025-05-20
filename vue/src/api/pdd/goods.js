@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
 // 查询列表
+export function listGoods(query) {
+  return request({
+    url: '/api/open-api/pdd/goods/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询sku列表
 export function listGoodsSku(query) {
   return request({
     url: '/api/open-api/pdd/goods/skuList',

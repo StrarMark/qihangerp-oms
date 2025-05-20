@@ -181,7 +181,7 @@ import {getGoodsSku, linkErpGoodsSkuId, listGoods, pullGoodsList,pushToOms} from
 import {amountFormatter, parseTime} from "@/utils/zhijian";
 
 export default {
-  name: "GoodsTaoIndex",
+  name: "GoodsListTao",
   data() {
     return {
       // 显示搜索条件

@@ -138,7 +138,7 @@ import {MessageBox} from "element-ui";
 import {getGoodsSku, linkErpGoodsSkuId, listGoodsSku, pullGoodsList} from "@/api/tao/goods";
 
 export default {
-  name: "GoodsTaoSku",
+  name: "GoodsSkuTao",
   data() {
     return {
       // 显示搜索条件
