@@ -4,13 +4,13 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.module.open.wei.domain.OmsWeiGoodsSku;
-import cn.qihangerp.module.open.wei.domain.OmsWeiOrder;
-import cn.qihangerp.module.open.wei.domain.OmsWeiOrderItem;
-import cn.qihangerp.module.open.wei.mapper.OmsWeiGoodsSkuMapper;
-import cn.qihangerp.module.open.wei.mapper.OmsWeiOrderItemMapper;
-import cn.qihangerp.module.open.wei.mapper.OmsWeiOrderMapper;
-import cn.qihangerp.module.open.wei.service.OmsWeiOrderService;
+import cn.qihangerp.module.open.wei.domain.WeiGoodsSku;
+import cn.qihangerp.module.open.wei.domain.WeiOrder;
+import cn.qihangerp.module.open.wei.domain.WeiOrderItem;
+import cn.qihangerp.module.open.wei.mapper.WeiGoodsSkuMapper;
+import cn.qihangerp.module.open.wei.mapper.WeiOrderItemMapper;
+import cn.qihangerp.module.open.wei.mapper.WeiOrderMapper;
+import cn.qihangerp.module.open.wei.service.WeiOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -30,32 +30,32 @@ import java.util.List;
 */
 @AllArgsConstructor
 @Service
-public class OmsWeiOrderServiceImpl extends ServiceImpl<OmsWeiOrderMapper, OmsWeiOrder>
-    implements OmsWeiOrderService {
-    private final OmsWeiOrderMapper mapper;
-    private final OmsWeiOrderItemMapper itemMapper;
-    private final OmsWeiGoodsSkuMapper goodsSkuMapper;
+public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
+    implements WeiOrderService {
+    private final WeiOrderMapper mapper;
+    private final WeiOrderItemMapper itemMapper;
+    private final WeiGoodsSkuMapper goodsSkuMapper;
 //    private final MQClientService mqClientService;
 
     @Override
-    public PageResult<OmsWeiOrder> queryPageList(OmsWeiOrder bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<OmsWeiOrder> queryWrapper = new LambdaQueryWrapper<OmsWeiOrder>()
-                .eq(bo.getShopId()!=null,OmsWeiOrder::getShopId,bo.getShopId())
-                .eq(StringUtils.hasText(bo.getOrderId()),OmsWeiOrder::getOrderId,bo.getOrderId())
-                .eq(bo.getStatus()!=null,OmsWeiOrder::getStatus,bo.getStatus())
+    public PageResult<WeiOrder> queryPageList(WeiOrder bo, PageQuery pageQuery) {
+        LambdaQueryWrapper<WeiOrder> queryWrapper = new LambdaQueryWrapper<WeiOrder>()
+                .eq(bo.getShopId()!=null, WeiOrder::getShopId,bo.getShopId())
+                .eq(StringUtils.hasText(bo.getOrderId()), WeiOrder::getOrderId,bo.getOrderId())
+                .eq(bo.getStatus()!=null, WeiOrder::getStatus,bo.getStatus())
                 ;
         if(bo.getErpSendStatus()!=null){
             if(bo.getErpSendStatus()==-1) {
-                queryWrapper.lt(OmsWeiOrder::getErpSendStatus,3);
+                queryWrapper.lt(WeiOrder::getErpSendStatus,3);
             }else {
-                queryWrapper.eq(OmsWeiOrder::getErpSendStatus, bo.getErpSendStatus());
+                queryWrapper.eq(WeiOrder::getErpSendStatus, bo.getErpSendStatus());
             }
         }
 
-        Page<OmsWeiOrder> page = mapper.selectPage(pageQuery.build(), queryWrapper);
+        Page<WeiOrder> page = mapper.selectPage(pageQuery.build(), queryWrapper);
         if(page.getRecords()!=null){
             for (var order:page.getRecords()) {
-                order.setItems(itemMapper.selectList(new LambdaQueryWrapper<OmsWeiOrderItem>().eq(OmsWeiOrderItem::getOrderId,order.getOrderId())));
+                order.setItems(itemMapper.selectList(new LambdaQueryWrapper<WeiOrderItem>().eq(WeiOrderItem::getOrderId,order.getOrderId())));
             }
         }
         return PageResult.build(page);
@@ -63,12 +63,12 @@ public class OmsWeiOrderServiceImpl extends ServiceImpl<OmsWeiOrderMapper, OmsWe
 
     @Transactional
     @Override
-    public ResultVo<Integer> saveOrder(Long shopId, OmsWeiOrder order) {
+    public ResultVo<Integer> saveOrder(Long shopId, WeiOrder order) {
         try {
-            List<OmsWeiOrder> orders = mapper.selectList(new LambdaQueryWrapper<OmsWeiOrder>().eq(OmsWeiOrder::getOrderId, order.getOrderId()));
+            List<WeiOrder> orders = mapper.selectList(new LambdaQueryWrapper<WeiOrder>().eq(WeiOrder::getOrderId, order.getOrderId()));
             if (orders != null && orders.size() > 0) {
                 // 存在，修改
-                OmsWeiOrder update = new OmsWeiOrder();
+                WeiOrder update = new WeiOrder();
                 update.setId(orders.get(0).getId());
                 update.setOrderId(order.getOrderId());
                 update.setStatus(order.getStatus());
@@ -80,26 +80,26 @@ public class OmsWeiOrderServiceImpl extends ServiceImpl<OmsWeiOrderMapper, OmsWe
                 mapper.updateById(update);
                 // 更新item
                 for (var item : order.getItems()) {
-                    List<OmsWeiOrderItem> taoOrderItems = itemMapper.selectList(
-                            new LambdaQueryWrapper<OmsWeiOrderItem>().eq(OmsWeiOrderItem::getSkuId, item.getSkuId()).eq(OmsWeiOrderItem::getOrderId,order.getOrderId())
+                    List<WeiOrderItem> taoOrderItems = itemMapper.selectList(
+                            new LambdaQueryWrapper<WeiOrderItem>().eq(WeiOrderItem::getSkuId, item.getSkuId()).eq(WeiOrderItem::getOrderId,order.getOrderId())
                     );
 
                     if (taoOrderItems != null && taoOrderItems.size() > 0) {
                         // 更新
-                        OmsWeiOrderItem itemUpdate = new OmsWeiOrderItem();
+                        WeiOrderItem itemUpdate = new WeiOrderItem();
                         itemUpdate.setId(taoOrderItems.get(0).getId());
-                        List<OmsWeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OmsWeiGoodsSku>().eq(OmsWeiGoodsSku::getSkuId, item.getSkuId()));
+                        List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
                         if (skus != null && !skus.isEmpty()) {
-                            itemUpdate.setOGoodsId(skus.get(0).getOGoodsId());
-                            itemUpdate.setOGoodsSkuId(skus.get(0).getOGoodsSkuId());
+                            itemUpdate.setOGoodsId(skus.get(0).getErpGoodsId());
+                            itemUpdate.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
                         }
                         itemMapper.updateById(itemUpdate);
                     } else {
                         // 新增
-                        List<OmsWeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OmsWeiGoodsSku>().eq(OmsWeiGoodsSku::getSkuId, item.getSkuId()));
+                        List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
                         if (skus != null && !skus.isEmpty()) {
-                            item.setOGoodsId(skus.get(0).getOGoodsId());
-                            item.setOGoodsSkuId(skus.get(0).getOGoodsSkuId());
+                            item.setOGoodsId(skus.get(0).getErpGoodsId());
+                            item.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
                         }
                         item.setShopId(shopId);
                         item.setOrderId(order.getOrderId());
@@ -114,10 +114,10 @@ public class OmsWeiOrderServiceImpl extends ServiceImpl<OmsWeiOrderMapper, OmsWe
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
-                    List<OmsWeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OmsWeiGoodsSku>().eq(OmsWeiGoodsSku::getSkuId, item.getSkuId()));
+                    List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
                     if (skus != null && !skus.isEmpty()) {
-                        item.setOGoodsId(skus.get(0).getOGoodsId());
-                        item.setOGoodsSkuId(skus.get(0).getOGoodsSkuId());
+                        item.setOGoodsId(skus.get(0).getErpGoodsId());
+                        item.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
                     }
                     item.setShopId(shopId);
                     item.setOrderId(order.getOrderId());
@@ -133,18 +133,18 @@ public class OmsWeiOrderServiceImpl extends ServiceImpl<OmsWeiOrderMapper, OmsWe
 
 
     @Override
-    public OmsWeiOrder queryDetailById(Long id) {
-        OmsWeiOrder weiOrder = mapper.selectById(id);
+    public WeiOrder queryDetailById(Long id) {
+        WeiOrder weiOrder = mapper.selectById(id);
         if(weiOrder!=null){
-            weiOrder.setItems(itemMapper.selectList(new LambdaQueryWrapper<OmsWeiOrderItem>().eq(OmsWeiOrderItem::getOrderId,weiOrder.getOrderId())));
+            weiOrder.setItems(itemMapper.selectList(new LambdaQueryWrapper<WeiOrderItem>().eq(WeiOrderItem::getOrderId,weiOrder.getOrderId())));
         }
         return weiOrder;
     }
     @Override
-    public OmsWeiOrder queryDetailByOrderId(String orderId) {
-        List<OmsWeiOrder> weiOrders = mapper.selectList(new LambdaQueryWrapper<OmsWeiOrder>().eq(OmsWeiOrder::getOrderId,orderId));
+    public WeiOrder queryDetailByOrderId(String orderId) {
+        List<WeiOrder> weiOrders = mapper.selectList(new LambdaQueryWrapper<WeiOrder>().eq(WeiOrder::getOrderId,orderId));
         if(weiOrders!=null&&weiOrders.size()>0){
-            weiOrders.get(0).setItems(itemMapper.selectList(new LambdaQueryWrapper<OmsWeiOrderItem>().eq(OmsWeiOrderItem::getOrderId,orderId)));
+            weiOrders.get(0).setItems(itemMapper.selectList(new LambdaQueryWrapper<WeiOrderItem>().eq(WeiOrderItem::getOrderId,orderId)));
             return weiOrders.get(0);
         }else return null;
     }

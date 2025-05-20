@@ -13,7 +13,7 @@
       <el-tab-pane label="抖店" name="douGoods" lazy>
         <goods-dou></goods-dou>
       </el-tab-pane>
-      <el-tab-pane label="视频号小店" name="weiGoods" lazy>
+      <el-tab-pane label="微信小店" name="weiGoods" lazy>
         <goods-wei></goods-wei>
       </el-tab-pane>
 <!--      <el-tab-pane label="快手小店" name="kwaiGoods" lazy>-->

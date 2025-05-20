@@ -12,7 +12,7 @@ import lombok.Data;
  * @TableName oms_wei_refund
  */
 @Data
-public class OmsWeiRefund implements Serializable {
+public class WeiRefund implements Serializable {
     /**
      * 
      */

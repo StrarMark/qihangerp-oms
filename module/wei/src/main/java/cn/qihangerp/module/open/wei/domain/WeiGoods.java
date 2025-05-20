@@ -1,19 +1,22 @@
 package cn.qihangerp.module.open.wei.domain;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 
 /**
  * 
  * @TableName oms_wei_goods
  */
+@TableName(value ="oms_wei_goods")
 @Data
-public class OmsWeiGoods implements Serializable {
+public class WeiGoods implements Serializable {
     /**
      * 
      */
@@ -95,8 +98,22 @@ public class OmsWeiGoods implements Serializable {
      */
     private String editTime;
 
-    @TableField(exist = false)
-    private List<OmsWeiGoodsSku> skus;
+    /**
+     * 商品id(o_goods外键)
+     */
+    private Long erpGoodsId;
 
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+    @TableField(exist = false)
+    private List<WeiGoodsSku> skuList;
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

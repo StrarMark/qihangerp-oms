@@ -14,7 +14,7 @@ import lombok.Data;
  * @TableName oms_wei_order
  */
 @Data
-public class OmsWeiOrder implements Serializable {
+public class WeiOrder implements Serializable {
     /**
      * 
      */
@@ -194,7 +194,7 @@ public class OmsWeiOrder implements Serializable {
     private Integer erpSendStatus;
 
     @TableField(exist = false)
-    private List<OmsWeiOrderItem> items;
+    private List<WeiOrderItem> items;
 
     private static final long serialVersionUID = 1L;
 }

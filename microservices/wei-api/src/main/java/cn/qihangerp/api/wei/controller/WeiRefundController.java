@@ -10,9 +10,9 @@ import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
-import cn.qihangerp.module.open.wei.domain.OmsWeiRefund;
+import cn.qihangerp.module.open.wei.domain.WeiRefund;
 import cn.qihangerp.module.open.wei.domain.bo.WeiOrderPushBo;
-import cn.qihangerp.module.open.wei.service.OmsWeiRefundService;
+import cn.qihangerp.module.open.wei.service.WeiRefundService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/wei/refund")
 public class WeiRefundController extends BaseController {
-    private final OmsWeiRefundService refundService;
+    private final WeiRefundService refundService;
     private final MqUtils mqUtils;
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public TableDataInfo goodsList(OmsWeiRefund bo, PageQuery pageQuery) {
-        PageResult<OmsWeiRefund> result = refundService.queryPageList(bo, pageQuery);
+    public TableDataInfo goodsList(WeiRefund bo, PageQuery pageQuery) {
+        PageResult<WeiRefund> result = refundService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);
     }

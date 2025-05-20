@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.wei.mapper;
 
-import cn.qihangerp.module.open.wei.domain.OmsWeiWaybillAccount;
+import cn.qihangerp.module.open.wei.domain.WeiWaybillAccount;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2024-09-21 15:09:54
 * @Entity cn.qihangerp.wei.domain.OmsWeiWaybillAccount
 */
-public interface OmsWeiWaybillAccountMapper extends BaseMapper<OmsWeiWaybillAccount> {
+public interface WeiWaybillAccountMapper extends BaseMapper<WeiWaybillAccount> {
 
 }
 

@@ -1,9 +1,9 @@
 package cn.qihangerp.module.open.wei.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.module.open.wei.domain.OmsWeiWaybillAccount;
-import cn.qihangerp.module.open.wei.service.OmsWeiWaybillAccountService;
-import cn.qihangerp.module.open.wei.mapper.OmsWeiWaybillAccountMapper;
+import cn.qihangerp.module.open.wei.domain.WeiWaybillAccount;
+import cn.qihangerp.module.open.wei.service.WeiWaybillAccountService;
+import cn.qihangerp.module.open.wei.mapper.WeiWaybillAccountMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 * @createDate 2024-09-21 15:09:54
 */
 @Service
-public class OmsWeiWaybillAccountServiceImpl extends ServiceImpl<OmsWeiWaybillAccountMapper, OmsWeiWaybillAccount>
-    implements OmsWeiWaybillAccountService{
+public class WeiWaybillAccountServiceImpl extends ServiceImpl<WeiWaybillAccountMapper, WeiWaybillAccount>
+    implements WeiWaybillAccountService {
 
 }
 

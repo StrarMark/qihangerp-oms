@@ -7,9 +7,9 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
 
-import cn.qihangerp.module.open.wei.domain.OmsWeiGoods;
-import cn.qihangerp.module.open.wei.domain.OmsWeiGoodsSku;
-import cn.qihangerp.module.open.wei.service.OmsWeiGoodsService;
+import cn.qihangerp.module.open.wei.domain.WeiGoods;
+import cn.qihangerp.module.open.wei.domain.WeiGoodsSku;
+import cn.qihangerp.module.open.wei.service.WeiGoodsService;
 import cn.qihangerp.open.common.ApiResultVo;
 
 import cn.qihangerp.open.wei.WeiGoodsApiService;
@@ -33,7 +33,7 @@ public class GoodsApiController {
     private final WeiGoodsApiService goodsApiService;
     private final WeiApiCommon apiCommon;
 //    private final WeiGoodsService weiGoodsService;
-    private final OmsWeiGoodsService weiGoodsService;
+    private final WeiGoodsService weiGoodsService;
 
     @RequestMapping(value = "/pull_goods_list", method = RequestMethod.POST)
     public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {
@@ -55,7 +55,7 @@ public class GoodsApiController {
         if(productApiResultVo.getCode() == 0){
             // 成功
             for (var product:productApiResultVo.getList()){
-                OmsWeiGoods goods = new OmsWeiGoods();
+                WeiGoods goods = new WeiGoods();
                 goods.setProductId(product.getProduct_id());
                 goods.setOutProductId(product.getOut_product_id());
                 goods.setTitle(product.getTitle());
@@ -70,9 +70,9 @@ public class GoodsApiController {
                 goods.setSpuCode(product.getSpu_code());
                 goods.setProductType(product.getProduct_type());
                 goods.setEditTime(product.getEdit_time());
-                List<OmsWeiGoodsSku> skuList = new ArrayList<>();
+                List<WeiGoodsSku> skuList = new ArrayList<>();
                 for (var sku:product.getSkus()) {
-                    OmsWeiGoodsSku goodsSku = new OmsWeiGoodsSku();
+                    WeiGoodsSku goodsSku = new WeiGoodsSku();
 
                     goodsSku.setSkuId(sku.getSku_id());
                     goodsSku.setProductId(product.getProduct_id());
@@ -89,7 +89,7 @@ public class GoodsApiController {
                     goodsSku.setSkuDeliverInfo(JSONObject.toJSONString(sku.getSku_deliver_info()));
                     skuList.add(goodsSku);
                 }
-                goods.setSkus(skuList);
+                goods.setSkuList(skuList);
                 weiGoodsService.saveAndUpdateGoods(params.getShopId(),goods);
             }
         }

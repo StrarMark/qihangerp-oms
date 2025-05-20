@@ -6,8 +6,8 @@ import cn.qihangerp.api.wei.WeiApiCommon;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
-import cn.qihangerp.module.open.wei.domain.OmsWeiRefund;
-import cn.qihangerp.module.open.wei.service.OmsWeiRefundService;
+import cn.qihangerp.module.open.wei.domain.WeiRefund;
+import cn.qihangerp.module.open.wei.service.WeiRefundService;
 
 import cn.qihangerp.open.common.ApiResultVo;
 
@@ -29,7 +29,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class WeiRefundApiController extends BaseController {
     private final WeiApiCommon apiCommon;
-    private final OmsWeiRefundService refundService;
+    private final WeiRefundService refundService;
 
     @RequestMapping(value = "/pull_list", method = RequestMethod.POST)
     public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {
@@ -64,7 +64,7 @@ public class WeiRefundApiController extends BaseController {
             if(apiResultVo.getList()!=null) {
                 for (var refundInfo : apiResultVo.getList()) {
 
-                    OmsWeiRefund refund = new OmsWeiRefund();
+                    WeiRefund refund = new WeiRefund();
                     refund.setOrderId(refundInfo.getOrder_id());
                     refund.setAfterSaleOrderId(refundInfo.getAfter_sale_order_id());
                     refund.setShopId(params.getShopId());

@@ -11,7 +11,7 @@ import lombok.Data;
  * @TableName oms_wei_order_item
  */
 @Data
-public class OmsWeiOrderItem implements Serializable {
+public class WeiOrderItem implements Serializable {
     /**
      * 
      */
