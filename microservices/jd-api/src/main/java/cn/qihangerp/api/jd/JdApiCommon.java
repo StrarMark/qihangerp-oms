@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 @Component
 public class JdApiCommon {
     private final OShopService shopService;
-    private final OShopPlatformService platformService;
+//    private final OShopPlatformService platformService;
 //    private final ServerConfig serverConfig;
     /**
      * 更新前的检查
@@ -35,31 +35,31 @@ public class JdApiCommon {
         if (shop.getType() != EnumShopType.JD.getIndex() && shop.getType() != EnumShopType.JDVC.getIndex()) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "参数错误，店铺不是JD店铺");
         }
-        OShopPlatform platform = platformService.selectById(EnumShopType.JD.getIndex());
+//        OShopPlatform platform = platformService.selectById(EnumShopType.JD.getIndex());
 
-        if (!StringUtils.hasText(platform.getAppKey())) {
+        if (!StringUtils.hasText(shop.getAppKey())) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "平台配置错误，没有找到AppKey");
         }
-        if (!StringUtils.hasText(platform.getAppSecret())) {
+        if (!StringUtils.hasText(shop.getAppSecret())) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到AppSercet");
         }
-        if (!StringUtils.hasText(platform.getRedirectUri())) {
-            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到RedirectUri");
-        }
-        if (!StringUtils.hasText(platform.getServerUrl())) {
-            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到ServerUrl");
-        }
+//        if (!StringUtils.hasText(platform.getRedirectUri())) {
+//            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到RedirectUri");
+//        }
+//        if (!StringUtils.hasText(platform.getServerUrl())) {
+//            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到ServerUrl");
+//        }
 
         if(shop.getSellerId() == null || shop.getSellerId() <= 0) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR,  "第三方平台配置错误，没有找到SellerUserId");
         }
 
         ShopApiParams params = new ShopApiParams();
-        params.setAppKey(platform.getAppKey());
-        params.setAppSecret(platform.getAppSecret());
+        params.setAppKey(shop.getAppKey());
+        params.setAppSecret(shop.getAppSecret());
         params.setAccessToken(shop.getAccessToken());
-        params.setRedirectUri(platform.getRedirectUri());
-        params.setServerUrl(platform.getServerUrl());
+        params.setRedirectUri(shop.getApiRedirectUrl());
+        params.setServerUrl(shop.getApiRequestUrl());
         params.setSellerId(shop.getSellerId());
         if (!StringUtils.hasText(shop.getAccessToken())) {
 

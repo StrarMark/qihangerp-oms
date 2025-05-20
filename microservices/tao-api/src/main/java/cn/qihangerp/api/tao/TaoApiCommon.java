@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 @Component
 public class TaoApiCommon {
     private final OShopService shopService;
-    private final OShopPlatformService platformService;
+//    private final OShopPlatformService platformService;
 
     /**
      * 更新前的检查
@@ -37,28 +37,28 @@ public class TaoApiCommon {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "参数错误，店铺不是淘系店铺");
         }
 
-        OShopPlatform platform = platformService.selectById(EnumShopType.TAO.getIndex());
+//        OShopPlatform platform = platformService.selectById(EnumShopType.TAO.getIndex());
 
-        if(!StringUtils.hasText(platform.getAppKey())) {
+        if(!StringUtils.hasText(shop.getAppKey())) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "平台配置错误，没有找到AppKey");
         }
-        if(!StringUtils.hasText(platform.getAppSecret())) {
+        if(!StringUtils.hasText(shop.getAppSecret())) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到AppSercet");
         }
-        if(!StringUtils.hasText(platform.getServerUrl())) {
-            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到ServerUrl");
-        }
+//        if(!StringUtils.hasText(platform.getServerUrl())) {
+//            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到ServerUrl");
+//        }
         if(shop.getSellerId() == null || shop.getSellerId() <= 0) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR,  "第三方平台配置错误，没有找到SellerUserId");
         }
 
         ShopApiParams params = new ShopApiParams();
-        params.setAppKey(platform.getAppKey());
-        params.setAppSecret(platform.getAppSecret());
+        params.setAppKey(shop.getAppKey());
+        params.setAppSecret(shop.getAppSecret());
         params.setAccessToken(shop.getAccessToken());
 //        params.setRedirectUri(serverConfig.getUrl()+"/taoapi2/tao_oauth");
-        params.setRedirectUri(platform.getRedirectUri());
-        params.setServerUrl(platform.getServerUrl());
+        params.setRedirectUri(shop.getApiRedirectUrl());
+        params.setServerUrl(shop.getApiRequestUrl());
 
         if (!StringUtils.hasText(shop.getAccessToken())) {
 
