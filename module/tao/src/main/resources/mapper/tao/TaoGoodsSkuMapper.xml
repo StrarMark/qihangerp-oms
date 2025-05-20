@@ -7,6 +7,7 @@
     <resultMap id="BaseResultMap" type="cn.qihangerp.module.open.tao.domain.TaoGoodsSku">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="taoGoodsId" column="tao_goods_id" jdbcType="BIGINT"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
             <result property="numIid" column="num_iid" jdbcType="BIGINT"/>
             <result property="iid" column="iid" jdbcType="VARCHAR"/>
             <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
@@ -28,7 +29,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,tao_goods_id,num_iid,
+        id,tao_goods_id,num_iid,shop_id,
         iid,sku_id,properties,
         properties_name,quantity,spec,
         price,outer_id,created,

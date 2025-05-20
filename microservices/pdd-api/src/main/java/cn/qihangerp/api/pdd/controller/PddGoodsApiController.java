@@ -111,9 +111,11 @@ public class PddGoodsApiController {
                 sku.setGoodsId(g.getGoodsId());
                 sku.setGoodsName(g.getGoodsName());
                 sku.setThumbUrl(g.getThumbUrl());
-
                 sku.setCreateTime(new Date());
+
                 skuList.add(sku);
+
+                pddGoods.setOuterGoodsId(sku.getOuterGoodsId());
             }
             pddGoods.setSkuList(skuList);
 

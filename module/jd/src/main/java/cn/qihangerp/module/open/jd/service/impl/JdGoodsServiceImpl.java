@@ -71,32 +71,57 @@ public class JdGoodsServiceImpl extends ServiceImpl<JdGoodsMapper, JdGoods>
         List<JdGoods> jdGoods = mapper.selectList(new LambdaQueryWrapper<JdGoods>().eq(JdGoods::getWareId, goods.getWareId()));
         if(jdGoods== null || jdGoods.isEmpty()){
             // 新增
+            goods.setCreateTime(new Date());
             goods.setShopId(shopId);
             mapper.insert(goods);
         }else{
             // 修改
             goods.setId(jdGoods.get(0).getId());
             goods.setShopId(shopId);
+            goods.setUpdateTime(new Date());
             mapper.updateById(goods);
             // 删除sku
-            skuMapper.delete(new LambdaQueryWrapper<JdGoodsSku>().eq(JdGoodsSku::getWareId,goods.getWareId()));
+//            skuMapper.delete(new LambdaQueryWrapper<JdGoodsSku>().eq(JdGoodsSku::getWareId,goods.getWareId()));
         }
 
+        Long erpGoodsId=0L;
+        String erpGoodsNum="";
         // 添加sku
         if(goods.getSkuList()!=null && !goods.getSkuList().isEmpty()){
             for (var item : goods.getSkuList()){
+
+                item.setShopId(shopId);
 //                item.setGoodsId(goods.getId());
                 // 根据OuterId查找ERP系统中的skuid
                 if(StringUtils.isNotEmpty(item.getOuterId())) {
                     List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, item.getOuterId()));
                     if(oGoodsSkus!=null && !oGoodsSkus.isEmpty()){
+                        erpGoodsId = oGoodsSkus.get(0).getGoodsId();
+                        erpGoodsNum = oGoodsSkus.get(0).getGoodsNum();
                         item.setErpGoodsId(oGoodsSkus.get(0).getGoodsId());
                         item.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
                     }
                 }
-                skuMapper.insert(item);
+                List<JdGoodsSku> jdGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<JdGoodsSku>().eq(JdGoodsSku::getSkuId, item.getSkuId()));
+                if(jdGoodsSkus!=null && jdGoodsSkus.size()>0){
+                    // 存在更新
+                    item.setUpdateTime(new Date());
+                    skuMapper.updateById(item);
+                }else {
+                    // 新增
+                    item.setCreateTime(new Date());
+                    skuMapper.insert(item);
+                }
             }
         }
+        if(erpGoodsId>0){
+            JdGoods jdGoodsUpdate = new JdGoods();
+            jdGoodsUpdate.setId(goods.getId());
+            jdGoodsUpdate.setItemNum(erpGoodsNum);
+            jdGoodsUpdate.setErpGoodsId(erpGoodsId);
+            mapper.updateById(jdGoodsUpdate);
+        }
+
         return ResultVo.success();
     }
 
@@ -111,6 +136,8 @@ public class JdGoodsServiceImpl extends ServiceImpl<JdGoodsMapper, JdGoods>
             if(StringUtils.isNotEmpty(goodsSku.getOuterId())) {
                 List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, goodsSku.getOuterId()));
                 if(oGoodsSkus!=null && !oGoodsSkus.isEmpty()){
+//                    erpGoodsId = oGoodsSkus.get(0).getGoodsId();
+//                    erpGoodsNum = oGoodsSkus.get(0).getGoodsNum();
                     goodsSku.setErpGoodsId(oGoodsSkus.get(0).getGoodsId());
                     goodsSku.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
                 }
@@ -123,6 +150,8 @@ public class JdGoodsServiceImpl extends ServiceImpl<JdGoodsMapper, JdGoods>
             if(StringUtils.isNotEmpty(goodsSku.getOuterId())) {
                 List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, goodsSku.getOuterId()));
                 if(oGoodsSkus!=null && !oGoodsSkus.isEmpty()){
+//                    erpGoodsId = oGoodsSkus.get(0).getGoodsId();
+//                    erpGoodsNum = oGoodsSkus.get(0).getGoodsNum();
                     goodsSku.setErpGoodsId(oGoodsSkus.get(0).getGoodsId());
                     goodsSku.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
                 }

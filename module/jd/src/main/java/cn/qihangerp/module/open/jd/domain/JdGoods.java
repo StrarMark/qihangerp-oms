@@ -178,7 +178,15 @@ public class JdGoods implements Serializable {
      * 商品id(o_goods外键)
      */
     private Long erpGoodsId;
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
     @TableField(exist = false)
     private List<JdGoodsSku> skuList;

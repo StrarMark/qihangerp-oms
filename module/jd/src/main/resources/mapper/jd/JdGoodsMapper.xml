@@ -37,6 +37,8 @@
             <result property="spuId" column="spu_id" jdbcType="VARCHAR"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
             <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -50,6 +52,6 @@
         logo,market_price,cost_price,
         jd_price,brand_name,stock_num,
         sell_point,after_sale_desc,spu_id,
-        shop_id,erp_goods_id
+        shop_id,erp_goods_id,create_time,update_time
     </sql>
 </mapper>

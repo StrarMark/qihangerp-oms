@@ -71,50 +71,56 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
             // 存在，更新
             goods.setShopId(shopId);
             goods.setId(goodsList.get(0).getId());
+            goods.setUpdateTime(new Date());
+//            goods.setOuterId(erpGoodsNum);
+//            goods.setErpGoodsId(erpGoodsId);
             mapper.updateById(goods);
 
-            // 删除sku
-            skuMapper.delete(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getTaoGoodsId,goods.getId()));
-
-            // 重新插入sku
-            if(goods.getSkus()!=null) {
-                for (var sku : goods.getSkus()) {
-                    sku.setTaoGoodsId(goods.getId());
-                    // 根据OuterId查找ERP系统中的skuid
-                    if(StringUtils.isNotEmpty(sku.getOuterId())) {
-                        List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, sku.getOuterId()));
-                        if(oGoodsSkus!=null && !oGoodsSkus.isEmpty()){
-                            sku.setErpGoodsId(oGoodsSkus.get(0).getGoodsId());
-                            sku.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
-                        }
-                    }
-                    skuMapper.insert(sku);
-                }
-            }
             return ResultVoEnum.DataExist.getIndex();
         }else {
             // 不存在，新增
             goods.setShopId(shopId);
             goods.setCreateTime(new Date());
             mapper.insert(goods);
-            // 插入sku
-            if(goods.getSkus()!=null) {
-                for (var sku : goods.getSkus()) {
-                    sku.setTaoGoodsId(goods.getId());
-                    // 根据OuterId查找ERP系统中的skuid
-                    if(StringUtils.isNotEmpty(sku.getOuterId())) {
-                        List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, sku.getOuterId()));
-                        if(oGoodsSkus!=null && !oGoodsSkus.isEmpty()){
-                            sku.setErpGoodsId(oGoodsSkus.get(0).getGoodsId());
-                            sku.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
-                        }
-                    }
+        }
 
+        Long erpGoodsId=0L;
+        String erpGoodsNum="";
+        // 重新插入sku
+        if(goods.getSkus()!=null) {
+            for (var sku : goods.getSkus()) {
+                sku.setTaoGoodsId(goods.getId());
+                // 根据OuterId查找ERP系统中的skuid
+                if(StringUtils.isNotEmpty(sku.getOuterId())) {
+                    List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, sku.getOuterId()));
+                    if(oGoodsSkus!=null && !oGoodsSkus.isEmpty()){
+                        erpGoodsId = oGoodsSkus.get(0).getGoodsId();
+                        erpGoodsNum = oGoodsSkus.get(0).getGoodsNum();
+                        sku.setErpGoodsId(oGoodsSkus.get(0).getGoodsId());
+                        sku.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
+                    }
+                }
+                List<TaoGoodsSku> taoGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getTaoGoodsId, goods.getId()));
+                if(taoGoodsSkus!=null && !taoGoodsSkus.isEmpty()){
+                    // 更新
+                    sku.setUpdateTime(new Date());
+                    skuMapper.updateById(sku);
+                }else {
+                    // 插入
+                    sku.setShopId(shopId);
+                    sku.setCreateTime(new Date());
                     skuMapper.insert(sku);
                 }
             }
-            return 0;
         }
+        if(erpGoodsId>0) {
+            TaoGoods taoGoodsUpdate = new TaoGoods();
+            taoGoodsUpdate.setId(goods.getId());
+            taoGoodsUpdate.setOuterId(erpGoodsNum);
+            taoGoodsUpdate.setErpGoodsId(erpGoodsId);
+            mapper.updateById(taoGoodsUpdate);
+        }
+        return 0;
     }
 
     /**

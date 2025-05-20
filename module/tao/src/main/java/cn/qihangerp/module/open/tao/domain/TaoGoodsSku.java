@@ -25,6 +25,7 @@ public class TaoGoodsSku implements Serializable {
      * 外键id
      */
     private Long taoGoodsId;
+    private Long shopId;
 
     /**
      * sku所属商品数字id

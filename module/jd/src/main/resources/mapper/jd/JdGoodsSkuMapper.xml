@@ -22,6 +22,8 @@
             <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
             <result property="erpGoodsSkuId" column="erp_goods_sku_id" jdbcType="BIGINT"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -30,7 +32,7 @@
         bar_code,logo,sale_attrs,
         sku_name,stock_num,modified,
         created,currency_spu_id,erp_goods_id,
-        erp_goods_sku_id,shop_id
+        erp_goods_sku_id,shop_id,create_time,update_time
     </sql>
 
     <select id="selectSkuPageList" resultType="cn.qihangerp.module.open.jd.domain.vo.JdGoodsSkuListVo">

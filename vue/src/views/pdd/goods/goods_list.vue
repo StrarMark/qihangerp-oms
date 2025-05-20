@@ -52,19 +52,38 @@
           @click="handlePull"
         >API拉取商品数据</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          :disabled="multiple"
+          icon="el-icon-refresh"
+          size="mini"
+          @click="handlePushOms"
+        >推送到商品库</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="goodsList">
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
+       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
       <el-table-column label="商品ID" align="center" prop="goodsId" />
-      <el-table-column label="Sku Id" align="center" prop="skuId" />
-      <el-table-column label="商品名" align="center" prop="goodsName" />
-      <el-table-column label="规格" align="center" prop="spec" />
       <el-table-column label="图片" align="center" prop="logo" width="100">
         <template slot-scope="scope">
           <image-preview :src="scope.row.thumbUrl" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="商品名" align="left" prop="goodsName" />
+      <el-table-column label="规格" align="center" prop="spec" />
+      <el-table-column label="SKU" align="center" >
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-info"
+            @click="handleViewSkuList(scope.row)"
+          >{{scope.row.skuList.length +' 个SKU'}}</el-button>
         </template>
       </el-table-column>
 
@@ -102,6 +121,45 @@
       @pagination="getList"
     />
 
+
+    <el-dialog title="Sku List" :visible.sync="skuOpen" width="1200px" append-to-body>
+      <el-table v-loading="loading" :data="skuList">
+        <!-- <el-table-column type="selection" width="55" align="center" /> -->
+        <el-table-column label="序号" align="center" prop="index" width="50"/>
+        <el-table-column label="SKU编码" align="left" prop="outerId" />
+        <el-table-column label="平台SkuId" align="center" prop="skuId" />
+        <!--        <el-table-column label="图片" align="center" prop="colorImage" width="100">-->
+        <!--          <template slot-scope="scope">-->
+        <!--            <image-preview :src="scope.row.colorImage" :width="50" :height="50"/>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
+        <!--        <el-table-column label="商品名称" align="left" prop="goodsName" width="288px"/>-->
+        <el-table-column label="SKU名称" align="left" prop="skuName" width="300">
+          <!--          <template slot-scope="scope">-->
+          <!--            {{getSkuProper(scope.row.propertiesName)}}-->
+          <!--          </template>-->
+        </el-table-column>
+        <el-table-column label="价格" align="center" prop="jdPrice" :formatter="amountFormatter"/>
+        <el-table-column label="库存" align="center" prop="stockNum" />
+        <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
+        <el-table-column label="状态" align="center" prop="status" >
+          <template slot-scope="scope">
+            <el-tag size="small" v-if="scope.row.status === 1">销售中</el-tag>
+            <el-tag size="small" v-if="scope.row.status === 2">已下架</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-share"
+              @click="handleLink(scope.row)"
+            >关联ERP</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
 
     <!-- 添加或修改商品管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -148,6 +206,8 @@ export default {
       // 商品管理表格数据
       goodsList: [],
       shopList: [],
+      skuList:[],
+      skuOpen:false,
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -217,6 +277,12 @@ export default {
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
+    },
+    /** 查看SKU List*/
+    handleViewSkuList(row){
+      this.skuList = row.skuList
+      this.skuOpen = true;
+
     },
     handleLink(row) {
       this.reset();

@@ -102,6 +102,16 @@ public class JdGoodsSku implements Serializable {
      */
     private Long shopId;
 
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

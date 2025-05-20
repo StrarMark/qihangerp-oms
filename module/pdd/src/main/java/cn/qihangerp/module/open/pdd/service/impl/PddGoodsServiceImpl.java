@@ -60,9 +60,10 @@ public class PddGoodsServiceImpl extends ServiceImpl<PddGoodsMapper, PddGoods>
             goods.setUpdateTime(new Date());
             mapper.updateById(goods);
             // 删除sku
-            skuMapper.delete(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getGoodsId,goods.getGoodsId()));
+//            skuMapper.delete(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getGoodsId,goods.getGoodsId()));
         }
-
+        Long erpGoodsId=0L;
+        String erpGoodsNum="";
         // 添加sku
         if(goods.getSkuList()!=null && !goods.getSkuList().isEmpty()){
             for (var item : goods.getSkuList()){
@@ -70,17 +71,37 @@ public class PddGoodsServiceImpl extends ServiceImpl<PddGoodsMapper, PddGoods>
                 item.setGoodsName(goods.getGoodsName());
                 item.setThumbUrl(goods.getThumbUrl());
                 item.setShopId(shopId);
-                item.setCreateTime(new Date());
+
+
                 // 根据OuterId查找ERP系统中的skuid
                 if(StringUtils.isNotEmpty(item.getOuterId())) {
                     List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, item.getOuterId()));
                     if(oGoodsSkus!=null && !oGoodsSkus.isEmpty()){
-                        item.setOGoodsId(oGoodsSkus.get(0).getGoodsId().toString());
-                        item.setOGoodsSkuId(oGoodsSkus.get(0).getId().toString());
+                        erpGoodsId = oGoodsSkus.get(0).getGoodsId();
+                        erpGoodsNum = oGoodsSkus.get(0).getGoodsNum();
+                        item.setErpGoodsId(oGoodsSkus.get(0).getGoodsId());
+                        item.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
                     }
                 }
-                skuMapper.insert(item);
+
+                item.setCreateTime(new Date());
+                List<PddGoodsSku> pddGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getGoodsId, goods.getGoodsId()));
+                if(pddGoodsSkus!=null && !pddGoodsSkus.isEmpty()){
+                    // 存在更新
+                    item.setUpdateTime(new Date());
+                    skuMapper.updateById(item);
+                }else {
+                    item.setCreateTime(new Date());
+                    skuMapper.insert(item);
+                }
             }
+        }
+        if(erpGoodsId>0){
+            PddGoods updateGoods = new PddGoods();
+            updateGoods.setId(goods.getId());
+            updateGoods.setErpGoodsId(erpGoodsId);
+            updateGoods.setOuterGoodsId(erpGoodsNum);
+            mapper.updateById(goods);
         }
         return ResultVo.success();
     }
