@@ -44,14 +44,23 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          :loading="pullLoading"
-          type="success"
+          type="primary"
           plain
-          icon="el-icon-download"
+          icon="el-icon-refresh"
           size="mini"
-          @click="handlePull"
-        >API拉取商品数据</el-button>
+          @click="handleLinkOms"
+        >一键关联商品库SKU</el-button>
       </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          :loading="pullLoading"-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handlePull"-->
+<!--        >API拉取商品数据</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 

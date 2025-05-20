@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -31,7 +32,7 @@ public class DouGoods implements Serializable {
     /**
      * 商品ID，抖店系统生成，店铺下唯一
      */
-    private Long productId;
+    private String productId;
 
     /**
      * 商品类型；0-普通；1-新客商品；3-虚拟；6-玉石闪购；7-云闪购 ；127-其他类型；
@@ -39,7 +40,13 @@ public class DouGoods implements Serializable {
     private Long productType;
     private Long marketPrice;
     private Long discountPrice;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
+    public double getFormattedPrice() {
+        if(marketPrice == null){
+            return 0;
+        }
+        return marketPrice / 100;
+    }
     /**
      * 商品标题。
      */
@@ -98,7 +105,7 @@ public class DouGoods implements Serializable {
     /**
      * erp商品id
      */
-    private Long oGoodsId;
+    private Long erpGoodsId;
 
     /**
      * 拉取时间

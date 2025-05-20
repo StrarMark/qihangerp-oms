@@ -52,40 +52,43 @@
           @click="handlePull"
         >API拉取商品数据</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          :disabled="multiple"
+          icon="el-icon-refresh"
+          size="mini"
+          @click="handlePushOms"
+        >推送到商品库</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
+       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="商品ID" align="center" prop="productId" />
-      <el-table-column label="规格Id" align="center" prop="specId" />
-      <el-table-column label="商品名称" align="center" prop="name" />
+      <el-table-column label="平台商品ID" align="center" prop="productId" />
       <el-table-column label="图片" align="center" prop="logo" width="100">
         <template slot-scope="scope">
           <image-preview :src="scope.row.img" :width="50" :height="50"/>
         </template>
       </el-table-column>
-
-      <el-table-column label="规格" align="center" prop="specDetailName1" >
+      <el-table-column label="商品名称" align="center" prop="name" />
+       <el-table-column label="商家编码" align="center" prop="outerProductId" />
+      <el-table-column label="价格" align="center" prop="formattedPrice" >
+      </el-table-column>
+      <el-table-column label="SKU" align="center" >
         <template slot-scope="scope">
-          {{scope.row.specDetailName1}}&nbsp;
-          {{scope.row.specDetailName2}}&nbsp;
-          {{scope.row.specDetailName3}}
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-info"
+            @click="handleViewSkuList(scope.row)"
+          >{{scope.row.skuList.length +' 个SKU'}}</el-button>
         </template>
       </el-table-column>
-      <!--      <el-table-column label="店铺" align="center" prop="categoryId" >-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-tag size="small">{{categoryList.find(x=>x.id === scope.row.categoryId).name}}</el-tag>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-       <el-table-column label="SKU编码" align="center" prop="code" />
-      <el-table-column label="价格" align="center" prop="price" >
-        <template slot-scope="scope">
-          {{amountFormatter(null,null,scope.row.price/100,0)}}
-        </template>
-      </el-table-column>
-      <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
+      <el-table-column label="ERP商家ID" align="center" prop="erpGoodsId" />
 <!--      <el-table-column label="状态" align="center" prop="skuStatus" >-->
 <!--        <template slot-scope="scope">-->
 <!--          <el-tag size="small" v-if="scope.row.skuStatus === false">已下架</el-tag>-->
@@ -113,6 +116,53 @@
       @pagination="getList"
     />
 
+    <el-dialog title="Sku List" :visible.sync="skuOpen" width="1200px" append-to-body>
+      <el-table v-loading="loading" :data="skuList">
+        <!-- <el-table-column type="selection" width="55" align="center" /> -->
+        <el-table-column label="序号" align="center" prop="index" width="50"/>
+        <el-table-column label="SKU编码" align="left" prop="code" />
+        <el-table-column label="规格Id" align="center" prop="specId" />
+        <el-table-column label="商品名称" align="center" prop="name" />
+        <el-table-column label="图片" align="center" prop="logo" width="100">
+          <template slot-scope="scope">
+            <image-preview :src="scope.row.img" :width="50" :height="50"/>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="规格" align="center" prop="specDetailName1" >
+          <template slot-scope="scope">
+            {{scope.row.specDetailName1}}&nbsp;
+            {{scope.row.specDetailName2}}&nbsp;
+            {{scope.row.specDetailName3}}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="价格" align="center" prop="price" >
+          <template slot-scope="scope">
+            {{amountFormatter(null,null,scope.row.price/100,0)}}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="库存" align="center" prop="stockNum" />
+        <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
+<!--        <el-table-column label="状态" align="center" prop="status" >-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-tag size="small" v-if="scope.row.status === 1">销售中</el-tag>-->
+<!--            <el-tag size="small" v-if="scope.row.status === 2">已下架</el-tag>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-button-->
+<!--              size="mini"-->
+<!--              type="text"-->
+<!--              icon="el-icon-share"-->
+<!--              @click="handleLink(scope.row)"-->
+<!--            >关联ERP</el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+      </el-table>
+    </el-dialog>
 
     <!-- 添加或修改商品管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -134,7 +184,7 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import {listShop} from "@/api/shop/shop";
-import {pullGoodsList, listGoodsSku, getGoodsSku, linkErpGoodsSkuId} from "@/api/dou/goods";
+import {pullGoodsList, listGoods, getGoodsSku, linkErpGoodsSkuId,pushToOms} from "@/api/dou/goods";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 
@@ -153,6 +203,8 @@ export default {
       // 显示搜索条件
       showSearch: true,
       pullLoading: false,
+      skuList:[],
+      skuOpen:false,
       // 总条数
       total: 0,
       // 商品管理表格数据
@@ -196,13 +248,22 @@ export default {
     this.loading = false;
   },
   methods: {
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },
     amountFormatter(row, column, cellValue, index) {
+      if(!cellValue){
+        return "";
+      }
       return '￥' + cellValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     },
     /** 查询商品管理列表 */
     getList() {
       this.loading = true;
-      listGoodsSku(this.queryParams).then(response => {
+      listGoods(this.queryParams).then(response => {
         this.goodsList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -282,7 +343,28 @@ export default {
       }
 
       // this.$modal.msgSuccess("请先配置API");
-    }
+    },
+    /** 查看SKU List*/
+    handleViewSkuList(row){
+      this.skuList = row.skuList
+      this.skuOpen = true;
+
+    },
+    handlePushOms(){
+      this.$confirm('确认同步所有商品到商品库吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        pushToOms( this.ids ).then(response => {
+          this.$message.success('商品同步成功')
+          this.getList()
+        }).finally(() => {
+          this.loading = false
+        })
+      })
+    },
   }
 };
 </script>

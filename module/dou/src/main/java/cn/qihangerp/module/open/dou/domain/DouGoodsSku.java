@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 抖店商品Sku表
@@ -141,12 +142,12 @@ public class DouGoodsSku implements Serializable {
     /**
      * 商品id(o_goods外键)
      */
-    private String oGoodsId;
+    private String erpGoodsId;
 
     /**
      * 商品skuid(o_goods_sku外键)
      */
-    private String oGoodsSkuId;
+    private String erpGoodsSkuId;
 
     /**
      * 店铺id
@@ -162,6 +163,17 @@ public class DouGoodsSku implements Serializable {
      * 商品主图的第一张图
      */
     private String img;
+
+
+    /**
+     * 拉取时间
+     */
+    private Date pullTime;
+
+    /**
+     * 更新时间
+     */
+    private Date modifyTime;
 
     private static final long serialVersionUID = 1L;
 }

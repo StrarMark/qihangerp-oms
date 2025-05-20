@@ -20,7 +20,7 @@
             <result property="categoryDetail" column="category_detail" jdbcType="VARCHAR"/>
             <result property="outerProductId" column="outer_product_id" jdbcType="VARCHAR"/>
             <result property="isPackageProduct" column="is_package_product" jdbcType="VARCHAR"/>
-            <result property="oGoodsId" column="o_goods_id" jdbcType="BIGINT"/>
+            <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
             <result property="pullTime" column="pull_time" jdbcType="TIMESTAMP"/>
             <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -31,6 +31,6 @@
         check_status,status,spec_id,
         create_time,update_time,description,
         category_detail,outer_product_id,is_package_product,
-        o_goods_id,pull_time,modify_time
+        erp_goods_id,pull_time,modify_time
     </sql>
 </mapper>

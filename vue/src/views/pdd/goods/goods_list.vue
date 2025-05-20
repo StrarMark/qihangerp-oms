@@ -68,7 +68,7 @@
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="商品ID" align="center" prop="goodsId" />
+      <el-table-column label="平台商品ID" align="center" prop="goodsId" />
       <el-table-column label="图片" align="center" prop="logo" width="100">
         <template slot-scope="scope">
           <image-preview :src="scope.row.thumbUrl" :width="50" :height="50"/>

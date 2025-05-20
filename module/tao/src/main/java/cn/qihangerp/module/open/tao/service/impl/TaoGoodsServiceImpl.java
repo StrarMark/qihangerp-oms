@@ -100,7 +100,7 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
                         sku.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
                     }
                 }
-                List<TaoGoodsSku> taoGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getTaoGoodsId, goods.getId()));
+                List<TaoGoodsSku> taoGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, sku.getSkuId()));
                 if(taoGoodsSkus!=null && !taoGoodsSkus.isEmpty()){
                     // 更新
                     sku.setUpdateTime(new Date());

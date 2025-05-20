@@ -101,7 +101,7 @@ public class PddGoodsServiceImpl extends ServiceImpl<PddGoodsMapper, PddGoods>
                 }
 
                 item.setCreateTime(new Date());
-                List<PddGoodsSku> pddGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getGoodsId, goods.getGoodsId()));
+                List<PddGoodsSku> pddGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
                 if(pddGoodsSkus!=null && !pddGoodsSkus.isEmpty()){
                     // 存在更新
                     item.setUpdateTime(new Date());
