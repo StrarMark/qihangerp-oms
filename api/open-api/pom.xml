@@ -91,6 +91,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/open-sdk-1.4.30.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version> <!-- jd-sdk依赖 -->
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

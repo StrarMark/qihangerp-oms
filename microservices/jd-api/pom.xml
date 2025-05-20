@@ -26,6 +26,11 @@
             <systemPath>${project.basedir}/libs/open-sdk-1.4.20.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version> <!-- jd-sdk依赖 -->
+        </dependency>
+        <dependency>
             <groupId>cn.qihangerp.module</groupId>
             <artifactId>jd</artifactId>
             <version>1.0</version>

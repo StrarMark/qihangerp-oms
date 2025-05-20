@@ -44,52 +44,54 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
+          :loading="pullLoading"
+          type="success"
           plain
-          icon="el-icon-refresh"
+          icon="el-icon-download"
           size="mini"
-          @click="handleLinkOms"
-        >一键关联商品库SKU</el-button>
+          @click="handlePull"
+        >API拉取商品数据</el-button>
       </el-col>
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          :loading="pullLoading"-->
-<!--          type="success"-->
-<!--          plain-->
-<!--          icon="el-icon-download"-->
-<!--          size="mini"-->
-<!--          @click="handlePull"-->
-<!--        >API拉取商品数据</el-button>-->
-<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="goodsList">
+    <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="商品ID" align="center" prop="goodsId" />
-      <el-table-column label="Sku Id" align="center" prop="skuId" />
-      <el-table-column label="商品名" align="center" prop="goodsName" />
-      <el-table-column label="规格" align="center" prop="spec" />
+      <el-table-column label="商品ID" align="center" prop="productId" />
+      <el-table-column label="规格Id" align="center" prop="specId" />
+      <el-table-column label="商品名称" align="center" prop="name" />
       <el-table-column label="图片" align="center" prop="logo" width="100">
         <template slot-scope="scope">
-          <image-preview :src="scope.row.thumbUrl" :width="50" :height="50"/>
+          <image-preview :src="scope.row.img" :width="50" :height="50"/>
         </template>
       </el-table-column>
 
-      <el-table-column label="店铺" align="center" prop="shopId" >
+      <el-table-column label="规格" align="center" prop="specDetailName1" >
         <template slot-scope="scope">
-          <el-tag size="small">{{shopList.find(x=>x.id === scope.row.shopId).name}}</el-tag>
+          {{scope.row.specDetailName1}}&nbsp;
+          {{scope.row.specDetailName2}}&nbsp;
+          {{scope.row.specDetailName3}}
         </template>
       </el-table-column>
-       <el-table-column label="商家编码" align="center" prop="outerId" />
+      <!--      <el-table-column label="店铺" align="center" prop="categoryId" >-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-tag size="small">{{categoryList.find(x=>x.id === scope.row.categoryId).name}}</el-tag>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+       <el-table-column label="SKU编码" align="center" prop="code" />
+      <el-table-column label="价格" align="center" prop="price" >
+        <template slot-scope="scope">
+          {{amountFormatter(null,null,scope.row.price/100,0)}}
+        </template>
+      </el-table-column>
       <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
-      <el-table-column label="状态" align="center" prop="isSkuOnsale" >
-        <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.isSkuOnsale === 1">上架中</el-tag>
-          <el-tag size="small" v-if="scope.row.isSkuOnsale === 0">已下架</el-tag>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="状态" align="center" prop="skuStatus" >-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-tag size="small" v-if="scope.row.skuStatus === false">已下架</el-tag>-->
+<!--          <el-tag size="small" v-if="scope.row.skuStatus === true">销售中</el-tag>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -132,13 +134,12 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import {listShop} from "@/api/shop/shop";
-import {listGoodsSku,pullGoodsList,getGoodsSku,linkErpGoodsSkuId} from "@/api/pdd/goods";
-
+import {pullGoodsList, listGoodsSku, getGoodsSku, linkErpGoodsSkuId} from "@/api/dou/goods";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 
 export default {
-  name: "GoodsSkuPdd",
+  name: "GoodsSkuDou",
   data() {
     return {
       // 遮罩层
@@ -177,14 +178,14 @@ export default {
         id: [
           { required: true, message: "不能为空", trigger: "change" }
         ],
-        erpGoodsSkuId: [
+        erpSkuId: [
           { required: true, message: "不能为空", trigger: "blur" }
         ],
       }
     };
   },
   created() {
-    listShop({type:300}).then(response => {
+    listShop({type:400}).then(response => {
       this.shopList = response.rows;
       if (this.shopList && this.shopList.length > 0) {
         this.queryParams.shopId = this.shopList[0].id
@@ -195,6 +196,9 @@ export default {
     this.loading = false;
   },
   methods: {
+    amountFormatter(row, column, cellValue, index) {
+      return '￥' + cellValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    },
     /** 查询商品管理列表 */
     getList() {
       this.loading = true;
@@ -255,8 +259,8 @@ export default {
           console.log('拉取PDD商品接口返回=====',response)
           if(response.code === 1401) {
             MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
-              this.$router.push({path:"/shop/shop_list",query:{platform:5}})
               // isRelogin.show = false;
+              this.$router.push({path:"/shop/shop_list",query:{platform:6}})
               // store.dispatch('LogOut').then(() => {
               // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
               // })
@@ -266,6 +270,7 @@ export default {
 
             // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
           }else{
+            this.pullLoading = false
             this.getList()
             this.$modal.msgSuccess(JSON.stringify(response));
           }
