@@ -19,4 +19,5 @@ public interface JdGoodsService extends IService<JdGoods> {
     PageResult<JdGoods> queryPageList(JdGoodsBo bo, PageQuery pageQuery);
     ResultVo<Integer> saveGoods(Long shopId, JdGoods goods);
     ResultVo<Integer> saveGoodsSku(Long shopId, JdGoodsSku goodsSku);
+    ResultVo pushToOms(Long taoGoodsId);
 }

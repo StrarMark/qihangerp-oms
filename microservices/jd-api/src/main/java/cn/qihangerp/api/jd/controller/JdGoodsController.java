@@ -16,6 +16,9 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequestMapping("/jd/goods")
 @RestController
 @AllArgsConstructor
@@ -58,6 +61,32 @@ public class JdGoodsController extends BaseController {
         if(resultVo.getCode()==0)
             return success();
         else return AjaxResult.error(resultVo.getMsg());
+    }
+
+    /**
+     * 推送商品到OMS
+     * @param ids
+     * @return
+     */
+    @PostMapping("/push_oms")
+    @ResponseBody
+    public AjaxResult pushOms(@RequestBody String[] ids) {
+        if (ids == null || ids.length == 0) return AjaxResult.error("缺少参数");
+        int success = 0;
+        int isExist = 0;
+        int fail = 0;
+        for (String id : ids) {
+            ResultVo resultVo = goodsService.pushToOms(Long.parseLong(id));
+            if(resultVo.getCode()==0) success++;
+            else if(resultVo.getCode()==ResultVoEnum.DataExist.getIndex()) isExist++;
+            else fail++;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("success", success);
+        map.put("isExist", isExist);
+        map.put("fail", fail);
+        map.put("total", success + isExist+fail);
+        return success(map);
     }
 
 }

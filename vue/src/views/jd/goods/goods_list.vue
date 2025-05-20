@@ -96,6 +96,7 @@
 <!--          <el-tag size="small">{{scope.row.wareStatus}}</el-tag>-->
         </template>
       </el-table-column>
+      <el-table-column label="最后修改时间" align="center" prop="modified" />
 <!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
 <!--        <template slot-scope="scope">-->
 <!--          <el-button-->
@@ -175,11 +176,12 @@
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {getToken} from "@/utils/auth";
-import {listGoods,getGoodsSku,linkErpGoodsSkuId,pullGoodsList} from "@/api/jd/goods";
+import {listGoods,getGoodsSku,linkErpGoodsSkuId,pullGoodsList,pushToOms} from "@/api/jd/goods";
 import {listShop} from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 import {amountFormatter} from "@/utils/zhijian";
+
 
 export default {
   name: "GoodsListJd",
@@ -338,6 +340,21 @@ export default {
       }
 
       // this.$modal.msgSuccess("请先配置API");
+    },
+    handlePushOms(){
+      this.$confirm('确认同步所有商品到商品库吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        pushToOms( this.ids ).then(response => {
+          this.$message.success('商品同步成功')
+          this.getList()
+        }).finally(() => {
+          this.loading = false
+        })
+      })
     },
   }
 };

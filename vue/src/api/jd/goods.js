@@ -36,10 +36,18 @@ export function linkErpGoodsSkuId(data) {
   })
 }
 
-// 接口拉取淘宝商品
+// 接口拉取商品
 export function pullGoodsList(data) {
   return request({
     url: '/api/open-api/jd/goods/pull_goods',
+    method: 'post',
+    data: data
+  })
+}
+//推送商品到商品库
+export function pushToOms(data) {
+  return request({
+    url: '/api/open-api/jd/goods/push_oms',
     method: 'post',
     data: data
   })

@@ -1,8 +1,15 @@
 package cn.qihangerp.module.open.jd.service.impl;
 
 
+import cn.qihangerp.common.ResultVoEnum;
+import cn.qihangerp.module.goods.domain.OGoods;
+import cn.qihangerp.module.goods.domain.OGoodsInventory;
 import cn.qihangerp.module.goods.domain.OGoodsSku;
+import cn.qihangerp.module.goods.mapper.OGoodsInventoryMapper;
+import cn.qihangerp.module.goods.mapper.OGoodsMapper;
 import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -22,7 +29,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author qilip
@@ -36,6 +48,8 @@ public class JdGoodsServiceImpl extends ServiceImpl<JdGoodsMapper, JdGoods>
     private final JdGoodsMapper mapper;
     private final JdGoodsSkuMapper skuMapper;
     private final OGoodsSkuMapper goodsSkuMapper;
+    private final OGoodsMapper goodsMapper;
+    private final OGoodsInventoryMapper inventoryMapper;
 
     @Override
     public PageResult<JdGoods> queryPageList(JdGoodsBo bo, PageQuery pageQuery) {
@@ -116,6 +130,195 @@ public class JdGoodsServiceImpl extends ServiceImpl<JdGoodsMapper, JdGoods>
             goodsSku.setShopId(shopId);
             skuMapper.updateById(goodsSku);
         }
+        return ResultVo.success();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ResultVo pushToOms(Long taoGoodsId) {
+        JdGoods shopGoods = mapper.selectById(taoGoodsId);
+        if(shopGoods==null) return ResultVo.error("店铺商品数据不存在");
+
+        List<JdGoodsSku> shopGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<JdGoodsSku>().eq(JdGoodsSku::getWareId, shopGoods.getWareId()));
+        if(shopGoodsSkus==null || shopGoodsSkus.isEmpty()) return ResultVo.error("店铺商品Sku数据不存在");
+
+        String goodsNum ="";
+        if(org.springframework.util.StringUtils.hasText(shopGoods.getItemNum())){
+            goodsNum = shopGoods.getItemNum();
+            // 用商家编码查询
+            List<OGoods> erpGoodsList = goodsMapper.selectList(new LambdaQueryWrapper<OGoods>()
+                    .eq(OGoods::getGoodsNum, goodsNum));
+            if(erpGoodsList!=null && !erpGoodsList.isEmpty()){
+                // 存在=======关联
+                //更新shopGoods
+                JdGoods shopGoodsUpdate = new JdGoods();
+                shopGoodsUpdate.setId(shopGoods.getId());
+                shopGoodsUpdate.setLogo(erpGoodsList.get(0).getImage());
+                shopGoodsUpdate.setErpGoodsId(erpGoodsList.get(0).getId());
+                mapper.updateById(shopGoodsUpdate);
+
+                List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>()
+                        .eq(OGoodsSku::getGoodsId, erpGoodsList.get(0).getId())
+                );
+                //更新skus
+                for (var sku:shopGoodsSkus){
+                    if(org.springframework.util.StringUtils.hasText(sku.getOuterId())){
+                        List<OGoodsSku> oGoodsSkuList = oGoodsSkus.stream().filter(x -> x.getSkuCode().equals(sku.getOuterId())).collect(Collectors.toList());
+                        if(oGoodsSkuList!=null && !oGoodsSkuList.isEmpty()){
+                            //更新ShopGoodsSku
+                            JdGoodsSku shopGoodsSkuUpdate = new JdGoodsSku();
+                            shopGoodsSkuUpdate.setId(sku.getId());
+                            shopGoodsSkuUpdate.setErpGoodsId(oGoodsSkuList.get(0).getGoodsId());
+                            shopGoodsSkuUpdate.setErpGoodsSkuId(oGoodsSkuList.get(0).getId());
+                            shopGoodsSkuUpdate.setLogo(oGoodsSkuList.get(0).getColorImage());
+                            skuMapper.updateById(shopGoodsSkuUpdate);
+                        }
+                    }
+                }
+
+                return ResultVo.success("商品已存在，更新关联");
+            }
+
+        }else {
+            goodsNum = shopGoods.getWareId().toString();
+            // 用商品ID查询
+            List<OGoods> erpGoodsList = goodsMapper.selectList(new LambdaQueryWrapper<OGoods>()
+                    .eq(OGoods::getGoodsNum, goodsNum));
+            if(erpGoodsList!=null && !erpGoodsList.isEmpty()){
+                return ResultVo.error(ResultVoEnum.DataExist.getIndex(),"商品已存在");
+            }
+        }
+
+
+        // 添加商品
+        OGoods erpGoods = new OGoods();
+        erpGoods.setName(shopGoods.getTitle());
+        erpGoods.setImage(shopGoods.getLogo());
+        erpGoods.setGoodsNum(goodsNum);
+        erpGoods.setCategoryId(0L);
+        erpGoods.setRemark("JD店铺商品同步");
+        erpGoods.setStatus(1);
+        erpGoods.setDisable(1);
+        if (shopGoods.getJdPrice() != null) {
+            erpGoods.setRetailPrice(shopGoods.getJdPrice());
+        }
+        erpGoods.setCreateBy("JD店铺商品同步");
+        erpGoods.setCreateTime(new Date());
+        goodsMapper.insert(erpGoods);
+
+        //更新shopGoods
+        JdGoods shopGoodsUpdate = new JdGoods();
+        shopGoodsUpdate.setId(shopGoods.getId());
+        shopGoodsUpdate.setErpGoodsId(erpGoods.getId());
+        mapper.updateById(shopGoodsUpdate);
+
+        // 添加商品SKU
+        for (var sku:shopGoodsSkus){
+            OGoodsSku erpGoodsSku = new OGoodsSku();
+            erpGoodsSku.setGoodsId(erpGoods.getId());
+            erpGoodsSku.setGoodsName(erpGoods.getName());
+            erpGoodsSku.setGoodsNum(erpGoods.getGoodsNum());
+            //122216927:77835123:家具结构:框架结构;1627207:25326567650:颜色分类:奶油白【进口荔枝纹头层牛皮+碳素钢木排骨架】;21433:50753444:尺寸:1500mm*2000mm
+            // 组合规格
+            String colorLabel="";
+            String colorValue="";
+            String sizeLabel="";
+            String sizeValue="";
+            String styleLabel="";
+            String styleValue="";
+            //组合属性
+            if(org.springframework.util.StringUtils.hasText(sku.getSaleAttrs())) {
+                // 解析 JSON 字符串
+                JSONArray jsonArray = JSONArray.parseArray(sku.getSaleAttrs());
+                // 提取 attrValueAlias
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JSONObject item = jsonArray.getJSONObject(i);
+                    JSONArray attrValueAlias = item.getJSONArray("attrValueAlias");
+                    String val="";
+                    try {
+                        JSONArray jarr =JSONArray.parseArray(attrValueAlias.getString(0));
+                        for (int j = 0; j < jarr.size(); j++) {
+                            val += jarr.getJSONObject(j).getString("value");
+                            if(jarr.getJSONObject(j).containsKey("unit")){
+                                val+= jarr.getJSONObject(j).getString("unit");
+                            }
+                        }
+                    }catch (Exception e){
+                        val = attrValueAlias.getString(0);
+                    }
+                    if (item.getInteger("index") == 1) {
+                        colorLabel = "颜色分类";
+                        colorValue = val;
+                    } else if (item.getInteger("index") == 2) {
+                        sizeLabel = "尺寸";
+                        sizeValue =val;
+                    }else if (item.getInteger("index") == 3) {
+                        styleLabel = "款式";
+                        styleValue = val;
+                    }
+                }
+            }else{
+                colorValue="默认";
+                colorLabel="颜色分类";
+            }
+
+            erpGoodsSku.setColorId(0L);
+            erpGoodsSku.setColorLabel(colorLabel);
+            erpGoodsSku.setColorValue(colorValue);
+            erpGoodsSku.setSizeId(0L);
+            erpGoodsSku.setSizeLabel(sizeLabel);
+            erpGoodsSku.setSizeValue(sizeValue);
+            erpGoodsSku.setStyleId(0L);
+            erpGoodsSku.setStyleLabel(styleLabel);
+            erpGoodsSku.setStyleValue(styleValue);
+            String skuName="";
+            if(org.springframework.util.StringUtils.hasText(colorValue)){
+                skuName += colorValue+" ";
+            }
+            if(org.springframework.util.StringUtils.hasText(sizeValue)){
+                skuName += sizeValue+" ";
+            }
+            if(org.springframework.util.StringUtils.hasText(styleValue)){
+                skuName += styleValue+" ";
+            }
+            if(!org.springframework.util.StringUtils.hasText(skuName)){
+                skuName = "默认";
+            }
+            erpGoodsSku.setSkuName(skuName);
+            erpGoodsSku.setSkuCode(sku.getOuterId());
+            erpGoodsSku.setColorImage(erpGoods.getImage());
+
+            if(sku.getJdPrice()!=null){
+                erpGoodsSku.setRetailPrice(sku.getJdPrice());
+            }
+            erpGoodsSku.setStatus(1);
+            goodsSkuMapper.insert(erpGoodsSku);
+
+            // 初始化商品库存
+            OGoodsInventory inventory = new OGoodsInventory();
+
+            inventory.setGoodsId(erpGoods.getId());
+            inventory.setGoodsNum(erpGoods.getGoodsNum());
+            inventory.setGoodsName(erpGoods.getName());
+            inventory.setGoodsImg(erpGoods.getImage());
+            inventory.setSkuId(erpGoodsSku.getId());
+            inventory.setSkuCode(erpGoodsSku.getSkuCode());
+            inventory.setSkuName(erpGoodsSku.getSkuName());
+            inventory.setQuantity(0L);
+            inventory.setIsDelete(0);
+            inventory.setCreateTime(new Date());
+            inventory.setCreateBy("同步店铺商品初始化商品 sku 库存");
+            inventoryMapper.insert(inventory);
+
+            //更新ShopGoodsSku
+            JdGoodsSku shopGoodsSkuUpdate = new JdGoodsSku();
+            shopGoodsSkuUpdate.setId(sku.getId());
+            shopGoodsSkuUpdate.setErpGoodsId(erpGoods.getId());
+            shopGoodsSkuUpdate.setErpGoodsSkuId(erpGoodsSku.getId());
+            skuMapper.updateById(shopGoodsSkuUpdate);
+
+        }
+
         return ResultVo.success();
     }
 }

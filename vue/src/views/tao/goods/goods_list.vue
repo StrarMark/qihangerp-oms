@@ -89,6 +89,8 @@
         </template>
       </el-table-column>
       <el-table-column label="ERP商品Id" align="center" prop="erpGoodsId" />
+      <el-table-column label="库存" align="center" prop="num" />
+      <el-table-column label="销量" align="center" prop="soldQuantity" />
 
       <el-table-column label="最后修改时间" align="center" prop="modified" >
         <template slot-scope="scope">

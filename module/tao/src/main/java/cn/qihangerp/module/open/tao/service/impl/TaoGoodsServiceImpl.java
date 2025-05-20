@@ -134,16 +134,44 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
         String goodsNum ="";
         if(org.springframework.util.StringUtils.hasText(shopGoods.getOuterId())){
             goodsNum = shopGoods.getOuterId();
+            // 用商家编码查询
+            List<OGoods> erpGoodsList = goodsMapper.selectList(new LambdaQueryWrapper<OGoods>()
+                    .eq(OGoods::getGoodsNum, goodsNum));
+            if(erpGoodsList!=null && !erpGoodsList.isEmpty()){
+                // 存在=======关联
+                //更新shopGoods
+                TaoGoods shopGoodsUpdate = new TaoGoods();
+                shopGoodsUpdate.setId(shopGoods.getId());
+                shopGoodsUpdate.setErpGoodsId(erpGoodsList.get(0).getId());
+                mapper.updateById(shopGoodsUpdate);
+
+
+                List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>()
+                        .eq(OGoodsSku::getGoodsId, erpGoodsList.get(0).getId())
+                );
+                //更新skus
+                for (var sku:shopGoodsSkus){
+                    //更新ShopGoodsSku
+                    TaoGoodsSku shopGoodsSkuUpdate = new TaoGoodsSku();
+                    shopGoodsSkuUpdate.setId(sku.getId());
+                    shopGoodsSkuUpdate.setErpGoodsId(oGoodsSkus.get(0).getGoodsId());
+                    shopGoodsSkuUpdate.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
+                    skuMapper.updateById(shopGoodsSkuUpdate);
+                }
+                return ResultVo.success("商家编码已存在!更新成功");
+            }
+
         }else {
             goodsNum = shopGoods.getNumIid().toString();
+            // 用商品ID查询
+            List<OGoods> erpGoodsList = goodsMapper.selectList(new LambdaQueryWrapper<OGoods>()
+                    .eq(OGoods::getGoodsNum, goodsNum));
+            if(erpGoodsList!=null && !erpGoodsList.isEmpty()){
+                return ResultVo.error(ResultVoEnum.DataExist.getIndex(),"商家编码已存在");
+            }
         }
 
-        // 用商家编码查询
-        List<OGoods> erpGoodsList = goodsMapper.selectList(new LambdaQueryWrapper<OGoods>()
-                .eq(OGoods::getGoodsNum, goodsNum));
-        if(erpGoodsList!=null && !erpGoodsList.isEmpty()){
-            return ResultVo.error(ResultVoEnum.DataExist.getIndex(),"商家编码已存在");
-        }
+
 
         // 添加商品
         OGoods erpGoods = new OGoods();
@@ -152,13 +180,13 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
         erpGoods.setImage(shopGoods.getPicUrl());
         erpGoods.setGoodsNum(goodsNum);
         erpGoods.setCategoryId(0L);
-        erpGoods.setRemark("店铺商品同步");
+        erpGoods.setRemark("TAO店铺商品同步");
         erpGoods.setStatus(1);
         erpGoods.setDisable(1);
         if (StringUtils.isNotEmpty(shopGoods.getPrice() )) {
             erpGoods.setRetailPrice(new BigDecimal(shopGoods.getPrice()));
         }
-        erpGoods.setCreateBy("店铺商品同步");
+        erpGoods.setCreateBy("TAO店铺商品同步");
         erpGoods.setCreateTime(new Date());
         goodsMapper.insert(erpGoods);
 
@@ -258,7 +286,7 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
             inventory.setQuantity(0L);
             inventory.setIsDelete(0);
             inventory.setCreateTime(new Date());
-            inventory.setCreateBy("同步店铺商品初始化商品 sku 库存");
+            inventory.setCreateBy("同步TAO店铺商品初始化商品 sku 库存");
             inventoryMapper.insert(inventory);
 
             //更新ShopGoodsSku
