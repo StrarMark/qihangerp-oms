@@ -43,3 +43,11 @@ export function pullGoodsList(data) {
     data: data
   })
 }
+//推送商品到商品库
+export function pushToOms(data) {
+  return request({
+    url: '/api/open-api/pdd/goods/push_oms',
+    method: 'post',
+    data: data
+  })
+}

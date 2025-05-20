@@ -65,7 +65,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="goodsList">
+    <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
       <el-table-column label="商品ID" align="center" prop="goodsId" />
@@ -75,7 +75,8 @@
         </template>
       </el-table-column>
       <el-table-column label="商品名" align="left" prop="goodsName" />
-      <el-table-column label="规格" align="center" prop="spec" />
+      <el-table-column label="商家编码" align="center" prop="outerGoodsId" />
+      <el-table-column label="价格" align="center" prop="formattedPrice" />
       <el-table-column label="SKU" align="center" >
         <template slot-scope="scope">
           <el-button
@@ -92,8 +93,8 @@
           <el-tag size="small">{{shopList.find(x=>x.id === scope.row.shopId).name}}</el-tag>
         </template>
       </el-table-column>
-       <el-table-column label="商家编码" align="center" prop="outerId" />
-      <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
+
+      <el-table-column label="ERP商品ID" align="center" prop="erpGoodsId" />
       <el-table-column label="状态" align="center" prop="isSkuOnsale" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.isSkuOnsale === 1">上架中</el-tag>
@@ -181,10 +182,11 @@
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 import {listShop} from "@/api/shop/shop";
-import {listGoods,pullGoodsList,getGoodsSku,linkErpGoodsSkuId} from "@/api/pdd/goods";
+import {listGoods,pullGoodsList,getGoodsSku,linkErpGoodsSkuId,pushToOms} from "@/api/pdd/goods";
 
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
+
 
 export default {
   name: "GoodsListPdd",
@@ -246,6 +248,12 @@ export default {
     this.loading = false;
   },
   methods: {
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },
     /** 查询商品管理列表 */
     getList() {
       this.loading = true;
@@ -334,7 +342,22 @@ export default {
       }
 
       // this.$modal.msgSuccess("请先配置API");
-    }
+    },
+    handlePushOms(){
+      this.$confirm('确认同步所有商品到商品库吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        pushToOms( this.ids ).then(response => {
+          this.$message.success('商品同步成功')
+          this.getList()
+        }).finally(() => {
+          this.loading = false
+        })
+      })
+    },
   }
 };
 </script>

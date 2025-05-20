@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -142,6 +143,7 @@ public class JdGoods implements Serializable {
     /**
      * 
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
     private BigDecimal jdPrice;
 
     /**

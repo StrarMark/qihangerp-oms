@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -63,6 +64,13 @@ public class PddGoods implements Serializable {
      */
     private Long marketPrice;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
+    public double getFormattedPrice() {
+        if(marketPrice == null){
+            return 0;
+        }
+        return marketPrice / 100;
+    }
     /**
      * 商品创建时间的时间戳
      */

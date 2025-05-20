@@ -16,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface PddGoodsService extends IService<PddGoods> {
     PageResult<PddGoods> queryPageList(PddGoodsBo bo, PageQuery pageQuery);
     ResultVo<Integer> saveGoods(Long shopId, PddGoods goods);
+    ResultVo pushToOms(Long taoGoodsId);
 }
