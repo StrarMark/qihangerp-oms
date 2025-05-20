@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
 * @author qilip
-* @description 针对表【sys_shop(数据中心-店铺)】的数据库操作Mapper
-* @createDate 2024-03-17 15:17:34
-* @Entity cn.qihangerp.oms.domain.SysShop
+* @description 针对表【o_shop(店铺表)】的数据库操作Mapper
+* @createDate 2025-05-20 18:28:35
+* @Entity cn.qihangerp.module.domain.OShop
 */
 public interface OShopMapper extends BaseMapper<OShop> {
 

@@ -68,6 +68,14 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
         shop.setAccessToken(sessionKey);
         mapper.updateById(shop);
     }
+    @Override
+    public void updateSessionKey(Long shopId, String token, String refreshToken) {
+        OShop shop = new OShop();
+        shop.setId(shopId);
+        shop.setAccessToken(token);
+        shop.setRefreshToken(refreshToken);
+        mapper.updateById(shop);
+    }
 //    @Override
 //    public List<SysPlatform> selectShopPlatformList() {
 //        return platformMapper.selectList(new LambdaQueryWrapper<>());

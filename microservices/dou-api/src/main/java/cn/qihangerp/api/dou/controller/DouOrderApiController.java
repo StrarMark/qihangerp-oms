@@ -18,7 +18,6 @@ import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouOrderApiHelper;
-import cn.qihangerp.open.dou.DouTokenApiHelper;
 import cn.qihangerp.open.dou.model.Token;
 import cn.qihangerp.open.dou.model.order.Order;
 import cn.qihangerp.sdk.dou.PullRequest;
@@ -104,15 +103,14 @@ public class DouOrderApiController {
         Long endTimestamp = endTime.toEpochSecond(ZoneOffset.ofHours(8));
 
         String pullParams = "{startTime:"+startTime+",endTime:"+endTime+"}";
-        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,checkResult.getData().getSellerId());
-
-        if(token.getCode()==0) {
-            accessToken = token.getData().getAccessToken();
-        }else{
-            return AjaxResult.error(token.getMsg());
-        }
+//        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,checkResult.getData().getSellerId());
+//
+//        if(token.getCode()==0) {
+//            accessToken = token.getData().getAccessToken();
+//        }else{
+//            return AjaxResult.error(token.getMsg());
+//        }
         //第一次获取
-//        ApiResultVo<DouOrderResponse> resultVo = OrderApiHelper.pullOrderList(appKey,appSecret,douShopId,startTime, endTime);
         ApiResultVo<Order> resultVo = DouOrderApiHelper.pullOrderList(startTimestamp, endTimestamp, 0, 20, appKey, appSecret, accessToken);
         if(resultVo.getCode() !=0 ){
             OShopPullLogs logs = new OShopPullLogs();

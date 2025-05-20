@@ -23,4 +23,5 @@ public interface OShopService extends IService<OShop> {
 //    int updateShopPlatformById(SysPlatform platform);
     List<OShop> selectShopByShopType(EnumShopType shopType);
     void updateSessionKey(Long shopId,String sessionKey);
+    void updateSessionKey(Long shopId,String token,String refreshToken);
 }

@@ -1,21 +1,24 @@
 package cn.qihangerp.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * 数据中心-店铺
- * @TableName sys_shop
+ * 店铺表
+ * @TableName o_shop
  */
+@TableName(value ="o_shop")
 @Data
 public class OShop implements Serializable {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -44,11 +47,6 @@ public class OShop implements Serializable {
     private Integer status;
 
     /**
-     * 更新时间
-     */
-    private Long modifyOn;
-
-    /**
      * 描述
      */
     private String remark;
@@ -66,7 +64,7 @@ public class OShop implements Serializable {
     /**
      * Appsercet
      */
-    private String appSercet;
+    private String appSecret;
 
     /**
      * 第三方平台sessionKey（access_token）
@@ -98,7 +96,36 @@ public class OShop implements Serializable {
      */
     private String apiRequestUrl;
 
+    /**
+     * 回调url
+     */
+    private String apiRedirectUrl;
+
+    /**
+     * 负责人id
+     */
+    private Long manageUserId;
+
+    /**
+     * 负责人部门id
+     */
+    private Long manageDeptId;
+
+    /**
+     * 国家/地区
+     */
+    private Long regionId;
+
+    /**
+     * 更新时间
+     */
+    private Long modifyOn;
+
+    /**
+     * 创建时间
+     */
+    private Long createOn;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
-
 }

@@ -57,7 +57,7 @@ public class DouGoodsApiController {
         Date currDateTime = new Date();
         var checkResult = douApiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != HttpStatus.SUCCESS) {
-            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
+            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg());
         }
         String accessToken = checkResult.getData().getAccessToken();
         String serverUrl = checkResult.getData().getServerUrl();

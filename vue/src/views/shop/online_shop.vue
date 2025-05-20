@@ -133,13 +133,10 @@
 
     <!-- 添加或修改店铺对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="店铺名" prop="name">
-          <el-input v-model="form.name" placeholder="请输入店铺名" />
-        </el-form-item>
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="平台" prop="type">
           <el-select v-model="form.type" placeholder="请选择平台">
-           <el-option
+            <el-option
               v-for="item in typeList"
               :key="item.id"
               :label="item.name"
@@ -147,10 +144,22 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="卖家Id" prop="sellerId">
-          <el-input v-model="form.sellerId" placeholder="请输入卖家Id名" />
+        <el-form-item label="店铺名" prop="name">
+          <el-input v-model="form.name" placeholder="请输入店铺名" />
         </el-form-item>
 
+        <el-form-item label="店铺卖家Id" prop="sellerId">
+          <el-input v-model="form.sellerId" placeholder="请输入卖家Id名" />
+        </el-form-item>
+        <el-form-item label="AppKey" prop="appKey">
+          <el-input v-model="form.appKey" placeholder="请输入AppKey" />
+        </el-form-item>
+        <el-form-item label="AppSecret" prop="appSecret">
+          <el-input v-model="form.appSecret" placeholder="请输入AppSecret" />
+        </el-form-item>
+        <el-form-item label="回调URL" prop="apiRedirectUrl">
+          <el-input v-model="form.apiRedirectUrl" placeholder="请输入回调URL" />
+        </el-form-item>
         <el-form-item label="描述" prop="remark">
           <el-input type="textarea" v-model="form.remark" placeholder="请输入描述" />
         </el-form-item>
@@ -250,7 +259,10 @@ export default {
         name: [{ required: true, message: "店铺名不能为空", trigger: "blur" }],
         type: [{ required: true, message: "请选择平台", trigger: "change" }],
         sellerId: [{ required: true, message: "不能为空", trigger: "change" }],
-        code: [{ required: true, message: "不能为空", trigger: "change" }],
+
+        appKey: [{ required: true, message: "不能为空", trigger: "change" }],
+        appSecret: [{ required: true, message: "不能为空", trigger: "change" }],
+        status: [{ required: true, message: "不能为空", trigger: "change" }],
       }
     };
   },

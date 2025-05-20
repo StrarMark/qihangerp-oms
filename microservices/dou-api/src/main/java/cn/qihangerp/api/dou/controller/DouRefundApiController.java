@@ -1,6 +1,5 @@
 package cn.qihangerp.api.dou.controller;
 
-
 import cn.qihangerp.api.dou.DouApiCommon;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
@@ -15,11 +14,8 @@ import cn.qihangerp.module.open.dou.domain.DouRefund;
 import cn.qihangerp.module.open.dou.service.DouRefundService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
-
 import cn.qihangerp.open.common.ApiResultVo;
-
 import cn.qihangerp.open.dou.DouRefundApiHelper;
-import cn.qihangerp.open.dou.DouTokenApiHelper;
 import cn.qihangerp.open.dou.model.Token;
 import cn.qihangerp.open.dou.model.after.AfterSale;
 import cn.qihangerp.sdk.dou.PullRequest;
@@ -102,12 +98,12 @@ public class DouRefundApiController {
 //            }
         }
         String pullParams = "{startTime:"+startTime+",endTime:"+endTime+"}";
-        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,checkResult.getData().getSellerId());
-        if(token.getCode()==0) {
-            accessToken = token.getData().getAccessToken();
-        }else{
-            return AjaxResult.error(token.getMsg());
-        }
+//        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,checkResult.getData().getSellerId());
+//        if(token.getCode()==0) {
+//            accessToken = token.getData().getAccessToken();
+//        }else{
+//            return AjaxResult.error(token.getMsg());
+//        }
         String startTimeStr = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String endTimeStr = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Long startTimestamp = startTime.toEpochSecond(ZoneOffset.ofHours(8));

@@ -13,7 +13,7 @@ public enum ResultVoEnum {
     TokenFail("TokenFail", 1401),//没有找到
     Unable("Unable", 1403),//无法处理
     UNAUTHORIZED("UNAUTHORIZED", 1401),//token过期
-    StateError("StateError", 1402),//状态错误
+    StateError("StateError", 1502),//状态错误
     Locking("Locking", 1405),//锁定，不能操作
     NumberLess("数量不足", 1406),
     StatusError("状态不正确", 1407),
@@ -23,7 +23,8 @@ public enum ResultVoEnum {
     HasAssociatedData("存在关联数据", 1501),//存在关联数据
     Exist("已存在相同的数据", 1502),//已存在相同的数据
     SystemException("系统异常", 1505),//系统异常
-    Fail("失败", 1001);
+    Fail("失败", 1001),
+    API_FAIL("失败", 2001);
 
     private String name;
     private int index;

@@ -21,9 +21,9 @@
         <dependency>
             <groupId>cn.qihangerp.open</groupId>
             <artifactId>open-sdk</artifactId>
-            <version>1.0.2</version>
+            <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/open-sdk-1.4.20.jar</systemPath>
+            <systemPath>${project.basedir}/libs/open-sdk-1.5.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>cn.qihangerp.module</groupId>
