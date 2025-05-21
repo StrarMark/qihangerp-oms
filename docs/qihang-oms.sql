@@ -11,7 +11,7 @@
  Target Server Version : 80200
  File Encoding         : 65001
 
- Date: 20/05/2025 20:38:08
+ Date: 21/05/2025 12:51:43
 */
 
 SET NAMES utf8mb4;
@@ -50,7 +50,7 @@ CREATE TABLE `erp_echo_log`  (
   `result` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '返回结果',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '与erp系统接口交互记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '与erp系统接口交互记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_echo_log
@@ -155,7 +155,7 @@ CREATE TABLE `o_goods`  (
   UNIQUE INDEX `goods_id_unique`(`outer_erp_goods_id`) USING BTREE,
   INDEX `number`(`goods_num`) USING BTREE,
   INDEX `id`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'OMS商品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'OMS商品表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of o_goods
@@ -388,7 +388,7 @@ CREATE TABLE `o_goods_inventory`  (
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `specIdIndex`(`sku_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品库存表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of o_goods_inventory
@@ -532,7 +532,7 @@ CREATE TABLE `o_goods_sku`  (
   UNIQUE INDEX `sku_id_unique`(`outer_erp_sku_id`) USING BTREE,
   INDEX `id`(`id`) USING BTREE,
   INDEX `number`(`sku_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'OMS商品SKU表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'OMS商品SKU表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of o_goods_sku
@@ -1200,7 +1200,7 @@ CREATE TABLE `o_shop`  (
   `modify_on` bigint NOT NULL COMMENT '更新时间',
   `create_on` bigint NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1005 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1007 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of o_shop
@@ -1368,7 +1368,7 @@ CREATE TABLE `o_shop_pull_logs`  (
   `pull_time` datetime NULL DEFAULT NULL COMMENT '拉取时间',
   `duration` bigint NULL DEFAULT NULL COMMENT '耗时（毫秒）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '店铺更新日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of o_shop_pull_logs
@@ -1378,12 +1378,12 @@ INSERT INTO `o_shop_pull_logs` VALUES (2, 1, 1, 'ORDER', '定时任务', '{start
 INSERT INTO `o_shop_pull_logs` VALUES (3, 1, 1, 'ORDER', '定时任务', '{startTime:2024-01-02T21:00:01,endTime:2024-01-03T21:00:01}', '{insert:0,update:0,fail:0}', '2024-04-09 14:38:00', 28237);
 INSERT INTO `o_shop_pull_logs` VALUES (4, 1, 1, 'ORDER', '定时任务', '{startTime:2024-01-03T20:00:01,endTime:2024-01-04T20:00:01}', '{insert:3,update:0,fail:0}', '2024-04-09 14:39:00', 1900);
 INSERT INTO `o_shop_pull_logs` VALUES (5, 1, 1, 'ORDER', '定时任务', '{startTime:2024-01-04T19:00:01,endTime:2024-01-05T19:00:01}', '{insert:2,update:0,fail:0}', '2024-04-09 14:40:00', 873);
-INSERT INTO `o_shop_pull_logs` VALUES (1924757250562420737, 3, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '请求API错误：accessToken不能为空', '2025-05-20 17:21:03', 496);
-INSERT INTO `o_shop_pull_logs` VALUES (1924761995389792257, 3, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '请求API错误：accessToken不能为空', '2025-05-20 17:21:44', 1090911);
-INSERT INTO `o_shop_pull_logs` VALUES (1924781078755721217, 1006, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '系统异常：Cannot invoke \"java.net.http.HttpResponse.statusCode()\" because \"response\" is null', '2025-05-20 18:54:56', 48960);
-INSERT INTO `o_shop_pull_logs` VALUES (1924782428646400001, 1006, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '系统异常：Cannot invoke \"java.net.http.HttpResponse.statusCode()\" because \"response\" is null', '2025-05-20 18:59:35', 91311);
-INSERT INTO `o_shop_pull_logs` VALUES (1924785867153534978, 1006, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '系统异常：Cannot invoke \"java.net.http.HttpResponse.statusCode()\" because \"response\" is null', '2025-05-20 19:06:03', 523571);
-INSERT INTO `o_shop_pull_logs` VALUES (1924789534543925250, 1006, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '系统异常：Cannot invoke \"java.net.http.HttpResponse.statusCode()\" because \"response\" is null', '2025-05-20 19:28:08', 72900);
+INSERT INTO `o_shop_pull_logs` VALUES (6, 3, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '请求API错误：accessToken不能为空', '2025-05-20 17:21:03', 496);
+INSERT INTO `o_shop_pull_logs` VALUES (7, 3, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '请求API错误：accessToken不能为空', '2025-05-20 17:21:44', 1090911);
+INSERT INTO `o_shop_pull_logs` VALUES (8, 1006, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '系统异常：Cannot invoke \"java.net.http.HttpResponse.statusCode()\" because \"response\" is null', '2025-05-20 18:54:56', 48960);
+INSERT INTO `o_shop_pull_logs` VALUES (9, 1006, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '系统异常：Cannot invoke \"java.net.http.HttpResponse.statusCode()\" because \"response\" is null', '2025-05-20 18:59:35', 91311);
+INSERT INTO `o_shop_pull_logs` VALUES (10, 1006, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '系统异常：Cannot invoke \"java.net.http.HttpResponse.statusCode()\" because \"response\" is null', '2025-05-20 19:06:03', 523571);
+INSERT INTO `o_shop_pull_logs` VALUES (11, 1006, 200, 'GOODS', '主动拉取商品sku', '{startTime:null,endTime:null}', '系统异常：Cannot invoke \"java.net.http.HttpResponse.statusCode()\" because \"response\" is null', '2025-05-20 19:28:08', 72900);
 
 -- ----------------------------
 -- Table structure for o_shop_region
@@ -1795,7 +1795,7 @@ CREATE TABLE `oms_dou_order`  (
   `oms_push_time` datetime NULL DEFAULT NULL COMMENT 'oms订单库推送时间（记录最后一次）',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `order_id_index`(`order_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '抖店订单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '抖店订单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_dou_order
@@ -1870,7 +1870,7 @@ CREATE TABLE `oms_dou_order_item`  (
   `o_goods_sku_id` bigint NULL DEFAULT NULL COMMENT '商品skuid(o_goods_sku外键)',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `order_id_index`(`order_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '抖店订单明细表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '抖店订单明细表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_dou_order_item
@@ -10507,7 +10507,7 @@ CREATE TABLE `oms_pdd_goods`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'pdd商品表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'pdd商品表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_pdd_goods
@@ -10537,7 +10537,7 @@ CREATE TABLE `oms_pdd_goods_sku`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'pdd商品SKU表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'pdd商品SKU表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_pdd_goods_sku
