@@ -67,7 +67,7 @@ public class DouApiCommon {
         params.setAppSecret(shop.getAppSecret());
         params.setAccessToken(shop.getAccessToken());
         params.setRedirectUri(shop.getApiRedirectUrl());
-//        params.setServerUrl(platform.getServerUrl());
+        params.setServerUrl(shop.getApiRequestUrl());
         params.setSellerId(shop.getSellerId());
 
         if (!StringUtils.hasText(shop.getAccessToken())) {

@@ -23,7 +23,7 @@
             <artifactId>open-sdk</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/open-sdk-1.5.1.jar</systemPath>
+            <systemPath>${project.basedir}/libs/open-sdk-1.5.4.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>cn.qihangerp.module</groupId>
