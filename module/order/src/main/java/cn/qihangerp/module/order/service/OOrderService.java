@@ -22,7 +22,7 @@ import java.util.List;
 */
 public interface OOrderService extends IService<OOrder> {
     ResultVo<Integer> jdOrderMessage(String orderId, JSONObject orderDetail);
-    ResultVo<Integer> jdvcOrderMessage(String orderId,JSONObject orderDetail );
+
     ResultVo<Integer> taoOrderMessage(String tid,JSONObject orderDetail );
     ResultVo<Integer> pddOrderMessage(String orderSn,JSONObject orderDetail );
     ResultVo<Integer> douOrderMessage(String orderId,JSONObject orderDetail );

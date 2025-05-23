@@ -50,7 +50,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (request.getRequestURI().equals("/login")
                 || request.getRequestURI().contains("/login")
                 || request.getRequestURI().contains("/captchaImage")
-                || request.getRequestURI().equals("/order/get_detail")
+                || request.getRequestURI().contains("/order/get_detail")
                 || request.getRequestURI().equals("/refund/get_detail")
                 || request.getRequestURI().contains("/system/config")
         ) {

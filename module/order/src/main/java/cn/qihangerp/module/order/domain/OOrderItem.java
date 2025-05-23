@@ -45,7 +45,7 @@ public class OOrderItem implements Serializable {
     /**
      * erp系统商品规格id
      */
-    private String goodsSkuId;
+    private Long goodsSkuId;
 
     /**
      * 商品标题

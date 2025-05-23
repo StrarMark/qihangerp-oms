@@ -52,7 +52,7 @@ public class OShipStockUp implements Serializable {
     /**
      * erp系统商品规格id
      */
-    private String specId;
+    private Long specId;
 
     /**
      * 商品标题

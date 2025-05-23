@@ -1,5 +1,6 @@
 package cn.qihangerp.oms.mq;
 
+import cn.qihangerp.module.service.ApiMessageService;
 import com.alibaba.fastjson2.JSON;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.mq.MqMessage;
@@ -37,9 +38,12 @@ public class ApiMessageReceiver implements MessageListener {
         String messageContent = new String(message.getBody());
         MqMessage vo = JSON.parseObject(messageContent, MqMessage.class);
 
-        System.out.println(vo.getMqType());
+        logger.info("收到通知消息：",vo);
+        cn.qihangerp.module.service.ApiMessageService apiMessageService = SpringUtils.getBean(ApiMessageService.class);
+        apiMessageService.messageHandle(vo);
+//        System.out.println(vo.getMqType());
 
-        if(vo.getMqType() == MqType.ORDER_MESSAGE){
+//        if(vo.getMqType() == MqType.ORDER_MESSAGE){
             // 有新订单，插入新订单到shop_order
 
 //            ErpSaleOrderService orderService = SpringUtils.getBean(ErpSaleOrderService.class);
@@ -50,7 +54,7 @@ public class ApiMessageReceiver implements MessageListener {
 //                logger.info("订单消息TAO"+messageContent);
 //                orderService.taoOrderMessage(vo.getKeyId());
 //            }
-        }
+//        }
 //        else if(vo.getMqType() == MqType.REFUND_MESSAGE){
 //            ORefundService refundService = SpringUtils.getBean(ORefundService.class);
 //            if(vo.getShopType().getIndex() == EnumShopType.JD.getIndex()) {
