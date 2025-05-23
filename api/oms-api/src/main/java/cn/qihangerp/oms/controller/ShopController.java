@@ -117,18 +117,18 @@ public class ShopController extends BaseController {
         return toAjax(shopService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
 
-    @GetMapping("/logistics_status")
-    public TableDataInfo logisticsStatusList(Integer status, Integer shopType, Integer shopId)
-    {
-        return getDataTable(logisticsCompanyService.queryListByStatus(status,shopType, shopId));
-    }
-    /**
-     * 查询店铺列表logistics
-     */
-    @GetMapping("/logistics")
-    public TableDataInfo logisticsList(Integer type, Integer shopId, PageQuery pageQuery)
-    {
-        PageResult<OLogisticsCompany> result = logisticsCompanyService.queryPageList(type, shopId, pageQuery);
-        return getDataTable(result);
-    }
+//    @GetMapping("/logistics_status")
+//    public TableDataInfo logisticsStatusList(Integer status, Integer shopType, Integer shopId)
+//    {
+//        return getDataTable(logisticsCompanyService.queryListByStatus(status,shopType, shopId));
+//    }
+//    /**
+//     * 查询店铺列表logistics
+//     */
+//    @GetMapping("/logistics")
+//    public TableDataInfo logisticsList(Integer type, Integer shopId, PageQuery pageQuery)
+//    {
+//        PageResult<OLogisticsCompany> result = logisticsCompanyService.queryPageList(type, shopId, pageQuery);
+//        return getDataTable(result);
+//    }
 }

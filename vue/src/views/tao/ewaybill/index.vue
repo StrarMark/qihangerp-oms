@@ -420,6 +420,11 @@ export default {
       // 表单校验
       rules: {
         accountId: [{ required: true, message: '请选择电子面单账户' }],
+        height: [{ required: true, message: '不能为空' }],
+        weight: [{ required: true, message: '不能为空' }],
+        shippingNumber: [{ required: true, message: '不能为空' }],
+        shippingCompany: [{ required: true, message: '不能为空' }],
+        shippingCost: [{ required: true, message: '不能为空' }],
       }
     };
   },

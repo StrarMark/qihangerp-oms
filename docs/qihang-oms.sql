@@ -3077,7 +3077,7 @@ INSERT INTO `sys_menu` VALUES (2079, '字典管理', 5, 9, 'dict', 'system/dict/
 INSERT INTO `sys_menu` VALUES (2084, '电子面单设置', 3, 22, 'ewaybill_account', 'shop/ewaybillAccount/index', NULL, 1, 0, 'C', '0', '0', '', 'code', 'admin', '2024-03-21 20:05:09', 'admin', '2025-05-19 14:17:30', '');
 INSERT INTO `sys_menu` VALUES (2086, '定时任务配置', 3, 80, 'task_list', 'shop/task/index', NULL, 1, 0, 'C', '0', '0', '', 'time-range', 'admin', '2024-03-22 19:29:20', 'admin', '2025-05-19 14:24:21', '');
 INSERT INTO `sys_menu` VALUES (2087, '发货管理', 0, 20, 'ship', NULL, NULL, 1, 0, 'M', '0', '0', '', 'guide', 'admin', '2024-03-30 17:36:10', 'admin', '2024-08-25 15:45:48', '');
-INSERT INTO `sys_menu` VALUES (2088, '发货快递管理', 2087, 9, 'ship_logistics', 'shipping/logistics/company', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2024-03-30 17:37:01', 'admin', '2024-12-08 16:19:02', '');
+INSERT INTO `sys_menu` VALUES (2088, '发货设置', 2087, 9, 'ship_logistics', 'shipping/logistics/index', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2024-03-30 17:37:01', 'admin', '2024-12-08 16:19:02', '');
 INSERT INTO `sys_menu` VALUES (2089, '发货记录', 2087, 3, 'record', 'shipping/index', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-03-30 17:37:42', 'admin', '2024-07-28 18:56:02', '');
 INSERT INTO `sys_menu` VALUES (2090, '角色管理', 5, 2, 'role', 'system/role/index', NULL, 1, 0, 'C', '0', '0', NULL, 'peoples', 'admin', '2024-03-31 12:40:50', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2091, '部门管理', 5, 3, 'dept', 'system/dept/index', NULL, 1, 0, 'C', '0', '0', NULL, 'tree', 'admin', '2024-03-31 12:42:57', '', NULL, '');

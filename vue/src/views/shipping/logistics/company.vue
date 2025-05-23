@@ -29,13 +29,22 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="danger"
+          type="primary"
           plain
           icon="el-icon-download"
           size="mini"
-          @click="handlePull"
-        >API拉取快递公司数据</el-button>
+          @click="handleAdd"
+        >添加</el-button>
       </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handlePull"-->
+<!--        >API拉取快递公司数据</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -79,7 +88,30 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
+    <!-- 对话框 -->
+    <el-dialog title="添加快递公司" :visible.sync="open" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="快递公司" prop="name">
+          <el-input v-model="form.name" placeholder="请输入快递公司" />
+        </el-form-item>
+        <el-form-item label="快递编码" prop="name">
+          <el-input v-model="form.code" placeholder="请输入快递编码" />
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-select v-model="form.status" placeholder="请选择状态" clearable @change="handleQuery">
+            <el-option label="启用" value="1"></el-option>
+            <el-option label="禁用" value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="form.remark" placeholder="备注" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -88,6 +120,7 @@ import {listLogistics, updateStatus} from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 import {pullLogisticsTao,pullLogisticsJd} from "@/api/tao/shop_api";
+import {addLogistics} from "@/api/api/logistics";
 
 export default {
   name: "Shop",
@@ -161,7 +194,9 @@ export default {
         this.loading = false;
       });
     },
-
+    handleAdd() {
+      this.open=true
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -227,7 +262,23 @@ export default {
         console.log('更新状态====',response)
         this.getList()
       })
-    }
+    },
+    cancel(){
+      this.open=false
+    },
+    /** 提交按钮 */
+    submitForm() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          addLogistics(this.form).then(response => {
+            this.$modal.msgSuccess("添加成功");
+            this.open = false;
+            this.getList();
+          });
+
+        }
+      });
+    },
   }
 };
 </script>
