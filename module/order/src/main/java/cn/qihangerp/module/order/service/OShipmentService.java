@@ -31,13 +31,6 @@ public interface OShipmentService extends IService<OShipment> {
      */
     ResultVo<Integer> handOrderShip(OrderShipBo shipping);
 
-    /**
-     * 订单备货（很多逻辑）
-     * @param orderNum
-     * @param shopType
-     * @return
-     */
-    ResultVo<Integer> shipStockup(String orderNum, EnumShopType shopType);
 
     /**
      * 发货消息
@@ -47,5 +40,5 @@ public interface OShipmentService extends IService<OShipment> {
      * @param logisticsCode
      * @return
      */
-    ResultVo<Integer> shipSendMessage(String orderNum, EnumShopType shopType,String logisticsCompany,String logisticsCode);
+//    ResultVo<Integer> shipSendMessage(String orderNum, EnumShopType shopType,String logisticsCompany,String logisticsCode);
 }
