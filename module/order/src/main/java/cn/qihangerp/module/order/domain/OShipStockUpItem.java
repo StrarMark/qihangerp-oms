@@ -9,12 +9,12 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 发货-备货表（取号发货加入备货清单、分配供应商发货加入备货清单）
- * @TableName o_ship_stock_up
+ * 发货-备货表（打单加入备货清单）
+ * @TableName o_ship_stock_up_item
  */
-@TableName(value ="o_ship_stock_up")
+@TableName(value ="o_ship_stock_up_item")
 @Data
-public class OShipStockUp implements Serializable {
+public class OShipStockUpItem implements Serializable {
     /**
      * 
      */
@@ -62,6 +62,51 @@ public class OShipStockUp implements Serializable {
     private String orderNum;
 
     /**
+     * 原始订单skuid
+     */
+    private String originalSkuId;
+
+    /**
+     * erp系统商品id
+     */
+    private Long goodsId;
+
+    /**
+     * erp系统商品规格id
+     */
+    private Long skuId;
+
+    /**
+     * 商品标题
+     */
+    private String goodsTitle;
+
+    /**
+     * 商品图片
+     */
+    private String goodsImg;
+
+    /**
+     * 商品编码
+     */
+    private String goodsNum;
+
+    /**
+     * 商品规格
+     */
+    private String skuName;
+
+    /**
+     * 商品规格编码
+     */
+    private String skuNum;
+
+    /**
+     * 商品数量
+     */
+    private Integer quantity;
+
+    /**
      * 状态0待备货1备货中2备货完成3已发货
      */
     private Integer status;
@@ -85,26 +130,6 @@ public class OShipStockUp implements Serializable {
      * 更新人
      */
     private String updateBy;
-
-    /**
-     * 物流公司
-     */
-    private String shipLogisticsCompany;
-
-    /**
-     * 物流公司code
-     */
-    private String shipLogisticsCompanyCode;
-
-    /**
-     * 物流单号
-     */
-    private String shipLogisticsCode;
-
-    /**
-     * 发货状态1：待发货，2：已发货，3已推送
-     */
-    private Integer shipStatus;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
