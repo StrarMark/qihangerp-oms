@@ -5,6 +5,7 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
+import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.mq.MqType;
@@ -33,7 +34,9 @@ public class TaoOrderController extends BaseController {
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-        return success(orderService.queryDetailById(id));
+        TaoOrder taoOrder = orderService.queryDetailById(id);
+        if(taoOrder==null) return AjaxResult.error("没有找到订单信息");
+        return success(taoOrder);
     }
 
     /**
@@ -51,5 +54,33 @@ public class TaoOrderController extends BaseController {
             }
         }
         return success();
+    }
+
+    /**
+     * 订单发货(手动发货)
+     * @param shipBo
+     * @return
+     */
+    @PostMapping("/manualShipment")
+    public AjaxResult manualShipment(@RequestBody ShopOrderShipBo shipBo)
+    {
+//        var result = orderService.manualShipmentOrder(shipBo,getUsername());
+//        if(result.getCode() == 0) return AjaxResult.success();
+//        else return AjaxResult.error(result.getMsg());
+        return AjaxResult.error("未实现");
+    }
+
+    /**
+     * 分配供应商发货
+     * @param shipBo
+     * @return
+     */
+    @PostMapping("/allocateShipmentOrder")
+    public AjaxResult allocateShipmentOrder(@RequestBody ShopOrderShipBo shipBo)
+    {
+//        var result = orderService.allocateShipmentOrder(shipBo,getUsername());
+//        if(result.getCode() == 0) return AjaxResult.success();
+//        else return AjaxResult.error(result.getMsg());
+        return AjaxResult.error("未实现");
     }
 }

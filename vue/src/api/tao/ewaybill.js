@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function getWaybillAccountList(data) {
   return request({
     url: '/api/open-api/tao/ewaybill/get_waybill_account_list',
-    method: 'post',
+    method: 'get',
     data: data
   })
 }

@@ -84,7 +84,11 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
 
     @Override
     public TaoOrder queryDetailById(Long id) {
-        return mapper.selectById(id);
+        TaoOrder taoOrder = mapper.selectById(id);
+        if(taoOrder!=null){
+            taoOrder.setItems(itemMapper.selectList(new LambdaQueryWrapper<TaoOrderItem>().eq(TaoOrderItem::getTid,taoOrder.getTid())));
+            return taoOrder;
+        }else return null;
     }
 
     @Override

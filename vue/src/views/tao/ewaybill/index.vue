@@ -45,11 +45,31 @@
         <el-button
           type="primary"
           plain
+          :disabled="single"
+          icon="el-icon-download"
+          size="mini"
+          @click="handleShip"
+        >手动发货</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type=""
+          plain
+          :disabled="single"
+          icon="el-icon-download"
+          size="mini"
+          @click="allocateShipmentToSupplier"
+        >分配给供应商发货</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
           icon="el-icon-time"
           size="mini"
           :disabled="multiple"
           @click="handleGetEwaybillCode"
-        >电子面单取号</el-button>
+        >电子面单取号&发货</el-button>
       </el-col>
 
       <el-col :span="1.5">
@@ -186,14 +206,167 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 打包发货对话框 -->
+    <el-dialog title="打包发货" :visible.sync="shipOpen" width="1100px" append-to-body>
+
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
+        <el-descriptions title="订单信息">
+          <el-descriptions-item label="ID">{{form.id}}</el-descriptions-item>
+          <el-descriptions-item label="订单号">{{form.orderNum}}</el-descriptions-item>
+
+          <el-descriptions-item label="店铺">
+            {{ shopList.find(x=>x.id == form.shopId)?shopList.find(x=>x.id == form.shopId).name:'' }}
+            <el-tag size="small" v-if="form.shopType === 5">微信小店</el-tag>
+
+          </el-descriptions-item>
+          <el-descriptions-item label="买家留言">
+            {{form.buyerMemo}}
+          </el-descriptions-item>
+          <el-descriptions-item label="备注">
+            {{form.remark}}
+          </el-descriptions-item>
+          <el-descriptions-item label="创建时间">
+            {{ parseTime(form.createTime) }}
+          </el-descriptions-item>
+
+          <el-descriptions-item label="订单状态">
+            <el-tag v-if="form.orderStatus === 1" style="margin-bottom: 6px;">待发货</el-tag>
+            <el-tag v-if="form.orderStatus === 2" style="margin-bottom: 6px;">已发货</el-tag>
+            <el-tag v-if="form.orderStatus === 3" style="margin-bottom: 6px;">已签收</el-tag>
+          </el-descriptions-item>
+          <el-descriptions-item label="退款状态">
+            <el-tag v-if="form.refundStatus === 1">无售后或售后关闭</el-tag>
+            <el-tag v-if="form.refundStatus === 2">售后处理中</el-tag>
+            <el-tag v-if="form.refundStatus === 3">退款中</el-tag>
+            <el-tag v-if="form.refundStatus === 4">退款成功</el-tag>
+          </el-descriptions-item>
+          <el-descriptions-item label="">
+            <!--            <el-tag v-if="form.shipType === 1"  type="danger">供应商代发</el-tag>-->
+            <!--            <el-tag v-if="form.shipType === 0" type="danger">仓库发货</el-tag>-->
+          </el-descriptions-item>
+          <el-descriptions-item label="收件人姓名">{{form.receiverName}}</el-descriptions-item>
+          <el-descriptions-item label="收件人手机号">{{form.receiverMobile}}</el-descriptions-item>
+          <el-descriptions-item label="省市区">{{form.province}}{{form.city}}{{form.town}}</el-descriptions-item>
+          <el-descriptions-item label="详细地址">{{form.address}}</el-descriptions-item>
+
+
+
+        </el-descriptions>
+
+        <el-divider content-position="center">商品明细</el-divider>
+        <el-table :data="form.items"  style="margin-bottom: 10px;">
+          <!-- <el-table-column type="selection" width="50" align="center" /> -->
+          <el-table-column label="序号" align="center" type="index" width="50"/>
+
+          <el-table-column label="商品图片" prop="goodsImg" width="80">
+            <template slot-scope="scope">
+              <el-image style="width: 70px; height: 70px" :src="scope.row.picPath"></el-image>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品标题" prop="title" ></el-table-column>
+          <el-table-column label="规格" prop="skuPropertiesName" width="350"></el-table-column>
+          <el-table-column label="sku编码" prop="outerSkuId"></el-table-column>
+          <!--          <el-table-column label="单价" prop="goodsPrice"></el-table-column>-->
+          <el-table-column label="数量" prop="num"></el-table-column>
+          <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
+        </el-table>
+        <el-form-item label="包裹尺寸" prop="height">
+          <el-input type="number" v-model.number="form.length" placeholder="长mm" style="width:90px" /> x
+          <el-input type="number"  v-model.number="form.width" placeholder="宽mm" style="width:90px" /> x
+          <el-input type="number" v-model.number="form.height" placeholder="高mm" style="width:90px" />
+        </el-form-item>
+        <el-form-item label="包裹重量" prop="weight">
+          <el-input type="number" v-model.number="form.weight" placeholder="请输入包裹重量（单位g）" style="width:300px" />
+        </el-form-item>
+        <el-row>
+          <el-col>
+            <el-form-item label="物流公司" prop="shippingCompany">
+              <!--              <el-input v-model="form.shippingCompany" placeholder="请输入物流公司" style="width:300px" />-->
+              <el-select v-model="form.shippingCompany" filterable r placeholder="选择快递公司" style="width:300px">
+                <el-option v-for="item in logisticsList" :key="item.id" :label="item.name" :value="item.id">
+                  <span style="float: left">{{ item.name }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px" >{{item.number}}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="物流单号" prop="shippingNumber">
+              <el-input v-model="form.shippingNumber" placeholder="请输入物流单号" style="width:300px" />
+            </el-form-item>
+            <el-form-item label="物流费用" prop="shippingCost">
+              <el-input v-model="form.shippingCost" placeholder="请输入物流费用" style="width:300px" />
+            </el-form-item>
+            <el-form-item label="发货人" prop="shippingMan">
+              <el-input v-model="form.shippingMan" placeholder="请输入发货人" style="width:300px" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitShipForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 分配给供应商发货对话框 -->
+    <el-dialog title="分配给供应商发货" :visible.sync="allocateShipmentOpen" width="1100px" append-to-body>
+
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
+        <el-descriptions title="订单信息">
+          <el-descriptions-item label="订单号">{{form.orderNum}}</el-descriptions-item>
+
+          <el-descriptions-item label="买家留言">
+            {{form.buyerMemo}}
+          </el-descriptions-item>
+          <el-descriptions-item label="备注">
+            {{form.remark}}
+          </el-descriptions-item>
+          <el-descriptions-item label="创建时间">
+            {{ parseTime(form.createTime) }}
+          </el-descriptions-item>
+
+
+          <el-descriptions-item label="收件人姓名">{{form.receiverName}}</el-descriptions-item>
+          <el-descriptions-item label="收件人手机号">{{form.receiverMobile}}</el-descriptions-item>
+          <el-descriptions-item label="省市区">{{form.province}}{{form.city}}{{form.town}}</el-descriptions-item>
+          <el-descriptions-item label="详细地址">{{form.address}}</el-descriptions-item>
+
+
+
+        </el-descriptions>
+
+        <el-divider content-position="center">商品明细</el-divider>
+        <el-table :data="form.items"  style="margin-bottom: 10px;">
+          <!-- <el-table-column type="selection" width="50" align="center" /> -->
+          <el-table-column label="序号" align="center" type="index" width="50"/>
+
+          <el-table-column label="商品图片" prop="goodsImg" width="80">
+            <template slot-scope="scope">
+              <el-image style="width: 70px; height: 70px" :src="scope.row.picPath"></el-image>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品标题" prop="title" ></el-table-column>
+          <el-table-column label="规格" prop="skuPropertiesName" width="350"></el-table-column>
+          <el-table-column label="sku编码" prop="outerSkuId"></el-table-column>
+          <!--          <el-table-column label="单价" prop="goodsPrice"></el-table-column>-->
+          <el-table-column label="数量" prop="num"></el-table-column>
+          <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
+        </el-table>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitAllocateShipmentForm">分配给供应商发货</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
-import {listShop} from "@/api/shop/shop";
-import {listOrder} from "@/api/tao/order";
+import {listLogisticsStatus, listShop} from "@/api/shop/shop";
+import {getOrder, listOrder,allocateShipmentOrder,manualShipmentOrder} from "@/api/tao/order";
 import {
   getWaybillAccountList,
   pullWaybillAccount,
@@ -208,6 +381,8 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      shipOpen: false,
+      allocateShipmentOpen: false,
       // 选中数组
       ids: [],
       shopList: [],
@@ -239,6 +414,7 @@ export default {
       // 表单参数
       form: {},
       orderList: [],
+      logisticsList: [],
       printerList: [],
       deliverList: [],
       // 表单校验
@@ -270,6 +446,8 @@ export default {
     // 取消按钮
     cancel() {
       this.getCodeOpen = false;
+      this.shipOpen = false;
+      this.allocateShipmentOpen = false;
       this.reset();
     },
     // 表单重置
@@ -292,36 +470,12 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.tid)
+      this.ids = selection.map(item => item.id)
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     openWs() {
-      const ws = new WebSocket('ws://127.0.0.1:13528');
-      ws.onopen = () => {
-        console.log('与打印组件建立连接成功: ');
-        // 或打印机
-        ws.send(JSON.stringify({
-          requestID: '12345',
-          cmd: 'getPrinters',
-          "version": "1.0"
-        }))
-      };
-      let obj = this.$modal;
-      ws.onmessage = (e) => {
-        const resp = JSON.parse(e.data || '{}')
-        if (resp.cmd === 'getPrinters') {
-          this.printerList = resp.printers
-          obj.msgSuccess("打印组件连接成功！");
-          console.log('打印机列表: ', resp.printers);
-        }
-      };
-      // 当发生错误时触发
-      ws.onerror = function (error) {
-        obj.msgError("打印组件连接失败！请安装并启动菜鸟云打印组件！");
-        console.error('WebSocket error:', error);
-        // alert('WebSocket error occurred. Check the console for more details.');
-      };
+      console.log('开源版本暂不支持')
     },
     // 取号弹窗
     handleGetEwaybillCode() {
@@ -381,48 +535,7 @@ export default {
       getWaybillPrintData({shopId: this.queryParams.shopId, ids: ids}).then(response => {
         console.log("======打印======", response.data)
         if (response.data) {
-          const ws = new WebSocket('ws://127.0.0.1:13528');
-          ws.onopen = () => {
-            let printData = []
-            response.data.forEach(x => printData.push(JSON.parse(x.printData)))
-            console.log('开始打印: 组合打印数据：', printData);
-            // 打印
-            ws.send(JSON.stringify({
-              "cmd": "print",
-              "requestID": this.getUUID(8, 16),
-              "version": "1.0",
-              "task": {
-                "taskID": this.getUUID(8,10),
-                "preview": false,
-                "printer": this.printParams.printer,
-                "previewType": "pdf",
-                "firstDocumentNumber": 10,
-                "totalDocumentCount": 100,
-                "documents": [{
-                  "documentID": this.getUUID(8,10),
-                  "contents": printData
-                }]
-              }
-            }))
-          };
-          let obj = this.$modal;
-          ws.onmessage = (e) => {
-            const resp = JSON.parse(e.data || '{}')
-            if (resp.cmd === 'print') {
-              console.log('打印结果: ', resp);
-              obj.msgSuccess("打印成功！" + JSON.stringify(resp));
-              // 请求回调
-              return pushWaybillPrintSuccess({shopId: this.queryParams.shopId, ids: ids})
-            }
-          };
-
-
-          // 当发生错误时触发
-          ws.onerror = function (error) {
-            obj.msgError("打印失败！");
-            console.error('WebSocket error:', error);
-            // alert('WebSocket error occurred. Check the console for more details.');
-          };
+          console.log('===开源版本暂不支持====')
         }
       });
 
@@ -430,29 +543,69 @@ export default {
     },
     handleShipSend(){
       // this.$modal.msgError("开源版本未实现平台发货！请自行对接发货");
-      pushShipSend({shopId: this.queryParams.shopId, ids: ids}).then(response => {
+      pushShipSend({shopId: this.queryParams.shopId, ids: this.ids}).then(response => {
         this.$modal.msgSuccess("发货成功！");
         this.getList()
       })
     },
-    getUUID(len, radix) {
-      var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-      var uuid = [], i;
-      radix = radix || chars.length;
-      if (len) {
-        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
-      } else {
-        var r;
-        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-        uuid[14] = '4';
-        for (i = 0; i < 36; i++) {
-          if (!uuid[i]) {
-            r = 0 | Math.random() * 16;
-            uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
-          }
+    // 分配给供应商发货
+    allocateShipmentToSupplier(row){
+      this.reset();
+      const id = row.id || this.ids
+      console.log('======',id)
+      getOrder(id).then(response => {
+        this.form = response.data;
+        this.allocateShipmentOpen = true;
+        // this.detailTitle = "订单详情";
+      });
+    },
+    // 手动发货按钮
+    handleShip(row){
+      this.reset();
+      const id = row.id || this.ids
+      console.log('======',id)
+      getOrder(id).then(response => {
+        this.form = response.data;
+        this.form.length=0
+        this.form.width=0
+        this.form.height=0
+        this.form.weight=0.0
+        this.form.shippingCost=0.0
+        listLogisticsStatus({}).then(resp=>{
+          this.logisticsList = resp.rows
+        })
+        this.shipOpen = true;
+        // this.detailTitle = "订单详情";
+      });
+    },
+    // 手动发货表单
+    submitShipForm(){
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          manualShipmentOrder(this.form).then(resp =>{
+            this.$modal.msgSuccess("手动发货成功");
+            this.shipOpen = false
+            this.getList()
+          })
         }
-      }
-      return uuid.join('');
+      })
+    },
+    // 分配给供应商发货
+    submitAllocateShipmentForm(){
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          allocateShipmentOrder(this.form).then(resp =>{
+            if(resp.code==200){
+              this.$modal.msgSuccess("分配发货成功");
+              this.allocateShipmentOpen = false
+              this.getList()
+            }else{
+              this.$modal.msgError(resp.msg);
+            }
+
+          })
+        }
+      })
     }
   }
 };

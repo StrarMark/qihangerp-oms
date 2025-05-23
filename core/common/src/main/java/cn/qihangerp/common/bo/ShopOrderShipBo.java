@@ -1,11 +1,11 @@
-package cn.qihangerp.api.common.bo;
+package cn.qihangerp.common.bo;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class ErpOrderShipBo {
+public class ShopOrderShipBo {
     private String Id;//订单id
     private Double length;
     private Double width;
