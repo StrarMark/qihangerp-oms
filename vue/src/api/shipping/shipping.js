@@ -1,13 +1,26 @@
 import request from '@/utils/request'
 
-// 备货清单
-export function listShipStockup(query) {
+// 备货清单-仓库发货
+export function listShipStockupWarehouse(query) {
   return request({
-    url: '/api/oms-api/ship/stock_up_list',
+    url: '/api/oms-api/ship/stock_up_list_by_warehouse',
     method: 'get',
     params: query
   })
 }
+
+
+// 备货清单-供应商发货
+export function listShipStockupSupplier(query) {
+  return request({
+    url: '/api/oms-api/ship/stock_up_list_by_supplier',
+    method: 'get',
+    params: query
+  })
+}
+
+
+
 // 备货完成
 export function shipStockupComplete(data) {
   return request({

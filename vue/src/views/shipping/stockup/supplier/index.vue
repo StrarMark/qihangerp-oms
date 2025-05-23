@@ -289,6 +289,9 @@
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
 import {listLogistics, listLogisticsStatus} from "@/api/api/logistics";
+import {
+  listShipStockupSupplier
+} from "@/api/shipping/shipping";
 // import {listShippingSupplier, getShippingDetail, supplierAgentShipment} from "@/api/wms/shipping";
 export default {
   name: "supplierShipment",
@@ -365,7 +368,7 @@ export default {
     /** 查询供应商代发货列表 */
     getList() {
       this.loading = true;
-      listShippingSupplier(this.queryParams).then(response => {
+      listShipStockupSupplier(this.queryParams).then(response => {
         this.agentShippingList = response.rows;
         console.log('=======',this.agentShippingList)
         this.total = response.total;

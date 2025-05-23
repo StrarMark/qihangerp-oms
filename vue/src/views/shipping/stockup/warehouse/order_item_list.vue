@@ -206,7 +206,7 @@
 </template>
 
 <script>
-import {listShipStockup, orderItemSpecIdUpdate,shipStockupComplete} from "@/api/shipping/shipping";
+import {listShipStockupWarehouse, orderItemSpecIdUpdate,shipStockupComplete} from "@/api/shipping/shipping";
 import { listShop } from "@/api/shop/shop";
 export default {
   name: "ShipStockupOrderItem",
@@ -312,7 +312,7 @@ export default {
     /** 查询仓库订单发货列表 */
     getList() {
       this.loading = true;
-      listShipStockup(this.queryParams).then(response => {
+      listShipStockupWarehouse(this.queryParams).then(response => {
         this.shippingList = response.rows;
         this.total = response.total;
         this.loading = false;

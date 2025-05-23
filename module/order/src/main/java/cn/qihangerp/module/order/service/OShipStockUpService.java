@@ -1,6 +1,10 @@
 package cn.qihangerp.module.order.service;
 
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.PageResult;
 import cn.qihangerp.module.order.domain.OShipStockUp;
+import cn.qihangerp.module.order.domain.OShipStockUpItem;
+import cn.qihangerp.module.order.domain.bo.ShipStockUpBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,5 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-05-23 21:43:16
 */
 public interface OShipStockUpService extends IService<OShipStockUp> {
-
+    PageResult<OShipStockUp> querySupplierPageList(ShipStockUpBo bo, PageQuery pageQuery);
 }

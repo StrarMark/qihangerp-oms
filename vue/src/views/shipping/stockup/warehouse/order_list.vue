@@ -271,7 +271,7 @@
 
 <script>
 import {
-  listShipStockup,
+  listShipStockupWarehouse,
   orderItemSpecIdUpdate,
   shipStockupCompleteByOrder
 } from "@/api/shipping/shipping";
@@ -382,7 +382,7 @@ export default {
     /** 查询仓库订单发货列表 */
     getList() {
       this.loading = true;
-      listShipStockup(this.queryParams).then(response => {
+      listShipStockupWarehouse(this.queryParams).then(response => {
         this.shippingListOrigin = response.rows;
         // this.shippingList = response.rows;
         // this.total = response.total;

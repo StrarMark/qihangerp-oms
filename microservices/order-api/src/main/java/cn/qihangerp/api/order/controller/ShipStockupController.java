@@ -1,37 +1,60 @@
-//package cn.qihangerp.api.order.controller;
-//
-//
-//import cn.qihangerp.common.AjaxResult;
-//import cn.qihangerp.common.PageQuery;
-//import cn.qihangerp.common.TableDataInfo;
-//import cn.qihangerp.module.order.domain.bo.ShipStockUpBo;
-//import cn.qihangerp.module.order.domain.bo.ShipStockUpCompleteBo;
-//import cn.qihangerp.module.order.service.OShipStockUpService;
-//import cn.qihangerp.module.order.service.OShipWaybillService;
-//import cn.qihangerp.security.common.BaseController;
-//import lombok.AllArgsConstructor;
-//import org.springframework.web.bind.annotation.*;
-//
-//@AllArgsConstructor
-//@RestController
-//@RequestMapping("/ship")
-//public class ShipStockupController  extends BaseController {
-//    private final OShipStockUpService shipStockUpService;
-//    private final OShipWaybillService shipWaybillService;
-//
-//    /**
-//     * 备货列表
-//     * @param bo
-//     * @param pageQuery
-//     * @return
-//     */
-//    @GetMapping("/stock_up_list")
-//    public TableDataInfo stock_up_list(ShipStockUpBo bo, PageQuery pageQuery)
-//    {
-//        var pageList = shipStockUpService.queryPageList(bo,pageQuery);
-//        return getDataTable(pageList);
-//    }
-//
+package cn.qihangerp.api.order.controller;
+
+
+import cn.qihangerp.common.AjaxResult;
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.TableDataInfo;
+import cn.qihangerp.module.order.domain.bo.ShipStockUpBo;
+import cn.qihangerp.module.order.domain.bo.ShipStockUpCompleteBo;
+import cn.qihangerp.module.order.service.OShipStockUpItemService;
+import cn.qihangerp.module.order.service.OShipStockUpService;
+import cn.qihangerp.module.order.service.OShipWaybillService;
+import cn.qihangerp.security.common.BaseController;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+@AllArgsConstructor
+@RestController
+@RequestMapping("/ship")
+public class ShipStockupController  extends BaseController {
+    private final OShipStockUpService shipStockUpService;
+    private final OShipStockUpItemService shipStockUpItemService;
+
+    /**
+     * 备货列表(仓库发货)
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping("/stock_up_list_by_warehouse")
+    public TableDataInfo stock_up_list(ShipStockUpBo bo, PageQuery pageQuery)
+    {
+        var pageList = shipStockUpItemService.queryWarehousePageList(bo,pageQuery);
+        return getDataTable(pageList);
+    }
+
+    /**
+     * 备货中-供应商代发
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping("/stock_up_list_by_supplier")
+    public TableDataInfo supplierShipList(ShipStockUpBo bo, PageQuery pageQuery)
+    {
+//        bo.setShipper(1);
+//        bo.setStockStatus(0);
+//        bo.setTenantId(getUserId());
+//        PageResult<ErpShipmentItem> list = shippingItemService.queryPageList(bo, pageQuery);
+//        return getDataTable(list);
+//        bo.setShipper(1);
+//        bo.setTenantId(getUserId());
+//        PageResult<ErpShipment> erpShipmentPageResult = shippingService.queryPageList(bo, pageQuery);
+//        return getDataTable(erpShipmentPageResult);
+        var pageList = shipStockUpService.querySupplierPageList(bo,pageQuery);
+        return getDataTable(pageList);
+    }
+
 //    @PostMapping("/stock_up_complete")
 //    public AjaxResult stock_up_complete(@RequestBody ShipStockUpCompleteBo bo)
 //    {
@@ -55,4 +78,4 @@
 //        //wmsStockOutEntryService.insertWmsStockOutEntry(wmsStockOutEntry)
 //        return toAjax(1);
 //    }
-//}
+}
