@@ -68,15 +68,9 @@
             <artifactId>security</artifactId>
             <version>1.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.open</groupId>-->
-<!--            <artifactId>open-sdk</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${project.basedir}/libs/open-sdk-1.5.1.jar</systemPath>-->
-<!--        </dependency>-->
+
         <dependency>
-            <groupId>org.projectlombok</groupId>
+            <groupId>org.projectlombok</groupId>it
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
             <scope>provided</scope>
