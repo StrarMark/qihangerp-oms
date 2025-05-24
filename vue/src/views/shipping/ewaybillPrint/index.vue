@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
     <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="线下渠道" name="printOffline">
+        <print-offline></print-offline>
+      </el-tab-pane>
       <el-tab-pane label="淘宝天猫" name="printTao" lazy>
         <print-tao></print-tao>
       </el-tab-pane>
@@ -23,6 +26,7 @@
 </template>
 
 <script>
+import printOffline  from "@/views/order/private/shipPrintOrderList.vue";
 import printWei  from "@/views/wei/ewaybill/index.vue";
 import printTao from "@/views/tao/ewaybill/index.vue";
 import printPdd from "@/views/pdd/ewaybill/index.vue";
@@ -32,10 +36,10 @@ import PrintJd from "@/views/jd/ewaybill/index.vue";
 
 export default {
   name: "print",
-  components:{PrintJd, printWei,printTao,printPdd,printDou},
+  components:{PrintJd, printWei,printTao,printPdd,printDou,printOffline},
   data() {
     return {
-      activeName: 'printTao'
+      activeName: 'printOffline'
     };
   },
   created() {

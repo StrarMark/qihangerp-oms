@@ -54,7 +54,7 @@ export default {
   },
   mounted() {
     listPlatform({status:0}).then(res => {
-      this.typeList = res.rows;
+      this.typeList = res.rows.filter(item => item.id !== 999);
       this.activeName = this.typeList[0].code
     })
   },
