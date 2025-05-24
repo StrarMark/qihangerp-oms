@@ -10,11 +10,11 @@ import lombok.Data;
 
 /**
  * 发货-备货表（打单加入备货清单）
- * @TableName o_ship_stock_up_item
+ * @TableName o_order_ship_list_item
  */
-@TableName(value ="o_ship_stock_up_item")
+@TableName(value ="o_order_ship_list_item")
 @Data
-public class OShipStockUpItem implements Serializable {
+public class OOrderShipListItem implements Serializable {
     /**
      * 
      */
@@ -25,6 +25,11 @@ public class OShipStockUpItem implements Serializable {
      * 店铺id
      */
     private Long shopId;
+
+    /**
+     * 外键id
+     */
+    private Long listId;
 
     /**
      * 店铺类型
@@ -49,12 +54,12 @@ public class OShipStockUpItem implements Serializable {
     /**
      * erp订单id
      */
-    private Long saleOrderId;
+    private Long orderId;
 
     /**
      * erp订单itemid
      */
-    private Long saleOrderItemId;
+    private Long orderItemId;
 
     /**
      * 订单编号

@@ -1,70 +1,106 @@
 package cn.qihangerp.module.order.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 import lombok.Data;
 
 /**
- * 发货记录表
- * @TableName o_order_shipping
+ * 发货-发货记录表
+ * @TableName o_shipment
  */
+@TableName(value ="o_shipment")
 @Data
 public class OShipment implements Serializable {
     /**
      * 
      */
     @TableId(type = IdType.AUTO)
-    private String id;
+    private Long id;
 
     /**
      * 店铺id
      */
     private Long shopId;
 
+    /**
+     * 发货类型（1订单发货2商品补发3商品换货）
+     */
+    private Integer shipmentType;
 
-    private Integer shippingType;//发货类型（1订单发货2商品补发3商品换货）
-    private String orderNums;//发货的所有订单号，以逗号隔开
-    private String subOrderNums;//发货的所有子订单号，以逗号隔开
+    /**
+     * 发货的所有订单号，以逗号隔开
+     */
+    private String orderNums;
+
+    /**
+     * 收件人姓名
+     */
     private String receiverName;
+
+    /**
+     * 收件人手机号
+     */
     private String receiverMobile;
+
+    /**
+     * 省
+     */
     private String province;
+
+    /**
+     * 市
+     */
     private String city;
+
+    /**
+     * 区
+     */
     private String town;
+
+    /**
+     * 详细地址
+     */
     private String address;
 
     /**
      * 物流公司
      */
     private String logisticsCompany;
+
+    /**
+     * 物流公司编码
+     */
     private String logisticsCompanyCode;
 
     /**
      * 物流单号
      */
-    private String waybillCode;
+    private String logisticsCode;
 
     /**
      * 物流费用
      */
-    private Integer shippingFee;
+    private BigDecimal shipmentFee;
 
     /**
      * 发货时间
      */
-    private Date shippingTime;
+    private Date shipmentTime;
 
     /**
      * 发货操作人
      */
-    private String shippingOperator;
+    private String shipmentOperator;
 
     /**
      * 物流状态（1运输中2已完成）
      */
-    private Integer shippingStatus;
+    private Integer shipmentStatus;
 
     /**
      * 包裹重量
@@ -100,6 +136,10 @@ public class OShipment implements Serializable {
      * 包裹内容JSON
      */
     private String packages;
+
+    /**
+     * 备注
+     */
     private String remark;
 
     /**
@@ -122,5 +162,6 @@ public class OShipment implements Serializable {
      */
     private Date updateBy;
 
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

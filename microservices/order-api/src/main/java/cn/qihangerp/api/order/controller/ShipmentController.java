@@ -38,30 +38,30 @@ public class ShipmentController extends BaseController {
         return getDataTable(orderService.searchOrderItemByReceiverMobile(receiverMobile));
     }
 
-    /**
-     * 订单发货
-     * @param shipping
-     * @return
-     */
-    @PostMapping("/handShip")
-    public AjaxResult orderHandShip(@RequestHeader("Authorization") String authorization,@RequestBody OrderShipBo shipping)
-    {
-
-        var result = shippingService.handOrderShip(shipping);
-//        if(result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-//            // 发货
-//            TaoOrderShipBo bo = new TaoOrderShipBo();
-//            bo.setShopId(shipping.getShopId());
-////            bo.setTid(shipping.getOrderId());
-//            bo.setWaybillCode(shipping.getShipCode());
-//            bo.setWaybillCompany(shipping.getShipCompany());
+//    /**
+//     * 订单发货
+//     * @param shipping
+//     * @return
+//     */
+//    @PostMapping("/handShip")
+//    public AjaxResult orderHandShip(@RequestHeader("Authorization") String authorization,@RequestBody OrderShipBo shipping)
+//    {
 //
-//            JSONObject jsonObject = taoApiService.orderShip(authorization, bo);
-//            return AjaxResult.success();
-//        }else{
-//            return AjaxResult.error(result.getCode(),result.getMsg());
-//        }
-
-        return AjaxResult.success();
-    }
+//        var result = shippingService.handOrderShip(shipping);
+////        if(result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
+////            // 发货
+////            TaoOrderShipBo bo = new TaoOrderShipBo();
+////            bo.setShopId(shipping.getShopId());
+//////            bo.setTid(shipping.getOrderId());
+////            bo.setWaybillCode(shipping.getShipCode());
+////            bo.setWaybillCompany(shipping.getShipCompany());
+////
+////            JSONObject jsonObject = taoApiService.orderShip(authorization, bo);
+////            return AjaxResult.success();
+////        }else{
+////            return AjaxResult.error(result.getCode(),result.getMsg());
+////        }
+//
+//        return AjaxResult.success();
+//    }
 }

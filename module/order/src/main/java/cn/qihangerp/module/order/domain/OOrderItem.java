@@ -114,7 +114,14 @@ public class OOrderItem implements Serializable {
     private Integer refundStatus;
     private Integer orderStatus;
     private Integer hasPushErp;//是否推送到ERP
-
+    /**
+     * 发货类型（0仓库发货；1供应商代发；2联合发货）
+     */
+    private Integer shipType;
+    /**
+     * 发货状态 0 待发货 1 部分发货 2全部发货
+     */
+    private Integer shipStatus;
 
     /**
      * 创建时间

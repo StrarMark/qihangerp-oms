@@ -1,6 +1,7 @@
 package cn.qihangerp.module.order.service;
 
 
+import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.module.order.domain.OOrder;
 import cn.qihangerp.module.order.domain.OOrderItem;
 import cn.qihangerp.module.order.domain.vo.SalesDailyVo;
@@ -47,4 +48,11 @@ public interface OOrderService extends IService<OOrder> {
     List<SalesDailyVo> salesDaily();
     SalesDailyVo getTodaySalesDaily();
     Integer getWaitShipOrderAllCount();
+
+    /**
+     * 手动发货
+     * @param shipBo
+     * @return
+     */
+    ResultVo<Integer> manualShipmentOrder(ShopOrderShipBo shipBo, String createBy);
 }

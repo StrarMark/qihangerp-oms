@@ -8,7 +8,7 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="orderNum" column="order_num" jdbcType="VARCHAR"/>
             <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
-            <result property="shopId" column="shop_id" jdbcType="INTEGER"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
             <result property="buyerMemo" column="buyer_memo" jdbcType="VARCHAR"/>
             <result property="sellerMemo" column="seller_memo" jdbcType="VARCHAR"/>
@@ -29,15 +29,7 @@
             <result property="town" column="town" jdbcType="VARCHAR"/>
             <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
             <result property="shipType" column="ship_type" jdbcType="INTEGER"/>
-            <result property="shippingTime" column="shipping_time" jdbcType="TIMESTAMP"/>
-            <result property="shippingNumber" column="shipping_number" jdbcType="VARCHAR"/>
-            <result property="shippingCompany" column="shipping_company" jdbcType="VARCHAR"/>
-            <result property="shippingMan" column="shipping_man" jdbcType="VARCHAR"/>
-            <result property="shippingCost" column="shipping_cost" jdbcType="DECIMAL"/>
-            <result property="length" column="length" jdbcType="FLOAT"/>
-            <result property="width" column="width" jdbcType="FLOAT"/>
-            <result property="height" column="height" jdbcType="FLOAT"/>
-            <result property="weight" column="weight" jdbcType="FLOAT"/>
+            <result property="shipStatus" column="ship_status" jdbcType="INTEGER"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -56,10 +48,7 @@
         order_status,goods_amount,amount,platform_discount,seller_discount,payment,post_fee,
         receiver_name,receiver_mobile,address,
         province,city,town,
-        order_time,ship_type,shipping_time,
-        shipping_number,shipping_company,shipping_man,
-        shipping_cost,length,width,
-        height,weight,create_time,
+        order_time,ship_type,ship_status,create_time,
         create_by,update_time,update_by
     </sql>
     <select id="getTaoOrderDiscount" parameterType="String" resultMap="DiscountResultMap">

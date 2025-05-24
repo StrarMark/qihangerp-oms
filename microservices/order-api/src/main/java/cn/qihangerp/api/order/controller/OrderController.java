@@ -117,10 +117,10 @@ public class OrderController extends BaseController
     @PostMapping("/manualShipment")
     public AjaxResult manualShipment(@RequestBody ShopOrderShipBo shipBo)
     {
-//        var result = orderService.manualShipmentOrder(shipBo,getUsername());
-//        if(result.getCode() == 0) return AjaxResult.success();
-//        else return AjaxResult.error(result.getMsg());
-        return AjaxResult.error("未实现AAA");
+        var result = orderService.manualShipmentOrder(shipBo,getUsername());
+        if(result.getCode() == 0) return AjaxResult.success();
+        else return AjaxResult.error(result.getMsg());
+//        return AjaxResult.error("未实现AAA");
     }
 
     /**

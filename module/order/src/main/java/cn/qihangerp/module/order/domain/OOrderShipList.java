@@ -6,15 +6,17 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 
 /**
  * 发货-备货表（取号发货加入备货清单、分配供应商发货加入备货清单）
- * @TableName o_ship_stock_up
+ * @TableName o_order_ship_list
  */
-@TableName(value ="o_ship_stock_up")
+@TableName(value ="o_order_ship_list")
 @Data
-public class OShipStockUp implements Serializable {
+public class OOrderShipList implements Serializable {
     /**
      * 
      */
@@ -49,17 +51,32 @@ public class OShipStockUp implements Serializable {
     /**
      * erp订单id
      */
-    private Long saleOrderId;
-
-    /**
-     * erp订单itemid
-     */
-    private Long saleOrderItemId;
+    private Long orderId;
 
     /**
      * 订单编号
      */
     private String orderNum;
+
+    /**
+     * 物流公司
+     */
+    private String shipLogisticsCompany;
+
+    /**
+     * 物流公司code
+     */
+    private String shipLogisticsCompanyCode;
+
+    /**
+     * 物流单号
+     */
+    private String shipLogisticsCode;
+
+    /**
+     * 发货状态1：待发货，2：已发货，3已推送
+     */
+    private Integer shipStatus;
 
     /**
      * 状态0待备货1备货中2备货完成3已发货
@@ -86,25 +103,8 @@ public class OShipStockUp implements Serializable {
      */
     private String updateBy;
 
-    /**
-     * 物流公司
-     */
-    private String shipLogisticsCompany;
-
-    /**
-     * 物流公司code
-     */
-    private String shipLogisticsCompanyCode;
-
-    /**
-     * 物流单号
-     */
-    private String shipLogisticsCode;
-
-    /**
-     * 发货状态1：待发货，2：已发货，3已推送
-     */
-    private Integer shipStatus;
+    @TableField(exist = false)
+    private List<OOrderShipListItem> items;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

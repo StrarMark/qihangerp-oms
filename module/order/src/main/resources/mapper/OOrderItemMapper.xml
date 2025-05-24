@@ -7,6 +7,8 @@
     <resultMap id="BaseResultMap" type="cn.qihangerp.module.order.domain.OOrderItem">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="orderId" column="order_id" jdbcType="BIGINT"/>
+        <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
+        <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
             <result property="subOrderNum" column="sub_order_num" jdbcType="VARCHAR"/>
             <result property="skuId" column="sku_id" jdbcType="VARCHAR"/>
             <result property="goodsId" column="goods_id" jdbcType="BIGINT"/>
@@ -25,6 +27,8 @@
             <result property="refundCount" column="refund_count" jdbcType="INTEGER"/>
             <result property="refundStatus" column="refund_status" jdbcType="INTEGER"/>
             <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
+            <result property="shipType" column="ship_type" jdbcType="INTEGER"/>
+            <result property="shipStatus" column="ship_status" jdbcType="INTEGER"/>
             <result property="hasPushErp" column="has_push_erp" jdbcType="INTEGER"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
@@ -33,7 +37,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,order_id,sub_order_num,
+        id,order_id,sub_order_num,shop_id,shop_type,ship_type,ship_status,
         sku_id,goods_id,goods_sku_id,
         goods_title,goods_img,goods_num,
         goods_spec,sku_num,goods_price,discount_amount,

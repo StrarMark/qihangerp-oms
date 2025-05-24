@@ -122,57 +122,19 @@ public class OOrder implements Serializable {
     private Date orderTime;
 
     /**
-     * 发货类型（0仓库发货；1供应商代发）
+     * 发货类型（0仓库发货；1供应商代发；2联合发货）
      */
     private Integer shipType;
-
     /**
-     * 发货时间
+     * 发货状态 0 待发货 1 部分发货 2全部发货
      */
-    private Date shippingTime;
+    private Integer shipStatus;
 
-    /**
-     * 快递单号
-     */
-    private String shippingNumber;
-
-    /**
-     * 物流公司
-     */
-    private String shippingCompany;
-
-    /**
-     * 发货人
-     */
-    private String shippingMan;
-
-    /**
-     * 发货费用
-     */
-    private BigDecimal shippingCost;
     private Integer erpPushStatus;
     private String erpPushResult;
     private Date erpPushTime;
 
-    /**
-     * 长
-     */
-    private Double length;
 
-    /**
-     * 宽
-     */
-    private Double width;
-
-    /**
-     * 高
-     */
-    private Double height;
-
-    /**
-     * 重量
-     */
-    private Double weight;
 
     /**
      * 创建时间

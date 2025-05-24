@@ -1,18 +1,15 @@
 package cn.qihangerp.module.order.service.impl;
 
 
+import cn.qihangerp.common.bo.ShopOrderShipBo;
+import cn.qihangerp.domain.OLogisticsCompany;
 import cn.qihangerp.module.goods.domain.OGoodsSku;
 import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
-import cn.qihangerp.module.order.domain.OOrder;
-import cn.qihangerp.module.order.domain.OOrderItem;
-import cn.qihangerp.module.order.domain.OfflineOrder;
-import cn.qihangerp.module.order.domain.OfflineOrderItem;
+import cn.qihangerp.module.mapper.OLogisticsCompanyMapper;
+import cn.qihangerp.module.order.domain.*;
 import cn.qihangerp.module.order.domain.vo.OrderDiscountVo;
 import cn.qihangerp.module.order.domain.vo.SalesDailyVo;
-import cn.qihangerp.module.order.mapper.OOrderItemMapper;
-import cn.qihangerp.module.order.mapper.OOrderMapper;
-import cn.qihangerp.module.order.mapper.OfflineOrderItemMapper;
-import cn.qihangerp.module.order.mapper.OfflineOrderMapper;
+import cn.qihangerp.module.order.mapper.*;
 import cn.qihangerp.module.order.service.OOrderService;
 import cn.qihangerp.request.OrderSearchRequest;
 import com.alibaba.fastjson2.JSONArray;
@@ -31,7 +28,6 @@ import cn.qihangerp.common.utils.DateUtils;
 import cn.qihangerp.common.utils.StringUtils;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,8 +52,14 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
     private final OOrderMapper orderMapper;
     private final OOrderItemMapper orderItemMapper;
-
+    private final OLogisticsCompanyMapper logisticsCompanyMapper;
     private final OGoodsSkuMapper oGoodsSkuMapper;
+
+    private final OOrderShipListMapper orderShipListMapper;
+    private final OOrderShipListItemMapper orderShipListItemMapper;
+
+    private final OShipmentMapper shipmentMapper;
+    private final OShipmentItemMapper shipmentItemMapper;
 
     private final OfflineOrderMapper offlineOrderMapper;
     private final OfflineOrderItemMapper offlineOrderItemMapper;
@@ -1449,6 +1451,154 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
     @Override
     public Integer getWaitShipOrderAllCount() {
         return orderMapper.getWaitShipOrderAllCount();
+    }
+
+    /**
+     * 手动发货-仓库发货
+     * @param shipBo
+     * @param createBy
+     * @return
+     */
+    @Transactional
+    @Override
+    public ResultVo<Integer> manualShipmentOrder(ShopOrderShipBo shipBo, String createBy) {
+        if (org.springframework.util.StringUtils.isEmpty(shipBo.getId()) || shipBo.getId().equals("0"))
+            return ResultVo.error(ResultVoEnum.ParamsError, "缺少参数：id");
+
+        if(org.springframework.util.StringUtils.isEmpty(shipBo.getShippingNumber())) return ResultVo.error("快递单号不能为空");
+
+        OOrder erpOrder = orderMapper.selectById(shipBo.getId());
+        if (erpOrder == null) {
+            return ResultVo.error("找不到订单数据");
+        } else if (erpOrder.getOrderStatus().intValue() != 1 && erpOrder.getRefundStatus().intValue() != 1) {
+            return ResultVo.error("订单状态不对，不允许发货");
+        }
+        OLogisticsCompany erpLogisticsCompany = logisticsCompanyMapper.selectById(shipBo.getShippingCompany());
+        if(erpLogisticsCompany==null) return ResultVo.error("快递公司选择错误");
+
+        // 自己发货的list
+        List<OOrderItem> oOrderItems = orderItemMapper.selectList(
+                new LambdaQueryWrapper<OOrderItem>()
+                        .eq(OOrderItem::getOrderId, erpOrder.getId())
+                        .eq(OOrderItem::getShipStatus,0)
+                        .eq(OOrderItem::getShipType,0)
+        );
+        if(oOrderItems==null) return ResultVo.error("订单 item 数据错误，无法发货！");
+        // 添加到备货单
+        OOrderShipList shipList = new OOrderShipList();
+        shipList.setShopId(erpOrder.getShopId());
+        shipList.setShopType(erpOrder.getShopType());
+        shipList.setShipper(0);
+        shipList.setShipSupplierId(0L);
+        shipList.setShipSupplier("自由仓库发货");
+        shipList.setOrderId(Long.parseLong(erpOrder.getId()));
+        shipList.setOrderNum(erpOrder.getOrderNum());
+        shipList.setStatus(0);
+        shipList.setShipLogisticsCompany(erpLogisticsCompany.getName());
+        shipList.setShipLogisticsCompanyCode(erpLogisticsCompany.getCode());
+        shipList.setShipLogisticsCode(shipBo.getShippingNumber());
+        shipList.setShipStatus(2);
+        shipList.setCreateTime(new Date());
+        shipList.setCreateBy("手动发货");
+        orderShipListMapper.insert(shipList);
+
+
+        // 添加发货记录
+        OShipment erpShipment = new OShipment();
+        erpShipment.setShopId(erpOrder.getShopId());
+        erpShipment.setShipmentType(1);
+        erpShipment.setOrderNums(erpOrder.getOrderNum());
+        erpShipment.setReceiverName(erpOrder.getReceiverName());
+        erpShipment.setReceiverMobile(erpOrder.getReceiverMobile());
+        erpShipment.setProvince(erpOrder.getProvince());
+        erpShipment.setCity(erpOrder.getCity());
+        erpShipment.setTown(erpOrder.getTown());
+        erpShipment.setAddress(erpOrder.getAddress());
+        erpShipment.setLogisticsCompany(erpLogisticsCompany.getName());
+        erpShipment.setLogisticsCompanyCode(erpLogisticsCompany.getCode());
+        erpShipment.setLogisticsCode(shipBo.getShippingNumber());
+        erpShipment.setShipmentFee(shipBo.getShippingCost());
+        erpShipment.setShipmentTime(new Date());
+        erpShipment.setShipmentOperator(shipBo.getShippingMan());
+        erpShipment.setShipmentStatus(1);//物流状态（1运输中2已完成）
+
+        erpShipment.setPackageHeight(shipBo.getHeight());
+        erpShipment.setPackageWeight(shipBo.getWeight());
+        erpShipment.setPackageLength(shipBo.getLength());
+        erpShipment.setPackageWidth(shipBo.getWidth());
+        erpShipment.setPackageOperator(shipBo.getShippingMan());
+        erpShipment.setPackageTime(new Date());
+//        erpShipment.setPackages(JSONObject.toJSONString(oOrderItems));
+        erpShipment.setRemark(shipBo.getRemark());
+        erpShipment.setCreateBy("手动发货");
+        erpShipment.setCreateTime(new Date());
+        shipmentMapper.insert(erpShipment);
+
+        for(OOrderItem orderItem:oOrderItems){
+            // 添加备货清单item
+            OOrderShipListItem listItem=new OOrderShipListItem();
+            listItem.setShopId(erpOrder.getShopId());
+            listItem.setShopType(erpOrder.getShopType());
+            listItem.setListId(shipList.getId());
+            listItem.setShipper(shipList.getShipper());
+            listItem.setShipSupplier(shipList.getShipSupplier());
+            listItem.setShipSupplierId(shipList.getShipSupplierId());
+            listItem.setOrderId(Long.parseLong(orderItem.getOrderId()));
+            listItem.setOrderItemId(Long.parseLong(orderItem.getId()));
+            listItem.setOrderNum(orderItem.getOrderNum());
+            listItem.setOriginalSkuId(orderItem.getSkuId());
+            listItem.setGoodsId(orderItem.getGoodsId());
+            listItem.setSkuId(orderItem.getGoodsSkuId());
+            listItem.setGoodsTitle(orderItem.getGoodsTitle());
+            listItem.setGoodsImg(orderItem.getGoodsImg());
+            listItem.setGoodsNum(orderItem.getGoodsNum());
+            listItem.setSkuName(orderItem.getGoodsSpec());
+            listItem.setSkuNum(orderItem.getSkuNum());
+            listItem.setQuantity(orderItem.getQuantity());
+            listItem.setStatus(0);//状态0待备货1备货中2备货完成3已发货
+            listItem.setCreateBy("手动发货");
+            listItem.setCreateTime(new Date());
+            orderShipListItemMapper.insert(listItem);
+
+            // 添加发货清单
+            OShipmentItem erpShipmentItem = new OShipmentItem();
+            erpShipmentItem.setShipmentId(erpShipment.getId());
+            erpShipmentItem.setOrderId(Long.parseLong(orderItem.getOrderId()));
+            erpShipmentItem.setOrderNum(orderItem.getOrderNum());
+            erpShipmentItem.setOrderItemId(Long.parseLong(orderItem.getId()));
+            erpShipmentItem.setSubOrderNum(orderItem.getSubOrderNum());
+            erpShipmentItem.setGoodsId(orderItem.getGoodsId());
+            erpShipmentItem.setSkuId(orderItem.getGoodsSkuId());
+            erpShipmentItem.setGoodsTitle(orderItem.getGoodsTitle());
+            erpShipmentItem.setGoodsNum(orderItem.getGoodsNum());
+            erpShipmentItem.setGoodsImg(orderItem.getGoodsImg());
+            erpShipmentItem.setSkuName(orderItem.getGoodsSpec());
+            erpShipmentItem.setSkuNum(orderItem.getSkuNum());
+            erpShipmentItem.setQuantity(orderItem.getQuantity());
+            shipmentItemMapper.insert(erpShipmentItem);
+
+            // 更新订单item发货状态
+            OOrderItem orderItemUpdate = new OOrderItem();
+            orderItemUpdate.setId( orderItem.getId());
+            orderItemUpdate.setUpdateBy("手动发货");
+            orderItemUpdate.setUpdateTime(new Date());
+            orderItemUpdate.setShipType(0);
+            orderItemUpdate.setShipStatus(1);//发货状态 0 待发货 1 已发货
+            orderItemMapper.updateById(orderItemUpdate);
+        }
+
+
+        // 更新状态、发货方式
+        OOrder update = new OOrder();
+        update.setId(erpOrder.getId());
+        update.setShipType(0);
+        update.setShipStatus(2);
+        update.setOrderStatus(2);
+        update.setUpdateTime(new Date());
+        update.setUpdateBy("手动发货");
+        orderMapper.updateById(update);
+
+        return ResultVo.success();
     }
 
 }

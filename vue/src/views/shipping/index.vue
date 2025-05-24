@@ -50,21 +50,21 @@
           @click="handleShipping"
         >手动发货</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleShippingLog"
-        >ERP发货推送记录</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleShippingLog"-->
+<!--        >ERP发货推送记录</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="dataList" >
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="订单编号" align="center" prop="orderNum" />
+      <el-table-column label="订单编号" align="center" prop="orderNums" />
       <el-table-column label="店铺" align="center" prop="shopId" >
         <template slot-scope="scope">
           <span>{{ shopList.find(x=>x.id === scope.row.shopId).name  }}</span>
@@ -72,17 +72,23 @@
       </el-table-column>
       <el-table-column label="类型" align="center" prop="shipType;" >
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.shipType === 1">订单发货</el-tag>
-          <el-tag size="small" v-if="scope.row.shipType === 2">商品补发</el-tag>
-          <el-tag size="small" v-if="scope.row.shipType === 3">商品换货</el-tag>
+          <el-tag size="small" v-if="scope.row.shipmentType === 1">订单发货</el-tag>
+          <el-tag size="small" v-if="scope.row.shipmentType === 2">商品补发</el-tag>
+          <el-tag size="small" v-if="scope.row.shipmentType === 3">商品换货</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="快递公司" align="center" prop="shipCompany" />
-       <el-table-column label="快递单号" align="center" prop="shipCode" />
+      <el-table-column label="快递公司" align="center" prop="logisticsCompany" />
+       <el-table-column label="快递单号" align="center" prop="logisticsCode" />
        <el-table-column label="备注" align="center" prop="remark" />
+       <el-table-column label="包裹重量" align="center" prop="packageWeight" >
+         <template slot-scope="scope">
+           {{scope.row.packageWeight}}g
+         </template>
+       </el-table-column>
+
        <el-table-column label="发货时间" align="center" prop="createTime" >
          <template slot-scope="scope">
-           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{m}:{s}') }}</span>
+           <span>{{ parseTime(scope.row.createTime) }}</span>
          </template>
        </el-table-column>
 

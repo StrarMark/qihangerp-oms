@@ -398,7 +398,18 @@ export default {
         orderStatus: 1
       },
       // 表单参数
-      form: {},
+      form: {
+        id:null,
+        length:null,
+        width:null,
+        height:null,
+        weight:0,
+        shippingCompany:null,
+        shippingNumber:null,
+        shippingCost:null,
+        shippingMan:null,
+
+      },
       // 表单校验
       rules: {
         height: [{ required: true, message: '不能为空' }],

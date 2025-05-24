@@ -1,14 +1,13 @@
 package cn.qihangerp.module.order.mapper;
 
-
 import cn.qihangerp.module.order.domain.OShipmentItem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
-* @author TW
-* @description 针对表【o_order_shipping_item(OMS发货明细表)】的数据库操作Mapper
-* @createDate 2024-05-23 14:01:14
-* @Entity cn.qihangerp.oms.domain.OOrderShippingItem
+* @author qilip
+* @description 针对表【o_shipment_item(发货-发货记录明细表)】的数据库操作Mapper
+* @createDate 2025-05-24 16:21:35
+* @Entity cn.qihangerp.module.order.domain.OShipmentItem
 */
 public interface OShipmentItemMapper extends BaseMapper<OShipmentItem> {
 

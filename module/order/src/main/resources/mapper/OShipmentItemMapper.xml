@@ -6,15 +6,26 @@
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.module.order.domain.OShipmentItem">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="shippingId" column="shipping_id" jdbcType="BIGINT"/>
+            <result property="shipmentId" column="shipment_id" jdbcType="BIGINT"/>
             <result property="orderId" column="order_id" jdbcType="BIGINT"/>
             <result property="orderItemId" column="order_item_id" jdbcType="BIGINT"/>
             <result property="orderNum" column="order_num" jdbcType="VARCHAR"/>
             <result property="subOrderNum" column="sub_order_num" jdbcType="VARCHAR"/>
+            <result property="goodsId" column="goods_id" jdbcType="BIGINT"/>
+            <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
+            <result property="goodsTitle" column="goods_title" jdbcType="VARCHAR"/>
+            <result property="goodsImg" column="goods_img" jdbcType="VARCHAR"/>
+            <result property="goodsNum" column="goods_num" jdbcType="VARCHAR"/>
+            <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
+            <result property="skuNum" column="sku_num" jdbcType="VARCHAR"/>
+            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,shipping_id,order_id,
-        order_item_id,order_num,sub_order_num
+        id,shipment_id,order_id,
+        order_item_id,order_num,sub_order_num,
+        goods_id,sku_id,goods_title,
+        goods_img,goods_num,sku_name,
+        sku_num,quantity
     </sql>
 </mapper>

@@ -1,14 +1,11 @@
 package cn.qihangerp.api.order.controller;
 
 
-import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.module.order.domain.bo.ShipStockUpBo;
-import cn.qihangerp.module.order.domain.bo.ShipStockUpCompleteBo;
-import cn.qihangerp.module.order.service.OShipStockUpItemService;
-import cn.qihangerp.module.order.service.OShipStockUpService;
-import cn.qihangerp.module.order.service.OShipWaybillService;
+import cn.qihangerp.module.order.service.OOrderShipListItemService;
+import cn.qihangerp.module.order.service.OOrderShipListService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/ship")
 public class ShipStockupController  extends BaseController {
-    private final OShipStockUpService shipStockUpService;
-    private final OShipStockUpItemService shipStockUpItemService;
+    private final OOrderShipListService shipStockUpService;
+    private final OOrderShipListItemService shipStockUpItemService;
 
     /**
      * 备货列表(仓库发货)

@@ -6,10 +6,9 @@
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.module.order.domain.OShipment">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="shopId" column="shop_id" jdbcType="INTEGER"/>
-            <result property="shippingType" column="shipping_type" jdbcType="INTEGER"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="shipmentType" column="shipment_type" jdbcType="INTEGER"/>
             <result property="orderNums" column="order_nums" jdbcType="VARCHAR"/>
-            <result property="subOrderNums" column="sub_order_nums" jdbcType="VARCHAR"/>
             <result property="receiverName" column="receiver_name" jdbcType="VARCHAR"/>
             <result property="receiverMobile" column="receiver_mobile" jdbcType="VARCHAR"/>
             <result property="province" column="province" jdbcType="VARCHAR"/>
@@ -18,11 +17,11 @@
             <result property="address" column="address" jdbcType="VARCHAR"/>
             <result property="logisticsCompany" column="logistics_company" jdbcType="VARCHAR"/>
             <result property="logisticsCompanyCode" column="logistics_company_code" jdbcType="VARCHAR"/>
-            <result property="waybillCode" column="waybill_code" jdbcType="VARCHAR"/>
-            <result property="shippingFee" column="shipping_fee" jdbcType="DECIMAL"/>
-            <result property="shippingTime" column="shipping_time" jdbcType="TIMESTAMP"/>
-            <result property="shippingOperator" column="shipping_operator" jdbcType="VARCHAR"/>
-            <result property="shippingStatus" column="shipping_status" jdbcType="INTEGER"/>
+            <result property="logisticsCode" column="logistics_code" jdbcType="VARCHAR"/>
+            <result property="shipmentFee" column="shipment_fee" jdbcType="DECIMAL"/>
+            <result property="shipmentTime" column="shipment_time" jdbcType="TIMESTAMP"/>
+            <result property="shipmentOperator" column="shipment_operator" jdbcType="VARCHAR"/>
+            <result property="shipmentStatus" column="shipment_status" jdbcType="INTEGER"/>
             <result property="packageWeight" column="package_weight" jdbcType="FLOAT"/>
             <result property="packageLength" column="package_length" jdbcType="FLOAT"/>
             <result property="packageWidth" column="package_width" jdbcType="FLOAT"/>
@@ -38,13 +37,15 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,shop_id,shipping_type,
-        order_nums,sub_order_nums,receiver_name,receiver_mobile,province,city,town,address,
-          logistics_company,logistics_company_code,waybill_code,
-        shipping_fee,shipping_time,shipping_operator,
-        shipping_status,package_weight,package_length,
-        package_width,package_height,package_operator,
-        package_time,packages,remark,create_time,
-        create_by,update_time,update_by
+        id,shop_id,shipment_type,
+        order_nums,receiver_name,receiver_mobile,
+        province,city,town,
+        address,logistics_company,logistics_company_code,
+        logistics_code,shipment_fee,shipment_time,
+        shipment_operator,shipment_status,package_weight,
+        package_length,package_width,package_height,
+        package_operator,package_time,packages,
+        remark,create_time,create_by,
+        update_time,update_by
     </sql>
 </mapper>
