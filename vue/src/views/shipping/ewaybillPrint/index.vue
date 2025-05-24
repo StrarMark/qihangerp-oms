@@ -13,7 +13,7 @@
       <el-tab-pane label="抖店" name="printDou" lazy>
         <print-dou></print-dou>
       </el-tab-pane>
-      <el-tab-pane label="视频号小店" name="printWei" lazy>
+      <el-tab-pane label="微信小店" name="printWei" lazy>
         <print-wei></print-wei>
       </el-tab-pane>
 

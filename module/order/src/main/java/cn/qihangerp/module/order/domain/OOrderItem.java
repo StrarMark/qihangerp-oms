@@ -25,6 +25,15 @@ public class OOrderItem implements Serializable {
      * 订单ID（o_order外键）
      */
     private String orderId;
+    /**
+     * 店铺类型
+     */
+    private Integer shopType;
+
+    /**
+     * 店铺ID
+     */
+    private Long shopId;
 
     /**
      * 子订单号（第三方平台）

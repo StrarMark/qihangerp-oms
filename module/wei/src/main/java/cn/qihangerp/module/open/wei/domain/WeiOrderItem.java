@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
  * 
  * @TableName oms_wei_order_item
  */
+@TableName("oms_wei_order_item")
 @Data
 public class WeiOrderItem implements Serializable {
     /**

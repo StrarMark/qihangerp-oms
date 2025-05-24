@@ -213,7 +213,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
         <el-descriptions title="订单信息">
           <el-descriptions-item label="ID">{{form.id}}</el-descriptions-item>
-          <el-descriptions-item label="订单号">{{form.orderNum}}</el-descriptions-item>
+          <el-descriptions-item label="订单号">{{form.tid}}</el-descriptions-item>
 
           <el-descriptions-item label="店铺">
             {{ shopList.find(x=>x.id == form.shopId)?shopList.find(x=>x.id == form.shopId).name:'' }}
@@ -313,7 +313,7 @@
 
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
         <el-descriptions title="订单信息">
-          <el-descriptions-item label="订单号">{{form.orderNum}}</el-descriptions-item>
+          <el-descriptions-item label="订单号">{{form.tid}}</el-descriptions-item>
 
           <el-descriptions-item label="买家留言">
             {{form.buyerMemo}}

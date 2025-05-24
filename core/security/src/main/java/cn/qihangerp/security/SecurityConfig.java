@@ -61,7 +61,7 @@ public class SecurityConfig {
                         // 允许所有OPTIONS请求
                         .requestMatchers("/home").permitAll()
                         .requestMatchers(HttpMethod.GET, "/favicon.ico").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/*/order/get_detail").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/tao/order/get_detail").permitAll()
                         .requestMatchers(HttpMethod.GET, "/refund/get_detail").permitAll()
                         .requestMatchers(HttpMethod.GET, "/images/preview/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/system/config/**").permitAll()

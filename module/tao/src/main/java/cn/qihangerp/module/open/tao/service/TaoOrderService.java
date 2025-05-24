@@ -3,6 +3,7 @@ package cn.qihangerp.module.open.tao.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.module.open.tao.domain.TaoOrder;
 import cn.qihangerp.module.open.tao.domain.bo.TaoOrderBo;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -27,4 +28,12 @@ public interface TaoOrderService extends IService<TaoOrder> {
      */
     ResultVo<Long> saveOrder(Long shopId, TaoOrder order);
     ResultVo<Integer> updateOrder(TaoOrder order);
+
+
+    /**
+     * 手动发货
+     * @param shipBo
+     * @return
+     */
+//    ResultVo<Integer> manualShipmentOrder(ShopOrderShipBo shipBo, String createBy);
 }

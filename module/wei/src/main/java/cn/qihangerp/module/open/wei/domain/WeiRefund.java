@@ -5,12 +5,14 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
  * 视频号小店退款
  * @TableName oms_wei_refund
  */
+@TableName("oms_wei_refund")
 @Data
 public class WeiRefund implements Serializable {
     /**

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-@MapperScan({"cn.qihangerp.oms.mapper","cn.qihangerp.module.*.mapper","cn.qihangerp.module.mapper"})
+@MapperScan({"cn.qihangerp.module.*.mapper","cn.qihangerp.module.mapper"})
 public class MybatisPlusConfig {
     @Primary
     @Bean

@@ -51,7 +51,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 || request.getRequestURI().contains("/login")
                 || request.getRequestURI().contains("/captchaImage")
                 || request.getRequestURI().contains("/order/get_detail")
-                || request.getRequestURI().equals("/refund/get_detail")
+                || request.getRequestURI().contains("/refund/get_detail")
                 || request.getRequestURI().contains("/system/config")
         ) {
             // 登录页面，放行 || request.getRequestURI().equals("/order/get_detail")

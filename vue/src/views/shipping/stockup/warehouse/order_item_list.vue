@@ -312,7 +312,7 @@ export default {
     /** 查询仓库订单发货列表 */
     getList() {
       this.loading = true;
-      listShipStockupWarehouse(this.queryParams).then(response => {
+      listShipStockupWarehouset(this.queryParams).then(response => {
         this.shippingList = response.rows;
         this.total = response.total;
         this.loading = false;

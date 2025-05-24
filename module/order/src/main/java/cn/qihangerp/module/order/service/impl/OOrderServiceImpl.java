@@ -161,11 +161,13 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             orderMapper.insert(insert);
 
             // 添加orderItem
-            addJdOrderItem(orderId,insert.getId(),orderStatus,orderSellerPrice,orderPayment,itemArray);
+            addJdOrderItem(insert,orderId,insert.getId(),orderStatus,orderSellerPrice,orderPayment,itemArray);
         }else{
             // 修改订单 (修改：)
             OOrder update = new OOrder();
             update.setId(oOrders.get(0).getId());
+            update.setShopType(EnumShopType.JD.getIndex());
+            update.setShopId(orderDetail.getLong("shopId"));
             // 价格
             update.setGoodsAmount(orderSellerPrice);
             update.setPayment(orderPayment);
@@ -180,23 +182,65 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             orderMapper.updateById(update);
 
             // 删除orderItem
-            orderItemMapper.delete(new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId,update.getId()));
+//            orderItemMapper.delete(new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId,update.getId()));
             // 插入orderItem
-            addJdOrderItem(orderId,update.getId(),orderStatus,orderSellerPrice,orderPayment,itemArray);
+            addJdOrderItem(update,orderId,update.getId(),orderStatus,orderSellerPrice,orderPayment,itemArray);
 
         }
         return ResultVo.success();
     }
 
-    private void addJdOrderItem(String orderId,String oOrderId,Integer orderStatus,Double orderSellerPrice,Double orderPayment,JSONArray itemArray ) {
+    private void addJdOrderItem(OOrder oOrder,String orderId,String oOrderId,Integer orderStatus,Double orderSellerPrice,Double orderPayment,JSONArray itemArray ) {
         Double payedItemAmount = 0.0;//已付金额
         for (int i =0;i<itemArray.size();i++) {
+
             JSONObject itemObject =itemArray.getJSONObject(i);
 
+            // 查询商品库商品
+            Long oGoodsId = itemObject.getLong("oGoodsId");
+            Long oGoodsSkuId =itemObject.getLong("oGoodsSkuId");
+            String skuNum = itemObject.getString("outerSkuId");
+
+            if(oGoodsSkuId<=0){
+                // 没有关联商品库商品skuid，查找关联====使用skucode查找
+                if(org.springframework.util.StringUtils.hasText(skuNum)) {
+                    List<OGoodsSku> oGoodsSkus = oGoodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, skuNum));
+                    if(oGoodsSkus==null||oGoodsSkus.isEmpty()){
+                        log.error("同步JD订单没有找到商品库商品SKU");
+                    }else{
+                        oGoodsId = oGoodsSkus.get(0).getGoodsId();
+                        oGoodsSkuId = oGoodsSkus.get(0).getId();
+                    }
+                }else {
+                    log.error("同步JD订单{},原始订单没有填写sku编码信息",oOrder.getOrderNum());
+                }
+            }else{
+                OGoodsSku oGoodsSku = oGoodsSkuMapper.selectById(oGoodsSkuId);
+                if(oGoodsSku==null){
+                    // 没有关联商品库商品skuid，查找关联====使用skucode查找
+                    if(org.springframework.util.StringUtils.hasText(skuNum)) {
+                        List<OGoodsSku> oGoodsSkus = oGoodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, skuNum));
+                        if(oGoodsSkus==null||oGoodsSkus.isEmpty()){
+                            log.error("同步JD订单没有找到商品库商品SKU");
+                        }else{
+                            oGoodsId = oGoodsSkus.get(0).getGoodsId();
+                            oGoodsSkuId = oGoodsSkus.get(0).getId();
+                        }
+                    }else {
+                        log.error("同步JD订单{},原始订单没有填写sku编码信息",oOrder.getOrderNum());
+                    }
+                }else{
+                    oGoodsId = oGoodsSku.getGoodsId();
+                    oGoodsSkuId = oGoodsSku.getId();
+                }
+            }
+
             OOrderItem orderItem = new OOrderItem();
-            orderItem.setOrderId(oOrderId);
-            orderItem.setOrderNum(orderId);
-            orderItem.setSubOrderNum(orderId+"-"+itemObject.getString("skuId"));
+            orderItem.setOrderId(oOrder.getId());
+            orderItem.setShopType(oOrder.getShopType());
+            orderItem.setShopId(oOrder.getShopId());
+            orderItem.setOrderNum(oOrder.getOrderNum());
+            orderItem.setSubOrderNum(oOrder.getOrderNum()+"-"+itemObject.getString("skuId"));
             // TODO：这里将订单商品skuid转换成erp系统的skuid
 //            Long erpGoodsId = 0L;
 //            String erpSkuId = "0";
@@ -209,10 +253,13 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //                orderItem.setGoodsSpec(jdGoodsSkus.get(0).getSkuName());
 //                orderItem.setSkuNum(jdGoodsSkus.get(0).getOuterId());
 //            }
-            orderItem.setSkuNum(itemObject.getString("outerSkuId"));
+            orderItem.setSkuNum(skuNum);
+            orderItem.setGoodsId(oGoodsId);
+            orderItem.setGoodsSkuId(oGoodsSkuId);
+//            orderItem.setSkuNum(itemObject.getString("outerSkuId"));
             orderItem.setSkuId(itemObject.getString("skuId"));
-            orderItem.setGoodsId(itemObject.getLong("oGoodsId"));
-            orderItem.setGoodsSkuId(itemObject.getLong("oGoodsSkuId"));
+//            orderItem.setGoodsId(itemObject.getLong("oGoodsId"));
+//            orderItem.setGoodsSkuId(itemObject.getLong("oGoodsSkuId"));
             orderItem.setGoodsTitle(itemObject.getString("skuName"));
             orderItem.setGoodsPrice(StringUtils.isEmpty(itemObject.getString("jdPrice")) ? 0.0 : Double.parseDouble(itemObject.getString("jdPrice")));
             Integer quantity = itemObject.getInteger("itemTotal");
@@ -249,6 +296,22 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 orderItem.setRefundStatus(1);
                 orderItem.setRefundCount(0);
             }
+
+            List<OOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<OOrderItem>()
+                    .eq(OOrderItem::getOrderId, oOrderId)
+                    .eq(OOrderItem::getSkuId, itemObject.getString("skuId")));
+            if(oOrderItems==null||oOrderItems.isEmpty()){
+                //不存在，新增
+                orderItem.setCreateTime(new Date());
+                orderItem.setCreateBy("ORDER_MESSAGE");
+                orderItemMapper.insert(orderItem);
+            }else {
+                orderItem.setId(oOrderItems.get(0).getId());
+                orderItem.setUpdateBy("ORDER_MESSAGE");
+                orderItem.setUpdateTime(new Date());
+                orderItemMapper.updateById(orderItem);
+            }
+
             orderItem.setCreateTime(new Date());
             orderItem.setCreateBy("ORDER_MESSAGE");
             orderItemMapper.insert(orderItem);
@@ -350,12 +413,14 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             orderMapper.insert(insert);
 
             // 插入orderItem
-            addTaoOrderItem(insert.getId(),tid,itemArray);
+            addTaoOrderItem(insert,tid,itemArray);
 
         }else{
             // 修改订单 (修改：)
             OOrder update = new OOrder();
             update.setId(oOrders.get(0).getId());
+            update.setShopType(EnumShopType.TAO.getIndex());
+            update.setShopId(orderDetail.getLong("shopId"));
             String buyerMemo = "";
             if(org.springframework.util.StringUtils.hasText(orderDetail.getString("buyerMessage"))){
                 buyerMemo += orderDetail.getString("buyerMessage");
@@ -393,12 +458,12 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             orderMapper.updateById(update);
 
             // 插入orderItem
-            addTaoOrderItem(update.getId(),tid,itemArray);
+            addTaoOrderItem(update,tid,itemArray);
         }
         return ResultVo.success();
     }
 
-    private void addTaoOrderItem(String oOrderId,String tid, JSONArray itemArray) {
+    private void addTaoOrderItem(OOrder oOrder,String tid, JSONArray itemArray) {
         for (int i = 0; i < itemArray.size(); i++) {
             JSONObject itemObject = itemArray.getJSONObject(i);
 
@@ -442,13 +507,16 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             }
 
             OOrderItem orderItem = new OOrderItem();
-            orderItem.setOrderId(oOrderId);
+            orderItem.setOrderId(oOrder.getId());
+            orderItem.setShopType(oOrder.getShopType());
+            orderItem.setShopId(oOrder.getShopId());
             orderItem.setOrderNum(tid);
             orderItem.setSubOrderNum(itemObject.getString("oid"));
             orderItem.setSkuNum(skuNum);
-            orderItem.setSkuId(itemObject.getString("skuId"));
             orderItem.setGoodsId(oGoodsId);
             orderItem.setGoodsSkuId(oGoodsSkuId);
+            orderItem.setSkuId(itemObject.getString("skuId"));
+
             orderItem.setGoodsImg(itemObject.getString("picPath"));
             orderItem.setGoodsSpec(itemObject.getString("skuPropertiesName"));
             orderItem.setGoodsTitle(itemObject.getString("title"));
@@ -480,7 +548,9 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             int orderStatus = TaoOrderStateEnum.getIndex(itemObject.getString("status"));
             orderItem.setOrderStatus(orderStatus);
 
-            List<OOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId, oOrderId).eq(OOrderItem::getSkuId, itemObject.getString("skuId")));
+            List<OOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<OOrderItem>()
+                    .eq(OOrderItem::getOrderId, oOrder.getId())
+                    .eq(OOrderItem::getSkuId, itemObject.getString("skuId")));
             if(oOrderItems==null||oOrderItems.isEmpty()){
                 //不存在，新增
                 orderItem.setCreateTime(new Date());
@@ -501,7 +571,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
     @Transactional
     @Override
     public ResultVo<Integer> pddOrderMessage(String orderSn,JSONObject orderDetail ) {
-        log.info("=====pdd order message===订单号{}==="+orderSn);
+        log.info("=====pdd order message===订单号{}===" + orderSn);
 //        JSONObject jsonObject = pddApiService.getOrderDetail(orderSn);
 //        if(jsonObject.getInteger("code")!=200 || jsonObject.getJSONObject("data") ==null){
 //            log.info("=====pdd order message===没有找到订单");
@@ -509,8 +579,13 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //        }
 //
 //        JSONObject orderDetail = jsonObject.getJSONObject("data");
-        log.info("=====pdd order message===订单:"+JSONObject.toJSONString(orderDetail));
-        if(orderDetail == null) return ResultVo.error(404,"没有找到订单");
+        log.info("=====pdd order message===订单:" + JSONObject.toJSONString(orderDetail));
+        if (orderDetail == null) return ResultVo.error(404, "没有找到订单");
+        JSONArray itemArray = orderDetail.getJSONArray("items");
+        if (itemArray.isEmpty()) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            log.info("=====pdd order message===没有items====事务回滚=======");
+        }
 //        List<PddOrder> originOrders = pddOrderMapper.selectList(new LambdaQueryWrapper<PddOrder>().eq(PddOrder::getOrderSn, orderSn));
 //
 //        if(originOrders == null || originOrders.size() == 0) {
@@ -519,9 +594,27 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //        }
 //        PddOrder originOrder = originOrders.get(0);
 //        PddOrder originOrder = new PddOrder();
-
+        OOrder newOrder = new OOrder();
+        Integer originOrderStatus = orderDetail.getInteger("orderStatus");
+        Integer originRefundStatus = orderDetail.getInteger("refundStatus");
+        // 状态 订单状态0：新订单，1：待发货，2：已发货，3：已完成，11已取消；12退款中；21待付款；22锁定，29删除
+        int orderStatus = -1;
+        int refundStatus = -1;
+        if (originRefundStatus == 1) {
+            // 没有售后
+            orderStatus = originOrderStatus;
+            refundStatus = 1;
+        } else {
+            if (originRefundStatus == 4) {
+                refundStatus = 4;
+                orderStatus = 11;
+            } else {
+                refundStatus = originRefundStatus;
+                orderStatus = 12;
+            }
+        }
         List<OOrder> oOrders = orderMapper.selectList(new LambdaQueryWrapper<OOrder>().eq(OOrder::getOrderNum, orderSn));
-        if(oOrders == null || oOrders.isEmpty()) {
+        if (oOrders == null || oOrders.isEmpty()) {
             // 新增订单
             OOrder insert = new OOrder();
             insert.setOrderNum(orderSn);
@@ -529,24 +622,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             insert.setShopId(orderDetail.getLong("shopId"));
             insert.setBuyerMemo(orderDetail.getString("buyerMemo"));
             insert.setSellerMemo(orderDetail.getString("remark"));
-            Integer originOrderStatus = orderDetail.getInteger("orderStatus");
-            Integer originRefundStatus = orderDetail.getInteger("refundStatus");
-            // 状态 订单状态0：新订单，1：待发货，2：已发货，3：已完成，11已取消；12退款中；21待付款；22锁定，29删除
-            int orderStatus = -1;
-            int refundStatus = -1;
-            if (originRefundStatus == 1) {
-                // 没有售后
-                orderStatus = originOrderStatus;
-                refundStatus = 1;
-            } else {
-                if (originRefundStatus == 4) {
-                    refundStatus = 4;
-                    orderStatus = 11;
-                } else {
-                    refundStatus = originRefundStatus;
-                    orderStatus = 12;
-                }
-            }
+
             insert.setRefundStatus(refundStatus);
             insert.setOrderStatus(orderStatus);
             // 价格
@@ -571,86 +647,129 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             insert.setCreateBy("ORDER_MESSAGE");
 
             orderMapper.insert(insert);
+
+            newOrder = insert;
             // 插入orderItem
 //            addPddOrderItem(insert.getId(),originOrder.getOrderSn(),orderStatus,refundStatus,platformDiscount,sellerDiscount);
-            JSONArray itemArray = orderDetail.getJSONArray("items");
-            if (itemArray.isEmpty()) {
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                log.info("=====pdd order message===没有items====事务回滚=======");
-            }
 
 
-            for (int i =0;i<itemArray.size();i++) {
-                JSONObject itemObject =itemArray.getJSONObject(i);
-//                Map<String,Object> itemObject = (Map<String, Object>) itemArray.get(i);
-//                JSONObject itemObject = (JSONObject) item;
-
-                OOrderItem orderItem = new OOrderItem();
-                orderItem.setOrderId(insert.getId());
-                orderItem.setOrderNum(orderSn);
-                orderItem.setSubOrderNum(orderSn+"-"+itemObject.getString("skuId"));
-                // 这里将订单商品skuid转换成erp系统的skuid
-//                Long erpGoodsId = 0L;
-//                String erpSkuId = "0";
+//            for (int i = 0; i < itemArray.size(); i++) {
+//                JSONObject itemObject = itemArray.getJSONObject(i);
+////                Map<String,Object> itemObject = (Map<String, Object>) itemArray.get(i);
+////                JSONObject itemObject = (JSONObject) item;
 //
-//                List<PddGoodsSku> pddGoodsSku = pddGoodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
-//                if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-//                    erpGoodsId = pddGoodsSku.get(0).getOGoodsId();
-//                    erpSkuId = pddGoodsSku.get(0).getOGoodsSkuId();
-////                        orderItem.setGoodsImg(taoGoodsSku.get(0).getLogo());
-////                        orderItem.setGoodsSpec(jdGoodsSkus.get(0).getSkuName());
-////                    orderItem.setSkuNum(taoGoodsSku.get(0).getOuterId());
+//                // 查询商品库商品
+//                Long oGoodsId = itemObject.getLong("oGoodsId");
+//                Long oGoodsSkuId =itemObject.getLong("oGoodsSkuId");
+//                String skuNum = itemObject.getString("outerSkuId");
+//
+//                if(oGoodsSkuId<=0){
+//                    // 没有关联商品库商品skuid，查找关联====使用skucode查找
+//                    if(org.springframework.util.StringUtils.hasText(skuNum)) {
+//                        List<OGoodsSku> oGoodsSkus = oGoodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, skuNum));
+//                        if(oGoodsSkus==null||oGoodsSkus.isEmpty()){
+//                            log.error("同步TAO订单没有找到商品库商品SKU");
+//                        }else{
+//                            oGoodsId = oGoodsSkus.get(0).getGoodsId();
+//                            oGoodsSkuId = oGoodsSkus.get(0).getId();
+//                        }
+//                    }else {
+//                        log.error("同步TAO订单{},原始订单没有填写sku编码信息",tid);
+//                    }
+//                }else{
+//                    OGoodsSku oGoodsSku = oGoodsSkuMapper.selectById(oGoodsSkuId);
+//                    if(oGoodsSku==null){
+//                        // 没有关联商品库商品skuid，查找关联====使用skucode查找
+//                        if(org.springframework.util.StringUtils.hasText(skuNum)) {
+//                            List<OGoodsSku> oGoodsSkus = oGoodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, skuNum));
+//                            if(oGoodsSkus==null||oGoodsSkus.isEmpty()){
+//                                log.error("同步TAO订单没有找到商品库商品SKU");
+//                            }else{
+//                                oGoodsId = oGoodsSkus.get(0).getGoodsId();
+//                                oGoodsSkuId = oGoodsSkus.get(0).getId();
+//                            }
+//                        }else {
+//                            log.error("同步TAO订单{},原始订单没有填写sku编码信息",tid);
+//                        }
+//                    }else{
+//                        oGoodsId = oGoodsSku.getGoodsId();
+//                        oGoodsSkuId = oGoodsSku.getId();
+//                    }
 //                }
-                orderItem.setSkuNum(itemObject.getString("outerId"));
-                orderItem.setSkuId(itemObject.getString("skuId"));
-                orderItem.setGoodsId(itemObject.getLong("ogoodsId"));
-                orderItem.setGoodsSkuId(itemObject.getLong("ogoodsSkuId"));
-                orderItem.setGoodsImg(itemObject.getString("goodsImg"));
-                orderItem.setGoodsSpec(itemObject.getString("goodsSpec"));
-                orderItem.setGoodsTitle(itemObject.getString("goodsName"));
-                orderItem.setGoodsPrice(itemObject.getDouble("goodsPrice"));
-                orderItem.setQuantity(itemObject.getInteger("goodsCount"));
-                if (i == 0) {
-                    Double itemAmount = orderItem.getGoodsPrice() * orderItem.getQuantity() - insert.getPlatformDiscount() - insert.getSellerDiscount();
-                    orderItem.setItemAmount(itemAmount);
-                    orderItem.setPayment(itemAmount);
-                } else {
-                    orderItem.setItemAmount(orderItem.getGoodsPrice()* orderItem.getQuantity());
-                    orderItem.setPayment(orderItem.getGoodsPrice()* orderItem.getQuantity());
-                }
-//                orderItem.setPayment(item.getGoodsPrice());
+//
+//                OOrderItem orderItem = new OOrderItem();
+//                orderItem.setOrderId(insert.getId());
+//                orderItem.setOrderNum(orderSn);
+//                orderItem.setSubOrderNum(orderSn + "-" + itemObject.getString("skuId"));
+//                orderItem.setShopType(EnumShopType.PDD.getIndex());
+//                orderItem.setShopId(orderDetail.getLong("shopId"));
+//                // 这里将订单商品skuid转换成erp系统的skuid
+////                Long erpGoodsId = 0L;
+////                String erpSkuId = "0";
+////
+////                List<PddGoodsSku> pddGoodsSku = pddGoodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
+////                if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
+////                    erpGoodsId = pddGoodsSku.get(0).getOGoodsId();
+////                    erpSkuId = pddGoodsSku.get(0).getOGoodsSkuId();
+//////                        orderItem.setGoodsImg(taoGoodsSku.get(0).getLogo());
+//////                        orderItem.setGoodsSpec(jdGoodsSkus.get(0).getSkuName());
+//////                    orderItem.setSkuNum(taoGoodsSku.get(0).getOuterId());
+////                }
+//                orderItem.setSkuNum(skuNum);
+//                orderItem.setGoodsId(oGoodsId);
+//                orderItem.setGoodsSkuId(oGoodsSkuId);
+////                orderItem.setSkuNum(itemObject.getString("outerId"));
+//                orderItem.setSkuId(itemObject.getString("skuId"));
+////                orderItem.setGoodsId(itemObject.getLong("ogoodsId"));
+////                orderItem.setGoodsSkuId(itemObject.getLong("ogoodsSkuId"));
+//                orderItem.setGoodsImg(itemObject.getString("goodsImg"));
+//                orderItem.setGoodsSpec(itemObject.getString("goodsSpec"));
+//                orderItem.setGoodsTitle(itemObject.getString("goodsName"));
+//                orderItem.setGoodsPrice(itemObject.getDouble("goodsPrice"));
+//                orderItem.setQuantity(itemObject.getInteger("goodsCount"));
+//                if (i == 0) {
+//                    Double itemAmount = orderItem.getGoodsPrice() * orderItem.getQuantity() - insert.getPlatformDiscount() - insert.getSellerDiscount();
+//                    orderItem.setItemAmount(itemAmount);
+//                    orderItem.setPayment(itemAmount);
+//                } else {
+//                    orderItem.setItemAmount(orderItem.getGoodsPrice() * orderItem.getQuantity());
+//                    orderItem.setPayment(orderItem.getGoodsPrice() * orderItem.getQuantity());
+//                }
+////                orderItem.setPayment(item.getGoodsPrice());
+//
+//                orderItem.setOrderStatus(orderStatus);
+//                orderItem.setRefundStatus(refundStatus);
+//                orderItem.setRefundCount(0);
+//                orderItem.setCreateTime(new Date());
+//                orderItem.setCreateBy("ORDER_MESSAGE");
+//                orderItemMapper.insert(orderItem);
+//            }
 
-                orderItem.setOrderStatus(orderStatus);
-                orderItem.setRefundStatus(refundStatus);
-                orderItem.setRefundCount(0);
-                orderItem.setCreateTime(new Date());
-                orderItem.setCreateBy("ORDER_MESSAGE");
-                orderItemMapper.insert(orderItem);
-            }
 
-
-        }else{
+        } else {
             // 修改订单 (修改：)
             OOrder update = new OOrder();
             update.setId(oOrders.get(0).getId());
-            Integer originOrderStatus = orderDetail.getInteger("orderStatus");
-            Integer originRefundStatus = orderDetail.getInteger("refundStatus");
-            // 状态 订单状态0：新订单，1：待发货，2：已发货，3：已完成，11已取消；12退款中；21待付款；22锁定，29删除
-            int orderStatus = -1;
-            int refundStatus = -1;
-            if (originRefundStatus == 1) {
-                // 没有售后
-                orderStatus = originOrderStatus;
-                refundStatus = 1;
-            } else {
-                if (originRefundStatus == 4) {
-                    refundStatus = 4;
-                    orderStatus = 11;
-                } else {
-                    refundStatus = originRefundStatus;
-                    orderStatus = 12;
-                }
-            }
+            update.setShopType(EnumShopType.PDD.getIndex());
+            update.setShopId(orderDetail.getLong("shopId"));
+//            Integer originOrderStatus = orderDetail.getInteger("orderStatus");
+//            Integer originRefundStatus = orderDetail.getInteger("refundStatus");
+//            // 状态 订单状态0：新订单，1：待发货，2：已发货，3：已完成，11已取消；12退款中；21待付款；22锁定，29删除
+//            int orderStatus = -1;
+//            int refundStatus = -1;
+//            if (originRefundStatus == 1) {
+//                // 没有售后
+//                orderStatus = originOrderStatus;
+//                refundStatus = 1;
+//            } else {
+//                if (originRefundStatus == 4) {
+//                    refundStatus = 4;
+//                    orderStatus = 11;
+//                } else {
+//                    refundStatus = originRefundStatus;
+//                    orderStatus = 12;
+//                }
+//            }
             update.setRefundStatus(refundStatus);
             update.setOrderStatus(orderStatus);
 
@@ -664,7 +783,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //            double sellerDiscount = originOrder.getSellerDiscount()!=null?originOrder.getSellerDiscount():0.0;
             update.setSellerDiscount(orderDetail.getDouble("sellerDiscount"));
 
-            if(orderStatus==1 && refundStatus==1) {
+            if (orderStatus == 1 && refundStatus == 1) {
                 if (StringUtils.isNotBlank(orderDetail.getString("receiverNameMask"))) {
                     update.setReceiverName(orderDetail.getString("receiverNameMask"));
                 }
@@ -676,93 +795,118 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 }
             }
 
-            if(StringUtils.isNotBlank(orderDetail.getString("province"))){
+            if (StringUtils.isNotBlank(orderDetail.getString("province"))) {
                 update.setProvince(orderDetail.getString("province"));
             }
-            if(StringUtils.isNotBlank(orderDetail.getString("city"))){
+            if (StringUtils.isNotBlank(orderDetail.getString("city"))) {
                 update.setCity(orderDetail.getString("city"));
             }
-            if(StringUtils.isNotBlank(orderDetail.getString("town"))){
+            if (StringUtils.isNotBlank(orderDetail.getString("town"))) {
                 update.setTown(orderDetail.getString("town"));
             }
             update.setUpdateTime(new Date());
             update.setUpdateBy("ORDER_MESSAGE");
             orderMapper.updateById(update);
-
+            newOrder = update;
             // 删除orderItem
-            orderItemMapper.delete(new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId,update.getId()));
+//            orderItemMapper.delete(new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId,update.getId()));
 //            // 插入orderItem
 //            addPddOrderItem(update.getId(),originOrder.getOrderSn(),orderStatus,refundStatus,platformDiscount,sellerDiscount);
 
-            JSONArray itemArray = orderDetail.getJSONArray("items");
-            if (itemArray.isEmpty()) {
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                log.info("=====pdd order message===没有items====事务回滚=======");
-            }
+//            JSONArray itemArray = orderDetail.getJSONArray("items");
+//            if (itemArray.isEmpty()) {
+//                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//                log.info("=====pdd order message===没有items====事务回滚=======");
+//            }
 
 
-            for (int i =0;i<itemArray.size();i++) {
-                JSONObject itemObject =itemArray.getJSONObject(i);
-//                List<OOrderItem> oOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId, oOrders.get(0).getId()).eq(OOrderItem::getSkuId, itemObject.getString("skuId")));
-//                if(oOrderItems.isEmpty()) {
-                    // 新增item
-                    OOrderItem orderItem = new OOrderItem();
-                    orderItem.setOrderId(oOrders.get(0).getId());
-                    orderItem.setOrderNum(orderSn);
-                    orderItem.setSubOrderNum(orderSn + "-" + itemObject.getString("skuId"));
-                    orderItem.setSkuNum(itemObject.getString("outerId"));
-                    orderItem.setSkuId(itemObject.getString("skuId"));
-                    orderItem.setGoodsId(itemObject.getLong("ogoodsId"));
-                    orderItem.setGoodsSkuId(itemObject.getLong("ogoodsSkuId"));
-                    orderItem.setGoodsImg(itemObject.getString("goodsImg"));
-                    orderItem.setGoodsSpec(itemObject.getString("goodsSpec"));
-                    orderItem.setGoodsTitle(itemObject.getString("goodsName"));
-                    orderItem.setGoodsPrice(itemObject.getDouble("goodsPrice"));
-                    orderItem.setQuantity(itemObject.getInteger("goodsCount"));
-                    if (i == 0) {
-                        Double itemAmount = orderItem.getGoodsPrice() * orderItem.getQuantity() - oOrders.get(0).getPlatformDiscount() - oOrders.get(0).getSellerDiscount();
-                        orderItem.setItemAmount(itemAmount);
-                        orderItem.setPayment(itemAmount);
+        }
+
+        for (int i = 0; i < itemArray.size(); i++) {
+            JSONObject itemObject = itemArray.getJSONObject(i);
+            // 查询商品库商品
+            Long oGoodsId = itemObject.getLong("ogoodsId");
+            Long oGoodsSkuId = itemObject.getLong("ogoodsSkuId");
+            String skuNum = itemObject.getString("outerId");
+
+            if (oGoodsSkuId <= 0) {
+                // 没有关联商品库商品skuid，查找关联====使用skucode查找
+                if (org.springframework.util.StringUtils.hasText(skuNum)) {
+                    List<OGoodsSku> oGoodsSkus = oGoodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, skuNum));
+                    if (oGoodsSkus == null || oGoodsSkus.isEmpty()) {
+                        log.error("同步PDD订单没有找到商品库商品SKU");
                     } else {
-                        orderItem.setItemAmount(orderItem.getGoodsPrice() * orderItem.getQuantity());
-                        orderItem.setPayment(orderItem.getGoodsPrice() * orderItem.getQuantity());
+                        oGoodsId = oGoodsSkus.get(0).getGoodsId();
+                        oGoodsSkuId = oGoodsSkus.get(0).getId();
                     }
-                    orderItem.setOrderStatus(orderStatus);
-                    orderItem.setRefundStatus(refundStatus);
-                    orderItem.setRefundCount(0);
-                    orderItem.setCreateTime(new Date());
-                    orderItem.setCreateBy("ORDER_MESSAGE");
-                    orderItemMapper.insert(orderItem);
-//                }
-//                else{
-//                    // 修改、
-//                    OOrderItem orderItem = new OOrderItem();
-//                    orderItem.setId(oOrderItems.get(0).getId());
-//
-//                    orderItem.setSkuNum(itemObject.getString("outerId"));
-//                    orderItem.setSkuId(itemObject.getString("skuId"));
-//                    orderItem.setGoodsId(itemObject.getLong("ogoodsId"));
-//                    orderItem.setGoodsSkuId(itemObject.getString("ogoodsSkuId"));
-//                    orderItem.setGoodsImg(itemObject.getString("goodsImg"));
-//                    orderItem.setGoodsSpec(itemObject.getString("goodsSpec"));
-//                    orderItem.setGoodsTitle(itemObject.getString("goodsName"));
-//                    orderItem.setGoodsPrice(itemObject.getDouble("goodsPrice"));
-//                    orderItem.setQuantity(itemObject.getInteger("goodsCount"));
-//                    if (i == 0) {
-//                        Double itemAmount = orderItem.getGoodsPrice() * orderItem.getQuantity() - oOrders.get(0).getPlatformDiscount() - oOrders.get(0).getSellerDiscount();
-//                        orderItem.setItemAmount(itemAmount);
-//                        orderItem.setPayment(itemAmount);
-//                    } else {
-//                        orderItem.setItemAmount(orderItem.getGoodsPrice() * orderItem.getQuantity());
-//                        orderItem.setPayment(orderItem.getGoodsPrice() * orderItem.getQuantity());
-//                    }
-//                    orderItem.setOrderStatus(orderStatus);
-//                    orderItem.setRefundStatus(refundStatus);
-//                    orderItem.setRefundCount(0);
-//                    orderItem.setUpdateTime(new Date());
-//                    orderItem.setUpdateBy("ORDER_MESSAGE");
-//                    orderItemMapper.updateById(orderItem);
-//                }
+                } else {
+                    log.error("同步PDD订单{},原始订单没有填写sku编码信息", newOrder.getOrderNum());
+                }
+            } else {
+                OGoodsSku oGoodsSku = oGoodsSkuMapper.selectById(oGoodsSkuId);
+                if (oGoodsSku == null) {
+                    // 没有关联商品库商品skuid，查找关联====使用skucode查找
+                    if (org.springframework.util.StringUtils.hasText(skuNum)) {
+                        List<OGoodsSku> oGoodsSkus = oGoodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, skuNum));
+                        if (oGoodsSkus == null || oGoodsSkus.isEmpty()) {
+                            log.error("同步PDD订单没有找到商品库商品SKU");
+                        } else {
+                            oGoodsId = oGoodsSkus.get(0).getGoodsId();
+                            oGoodsSkuId = oGoodsSkus.get(0).getId();
+                        }
+                    } else {
+                        log.error("同步PDD订单{},原始订单没有填写sku编码信息", newOrder.getOrderNum());
+                    }
+                } else {
+                    oGoodsId = oGoodsSku.getGoodsId();
+                    oGoodsSkuId = oGoodsSku.getId();
+                }
+            }
+            OOrderItem orderItem = new OOrderItem();
+            orderItem.setOrderId(oOrders.get(0).getId());
+            orderItem.setOrderNum(orderSn);
+            orderItem.setSubOrderNum(orderSn + "-" + itemObject.getString("skuId"));
+            orderItem.setShopType(EnumShopType.PDD.getIndex());
+            orderItem.setShopId(orderDetail.getLong("shopId"));
+//                orderItem.setSkuNum(itemObject.getString("outerId"));
+            orderItem.setSkuId(itemObject.getString("skuId"));
+            orderItem.setSkuNum(skuNum);
+            orderItem.setGoodsId(oGoodsId);
+            orderItem.setGoodsSkuId(oGoodsSkuId);
+//                orderItem.setGoodsId(itemObject.getLong("ogoodsId"));
+//                orderItem.setGoodsSkuId(itemObject.getLong("ogoodsSkuId"));
+            orderItem.setGoodsImg(itemObject.getString("goodsImg"));
+            orderItem.setGoodsSpec(itemObject.getString("goodsSpec"));
+            orderItem.setGoodsTitle(itemObject.getString("goodsName"));
+            orderItem.setGoodsPrice(itemObject.getDouble("goodsPrice"));
+            orderItem.setQuantity(itemObject.getInteger("goodsCount"));
+            if (i == 0) {
+                Double itemAmount = orderItem.getGoodsPrice() * orderItem.getQuantity() - oOrders.get(0).getPlatformDiscount() - oOrders.get(0).getSellerDiscount();
+                orderItem.setItemAmount(itemAmount);
+                orderItem.setPayment(itemAmount);
+            } else {
+                orderItem.setItemAmount(orderItem.getGoodsPrice() * orderItem.getQuantity());
+                orderItem.setPayment(orderItem.getGoodsPrice() * orderItem.getQuantity());
+            }
+            orderItem.setOrderStatus(orderStatus);
+            orderItem.setRefundStatus(refundStatus);
+            orderItem.setRefundCount(0);
+
+
+            List<OOrderItem> oOrderItems = orderItemMapper.selectList(
+                    new LambdaQueryWrapper<OOrderItem>()
+                            .eq(OOrderItem::getOrderId, oOrders.get(0).getId())
+                            .eq(OOrderItem::getSkuId, itemObject.getString("skuId")));
+            if (oOrderItems.isEmpty()) {
+                // 新增item
+                orderItem.setCreateTime(new Date());
+                orderItem.setCreateBy("ORDER_MESSAGE");
+                orderItemMapper.insert(orderItem);
+            } else {
+                // 修改、
+                orderItem.setUpdateTime(new Date());
+                orderItem.setUpdateBy("ORDER_MESSAGE");
+                orderItemMapper.updateById(orderItem);
             }
         }
         return ResultVo.success();
@@ -905,12 +1049,14 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
             orderMapper.insert(insert);
             // 插入orderItem
-            addDouOrderItem(insert.getId(), orderId, orderStatus, refundStatus,orderDetail.getJSONArray("items"));
+            addDouOrderItem(insert,insert.getId(), orderId, orderStatus, refundStatus,orderDetail.getJSONArray("items"));
 
         } else {
             // 修改订单 (修改：)
             OOrder update = new OOrder();
             update.setId(oOrders.get(0).getId());
+            update.setShopType(EnumShopType.DOU.getIndex());
+            update.setShopId(orderDetail.getLong("shopId"));
             update.setRefundStatus(refundStatus);
             update.setOrderStatus(orderStatus);
             update.setGoodsAmount(orderDetail.getDouble("orderAmount")  / 100 );
@@ -930,26 +1076,68 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             orderMapper.updateById(update);
 
             // 删除orderItem
-            orderItemMapper.delete(new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId, update.getId()));
+//            orderItemMapper.delete(new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId, update.getId()));
             // 插入orderItem
-            addDouOrderItem(update.getId(), orderId, orderStatus, refundStatus,orderDetail.getJSONArray("items"));
+            addDouOrderItem(update,update.getId(), orderId, orderStatus, refundStatus,orderDetail.getJSONArray("items"));
         }
         return ResultVo.success();
     }
-    private void addDouOrderItem(String oOrderId,String originOrderId,Integer orderStatus,Integer refundStatus,JSONArray itemArray){
+    private void addDouOrderItem(OOrder oOrder,String oOrderId,String originOrderId,Integer orderStatus,Integer refundStatus,JSONArray itemArray){
 
         if(itemArray!=null && itemArray.size()>0) {
             for (int i = 0; i < itemArray.size(); i++) {
                 JSONObject itemObject = itemArray.getJSONObject(i);
+                // 查询商品库商品
+                Long oGoodsId = itemObject.getLong("ogoodsId");
+                Long oGoodsSkuId =itemObject.getLong("ogoodsSkuId");
+                String skuNum = itemObject.getString("outSkuId");
 
+                if(oGoodsSkuId<=0){
+                    // 没有关联商品库商品skuid，查找关联====使用skucode查找
+                    if(org.springframework.util.StringUtils.hasText(skuNum)) {
+                        List<OGoodsSku> oGoodsSkus = oGoodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, skuNum));
+                        if(oGoodsSkus==null||oGoodsSkus.isEmpty()){
+                            log.error("同步DOU订单没有找到商品库商品SKU");
+                        }else{
+                            oGoodsId = oGoodsSkus.get(0).getGoodsId();
+                            oGoodsSkuId = oGoodsSkus.get(0).getId();
+                        }
+                    }else {
+                        log.error("同步DOU订单{},原始订单没有填写sku编码信息",oOrder.getOrderNum());
+                    }
+                }else{
+                    OGoodsSku oGoodsSku = oGoodsSkuMapper.selectById(oGoodsSkuId);
+                    if(oGoodsSku==null){
+                        // 没有关联商品库商品skuid，查找关联====使用skucode查找
+                        if(org.springframework.util.StringUtils.hasText(skuNum)) {
+                            List<OGoodsSku> oGoodsSkus = oGoodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, skuNum));
+                            if(oGoodsSkus==null||oGoodsSkus.isEmpty()){
+                                log.error("同步DOU订单没有找到商品库商品SKU");
+                            }else{
+                                oGoodsId = oGoodsSkus.get(0).getGoodsId();
+                                oGoodsSkuId = oGoodsSkus.get(0).getId();
+                            }
+                        }else {
+                            log.error("同步DOU订单{},原始订单没有填写sku编码信息",oOrder.getOrderNum());
+                        }
+                    }else{
+                        oGoodsId = oGoodsSku.getGoodsId();
+                        oGoodsSkuId = oGoodsSku.getId();
+                    }
+                }
                 OOrderItem orderItem = new OOrderItem();
-                orderItem.setOrderId(oOrderId);
+                orderItem.setOrderId(oOrder.getId());
+                orderItem.setShopId(oOrder.getShopId());
+                orderItem.setShopType(oOrder.getShopType());
                 orderItem.setOrderNum(itemObject.getString("parentOrderId"));
                 orderItem.setSubOrderNum(itemObject.getString("orderId"));
-                orderItem.setSkuNum(itemObject.getString("outSkuId"));
+//                orderItem.setSkuNum(itemObject.getString("outSkuId"));
                 orderItem.setSkuId(itemObject.getString("skuId"));
-                orderItem.setGoodsId(itemObject.getLong("ogoodsId"));
-                orderItem.setGoodsSkuId(itemObject.getLong("ogoodsSkuId"));
+//                orderItem.setGoodsId(itemObject.getLong("ogoodsId"));
+//                orderItem.setGoodsSkuId(itemObject.getLong("ogoodsSkuId"));
+                orderItem.setSkuNum(skuNum);
+                orderItem.setGoodsId(oGoodsId);
+                orderItem.setGoodsSkuId(oGoodsSkuId);
                 orderItem.setGoodsImg(itemObject.getString("productPic"));
 
 //                if(org.springframework.util.StringUtils.hasText(item.getSpec())) {
@@ -965,9 +1153,22 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 orderItem.setOrderStatus(orderStatus);
                 orderItem.setRefundStatus(refundStatus);
                 orderItem.setRefundCount(0);
-                orderItem.setCreateTime(new Date());
-                orderItem.setCreateBy("ORDER_MESSAGE");
-                orderItemMapper.insert(orderItem);
+
+                List<OOrderItem> oOrderItems = orderItemMapper.selectList(
+                        new LambdaQueryWrapper<OOrderItem>()
+                                .eq(OOrderItem::getOrderId, oOrder.getId())
+                                .eq(OOrderItem::getSkuId, orderItem.getSkuId()));
+                if (oOrderItems.isEmpty()) {
+                    // 新增item
+                    orderItem.setCreateTime(new Date());
+                    orderItem.setCreateBy("ORDER_MESSAGE");
+                    orderItemMapper.insert(orderItem);
+                } else {
+                    // 修改、
+                    orderItem.setUpdateTime(new Date());
+                    orderItem.setUpdateBy("ORDER_MESSAGE");
+                    orderItemMapper.updateById(orderItem);
+                }
             }
         }
     }
