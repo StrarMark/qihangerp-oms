@@ -34,11 +34,23 @@ export function updateErpSkuId(data) {
   })
 }
 
-export function shipOrder(data) {
+
+
+// 分配供应商发货
+export function allocateShipmentOrder(data) {
   return request({
-    url: '/api/order/ship',
+    url: '/api/oms-api/order/allocateShipmentOrder',
     method: 'post',
     data: data
   })
 }
 
+
+// 手动发货
+export function manualShipmentOrder(data) {
+  return request({
+    url: '/api/oms-api/order/manualShipment',
+    method: 'post',
+    data: data
+  })
+}

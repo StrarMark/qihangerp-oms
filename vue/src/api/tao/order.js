@@ -44,22 +44,4 @@ export function pushOms(data) {
   })
 }
 
-// 分配供应商发货
-export function allocateShipmentOrder(data) {
-  return request({
-    url: '/api/open-api/tao/order/allocateShipmentOrder',
-    method: 'post',
-    data: data
-  })
-}
-
-
-// 手动发货
-export function manualShipmentOrder(data) {
-  return request({
-    url: '/api/open-api/tao/order/manualShipment',
-    method: 'post',
-    data: data
-  })
-}
 

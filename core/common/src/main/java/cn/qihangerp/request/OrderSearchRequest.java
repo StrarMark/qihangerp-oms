@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class OrderSearchRequest {
-    private Integer shopId;
+    private Long shopId;
+    private Integer shopType;
     private String orderNum;
     private String orderStatus;
     private String startTime;

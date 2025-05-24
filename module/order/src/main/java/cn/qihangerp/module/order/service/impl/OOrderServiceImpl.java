@@ -1192,7 +1192,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
     }
     /**
      * 线下订单通知
-     * @param orderId
+     * @param
      * @return
      */
     @Transactional
@@ -1239,7 +1239,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
             orderMapper.insert(insert);
             // 插入orderItem
-            addOfflineOrderItem(insert.getId(), originOrder.getOrderNum(), originOrder.getOrderStatus(), originOrder.getRefundStatus());
+            addOfflineOrderItem(insert.getId(), originOrder.getOrderNum(), originOrder.getOrderStatus(), originOrder.getRefundStatus(),insert.getShopId());
 
             //更新推送状态
             OfflineOrder offlineUpdate = new OfflineOrder();
@@ -1252,6 +1252,8 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             // 修改订单 (修改：)
             OOrder update = new OOrder();
             update.setId(oOrders.get(0).getId());
+            update.setShopType(EnumShopType.OFFLINE.getIndex());
+            update.setShopId(originOrder.getShopId());
             update.setRefundStatus(originOrder.getRefundStatus());
             update.setOrderStatus(originOrder.getOrderStatus());
             update.setReceiverName(originOrder.getReceiverName());
@@ -1266,12 +1268,14 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         }
         return ResultVo.success();
     }
-    private void addOfflineOrderItem(String oOrderId,String originOrderNum,Integer orderStatus,Integer refundStatus){
+    private void addOfflineOrderItem(String oOrderId,String originOrderNum,Integer orderStatus,Integer refundStatus,Long shopId){
         List<OfflineOrderItem> originOrderItems = offlineOrderItemMapper.selectList(new LambdaQueryWrapper<OfflineOrderItem>().eq(OfflineOrderItem::getOrderNum, originOrderNum));
         if(originOrderItems!=null && originOrderItems.size()>0) {
             for (var item : originOrderItems) {
                 OOrderItem orderItem = new OOrderItem();
                 orderItem.setOrderId(oOrderId);
+                orderItem.setShopType(EnumShopType.OFFLINE.getIndex());
+                orderItem.setShopId(shopId);
                 orderItem.setOrderNum(originOrderNum);
                 orderItem.setSubOrderNum(item.getSubOrderNum());
                 // 这里将订单商品skuid转换成erp系统的skuid
@@ -1339,6 +1343,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
         LambdaQueryWrapper<OOrder> queryWrapper = new LambdaQueryWrapper<OOrder>()
                 .eq(bo.getShopId()!=null,OOrder::getShopId,bo.getShopId())
+                .eq(bo.getShopType()!=null,OOrder::getShopType,bo.getShopType())
                 .eq(org.springframework.util.StringUtils.hasText(bo.getOrderNum()),OOrder::getOrderNum,bo.getOrderNum())
                 .eq(bo.getOrderStatus()!=null,OOrder::getOrderStatus,bo.getOrderStatus())
                 .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),OOrder::getOrderTime,bo.getStartTime()+" 00:00:00")

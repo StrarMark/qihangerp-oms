@@ -4,6 +4,7 @@ package cn.qihangerp.api.order.controller;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
+import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.module.order.service.OOrderItemService;
 import cn.qihangerp.module.order.service.OOrderService;
 import cn.qihangerp.request.OrderSearchRequest;
@@ -55,7 +56,7 @@ public class OrderController extends BaseController
      * @return
      */
     @PostMapping("/pushErp/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids) {
+    public AjaxResult pushErp(@PathVariable Long[] ids) {
 //        for (Long id : ids) {
 //            OOrder oOrder = orderService.getById(id);
 //            if (oOrder != null) {
@@ -107,5 +108,33 @@ public class OrderController extends BaseController
 //        else if(result == -2) return new AjaxResult(502,"订单号已存在！");
 //        return toAjax(result);
 //    }
+
+    /**
+     * 订单发货(手动发货)
+     * @param shipBo
+     * @return
+     */
+    @PostMapping("/manualShipment")
+    public AjaxResult manualShipment(@RequestBody ShopOrderShipBo shipBo)
+    {
+//        var result = orderService.manualShipmentOrder(shipBo,getUsername());
+//        if(result.getCode() == 0) return AjaxResult.success();
+//        else return AjaxResult.error(result.getMsg());
+        return AjaxResult.error("未实现AAA");
+    }
+
+    /**
+     * 分配供应商发货
+     * @param shipBo
+     * @return
+     */
+    @PostMapping("/allocateShipmentOrder")
+    public AjaxResult allocateShipmentOrder(@RequestBody ShopOrderShipBo shipBo)
+    {
+//        var result = orderService.allocateShipmentOrder(shipBo,getUsername());
+//        if(result.getCode() == 0) return AjaxResult.success();
+//        else return AjaxResult.error(result.getMsg());
+        return AjaxResult.error("未实现AAA");
+    }
 
 }
