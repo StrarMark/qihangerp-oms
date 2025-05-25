@@ -15,7 +15,7 @@
               <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">线下渠道</span>
           </el-option>
           </el-select>
-      </el-form-item>
+      </el-form-item> 
 <!--      <el-form-item label="商品ID" prop="goodsId">-->
 <!--        <el-input-->
 <!--          v-model="queryParams.goodsId"-->
