@@ -213,7 +213,7 @@ import {pullOrder} from "@/api/tao/order";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 export default {
-  name: "TaoRefund",
+  name: "RefundTao",
   data() {
     return {
       // 遮罩层

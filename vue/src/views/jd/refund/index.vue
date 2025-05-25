@@ -216,7 +216,7 @@ import { listShop } from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
 export default {
-  name: "JdRefund",
+  name: "RefundJd",
   data() {
     return {
       // 遮罩层

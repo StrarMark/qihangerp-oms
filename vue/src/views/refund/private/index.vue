@@ -222,7 +222,7 @@ import {list} from "@/api/offline/refund";
 import {listShop} from "@/api/shop/shop";
 
 export default {
-  name: "AfterSaleOffline",
+  name: "RefundOffline",
   data() {
     return {
       // 遮罩层
