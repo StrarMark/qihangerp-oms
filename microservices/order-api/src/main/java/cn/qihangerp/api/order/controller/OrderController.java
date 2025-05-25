@@ -4,6 +4,7 @@ package cn.qihangerp.api.order.controller;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
+import cn.qihangerp.common.bo.ShipOrderAllocateShipBo;
 import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.module.order.service.OOrderItemService;
 import cn.qihangerp.module.order.service.OOrderService;
@@ -129,12 +130,11 @@ public class OrderController extends BaseController
      * @return
      */
     @PostMapping("/allocateShipmentOrder")
-    public AjaxResult allocateShipmentOrder(@RequestBody ShopOrderShipBo shipBo)
+    public AjaxResult allocateShipmentOrder(@RequestBody ShipOrderAllocateShipBo shipBo)
     {
-//        var result = orderService.allocateShipmentOrder(shipBo,getUsername());
-//        if(result.getCode() == 0) return AjaxResult.success();
-//        else return AjaxResult.error(result.getMsg());
-        return AjaxResult.error("未实现AAA");
+        var result = orderService.allocateShipmentOrder(shipBo,getUsername());
+        if(result.getCode() == 0) return AjaxResult.success();
+        else return AjaxResult.error(result.getMsg());
     }
 
 }

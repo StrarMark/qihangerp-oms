@@ -1,6 +1,7 @@
 package cn.qihangerp.module.order.service;
 
 
+import cn.qihangerp.common.bo.ShipOrderAllocateShipBo;
 import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.module.order.domain.OOrder;
 import cn.qihangerp.module.order.domain.OOrderItem;
@@ -55,4 +56,12 @@ public interface OOrderService extends IService<OOrder> {
      * @return
      */
     ResultVo<Integer> manualShipmentOrder(ShopOrderShipBo shipBo, String createBy);
+
+    /**
+     * 分配给供应商发货
+     * @param shipBo
+     * @param createBy
+     * @return
+     */
+    ResultVo<Integer> allocateShipmentOrder(ShipOrderAllocateShipBo shipBo, String createBy);
 }

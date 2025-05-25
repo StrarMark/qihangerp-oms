@@ -298,7 +298,6 @@
         <el-table :data="form.itemVoList"  style="margin-bottom: 10px;">
           <!-- <el-table-column type="selection" width="50" align="center" /> -->
           <el-table-column label="序号" align="center" type="index" width="50"/>
-
           <el-table-column label="商品图片" prop="goodsImg" width="80">
             <template slot-scope="scope">
               <el-image style="width: 70px; height: 70px" :src="scope.row.goodsImg"></el-image>
@@ -345,12 +344,76 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <!-- 分配给供应商发货对话框 -->
+    <el-dialog title="分配给供应商发货" :visible.sync="allocateShipmentOpen" width="1100px" append-to-body>
 
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
+        <el-descriptions title="订单信息">
+          <el-descriptions-item label="订单号">{{form.orderNum}}</el-descriptions-item>
+
+          <el-descriptions-item label="买家留言">
+            {{form.buyerMemo}}
+          </el-descriptions-item>
+          <el-descriptions-item label="卖家留言">
+            {{form.sellerMemo}}
+          </el-descriptions-item>
+          <el-descriptions-item label="创建时间">
+            {{ parseTime(form.createTime) }}
+          </el-descriptions-item>
+
+
+          <el-descriptions-item label="收件人姓名">{{form.receiverName}}</el-descriptions-item>
+          <el-descriptions-item label="收件人手机号">{{form.receiverMobile}}</el-descriptions-item>
+          <el-descriptions-item label="省市区">{{form.province}}{{form.city}}{{form.town}}</el-descriptions-item>
+          <el-descriptions-item label="详细地址">{{form.address}}</el-descriptions-item>
+
+
+
+        </el-descriptions>
+
+        <el-divider content-position="center">商品明细</el-divider>
+        <el-table :data="form.itemVoList"  style="margin-bottom: 10px;">
+          <!-- <el-table-column type="selection" width="50" align="center" /> -->
+          <el-table-column label="序号" align="center" type="index" width="50"/>
+
+          <el-table-column label="商品图片" prop="goodsImg" width="80">
+            <template slot-scope="scope">
+              <el-image style="width: 70px; height: 70px" :src="scope.row.goodsImg"></el-image>
+            </template>
+          </el-table-column>
+          <el-table-column label="商品标题" prop="goodsTitle" ></el-table-column>
+          <el-table-column label="SKU" prop="goodsSpec" width="150"></el-table-column>
+          <el-table-column label="sku编码" prop="skuNum"></el-table-column>
+          <!--          <el-table-column label="单价" prop="goodsPrice"></el-table-column>-->
+          <el-table-column label="数量" prop="quantity"></el-table-column>
+          <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
+        </el-table>
+        <el-form-item label="收件人" prop="receiverName">
+          <el-input v-model="form.receiverName" placeholder="请输入收件人" style="width:300px" />
+        </el-form-item>
+        <el-form-item label="手机号" prop="receiverMobile">
+          <el-input type="number" v-model.number="form.receiverMobile" placeholder="请输入收件人" style="width:300px" />
+        </el-form-item>
+        <el-form-item label="详细地址" prop="address">
+          <el-input v-model="form.address" placeholder="请输入详细地址" style="width:300px" />
+        </el-form-item>
+        <el-form-item label="买家留言" prop="buyerMemo">
+          <el-input type="textarea" v-model="form.buyerMemo" placeholder="请输入买家留言" style="width:300px" />
+        </el-form-item>
+        <el-form-item label="卖家留言" prop="sellerMemo">
+          <el-input type="textarea" v-model="form.sellerMemo" placeholder="请输入卖家留言" style="width:300px" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitAllocateShipmentForm">分配给供应商发货</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {listOrder, getOrder,manualShipmentOrder} from "@/api/order/order";
+import {listOrder, getOrder,manualShipmentOrder,allocateShipmentOrder} from "@/api/order/order";
 import {listLogisticsStatus, listShop} from "@/api/shop/shop";
 import Clipboard from "clipboard";
 
@@ -382,7 +445,7 @@ export default {
       detailTitle:'订单详情',
       detailOpen:false,
       shipOpen:false,
-      isAudit:false,
+      allocateShipmentOpen:false,
       activeName: 'orderDetail',
       orderTime: null,
       // 查询参数
@@ -417,6 +480,9 @@ export default {
         shippingNumber: [{ required: true, message: '不能为空' }],
         shippingCompany: [{ required: true, message: '不能为空' }],
         shippingCost: [{ required: true, message: '不能为空' }],
+        receiverName: [{ required: true, message: '不能为空' }],
+        receiverMobile: [{ required: true, message: '不能为空' }],
+        address: [{ required: true, message: '不能为空' }],
       }
     };
   },
@@ -537,6 +603,34 @@ export default {
         }
       })
     },
+    // 分配给供应商发货
+    allocateShipmentToSupplier(row){
+      this.reset();
+      const id = row.id || this.ids
+      console.log('======',id)
+      getOrder(id).then(response => {
+        this.form = response.data;
+        this.allocateShipmentOpen = true;
+        // this.detailTitle = "订单详情";
+      });
+    },
+    // 分配给供应商发货
+    submitAllocateShipmentForm(){
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          allocateShipmentOrder(this.form).then(resp =>{
+            if(resp.code==200){
+              this.$modal.msgSuccess("分配发货成功");
+              this.allocateShipmentOpen = false
+              this.getList()
+            }else{
+              this.$modal.msgError(resp.msg);
+            }
+
+          })
+        }
+      })
+    }
   }
 };
 </script>

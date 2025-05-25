@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/ship")
-public class ShipStockupController  extends BaseController {
+public class OrderShipController extends BaseController {
     private final OOrderShipListService shipStockUpService;
     private final OOrderShipListItemService shipStockUpItemService;
 
