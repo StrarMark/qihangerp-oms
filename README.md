@@ -282,10 +282,6 @@ server {
 
 <img src="docs/微信公众号.jpg" width="300px" />
 
-+ 知识星球
-
-   <img src="docs/知识星球.jpg" width="300px" />
-
 
 ### 5.3 捐助作者
 作者为兼职做开源,平时还需要工作,如果帮到了您可以请作者吃个盒饭
