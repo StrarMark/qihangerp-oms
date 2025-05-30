@@ -17,6 +17,7 @@ import cn.qihangerp.module.open.dou.mapper.DouGoodsSkuMapper;
 import cn.qihangerp.module.open.dou.service.DouGoodsSkuService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,12 +41,19 @@ public class DouGoodsSkuServiceImpl extends ServiceImpl<DouGoodsSkuMapper, DouGo
     private final OGoodsService oGoodsService;
 
     @Override
-    public PageResult<DouGoodsSkuListVo> queryPageList(DouGoodsBo bo, PageQuery pageQuery) {
+    public PageResult<DouGoodsSku> queryPageList(DouGoodsBo bo, PageQuery pageQuery) {
         if(StringUtils.hasText(bo.getCode())){
             bo.setCode(bo.getCode().trim());
         }
-        IPage<DouGoodsSkuListVo> result = mapper.selectSkuPageList(pageQuery.build(), bo.getShopId(),bo.getProductId(),bo.getSkuId(),bo.getCode(),bo.getHasLink());
-        return PageResult.build(result);
+//        IPage<DouGoodsSkuListVo> result = mapper.selectSkuPageList(pageQuery.build(), bo.getShopId(),bo.getProductId(),bo.getSkuId(),bo.getCode(),bo.getHasLink());
+//        return PageResult.build(result);
+        LambdaQueryWrapper<DouGoodsSku> queryWrapper = new LambdaQueryWrapper<DouGoodsSku>()
+                .eq(bo.getShopId()!=null,DouGoodsSku::getShopId,bo.getShopId())
+                .eq(bo.getProductId()!=null,DouGoodsSku::getProductId,bo.getProductId())
+                .eq(StringUtils.hasText(bo.getCode()),DouGoodsSku::getOutSkuId,bo.getCode())
+                ;
+        Page<DouGoodsSku> goodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
+        return PageResult.build(goodsPage);
     }
 
     @Transactional(rollbackFor = Exception.class)

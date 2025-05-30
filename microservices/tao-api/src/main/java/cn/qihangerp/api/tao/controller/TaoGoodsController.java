@@ -42,7 +42,7 @@ public class TaoGoodsController extends BaseController {
 
     @RequestMapping(value = "/skuList", method = RequestMethod.GET)
     public TableDataInfo skuList(TaoGoodsBo bo, PageQuery pageQuery) {
-        PageResult<TaoGoodsSkuListVo> result = skuService.queryPageList(bo, pageQuery);
+        PageResult<TaoGoodsSku> result = skuService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);
     }

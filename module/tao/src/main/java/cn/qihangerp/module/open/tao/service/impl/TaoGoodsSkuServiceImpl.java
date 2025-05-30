@@ -14,11 +14,13 @@ import cn.qihangerp.module.open.tao.domain.vo.TaoGoodsSkuListVo;
 import cn.qihangerp.module.open.tao.mapper.TaoGoodsMapper;
 import cn.qihangerp.module.open.tao.mapper.TaoGoodsSkuMapper;
 import cn.qihangerp.module.open.tao.service.TaoGoodsSkuService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
 * @author TW
@@ -34,8 +36,14 @@ public class TaoGoodsSkuServiceImpl extends ServiceImpl<TaoGoodsSkuMapper, TaoGo
     private final OGoodsSkuService oGoodsSkuService;
 
     @Override
-    public PageResult<TaoGoodsSkuListVo> queryPageList(TaoGoodsBo bo, PageQuery pageQuery) {
-        IPage<TaoGoodsSkuListVo> result = mapper.selectSkuPageList(pageQuery.build(), bo.getShopId(),bo.getNumIid(),bo.getSkuId(),bo.getOuterId(), bo.getHasLink());
+    public PageResult<TaoGoodsSku> queryPageList(TaoGoodsBo bo, PageQuery pageQuery) {
+        LambdaQueryWrapper<TaoGoodsSku> ew = new LambdaQueryWrapper<TaoGoodsSku>()
+                .eq(bo.getShopId()!=null,TaoGoodsSku::getShopId,bo.getShopId())
+                .eq(bo.getNumIid()!=null,TaoGoodsSku::getNumIid,bo.getNumIid())
+                .eq(bo.getSkuId()!=null,TaoGoodsSku::getSkuId,bo.getSkuId())
+                .eq(StringUtils.hasText(bo.getOuterId()),TaoGoodsSku::getOuterId,bo.getOuterId())
+                ;
+        IPage<TaoGoodsSku> result = mapper.selectPage(pageQuery.build(), ew);
         return PageResult.build(result);
     }
 

@@ -15,6 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2024-03-09 20:44:11
 */
 public interface JdGoodsSkuService extends IService<JdGoodsSku> {
-    PageResult<JdGoodsSkuListVo> queryPageList(JdGoodsBo bo, PageQuery pageQuery);
+    PageResult<JdGoodsSku> queryPageList(JdGoodsBo bo, PageQuery pageQuery);
     ResultVo linkErpGoodsSku(LinkErpGoodsSkuBo bo);
 }

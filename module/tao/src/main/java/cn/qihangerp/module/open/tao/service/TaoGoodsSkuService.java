@@ -16,7 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2024-02-29 19:01:35
 */
 public interface TaoGoodsSkuService extends IService<TaoGoodsSku> {
-    PageResult<TaoGoodsSkuListVo> queryPageList(TaoGoodsBo bo, PageQuery pageQuery);
+    PageResult<TaoGoodsSku> queryPageList(TaoGoodsBo bo, PageQuery pageQuery);
 
     ResultVo linkErpGoodsSku(LinkErpGoodsSkuBo bo);
 }

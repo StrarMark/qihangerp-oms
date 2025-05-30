@@ -26,7 +26,7 @@ export function pullLogisticsJd(data) {
 }
 export function getTaoOAuthUrl(query) {
   return request({
-    url: '/api/tao-api/tao/oauth',
+    url: '/api/open-api/tao/oauth',
     method: 'get',
     params: query
   })

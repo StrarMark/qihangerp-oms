@@ -11,6 +11,7 @@ import cn.qihangerp.module.open.jd.mapper.JdGoodsMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
@@ -40,12 +41,19 @@ public class JdGoodsSkuServiceImpl extends ServiceImpl<JdGoodsSkuMapper, JdGoods
     private final OGoodsSkuService oGoodsSkuService;
     private final OGoodsService oGoodsService;
     @Override
-    public PageResult<JdGoodsSkuListVo> queryPageList(JdGoodsBo bo, PageQuery pageQuery) {
+    public PageResult<JdGoodsSku> queryPageList(JdGoodsBo bo, PageQuery pageQuery) {
         if(StringUtils.hasText(bo.getOuterId())){
             bo.setOuterId(bo.getOuterId().trim());
         }
-        IPage<JdGoodsSkuListVo> result = mapper.selectSkuPageList(pageQuery.build(), bo.getShopId(),bo.getWareId(),bo.getSkuId(),bo.getOuterId(),bo.getHasLink());
-        return PageResult.build(result);
+        LambdaQueryWrapper<JdGoodsSku> queryWrapper = new LambdaQueryWrapper<JdGoodsSku>()
+                .eq(bo.getShopId()!=null,JdGoodsSku::getShopId,bo.getShopId())
+                .eq(bo.getWareId()!=null,JdGoodsSku::getWareId,bo.getWareId())
+                .eq(StringUtils.hasText(bo.getOuterId()),JdGoodsSku::getOuterId,bo.getOuterId())
+                ;
+//        IPage<JdGoodsSkuListVo> result = mapper.selectSkuPageList(pageQuery.build(), bo.getShopId(),bo.getWareId(),bo.getSkuId(),bo.getOuterId(),bo.getHasLink());
+//        return PageResult.build(result);
+        Page<JdGoodsSku> goodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
+        return PageResult.build(goodsPage);
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -35,7 +35,7 @@ public class DouGoodsController extends BaseController {
 
     @RequestMapping(value = "/skuList", method = RequestMethod.GET)
     public TableDataInfo skuList(DouGoodsBo bo, PageQuery pageQuery) {
-        PageResult<DouGoodsSkuListVo> result = skuService.queryPageList(bo, pageQuery);
+        PageResult<DouGoodsSku> result = skuService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);
     }
