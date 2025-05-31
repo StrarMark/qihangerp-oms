@@ -1,4 +1,4 @@
-package cn.qihangerp.api.tao.controller;
+package cn.qihangerp.api.wei.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.open.dou.DouRequest;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 @Log
 @AllArgsConstructor
 @RestController
-@RequestMapping("/tao/ewaybill")
-public class TaoWaybillController extends BaseController {
+@RequestMapping("/wei/ewaybill")
+public class WeiWaybillController extends BaseController {
 
 
     @GetMapping(value = "/get_waybill_account_list")

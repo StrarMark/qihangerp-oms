@@ -480,7 +480,7 @@ export default {
       this.multiple = !selection.length
     },
     openWs() {
-      console.log('开源版本暂不支持')
+      this.$modal.msgError("开源版本未实现电子面单相关功能！请自行对接发货");
     },
     // 取号弹窗
     handleGetEwaybillCode() {
