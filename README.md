@@ -216,8 +216,8 @@ oms主功能微服务，主要功能包括：
 
 #### 3.2、导入数据库
 + 创建数据库`qihang-oms`
-  + 导入数据库结构：sql脚本`docs\qihang-oms.sql`
-
++ 导入数据库结构：sql脚本`docs\qihang-oms.sql`
++ 导入初始化数据：sql脚本`docs\qihang-oms-data.sql`
 
 #### 3.3、启动服务(项目)
 1.  启动开放平台微服务（`open-api`）

@@ -1,10 +1,9 @@
 import request from '@/utils/request'
 // 获取电子面单账户list
-export function getWaybillAccountList(data) {
+export function getWaybillAccountList() {
   return request({
     url: '/api/open-api/jd/ewaybill/get_waybill_account_list',
-    method: 'post',
-    data: data
+    method: 'get'
   })
 }
 
