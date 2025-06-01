@@ -233,6 +233,8 @@ export function blobValidate(data) {
 }
 
 
+// 金额格式化
 export function amountFormatter(row, column, cellValue, index) {
-  return '￥' + parseFloat(cellValue).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  return '￥' + cellValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
+
