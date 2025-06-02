@@ -5,6 +5,8 @@ import cn.qihangerp.common.bo.ShipOrderAllocateShipBo;
 import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.module.order.domain.OOrder;
 import cn.qihangerp.module.order.domain.OOrderItem;
+import cn.qihangerp.module.order.domain.bo.OrderAllocateShipRequest;
+import cn.qihangerp.module.order.domain.bo.OrderShipRequest;
 import cn.qihangerp.module.order.domain.vo.SalesDailyVo;
 import cn.qihangerp.request.OrderSearchRequest;
 import com.alibaba.fastjson2.JSONObject;
@@ -80,7 +82,7 @@ public interface OOrderService extends IService<OOrder> {
      * @param shipBo
      * @return
      */
-    ResultVo<Integer> manualShipmentOrder(ShopOrderShipBo shipBo, String createBy);
+    ResultVo<Integer> manualShipmentOrder(OrderShipRequest shipBo, String createBy);
 
     /**
      * 分配给供应商发货
@@ -88,5 +90,5 @@ public interface OOrderService extends IService<OOrder> {
      * @param createBy
      * @return
      */
-    ResultVo<Integer> allocateShipmentOrder(ShipOrderAllocateShipBo shipBo, String createBy);
+    ResultVo<Integer> allocateShipmentOrder(OrderAllocateShipRequest shipBo, String createBy);
 }

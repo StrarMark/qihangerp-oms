@@ -4,18 +4,20 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Data;
+import java.util.List;
 
 /**
- * 发货-发货记录表
- * @TableName o_shipment
+ * 发货记录表
+ * @TableName erp_shipment
  */
-@TableName(value ="o_shipment")
+@TableName(value ="erp_shipment")
 @Data
-public class OShipment implements Serializable {
+public class ErpShipment implements Serializable {
     /**
      * 
      */
@@ -28,79 +30,79 @@ public class OShipment implements Serializable {
     private Long shopId;
 
     /**
+     * 店铺类型
+     */
+    private Integer shopType;
+
+    /**
+     * o_order表id
+     */
+    private Long orderId;
+
+    /**
+     * 订单编号
+     */
+    private String orderNum;
+
+    /**
+     * 订单时间
+     */
+    private Date orderTime;
+
+    /**
+     * 发货方 0 仓库发货 1 供应商发货
+     */
+    private Integer shipper;
+
+    /**
+     * 供应商ID
+     */
+    private Long supplierId;
+
+    /**
+     * 供应商
+     */
+    private String supplier;
+
+    /**
      * 发货类型（1订单发货2商品补发3商品换货）
      */
-    private Integer shipmentType;
-
-    /**
-     * 发货的所有订单号，以逗号隔开
-     */
-    private String orderNums;
-
-    /**
-     * 收件人姓名
-     */
-    private String receiverName;
-
-    /**
-     * 收件人手机号
-     */
-    private String receiverMobile;
-
-    /**
-     * 省
-     */
-    private String province;
-
-    /**
-     * 市
-     */
-    private String city;
-
-    /**
-     * 区
-     */
-    private String town;
-
-    /**
-     * 详细地址
-     */
-    private String address;
+    private Integer shipType;
 
     /**
      * 物流公司
      */
-    private String logisticsCompany;
+    private String shipCompany;
 
     /**
-     * 物流公司编码
+     * 物流公司code
      */
-    private String logisticsCompanyCode;
+    private String shipCompanyCode;
 
     /**
      * 物流单号
      */
-    private String logisticsCode;
+    private String shipCode;
 
     /**
      * 物流费用
      */
-    private BigDecimal shipmentFee;
+    private BigDecimal shipFee;
 
     /**
      * 发货时间
      */
-    private Date shipmentTime;
+    private Date shipTime;
 
     /**
      * 发货操作人
      */
-    private String shipmentOperator;
+    private String shipOperator;
 
     /**
-     * 物流状态（1运输中2已完成）
+     * 物流状态（0 待发货1已发货2已完成）
      */
-    private Integer shipmentStatus;
+    private Integer shipStatus;
 
     /**
      * 包裹重量
@@ -125,12 +127,12 @@ public class OShipment implements Serializable {
     /**
      * 打包操作人
      */
-    private String packageOperator;
+    private String packsgeOperator;
 
     /**
      * 打包时间
      */
-    private Date packageTime;
+    private Date packsgeTime;
 
     /**
      * 包裹内容JSON
@@ -160,8 +162,9 @@ public class OShipment implements Serializable {
     /**
      * 
      */
-    private Date updateBy;
-
+    private String updateBy;
+    @TableField(exist = false)
+    private List<ErpShipmentItem> itemList;
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

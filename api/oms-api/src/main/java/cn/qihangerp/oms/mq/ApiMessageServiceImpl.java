@@ -7,7 +7,7 @@ import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.utils.SpringUtils;
 import cn.qihangerp.module.order.service.OOrderService;
 import cn.qihangerp.module.order.service.ORefundService;
-import cn.qihangerp.module.order.service.OShipmentService;
+import cn.qihangerp.module.order.service.ErpShipmentService;
 import cn.qihangerp.module.service.ApiMessageService;
 import cn.qihangerp.oms.feign.OpenApiService;
 import com.alibaba.fastjson2.JSONObject;
@@ -146,14 +146,14 @@ public class ApiMessageServiceImpl implements ApiMessageService {
             // 备货消息
             log.info("=================收到备货消息==============");
             if (mqMessage.getShopType().getIndex() == EnumShopType.OFFLINE.getIndex()) {
-                OShipmentService shipmentService = SpringUtils.getBean(OShipmentService.class);
+                ErpShipmentService shipmentService = SpringUtils.getBean(ErpShipmentService.class);
 //                shipmentService.shipStockup(mqMessage.getKeyId(), EnumShopType.OFFLINE);
             }
         } else if (mqMessage.getMqType() == MqType.SHIP_SEND_MESSAGE) {
             // 发货消息
             log.info("=================收到发货消息==============");
             if (mqMessage.getShopType().getIndex() == EnumShopType.OFFLINE.getIndex()) {
-                OShipmentService shipmentService = SpringUtils.getBean(OShipmentService.class);
+                ErpShipmentService shipmentService = SpringUtils.getBean(ErpShipmentService.class);
 //                shipmentService.shipSendMessage(mqMessage.getKeyId(), EnumShopType.OFFLINE, mqMessage.getData1(), mqMessage.getData2());
 //                orderService.offlineOrderMessage(mqMessage.getKeyId());
             }

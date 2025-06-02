@@ -1,13 +1,11 @@
 package cn.qihangerp.api.order.controller;
 
 
-import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.module.order.domain.OShipment;
-import cn.qihangerp.module.order.domain.bo.OrderShipBo;
+import cn.qihangerp.module.order.domain.ErpShipment;
 import cn.qihangerp.module.order.service.OOrderService;
-import cn.qihangerp.module.order.service.OShipmentService;
+import cn.qihangerp.module.order.service.ErpShipmentService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/shipping")
 public class ShipmentController extends BaseController {
-    private final OShipmentService shippingService;
+    private final ErpShipmentService shippingService;
 
     private final OOrderService orderService;
     @GetMapping("/list")
-    public TableDataInfo list(OShipment shipping, PageQuery pageQuery)
+    public TableDataInfo list(ErpShipment shipping, PageQuery pageQuery)
     {
         return getDataTable(shippingService.queryPageList(shipping,pageQuery));
     }

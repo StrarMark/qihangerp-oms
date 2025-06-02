@@ -6,6 +6,8 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.common.bo.ShipOrderAllocateShipBo;
 import cn.qihangerp.common.bo.ShopOrderShipBo;
+import cn.qihangerp.module.order.domain.bo.OrderAllocateShipRequest;
+import cn.qihangerp.module.order.domain.bo.OrderShipRequest;
 import cn.qihangerp.module.order.service.OOrderItemService;
 import cn.qihangerp.module.order.service.OOrderService;
 import cn.qihangerp.request.OrderSearchRequest;
@@ -123,7 +125,7 @@ public class OrderController extends BaseController
      * @return
      */
     @PostMapping("/manualShipment")
-    public AjaxResult manualShipment(@RequestBody ShopOrderShipBo shipBo)
+    public AjaxResult manualShipment(@RequestBody OrderShipRequest shipBo)
     {
         var result = orderService.manualShipmentOrder(shipBo,getUsername());
         if(result.getCode() == 0) return AjaxResult.success();
@@ -137,7 +139,7 @@ public class OrderController extends BaseController
      * @return
      */
     @PostMapping("/allocateShipmentOrder")
-    public AjaxResult allocateShipmentOrder(@RequestBody ShipOrderAllocateShipBo shipBo)
+    public AjaxResult allocateShipmentOrder(@RequestBody OrderAllocateShipRequest shipBo)
     {
         var result = orderService.allocateShipmentOrder(shipBo,getUsername());
         if(result.getCode() == 0) return AjaxResult.success();
