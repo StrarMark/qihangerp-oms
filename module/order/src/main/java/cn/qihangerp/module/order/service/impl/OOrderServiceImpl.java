@@ -1355,25 +1355,11 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 .eq(bo.getOrderStatus()!=null,OOrder::getOrderStatus,bo.getOrderStatus())
                 .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),OOrder::getOrderTime,bo.getStartTime()+" 00:00:00")
                 .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),OOrder::getOrderTime,bo.getEndTime()+" 23:59:59")
-                .eq(bo.getErpPushStatus()!=null && bo.getErpPushStatus() == 0,OOrder::getErpPushStatus,0)
-                .eq(bo.getErpPushStatus()!=null && bo.getErpPushStatus() == 100,OOrder::getErpPushStatus,100)
-                .eq(bo.getErpPushStatus()!=null && bo.getErpPushStatus() == 200,OOrder::getErpPushStatus,200)
-                .gt(bo.getErpPushStatus()!=null && bo.getErpPushStatus() == 500,OOrder::getErpPushStatus,200)
-//                .eq(org.springframework.util.StringUtils.hasText(bo.getReceiverName()),OOrder::getReceiverName,bo.getReceiverName())
-//                .like(org.springframework.util.StringUtils.hasText(bo.getReceiverMobile()),OOrder::getReceiverMobile,bo.getReceiverMobile())
+
+                .eq(org.springframework.util.StringUtils.hasText(bo.getReceiverName()),OOrder::getReceiverName,bo.getReceiverName())
+                .like(org.springframework.util.StringUtils.hasText(bo.getReceiverMobile()),OOrder::getReceiverMobile,bo.getReceiverMobile())
                 ;
-//        if(bo.getErpPushStatus()!=null) {
-//            if (bo.getErpPushStatus() == 0) {
-//                // 未推送
-//                queryWrapper.eq(OOrder::getErpPushResult, 0);
-//            } else if (bo.getErpPushStatus() == 200) {
-//                // 推送成功
-//                queryWrapper.eq(OOrder::getErpPushResult, 200);
-//            } else if (bo.getErpPushStatus() == 500) {
-//                // 推送失败
-//                queryWrapper.gt(OOrder::getErpPushResult, 200);
-//            }
-//        }
+
         pageQuery.setOrderByColumn("order_time");
         pageQuery.setIsAsc("desc");
         Page<OOrder> pages = orderMapper.selectPage(pageQuery.build(), queryWrapper);

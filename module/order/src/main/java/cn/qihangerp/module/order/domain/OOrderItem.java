@@ -3,16 +3,16 @@ package cn.qihangerp.module.order.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.util.Date;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-
 /**
- * 订单明细表
+ * OMS订单明细表
  * @TableName o_order_item
  */
+@TableName(value ="o_order_item")
 @Data
 public class OOrderItem implements Serializable {
     /**
@@ -22,24 +22,29 @@ public class OOrderItem implements Serializable {
     private String id;
 
     /**
-     * 订单ID（o_order外键）
+     * 店铺ID
      */
-    private String orderId;
+    private Long shopId;
+
     /**
      * 店铺类型
      */
     private Integer shopType;
 
     /**
-     * 店铺ID
+     * 订单ID（o_order外键）
      */
-    private Long shopId;
+    private String orderId;
+
+    /**
+     * 订单号（第三方平台）
+     */
+    private String orderNum;
 
     /**
      * 子订单号（第三方平台）
      */
     private String subOrderNum;
-    private String orderNum;
 
     /**
      * 第三方平台skuId
@@ -47,12 +52,12 @@ public class OOrderItem implements Serializable {
     private String skuId;
 
     /**
-     * erp系统商品id
+     * 商品id(o_goods外键)
      */
     private Long goodsId;
 
     /**
-     * erp系统商品规格id
+     * 商品skuid(o_goods_sku外键)
      */
     private Long goodsSkuId;
 
@@ -90,7 +95,15 @@ public class OOrderItem implements Serializable {
      * 子订单金额
      */
     private Double itemAmount;
+
+    /**
+     * 子订单优惠金额
+     */
     private Double discountAmount;
+
+    /**
+     * 实际支付金额
+     */
     private Double payment;
 
     /**
@@ -112,14 +125,24 @@ public class OOrderItem implements Serializable {
      * 售后状态 1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功 
      */
     private Integer refundStatus;
-    private Integer orderStatus;
-    private Integer hasPushErp;//是否推送到ERP
+
     /**
-     * 发货类型（0仓库发货；1供应商代发；2联合发货）
+     * 订单状态1：待发货，2：已发货，3：已完成，11已取消；21待付款
+     */
+    private Integer orderStatus;
+
+    /**
+     * 发货方式 0 自己发货1联合发货2供应商发货
+     */
+    private Integer shipper;
+
+    /**
+     * 发货方式1电子面单发货2手动发货
      */
     private Integer shipType;
+
     /**
-     * 发货状态 0 待发货 1 部分发货 2全部发货
+     * 发货状态 0 待发货  2全部发货
      */
     private Integer shipStatus;
 
@@ -143,7 +166,6 @@ public class OOrderItem implements Serializable {
      */
     private String updateBy;
 
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
-
 }
