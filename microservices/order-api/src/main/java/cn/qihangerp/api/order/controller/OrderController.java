@@ -50,38 +50,45 @@ public class OrderController extends BaseController
     {
         return success(orderService.queryDetailById(id));
     }
-
     /**
-     * 推送订单到ERP
-     * @param ids
+     * 待发货列表（去除处理过的）
+     * @param order
+     * @param pageQuery
      * @return
      */
-    @PostMapping("/pushErp/{ids}")
-    public AjaxResult pushErp(@PathVariable Long[] ids) {
-//        for (Long id : ids) {
-//            OOrder oOrder = orderService.getById(id);
-//            if (oOrder != null) {
-//                oOrder.setItemList(orderItemService.getOrderItemListByOrderId(id));
-//                ResultVo resultVo = erpPushHelper.pushOrderSingle(oOrder);
-//                OOrder pushUpdate = new OOrder();
-//                if (oOrder.getOrderStatus() == 1 || oOrder.getOrderStatus() == 2 || oOrder.getOrderStatus() == 3) {
-//                    // 待发货、已发货、已完成 订单推送
-//                    pushUpdate.setErpPushStatus(resultVo.getCode() == 0 ? 200 : resultVo.getCode());
-//
-//                } else if (oOrder.getOrderStatus() == 11) {
-//                    pushUpdate.setErpPushStatus(resultVo.getCode() == 0 ? 100 : resultVo.getCode());//推送状态200 订单推送成功 100 取消订单推送成功
-//                }
-//                pushUpdate.setErpPushResult(resultVo.getMsg());
-//                pushUpdate.setErpPushTime(new Date());
-//                pushUpdate.setUpdateBy("手动推送到ERP");
-//                pushUpdate.setUpdateTime(new Date());
-//                pushUpdate.setId(id.toString());
-//                orderService.updateById(pushUpdate);
-//            }
-//        }
-
-        return success();
+    @GetMapping("/waitShipmentList")
+    public TableDataInfo waitShipmentList(OrderSearchRequest order, PageQuery pageQuery)
+    {
+        var pageList = orderService.queryWaitShipmentPageList(order,pageQuery);
+        return getDataTable(pageList);
     }
+    /**
+     * 已分配供应商发货列表
+     * @param order
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping("/assignedShipmentList")
+    public TableDataInfo assignedShipmentList(OrderSearchRequest order, PageQuery pageQuery)
+    {
+        var pageList = orderService.queryAssignedShipmentList(order,pageQuery);
+        return getDataTable(pageList);
+    }
+
+    /**
+     * 已发货列表
+     * @param order
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping("/shippedList")
+    public TableDataInfo shippedList(OrderSearchRequest order, PageQuery pageQuery)
+    {
+        var pageList = orderService.queryShippedPageList(order,pageQuery);
+        return getDataTable(pageList);
+    }
+
+
 //    @PostMapping
 //    public AjaxResult add(@RequestBody OrderCreateBo order)
 //    {

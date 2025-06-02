@@ -31,6 +31,31 @@ public interface OOrderService extends IService<OOrder> {
     ResultVo<Integer> offlineOrderMessage(String orderNum);
     ResultVo<Integer> weiOrderMessage(String orderNum,JSONObject orderDetail );
 
+    /**
+     * 获取待发货list（去除处理过的）
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    PageResult<OOrder> queryWaitShipmentPageList(OrderSearchRequest bo, PageQuery pageQuery);
+
+    /**
+     * 获取已分配发货的list
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    PageResult<OOrder> queryAssignedShipmentList(OrderSearchRequest bo, PageQuery pageQuery);
+
+
+    /**
+     * 已经发货的list
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    PageResult<OOrder> queryShippedPageList(OrderSearchRequest bo, PageQuery pageQuery);
+
     List<OOrder> getList(OOrder order);
     PageResult<OOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery);
 
