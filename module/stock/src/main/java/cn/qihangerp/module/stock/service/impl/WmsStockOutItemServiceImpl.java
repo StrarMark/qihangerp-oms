@@ -1,6 +1,6 @@
 package cn.qihangerp.module.stock.service.impl;
 
-import cn.qihangerp.module.stock.domain.WmsStockOutItem;
+import cn.qihangerp.module.stock.domain.ErpStockOutItem;
 import cn.qihangerp.module.stock.mapper.WmsStockOutItemMapper;
 import cn.qihangerp.module.stock.service.WmsStockOutItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2024-09-22 11:13:23
 */
 @Service
-public class WmsStockOutItemServiceImpl extends ServiceImpl<WmsStockOutItemMapper, WmsStockOutItem>
+public class WmsStockOutItemServiceImpl extends ServiceImpl<WmsStockOutItemMapper, ErpStockOutItem>
     implements WmsStockOutItemService {
 
 }

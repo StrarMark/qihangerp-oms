@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.module.goods.domain.OGoodsInventoryBatch">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <id property="inventoryId" column="inventory_id" jdbcType="BIGINT"/>
             <result property="batchNum" column="batch_num" jdbcType="VARCHAR"/>
             <result property="originQty" column="origin_qty" jdbcType="BIGINT"/>
             <result property="currentQty" column="current_qty" jdbcType="BIGINT"/>
@@ -25,7 +26,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,batch_num,origin_qty,
+        id,batch_num,origin_qty,inventory_id,
         current_qty,pur_price,pur_id,
         pur_item_id,remark,sku_id,
         goods_id,sku_code,warehouse_id,

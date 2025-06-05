@@ -18,6 +18,7 @@ public class OGoodsInventoryBatch implements Serializable {
      */
     @TableId(type = IdType.AUTO)
     private Long id;
+    private Long inventoryId;
 
     /**
      * 批次号

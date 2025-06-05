@@ -12,7 +12,7 @@ import lombok.Data;
  * @TableName wms_stock_out_item
  */
 @Data
-public class WmsStockOutItem implements Serializable {
+public class ErpStockOutItem implements Serializable {
     /**
      * 主键ID
      */
@@ -47,12 +47,12 @@ public class WmsStockOutItem implements Serializable {
     /**
      * 商品id
      */
-    private Integer goodsId;
+    private Long goodsId;
 
     /**
      * 商品规格id
      */
-    private Integer specId;
+    private Long specId;
 
     /**
      * 规格编码
@@ -62,12 +62,12 @@ public class WmsStockOutItem implements Serializable {
     /**
      * 总数量
      */
-    private Long originalQuantity;
+    private Integer originalQuantity;
 
     /**
      * 已出库数量
      */
-    private Long outQuantity;
+    private Integer outQuantity;
 
     /**
      * 完成出库时间
@@ -93,6 +93,8 @@ public class WmsStockOutItem implements Serializable {
      * 
      */
     private Date updateTime;
+
+
 
     private static final long serialVersionUID = 1L;
 }

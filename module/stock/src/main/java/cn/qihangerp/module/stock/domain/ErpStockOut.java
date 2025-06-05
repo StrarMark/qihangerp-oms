@@ -2,8 +2,10 @@ package cn.qihangerp.module.stock.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -12,7 +14,7 @@ import lombok.Data;
  * @TableName wms_stock_out
  */
 @Data
-public class WmsStockOut implements Serializable {
+public class ErpStockOut implements Serializable {
     /**
      * 
      */
@@ -92,7 +94,7 @@ public class WmsStockOut implements Serializable {
     /**
      * 出库操作人userid
      */
-    private Integer operatorId;
+    private Long operatorId;
 
     /**
      * 出库操作人
@@ -118,6 +120,7 @@ public class WmsStockOut implements Serializable {
      * 更新人
      */
     private String updateBy;
-
+    @TableField(exist = false)
+    private List<ErpStockOutItem> itemList;
     private static final long serialVersionUID = 1L;
 }
