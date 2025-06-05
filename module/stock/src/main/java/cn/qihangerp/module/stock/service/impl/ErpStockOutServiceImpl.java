@@ -12,13 +12,13 @@ import cn.qihangerp.module.goods.service.OGoodsInventoryService;
 import cn.qihangerp.module.stock.domain.ErpStockOut;
 import cn.qihangerp.module.stock.domain.ErpStockOutItem;
 import cn.qihangerp.module.stock.domain.ErpStockOutItemPosition;
-import cn.qihangerp.module.stock.mapper.WmsStockOutItemPositionMapper;
-import cn.qihangerp.module.stock.mapper.WmsStockOutMapper;
+import cn.qihangerp.module.stock.mapper.ErpStockOutItemPositionMapper;
+import cn.qihangerp.module.stock.mapper.ErpStockOutMapper;
 import cn.qihangerp.module.stock.request.GoodsSkuInventoryVo;
 import cn.qihangerp.module.stock.request.StockOutCreateRequest;
 import cn.qihangerp.module.stock.request.StockOutItemRequest;
-import cn.qihangerp.module.stock.service.WmsStockOutItemService;
-import cn.qihangerp.module.stock.service.WmsStockOutService;
+import cn.qihangerp.module.stock.service.ErpStockOutItemService;
+import cn.qihangerp.module.stock.service.ErpStockOutService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -41,11 +41,11 @@ import java.util.stream.Collectors;
 */
 @AllArgsConstructor
 @Service
-public class WmsStockOutServiceImpl extends ServiceImpl<WmsStockOutMapper, ErpStockOut>
-    implements WmsStockOutService {
-    private final WmsStockOutMapper outMapper;
-    private final WmsStockOutItemService outItemService;
-    private final WmsStockOutItemPositionMapper outItemPositionMapper;
+public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpStockOut>
+    implements ErpStockOutService {
+    private final ErpStockOutMapper outMapper;
+    private final ErpStockOutItemService outItemService;
+    private final ErpStockOutItemPositionMapper outItemPositionMapper;
     private final OGoodsInventoryBatchService goodsInventoryBatchService;
     private final OGoodsInventoryService goodsInventoryService;
 

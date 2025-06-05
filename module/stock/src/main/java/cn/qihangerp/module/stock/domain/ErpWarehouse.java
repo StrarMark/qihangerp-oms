@@ -12,7 +12,7 @@ import lombok.Data;
  * @TableName wms_warehouse
  */
 @Data
-public class WmsWarehouse implements Serializable {
+public class ErpWarehouse implements Serializable {
     /**
      * 
      */

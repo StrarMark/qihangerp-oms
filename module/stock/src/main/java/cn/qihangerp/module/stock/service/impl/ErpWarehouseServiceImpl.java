@@ -1,8 +1,8 @@
 package cn.qihangerp.module.stock.service.impl;
 
-import cn.qihangerp.module.stock.domain.WmsWarehouse;
-import cn.qihangerp.module.stock.mapper.WmsWarehouseMapper;
-import cn.qihangerp.module.stock.service.WmsWarehouseService;
+import cn.qihangerp.module.stock.domain.ErpWarehouse;
+import cn.qihangerp.module.stock.mapper.ErpWarehouseMapper;
+import cn.qihangerp.module.stock.service.ErpWarehouseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import org.springframework.stereotype.Service;
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 * @createDate 2024-09-22 11:13:23
 */
 @Service
-public class WmsWarehouseServiceImpl extends ServiceImpl<WmsWarehouseMapper, WmsWarehouse>
-    implements WmsWarehouseService {
+public class ErpWarehouseServiceImpl extends ServiceImpl<ErpWarehouseMapper, ErpWarehouse>
+    implements ErpWarehouseService {
 
 }
 

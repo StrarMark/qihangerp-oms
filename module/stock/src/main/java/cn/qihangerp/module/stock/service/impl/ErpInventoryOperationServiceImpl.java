@@ -2,7 +2,7 @@ package cn.qihangerp.module.stock.service.impl;
 
 import cn.qihangerp.module.stock.domain.WmsInventoryOperation;
 import cn.qihangerp.module.stock.mapper.WmsInventoryOperationMapper;
-import cn.qihangerp.module.stock.service.WmsInventoryOperationService;
+import cn.qihangerp.module.stock.service.ErpInventoryOperationService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import org.springframework.stereotype.Service;
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 * @createDate 2024-09-23 22:35:19
 */
 @Service
-public class WmsInventoryOperationServiceImpl extends ServiceImpl<WmsInventoryOperationMapper, WmsInventoryOperation>
-    implements WmsInventoryOperationService {
+public class ErpInventoryOperationServiceImpl extends ServiceImpl<WmsInventoryOperationMapper, WmsInventoryOperation>
+    implements ErpInventoryOperationService {
 
 }
 

@@ -7,7 +7,7 @@ import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.module.stock.domain.ErpStockOut;
 import cn.qihangerp.module.stock.request.StockOutCreateRequest;
 import cn.qihangerp.module.stock.request.StockOutItemRequest;
-import cn.qihangerp.module.stock.service.WmsStockOutService;
+import cn.qihangerp.module.stock.service.ErpStockOutService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/stockOut")
 public class StockOutController extends BaseController {
-    private final WmsStockOutService stockOutService;
+    private final ErpStockOutService stockOutService;
 
     @GetMapping("/list")
     public TableDataInfo list(ErpStockOut bo, PageQuery pageQuery)

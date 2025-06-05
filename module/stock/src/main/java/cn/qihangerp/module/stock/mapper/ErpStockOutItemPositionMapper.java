@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2024-09-22 11:13:23
 * @Entity cn.qihangerp.wms.domain.WmsStockOutItemPosition
 */
-public interface WmsStockOutItemPositionMapper extends BaseMapper<ErpStockOutItemPosition> {
+public interface ErpStockOutItemPositionMapper extends BaseMapper<ErpStockOutItemPosition> {
 
 }
 
