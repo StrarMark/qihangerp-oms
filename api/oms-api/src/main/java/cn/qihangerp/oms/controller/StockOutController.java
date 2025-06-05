@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/stockOut")
 public class StockOutController extends BaseController {
+
     @GetMapping("/list")
     public TableDataInfo list(OGoodsSku bo, PageQuery pageQuery)
     {

@@ -2,25 +2,29 @@ package cn.qihangerp.module.stock.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
- * 入库单明细
- * @TableName wms_stock_in_item
+ * 入库单
+ * @TableName wms_stock_in
  */
 @Data
-public class WmsStockInItem implements Serializable {
+public class ErpStockIn implements Serializable {
     /**
-     * 
+     * 主键ID
      */
-    private String id;
+    @TableId(value = "id",type = IdType.AUTO)
+    private Long id;
 
     /**
-     * 入库单id
+     * 入库单据编号
      */
-    private Long stockInId;
+    private String stockInNum;
 
     /**
      * 来源类型（1采购订单2退货订单）
@@ -38,59 +42,39 @@ public class WmsStockInItem implements Serializable {
     private Long sourceId;
 
     /**
-     * 来源单itemId
+     * 采购订单商品数
      */
-    private Long sourceItemId;
+    private Integer sourceGoodsUnit;
 
     /**
-     * 商品id
+     * 采购订单总件数
      */
-    private Long goodsId;
+    private Integer sourceSpecUnitTotal;
 
     /**
-     * 商品编码
+     * 采购订单商品规格数
      */
-    private String goodsNum;
-
-    /**
-     * 商品名称
-     */
-    private String goodsName;
-
-    /**
-     * 商品图片
-     */
-    private String goodsImage;
-
-    /**
-     * 商品规格id
-     */
-    private Long skuId;
-
-    /**
-     * 商品规格编码
-     */
-    private String skuCode;
-
-    /**
-     * 颜色
-     */
-    private String skuName;
-
-    /**
-     * 原始数量
-     */
-    private Integer quantity;
-
-    /**
-     * 入库数量
-     */
-    private Integer inQuantity;
+    private Integer sourceSpecUnit;
 
     /**
      * 备注
      */
     private String remark;
+
+    /**
+     * 操作入库人id
+     */
+    private String stockInOperatorId;
+
+    /**
+     * 操作入库人
+     */
+    private String stockInOperator;
+
+    /**
+     * 入库时间
+     */
+    private Date stockInTime;
 
     /**
      * 状态（0待入库1部分入库2全部入库）
@@ -118,11 +102,7 @@ public class WmsStockInItem implements Serializable {
     private Date updateTime;
 
     @TableField(exist = false)
-    private Integer intoQuantity;
-    @TableField(exist = false)
-    private Integer positionId;
-    @TableField(exist = false)
-    private String positionNum;
+    private List<ErpStockInItem> itemList;
 
     private static final long serialVersionUID = 1L;
 }

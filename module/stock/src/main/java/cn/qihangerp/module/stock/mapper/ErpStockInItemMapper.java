@@ -1,7 +1,7 @@
 package cn.qihangerp.module.stock.mapper;
 
 
-import cn.qihangerp.module.stock.domain.WmsStockInItem;
+import cn.qihangerp.module.stock.domain.ErpStockInItem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2024-09-22 16:28:57
 * @Entity cn.qihangerp.wms.domain.WmsStockInItem
 */
-public interface WmsStockInItemMapper extends BaseMapper<WmsStockInItem> {
+public interface ErpStockInItemMapper extends BaseMapper<ErpStockInItem> {
 
 }
 
