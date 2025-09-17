@@ -6,7 +6,6 @@ import cn.qihangerp.common.api.ShopApiParams;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.domain.OShopPlatform;
-import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.sdk.dou.DouTokenApiHelper;

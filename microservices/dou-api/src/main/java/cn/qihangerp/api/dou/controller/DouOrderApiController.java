@@ -18,7 +18,6 @@ import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouOrderApiHelper;
-import cn.qihangerp.open.dou.model.Token;
 import cn.qihangerp.open.dou.model.order.Order;
 import cn.qihangerp.sdk.dou.PullRequest;
 import com.alibaba.fastjson2.JSONObject;

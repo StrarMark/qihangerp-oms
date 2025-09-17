@@ -1,8 +1,6 @@
 package cn.qihangerp.module.order.service.impl;
 
 
-import cn.qihangerp.common.bo.ShipOrderAllocateShipBo;
-import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.domain.OLogisticsCompany;
 import cn.qihangerp.module.goods.domain.OGoods;
 import cn.qihangerp.module.goods.domain.OGoodsSku;

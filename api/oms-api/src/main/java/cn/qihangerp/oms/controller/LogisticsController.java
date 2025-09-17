@@ -10,15 +10,9 @@ import cn.qihangerp.domain.OShopPlatform;
 import cn.qihangerp.module.service.OLogisticsCompanyService;
 import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.module.service.OShopService;
-import cn.qihangerp.oms.request.ShopBo;
 import cn.qihangerp.security.common.BaseController;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 店铺Controller

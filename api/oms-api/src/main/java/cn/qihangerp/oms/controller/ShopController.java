@@ -1,7 +1,5 @@
 package cn.qihangerp.oms.controller;
 
-import cn.qihangerp.common.PageQuery;
-import cn.qihangerp.common.PageResult;
 import cn.qihangerp.domain.OLogisticsCompany;
 import cn.qihangerp.domain.OShopPlatform;
 import cn.qihangerp.module.service.OLogisticsCompanyService;
