@@ -6,7 +6,6 @@ import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.module.open.tao.domain.TaoGoodsSku;
 import cn.qihangerp.module.open.tao.domain.bo.TaoGoodsBo;
-import cn.qihangerp.module.open.tao.domain.vo.TaoGoodsSkuListVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

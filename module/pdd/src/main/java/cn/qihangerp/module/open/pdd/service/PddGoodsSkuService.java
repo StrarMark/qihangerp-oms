@@ -5,8 +5,6 @@ import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.module.open.pdd.domain.PddGoodsSku;
-import cn.qihangerp.module.open.pdd.domain.bo.PddGoodsBo;
-import cn.qihangerp.module.open.pdd.domain.vo.PddGoodsSkuListVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

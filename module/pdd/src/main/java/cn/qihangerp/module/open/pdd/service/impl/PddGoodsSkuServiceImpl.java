@@ -10,8 +10,6 @@ import cn.qihangerp.module.goods.service.OGoodsService;
 import cn.qihangerp.module.goods.service.OGoodsSkuService;
 import cn.qihangerp.module.open.pdd.domain.PddGoods;
 import cn.qihangerp.module.open.pdd.domain.PddGoodsSku;
-import cn.qihangerp.module.open.pdd.domain.bo.PddGoodsBo;
-import cn.qihangerp.module.open.pdd.domain.vo.PddGoodsSkuListVo;
 import cn.qihangerp.module.open.pdd.mapper.PddGoodsMapper;
 import cn.qihangerp.module.open.pdd.mapper.PddGoodsSkuMapper;
 import cn.qihangerp.module.open.pdd.service.PddGoodsSkuService;

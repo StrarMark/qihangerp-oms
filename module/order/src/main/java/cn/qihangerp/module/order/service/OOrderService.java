@@ -1,8 +1,6 @@
 package cn.qihangerp.module.order.service;
 
 
-import cn.qihangerp.common.bo.ShipOrderAllocateShipBo;
-import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.module.order.domain.OOrder;
 import cn.qihangerp.module.order.domain.OOrderItem;
 import cn.qihangerp.module.order.domain.bo.OrderAllocateShipRequest;

@@ -6,7 +6,6 @@ import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.module.open.jd.domain.JdGoodsSku;
 import cn.qihangerp.module.open.jd.domain.bo.JdGoodsBo;
-import cn.qihangerp.module.open.jd.domain.vo.JdGoodsSkuListVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

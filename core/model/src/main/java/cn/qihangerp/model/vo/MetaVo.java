@@ -1,4 +1,4 @@
-package cn.qihangerp.domain.vo;
+package cn.qihangerp.model.vo;
 
 
 import cn.qihangerp.common.utils.StringUtils;

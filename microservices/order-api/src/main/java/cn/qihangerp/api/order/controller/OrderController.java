@@ -4,8 +4,6 @@ package cn.qihangerp.api.order.controller;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.common.bo.ShipOrderAllocateShipBo;
-import cn.qihangerp.common.bo.ShopOrderShipBo;
 import cn.qihangerp.module.order.domain.bo.OrderAllocateShipRequest;
 import cn.qihangerp.module.order.domain.bo.OrderShipRequest;
 import cn.qihangerp.module.order.service.OOrderItemService;
