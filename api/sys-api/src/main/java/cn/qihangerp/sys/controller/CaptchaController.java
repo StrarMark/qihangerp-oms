@@ -1,6 +1,5 @@
 package cn.qihangerp.sys.controller;
 
-
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.config.QiHangErpConfig;
 import cn.qihangerp.common.config.RedisCache;
@@ -8,8 +7,7 @@ import cn.qihangerp.common.constant.CacheConstants;
 import cn.qihangerp.common.constant.Constants;
 import cn.qihangerp.common.sign.Base64;
 import cn.qihangerp.common.utils.IdUtils;
-import cn.qihangerp.module.service.SysConfigService;
-
+import cn.qihangerp.service.SysConfigService;
 import com.google.code.kaptcha.Producer;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;

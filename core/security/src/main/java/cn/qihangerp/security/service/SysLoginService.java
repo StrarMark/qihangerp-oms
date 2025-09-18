@@ -1,7 +1,5 @@
 package cn.qihangerp.security.service;
 
-
-
 import cn.qihangerp.common.ServiceException;
 import cn.qihangerp.common.config.RedisCache;
 import cn.qihangerp.common.constant.CacheConstants;
@@ -12,13 +10,13 @@ import cn.qihangerp.common.exception.UserNotExistsException;
 import cn.qihangerp.common.utils.DateUtils;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.model.entity.SysUser;
-import cn.qihangerp.module.service.SysConfigService;
 import cn.qihangerp.security.AuthenticationContextHolder;
 import cn.qihangerp.security.LoginUser;
 import cn.qihangerp.security.TokenService;
 import cn.qihangerp.security.UserPasswordNotMatchException;
 import cn.qihangerp.security.utils.IpUtils;
 import cn.qihangerp.service.ISysUserService;
+import cn.qihangerp.service.SysConfigService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
