@@ -3,7 +3,7 @@ package cn.qihangerp.module.open.tao.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
+import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.module.open.tao.domain.TaoGoodsSku;
 import cn.qihangerp.module.open.tao.domain.bo.TaoGoodsBo;
 import com.baomidou.mybatisplus.extension.service.IService;

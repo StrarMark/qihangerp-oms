@@ -1,13 +1,10 @@
 package cn.qihangerp.sys.controller;
 
-
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.utils.StringUtils;
-import cn.qihangerp.domain.SysUser;
+import cn.qihangerp.model.entity.SysUser;
 import cn.qihangerp.security.common.BaseController;
 import cn.qihangerp.security.common.SecurityUtils;
-
-
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.service.ISysUserService;
 import org.apache.commons.lang3.ArrayUtils;

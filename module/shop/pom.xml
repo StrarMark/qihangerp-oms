@@ -20,15 +20,20 @@
 
     <dependencies>
         <dependency>
-            <groupId>cn.qihangerp.core</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0</version>
+            <groupId>cn.qihangerp.service</groupId>
+            <artifactId>interfaces</artifactId>
+            <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-            <version>3.5.5</version>
-            <scope>compile</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.qihangerp.core</groupId>-->
+<!--            <artifactId>common</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.baomidou</groupId>-->
+<!--            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>-->
+<!--            <version>3.5.5</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

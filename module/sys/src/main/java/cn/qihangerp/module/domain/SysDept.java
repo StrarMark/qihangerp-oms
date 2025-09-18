@@ -1,6 +1,6 @@
 package cn.qihangerp.module.domain;
 
-import cn.qihangerp.domain.BaseEntity;
+import cn.qihangerp.model.entity.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.ArrayList;

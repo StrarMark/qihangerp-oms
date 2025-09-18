@@ -1,10 +1,9 @@
 package cn.qihangerp.oms.controller;
 
-import cn.qihangerp.domain.OLogisticsCompany;
-import cn.qihangerp.domain.OShopPlatform;
+import cn.qihangerp.model.entity.OShop;
+import cn.qihangerp.model.entity.OShopPlatform;
 import cn.qihangerp.module.service.OLogisticsCompanyService;
 import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.domain.OShop;
 import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.oms.request.ShopBo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

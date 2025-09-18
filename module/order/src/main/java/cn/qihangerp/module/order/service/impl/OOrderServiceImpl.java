@@ -1,7 +1,7 @@
 package cn.qihangerp.module.order.service.impl;
 
-
-import cn.qihangerp.domain.OLogisticsCompany;
+import cn.qihangerp.model.entity.OLogisticsCompany;
+import cn.qihangerp.model.request.OrderSearchRequest;
 import cn.qihangerp.module.goods.domain.OGoods;
 import cn.qihangerp.module.goods.domain.OGoodsSku;
 import cn.qihangerp.module.goods.domain.OGoodsSupplier;
@@ -16,7 +16,6 @@ import cn.qihangerp.module.order.domain.vo.OrderDiscountVo;
 import cn.qihangerp.module.order.domain.vo.SalesDailyVo;
 import cn.qihangerp.module.order.mapper.*;
 import cn.qihangerp.module.order.service.OOrderService;
-import cn.qihangerp.request.OrderSearchRequest;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

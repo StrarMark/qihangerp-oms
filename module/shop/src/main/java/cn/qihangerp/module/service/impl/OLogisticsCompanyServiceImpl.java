@@ -1,6 +1,6 @@
 package cn.qihangerp.module.service.impl;
 
-
+import cn.qihangerp.model.entity.OLogisticsCompany;
 import cn.qihangerp.module.mapper.OLogisticsCompanyMapper;
 import cn.qihangerp.module.service.OLogisticsCompanyService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
-import cn.qihangerp.domain.OLogisticsCompany;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

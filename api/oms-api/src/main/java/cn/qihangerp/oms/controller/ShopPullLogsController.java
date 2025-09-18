@@ -2,10 +2,7 @@ package cn.qihangerp.oms.controller;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
-
-import cn.qihangerp.domain.OShopPullLogs;
-
-
+import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;

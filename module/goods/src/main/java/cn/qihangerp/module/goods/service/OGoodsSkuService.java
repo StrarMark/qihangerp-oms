@@ -1,7 +1,5 @@
 package cn.qihangerp.module.goods.service;
 
-
-import cn.qihangerp.domain.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.module.goods.domain.OGoodsSku;
 import com.baomidou.mybatisplus.extension.service.IService;
 

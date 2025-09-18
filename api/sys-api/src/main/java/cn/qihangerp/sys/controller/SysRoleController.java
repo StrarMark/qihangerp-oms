@@ -1,9 +1,10 @@
 package cn.qihangerp.sys.controller;
+
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.common.utils.StringUtils;
-import cn.qihangerp.domain.SysRole;
-import cn.qihangerp.domain.SysUser;
+import cn.qihangerp.model.entity.SysRole;
+import cn.qihangerp.model.entity.SysUser;
 import cn.qihangerp.module.domain.SysDept;
 import cn.qihangerp.module.domain.SysUserRole;
 import cn.qihangerp.module.service.ISysDeptService;

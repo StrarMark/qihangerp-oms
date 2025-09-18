@@ -1,23 +1,19 @@
 package cn.qihangerp.module.service.impl;
 
-
 import cn.qihangerp.common.ServiceException;
 import cn.qihangerp.common.constant.Convert;
 import cn.qihangerp.common.constant.UserConstants;
 import cn.qihangerp.common.utils.SpringUtils;
 import cn.qihangerp.common.utils.StringUtils;
-import cn.qihangerp.domain.SysRole;
-import cn.qihangerp.domain.SysUser;
+import cn.qihangerp.model.entity.SysRole;
+import cn.qihangerp.model.entity.SysUser;
 import cn.qihangerp.module.domain.SysDept;
 import cn.qihangerp.module.domain.vo.TreeSelect;
 import cn.qihangerp.module.mapper.SysDeptMapper;
 import cn.qihangerp.module.mapper.SysRoleMapper;
-//import cn.qihangerp.security.common.SecurityUtils;
-
 import cn.qihangerp.module.service.ISysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
