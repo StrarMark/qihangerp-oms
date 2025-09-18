@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.dou.service.impl;
 
-import cn.qihangerp.module.open.dou.domain.DouOrderItem;
+import cn.qihangerp.model.entity.DouOrderItem;
 import cn.qihangerp.module.open.dou.mapper.DouOrderItemMapper;
 import cn.qihangerp.module.open.dou.service.DouOrderItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

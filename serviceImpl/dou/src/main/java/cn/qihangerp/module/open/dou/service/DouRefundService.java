@@ -3,8 +3,8 @@ package cn.qihangerp.module.open.dou.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.module.open.dou.domain.DouRefund;
-import cn.qihangerp.module.open.dou.domain.bo.DouRefundBo;
+import cn.qihangerp.model.entity.DouRefund;
+import cn.qihangerp.model.bo.DouRefundBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

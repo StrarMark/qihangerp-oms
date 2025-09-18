@@ -4,8 +4,8 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
-import cn.qihangerp.module.open.dou.domain.DouGoodsSku;
-import cn.qihangerp.module.open.dou.domain.bo.DouGoodsBo;
+import cn.qihangerp.model.entity.DouGoodsSku;
+import cn.qihangerp.model.bo.DouGoodsBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

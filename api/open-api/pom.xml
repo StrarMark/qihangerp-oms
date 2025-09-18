@@ -131,15 +131,6 @@
             <version>1.0.6</version>
         </dependency>
 
-
-
-
-
-        <dependency>
-            <groupId>cn.qihangerp.module</groupId>
-            <artifactId>wei</artifactId>
-            <version>1.0</version>
-        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

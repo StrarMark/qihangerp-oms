@@ -1,7 +1,7 @@
 package cn.qihangerp.module.open.dou.mapper;
 
 
-import cn.qihangerp.module.open.dou.domain.DouOrder;
+import cn.qihangerp.model.entity.DouOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

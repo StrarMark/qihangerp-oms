@@ -1,7 +1,7 @@
 package cn.qihangerp.module.open.dou.mapper;
 
-import cn.qihangerp.module.open.dou.domain.DouGoodsSku;
-import cn.qihangerp.module.open.dou.domain.vo.DouGoodsSkuListVo;
+import cn.qihangerp.model.entity.DouGoodsSku;
+import cn.qihangerp.model.vo.DouGoodsSkuListVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

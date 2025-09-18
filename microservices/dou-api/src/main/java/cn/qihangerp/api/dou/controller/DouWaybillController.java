@@ -2,30 +2,12 @@ package cn.qihangerp.api.dou.controller;
 
 import cn.qihangerp.api.dou.DouApiCommon;
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
-import cn.qihangerp.module.open.dou.domain.DouOrder;
 import cn.qihangerp.module.open.dou.service.DouOrderService;
-import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouRequest;
-import cn.qihangerp.sdk.dou.DouTokenApiHelper;
-import cn.qihangerp.sdk.dou.DouWaybillAccountApiHelper;
-import cn.qihangerp.sdk.dou.DouWaybillApiHelper;
-import cn.qihangerp.sdk.dou.model.*;
-import cn.qihangerp.sdk.dou.request.WaybillApplyRequest;
-import cn.qihangerp.sdk.dou.request.WaybillCodeRequest;
 import cn.qihangerp.security.common.BaseController;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Log
 @AllArgsConstructor

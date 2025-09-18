@@ -1,4 +1,4 @@
-package cn.qihangerp.module.open.dou.domain.vo;
+package cn.qihangerp.model.vo;
 
 import lombok.Data;
 

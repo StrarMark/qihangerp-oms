@@ -1,7 +1,7 @@
 package cn.qihangerp.api.dou.controller.feign;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.dou.domain.DouOrder;
+import cn.qihangerp.model.entity.DouOrder;
 import cn.qihangerp.module.open.dou.service.DouOrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
