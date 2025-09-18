@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
-import cn.qihangerp.module.goods.domain.OGoodsSupplier;
+import cn.qihangerp.model.entity.OGoodsSupplier;
 import cn.qihangerp.module.goods.service.OGoodsSupplierService;
 import cn.qihangerp.module.goods.mapper.OGoodsSupplierMapper;
 import lombok.AllArgsConstructor;

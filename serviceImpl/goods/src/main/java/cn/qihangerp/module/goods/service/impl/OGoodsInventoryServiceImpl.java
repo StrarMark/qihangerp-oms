@@ -5,7 +5,7 @@ import cn.qihangerp.common.PageResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.module.goods.domain.OGoodsInventory;
+import cn.qihangerp.model.entity.OGoodsInventory;
 import cn.qihangerp.module.goods.service.OGoodsInventoryService;
 import cn.qihangerp.module.goods.mapper.OGoodsInventoryMapper;
 import lombok.AllArgsConstructor;

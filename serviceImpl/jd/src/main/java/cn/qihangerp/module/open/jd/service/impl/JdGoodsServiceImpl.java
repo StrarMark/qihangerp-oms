@@ -2,9 +2,9 @@ package cn.qihangerp.module.open.jd.service.impl;
 
 
 import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.module.goods.domain.OGoods;
-import cn.qihangerp.module.goods.domain.OGoodsInventory;
-import cn.qihangerp.module.goods.domain.OGoodsSku;
+import cn.qihangerp.model.entity.OGoods;
+import cn.qihangerp.model.entity.OGoodsInventory;
+import cn.qihangerp.model.entity.OGoodsSku;
 import cn.qihangerp.module.goods.mapper.OGoodsInventoryMapper;
 import cn.qihangerp.module.goods.mapper.OGoodsMapper;
 import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
@@ -29,9 +29,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

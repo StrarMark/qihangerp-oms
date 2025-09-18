@@ -1,7 +1,7 @@
 package cn.qihangerp.module.goods.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.module.goods.domain.OGoodsCategoryAttribute;
+import cn.qihangerp.model.entity.OGoodsCategoryAttribute;
 import cn.qihangerp.module.goods.service.OGoodsCategoryAttributeService;
 import cn.qihangerp.module.goods.mapper.OGoodsCategoryAttributeMapper;
 import org.springframework.stereotype.Service;

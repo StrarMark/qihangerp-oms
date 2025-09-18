@@ -4,11 +4,10 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 
-import cn.qihangerp.module.goods.domain.OGoods;
-import cn.qihangerp.module.goods.domain.OGoodsSku;
-import cn.qihangerp.module.goods.domain.bo.GoodsAddBo;
-import cn.qihangerp.module.goods.domain.bo.GoodsSkuAddBo;
-import cn.qihangerp.module.goods.domain.vo.GoodsSpecListVo;
+import cn.qihangerp.model.entity.OGoods;
+import cn.qihangerp.model.entity.OGoodsSku;
+import cn.qihangerp.model.bo.GoodsAddBo;
+import cn.qihangerp.model.vo.GoodsSpecListVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 
