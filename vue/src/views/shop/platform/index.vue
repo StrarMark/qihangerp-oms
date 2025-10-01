@@ -11,7 +11,7 @@
 <!--      <el-table-column type="selection" width="55" align="center" />-->
       <el-table-column label="ID" align="center" prop="id" width="100"/>
       <el-table-column label="平台" align="left" prop="name" />
-<!--       <el-table-column label="AppKey" align="left" prop="appKey" />-->
+       <el-table-column label="AppKey" align="left" prop="appKey" />
 <!--       <el-table-column label="AppSecret" align="left" prop="appSecret" />-->
 <!--       <el-table-column label="回调URL" align="left" prop="redirectUri" />-->
       <el-table-column label="接口请求URL" align="left" prop="serverUrl" />
@@ -25,27 +25,27 @@
           ></el-switch>
         </template>
       </el-table-column>
-<!--      <el-table-column label="描述" align="center" prop="remark" />-->
-<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-<!--        <template slot-scope="scope">-->
+      <el-table-column label="描述" align="center" prop="remark" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.id !== 500 && scope.row.id !== 999"
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['shop:shop:edit']"
+          >设置参数</el-button>
+
 <!--          <el-button-->
-<!--            v-if="scope.row.id !== 500 && scope.row.id !== 999"-->
 <!--            size="mini"-->
 <!--            type="text"-->
-<!--            icon="el-icon-edit"-->
+<!--            icon="el-icon-location"-->
 <!--            @click="handleUpdate(scope.row)"-->
 <!--            v-hasPermi="['shop:shop:edit']"-->
-<!--          >设置参数</el-button>-->
-
-<!--&lt;!&ndash;          <el-button&ndash;&gt;-->
-<!--&lt;!&ndash;            size="mini"&ndash;&gt;-->
-<!--&lt;!&ndash;            type="text"&ndash;&gt;-->
-<!--&lt;!&ndash;            icon="el-icon-location"&ndash;&gt;-->
-<!--&lt;!&ndash;            @click="handleUpdate(scope.row)"&ndash;&gt;-->
-<!--&lt;!&ndash;            v-hasPermi="['shop:shop:edit']"&ndash;&gt;-->
-<!--&lt;!&ndash;          >省市区地址库</el-button>&ndash;&gt;-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+<!--          >省市区地址库</el-button>-->
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination

@@ -11,7 +11,7 @@
  Target Server Version : 80043 (8.0.43)
  File Encoding         : 65001
 
- Date: 01/10/2025 16:44:57
+ Date: 01/10/2025 16:59:06
 */
 
 SET NAMES utf8mb4;
@@ -1296,7 +1296,7 @@ CREATE TABLE `o_shop`  (
 -- ----------------------------
 -- Records of o_shop
 -- ----------------------------
-INSERT INTO `o_shop` VALUES (1007, '抖店测试', 400, NULL, 9, 1, NULL, '4463798', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1759307372, 1759307261);
+INSERT INTO `o_shop` VALUES (1007, '抖店测试', 400, NULL, 9, 1, NULL, '4463798', NULL, NULL, 'c3tzx2q5p41h7zl69zjws9900002noae-11', NULL, NULL, '070t45roa51h7zl69zjws9900002noae-12', NULL, NULL, NULL, NULL, NULL, 0, 1759307372, 1759307261);
 
 -- ----------------------------
 -- Table structure for o_shop_daily
@@ -1396,7 +1396,7 @@ INSERT INTO `o_shop_platform` VALUES (200, '京东POP', 'JD-POP', '', NULL, 'htt
 INSERT INTO `o_shop_platform` VALUES (300, '拼多多', 'PDD', '', NULL, 'http://www.qihangerp.cn', 'https://gw-api.pinduoduo.com/api/router', 0, 0, 1);
 INSERT INTO `o_shop_platform` VALUES (400, '抖店', 'DOUDIAN', '7005157746437834253', '8104c8b8-9085-4a80-9248-629759b4f1a3', 'https://www.qihangerp.cn', 'https://openapi-fxg.jinritemai.com/', 0, 0, 1);
 INSERT INTO `o_shop_platform` VALUES (500, '微信小店', 'WEISHOP', '', NULL, 'http://www.qihangerp.cn', 'https://api.weixin.qq.com', 0, 0, 1);
-INSERT INTO `o_shop_platform` VALUES (999, '线下渠道', 'OFFLINE', NULL, NULL, NULL, NULL, 0, 0, NULL);
+INSERT INTO `o_shop_platform` VALUES (999, '其他平台', 'OFFLINE', NULL, NULL, NULL, NULL, 0, 0, NULL);
 
 -- ----------------------------
 -- Table structure for o_shop_pull_lasttime

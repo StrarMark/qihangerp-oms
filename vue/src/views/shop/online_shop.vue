@@ -260,8 +260,8 @@ export default {
         type: [{ required: true, message: "请选择平台", trigger: "change" }],
         sellerId: [{ required: true, message: "不能为空", trigger: "change" }],
 
-        appKey: [{ required: true, message: "不能为空", trigger: "change" }],
-        appSecret: [{ required: true, message: "不能为空", trigger: "change" }],
+        // appKey: [{ required: true, message: "不能为空", trigger: "change" }],
+        // appSecret: [{ required: true, message: "不能为空", trigger: "change" }],
         status: [{ required: true, message: "不能为空", trigger: "change" }],
       }
     };
