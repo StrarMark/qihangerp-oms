@@ -9,8 +9,8 @@ import cn.qihangerp.model.entity.OShopPlatform;
 import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;
-import cn.qihangerp.sdk.dou.DouTokenApiHelper;
-import cn.qihangerp.sdk.dou.model.Token;
+import cn.qihangerp.open.dou.DouTokenApiHelper;
+import cn.qihangerp.open.dou.model.Token;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -83,11 +83,13 @@ public class DouApiCommon {
                 accessToken  = token.getData().getAccessToken();
             }
         }else{
-            ApiResultVo<Token> token1= DouTokenApiHelper.refreshToken(shop.getAppKey(),shop.getAppSecret(),shop.getAccessToken(),shop.getRefreshToken());
-            if(token1.getCode()==0){
-                shopService.updateSessionKey(shopId,token1.getData().getAccessToken(),token1.getData().getRefreshToken());
-                params.setAccessToken(token1.getData().getAccessToken());
-                accessToken  = token1.getData().getAccessToken();
+            if(StringUtils.hasText(shop.getRefreshToken())) {
+                ApiResultVo<Token> token1 = DouTokenApiHelper.refreshToken(appKey, appSecret, accessToken, shop.getRefreshToken());
+                if (token1.getCode() == 0) {
+                    shopService.updateSessionKey(shopId, token1.getData().getAccessToken(), token1.getData().getRefreshToken());
+                    params.setAccessToken(token1.getData().getAccessToken());
+                    accessToken = token1.getData().getAccessToken();
+                }
             }
         }
         params.setAccessToken(accessToken);

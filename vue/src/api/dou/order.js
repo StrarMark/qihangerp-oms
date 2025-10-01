@@ -36,6 +36,14 @@ export function pullOrder(data) {
   })
 }
 
+export function pullOrderDetail(data) {
+  return request({
+    url: '/api/open-api/dou/order/pull_order_detail',
+    method: 'post',
+    data: data
+  })
+}
+
 export function pushOms(data) {
   return request({
     url: '/api/open-api/dou/order/push_oms',

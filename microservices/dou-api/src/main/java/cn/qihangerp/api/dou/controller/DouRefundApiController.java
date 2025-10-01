@@ -1,6 +1,7 @@
 package cn.qihangerp.api.dou.controller;
 
 import cn.qihangerp.api.dou.DouApiCommon;
+import cn.qihangerp.api.dou.DouPullRequest;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.EnumShopType;
@@ -17,14 +18,12 @@ import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouRefundApiHelper;
 import cn.qihangerp.open.dou.model.after.AfterSale;
-import cn.qihangerp.sdk.dou.PullRequest;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -53,7 +52,7 @@ public class DouRefundApiController {
      */
     @PostMapping("/pull_list")
     @ResponseBody
-    public AjaxResult pullRefundList(@RequestBody PullRequest req)   {
+    public AjaxResult pullRefundList(@RequestBody DouPullRequest req)   {
         log.info("/**************增量拉取dou退款****************/");
         if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");

@@ -137,7 +137,7 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
                 update.setModifyAmount(order.getModifyAmount());
                 update.setModifyPostAmount(order.getModifyPostAmount());
                 update.setLastPullTime(new Date());
-
+                update.setCreateTime(order.getCreateTime());
                 mapper.updateById(update);
                 // 删除item
                 itemMapper.delete(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getParentOrderId,order.getOrderId()));

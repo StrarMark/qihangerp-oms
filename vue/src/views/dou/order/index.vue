@@ -174,7 +174,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
+          <el-button style="padding-right: 6px;padding-left: 6px"
             :loading="pullLoading"
             size="mini"
             icon="el-icon-refresh"
@@ -369,6 +369,7 @@ export default {
           console.log('拉取dou订单接口返回=====',response)
         this.$modal.msgSuccess(JSON.stringify(response));
         this.pullLoading = false
+        this.getList()
       })
     },
     handleDetail(row) {
