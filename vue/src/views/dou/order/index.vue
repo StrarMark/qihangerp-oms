@@ -177,8 +177,7 @@
           <el-button style="padding-right: 6px;padding-left: 6px"
             v-if="scope.row.auditStatus === 0"
             size="mini"
-            type="success"
-                     plain
+            type="success" plain
             icon="el-icon-success"
             @click="handleConfirm(scope.row)"
             v-hasPermi="['dou:order:edit']"
@@ -311,7 +310,7 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer" v-if="isAudit">
-        <el-button type="primary" @click="submitConfirmForm">确认发货</el-button>
+        <el-button type="primary" @click="submitConfirmForm" v-if="form.auditStatus===0">确认发货</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -546,10 +545,15 @@ export default {
           }
 
           confirmOrder(form).then(response => {
-            this.$modal.msgSuccess("订单确认成功");
-            this.detailOpen = false;
-            this.isAudit = false
-            this.getList();
+            if(response.code===200){
+              this.$modal.msgSuccess("订单确认成功");
+              this.detailOpen = false;
+              this.isAudit = false
+              this.getList();
+            }else{
+              this.$modal.msgError(response.msg);
+            }
+
           });
 
         }

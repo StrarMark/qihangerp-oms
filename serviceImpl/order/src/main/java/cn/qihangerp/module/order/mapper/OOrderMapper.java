@@ -1,7 +1,7 @@
 package cn.qihangerp.module.order.mapper;
 
-import cn.qihangerp.module.order.domain.OOrder;
-import cn.qihangerp.module.order.domain.vo.OrderDiscountVo;
+import cn.qihangerp.model.entity.OOrder;
+import cn.qihangerp.model.vo.OrderDiscountVo;
 import cn.qihangerp.module.order.domain.vo.SalesDailyVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -11,7 +11,7 @@ import java.util.List;
 * @author qilip
 * @description 针对表【o_order(OMS订单表)】的数据库操作Mapper
 * @createDate 2025-06-02 11:23:22
-* @Entity cn.qihangerp.module.order.domain.OOrder
+* @Entity cn.qihangerp.model.entity.OOrder
 */
 public interface OOrderMapper extends BaseMapper<OOrder> {
     List<OrderDiscountVo> getTaoOrderDiscount(String tid);

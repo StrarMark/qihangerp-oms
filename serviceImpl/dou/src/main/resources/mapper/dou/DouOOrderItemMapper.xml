@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.qihangerp.module.order.mapper.OOrderItemMapper">
+<mapper namespace="cn.qihangerp.module.open.dou.mapper.DouOOrderItemMapper">
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.OOrderItem">
             <id property="id" column="id" jdbcType="BIGINT"/>
@@ -50,62 +50,4 @@
         create_by,update_time,update_by
     </sql>
 
-    <select id="selectPageVo" parameterType="cn.qihangerp.module.order.domain.bo.OrderItemListBo" resultType="cn.qihangerp.model.vo.OrderItemListVo">
-        SELECT
-        oi.*,o.shop_id,o.order_time,gs.outer_erp_sku_id
-        FROM o_order_item as oi
-        left join o_order as o on o.id = oi.order_id
-        left join o_goods_sku as gs on gs.id = oi.goods_sku_id
-        WHERE 1=1
-        <if test="qw.shopId!=null">
-            and o.shop_id = #{qw.shopId}
-        </if>
-        <if test="qw.orderNum!=null and qw.orderNum !=''">
-            and oi.order_num = #{qw.orderNum}
-        </if>
-        <if test="qw.subOrderNum != null and qw.subOrderNum !=''">
-            and oi.sub_order_num = #{qw.subOrderNum}
-        </if>
-        <if test="qw.refundStatus!=null">
-            and oi.refund_status = #{qw.refundStatus}
-        </if>
-        <if test="qw.startTime!=null and qw.startTime != ''">
-            and o.order_time &gt;= #{qw.startTime}
-        </if>
-        <if test="qw.endTime!=null and qw.endTime != ''">
-            and o.order_time &lt;= #{qw.endTime}
-        </if>
-        <if test="qw.hasLink != null and qw.hasLink == 0">
-            AND (oi.goods_sku_id is NULL or oi.goods_sku_id = 0)
-        </if>
-        <if test="qw.hasLink != null and qw.hasLink == 1">
-            AND oi.goods_sku_id is NOT NULL and oi.goods_sku_id != 0
-        </if>
-
-    </select>
-
-    <select id="selectOrderItemListByOrderId" parameterType="Long" resultType="cn.qihangerp.model.vo.OrderItemListVo">
-        SELECT
-            oi.*,o.shop_id,o.order_time,gs.outer_erp_sku_id
-        FROM o_order_item as oi
-                 left join o_order as o on o.id = oi.order_id
-                 left join o_goods_sku as gs on gs.id = oi.goods_sku_id
-        WHERE oi.order_id = #{orderId}
-
-    </select>
-    <select id="selectTopSku" resultType="cn.qihangerp.module.order.domain.vo.SalesTopSkuVo">
-        SELECT
-            sku_num as `name`,
-            SUM(quantity) AS `value`
-        FROM
-            o_order_item
-        WHERE
-            create_time BETWEEN #{startDate} AND #{endDate}
-          AND sku_num IS NOT NULL AND sku_num != ''
-        GROUP BY
-            sku_num
-        ORDER BY
-            `value` DESC
-            LIMIT 10;
-    </select>
 </mapper>

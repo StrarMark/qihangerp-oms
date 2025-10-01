@@ -255,24 +255,30 @@
           {{ parseTime(scope.row.orderTime) }}
         </template>
       </el-table-column>
-<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-view"-->
-<!--            @click="handleDetail(scope.row)"-->
-<!--          >详情</el-button>-->
-<!--&lt;!&ndash;          <div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <el-button&ndash;&gt;-->
-<!--&lt;!&ndash;              size="mini"&ndash;&gt;-->
-<!--&lt;!&ndash;              type="success"&ndash;&gt;-->
-<!--&lt;!&ndash;              icon="el-icon-share"&ndash;&gt;-->
-<!--&lt;!&ndash;              @click="handleShip(scope.row)"&ndash;&gt;-->
-<!--&lt;!&ndash;            >订单发货</el-button>&ndash;&gt;-->
-<!--&lt;!&ndash;          </div>&ndash;&gt;-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-view"
+            @click="handleDetail(scope.row)"
+          >详情</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDetail(scope.row)"
+          >取消订单</el-button>
+          <div>
+            <el-button style="padding-right: 6px;padding-left: 6px"
+              size="mini" plain
+              type="success"
+              icon="el-icon-share"
+              @click="handleShip(scope.row)"
+            >订单发货</el-button>
+          </div>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination

@@ -1,7 +1,7 @@
-package cn.qihangerp.module.order.domain;
+package cn.qihangerp.model.entity;
 
-import cn.qihangerp.module.order.domain.vo.OrderDiscountVo;
-import cn.qihangerp.module.order.domain.vo.OrderItemListVo;
+import cn.qihangerp.model.vo.OrderDiscountVo;
+import cn.qihangerp.model.vo.OrderItemListVo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -141,7 +141,7 @@ public class OOrder implements Serializable {
     private Integer shipper;
 
     /**
-     * 发货方式1电子面单发货2手动发货
+     * 发货方式1供应商代发0仓库发货
      */
     private Integer shipType;
 
