@@ -304,6 +304,7 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
+      this.pullLoading=false
       this.queryParams.pageNum = 1;
       this.getList();
     },
@@ -351,6 +352,7 @@ export default {
           }else{
             this.$modal.msgSuccess(JSON.stringify(response));
             this.getList()
+            this.pullLoading = false
           }
           this.pullLoading = false
         })
