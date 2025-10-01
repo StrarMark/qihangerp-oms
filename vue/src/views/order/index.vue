@@ -267,7 +267,7 @@
             size="mini"
             type="text"
             icon="el-icon-delete"
-            @click="handleDetail(scope.row)"
+            @click="handleCancel(scope.row)"
           >取消订单</el-button>
           <div>
             <el-button style="padding-right: 6px;padding-left: 6px"
@@ -421,11 +421,24 @@
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
+
+    <!-- 取消订单 -->
+    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body :close-on-click-modal="false">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
+        <el-form-item label="取消理由" prop="cancelReason" >
+          <el-input v-model="form.cancelReason" type="textarea" placeholder="请输入内容" style="width:300px"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitCancelForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {listOrder, getOrder, delOrder, addOrder, updateOrder, pushErp} from "@/api/order/order";
+import {listOrder, getOrder, delOrder, addOrder, updateOrder, pushErp,cancelOrder} from "@/api/order/order";
 import { listShop } from "@/api/shop/shop";
 import Clipboard from "clipboard";
 
@@ -455,7 +468,9 @@ export default {
       shopList:[],
       // 弹出层标题
       detailTitle:'订单详情',
+      title:'',
       detailOpen:false,
+      open:false,
       isAudit:false,
       activeName: 'orderDetail',
       orderTime: null,
@@ -474,7 +489,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-
+        cancelReason:[{ required: true, message: '不能为空' }],
       }
     };
   },
@@ -553,7 +568,10 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
-
+    cancel(){
+      this.open = false
+      this.detailOpen = false
+    },
     reset(){
 
     },
@@ -569,6 +587,25 @@ export default {
     },
     handleShip(row){
 
+    },
+    //取消订单
+    handleCancel(row){
+      this.form.id = row.id
+      this.form.remark=''
+      this.open = true;
+      this.title = "取消订单";
+    },
+    /** 提交按钮 */
+    submitCancelForm() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          cancelOrder(this.form).then(response => {
+            this.$modal.msgSuccess("订单取消成功");
+            this.open = false;
+            this.getList();
+          });
+        }
+      });
     },
     /** 详情按钮操作 */
     handleDetail(row) {

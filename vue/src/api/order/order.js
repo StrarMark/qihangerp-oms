@@ -17,6 +17,16 @@ export function getOrder(id) {
   })
 }
 
+// 取消订单
+export function cancelOrder(data) {
+  return request({
+    url: '/api/oms-api/order/cancelOrder',
+    method: 'post',
+    data: data
+  })
+}
+
+
 // 订单明细list
 export function listOrderItem(query) {
   return request({

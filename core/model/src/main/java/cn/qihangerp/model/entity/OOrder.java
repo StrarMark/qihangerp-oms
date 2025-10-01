@@ -180,6 +180,8 @@ public class OOrder implements Serializable {
      */
     private Date updateTime;
 
+    private String cancelReason;
+
     /**
      * 更新人
      */
