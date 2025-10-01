@@ -51,3 +51,11 @@ export function pushOms(data) {
     data: data
   })
 }
+// 确认抖店订单
+export function confirmOrder(data) {
+  return request({
+    url: '/api/open-api/dou/order/confirmOrder',
+    method: 'post',
+    data: data
+  })
+}

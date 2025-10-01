@@ -10,6 +10,7 @@ import cn.qihangerp.model.entity.DouGoodsSku;
 import cn.qihangerp.model.entity.DouOrder;
 import cn.qihangerp.model.entity.DouOrderItem;
 import cn.qihangerp.model.bo.DouOrderBo;
+import cn.qihangerp.module.open.dou.bo.DouOrderConfirmBo;
 import cn.qihangerp.module.open.dou.mapper.DouGoodsSkuMapper;
 import cn.qihangerp.module.open.dou.mapper.DouOrderItemMapper;
 import cn.qihangerp.module.open.dou.mapper.DouOrderMapper;
@@ -175,6 +176,11 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
             log.info("保存订单数据错误："+e.getMessage());
             return ResultVo.error(ResultVoEnum.SystemException, "系统异常：" + e.getMessage());
         }
+    }
+
+    @Override
+    public ResultVo<Long> confirmOrder(DouOrderConfirmBo taoOrder) {
+        return ResultVo.error("未实现");
     }
 }
 

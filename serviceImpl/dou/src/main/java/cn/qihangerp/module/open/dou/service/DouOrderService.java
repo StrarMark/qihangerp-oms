@@ -5,6 +5,7 @@ import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.entity.DouOrder;
 import cn.qihangerp.model.bo.DouOrderBo;
+import cn.qihangerp.module.open.dou.bo.DouOrderConfirmBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 
@@ -25,4 +26,6 @@ public interface DouOrderService extends IService<DouOrder> {
      * @return
      */
     ResultVo<Integer> saveOrder(Long shopId, DouOrder order);
+
+    ResultVo<Long> confirmOrder(DouOrderConfirmBo taoOrder);
 }
