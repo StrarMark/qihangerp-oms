@@ -3,6 +3,7 @@ package cn.qihangerp.api.tao;
 
 import cn.qihangerp.module.open.tao.domain.TaoOrder;
 import cn.qihangerp.module.open.tao.domain.TaoOrderItem;
+import cn.qihangerp.open.tao.response.TaoOrderDetailResponse;
 import cn.qihangerp.open.tao.response.TaoOrderListResponse;
 import org.springframework.util.StringUtils;
 
@@ -35,7 +36,7 @@ public class OrderAssembleHelper {
             order.setPostFee(StringUtils.hasText(trade.getPost_fee()) ? BigDecimal.valueOf(Double.parseDouble(trade.getPost_fee())) : null);
             order.setDiscountFee(StringUtils.hasText(trade.getDiscount_fee()) ? BigDecimal.valueOf(Double.parseDouble(trade.getDiscount_fee())) : null);
             order.setPayment(BigDecimal.valueOf(Double.parseDouble(trade.getPayment())));
-            order.setReceivedPayment(StringUtils.hasText(trade.getDiscount_fee()) ? BigDecimal.valueOf(Double.parseDouble(trade.getReceived_payment())) : null);
+            order.setReceivedPayment(StringUtils.hasText(trade.getReceived_payment()) ? BigDecimal.valueOf(Double.parseDouble(trade.getReceived_payment())) : null);
         } catch (Exception ee) {
             ee.printStackTrace();
         }
@@ -82,7 +83,7 @@ public class OrderAssembleHelper {
                 orderItem.setPayment(StringUtils.hasText(item.getPayment()) ? Double.parseDouble(item.getPayment()):0.0);
                 orderItem.setPrice(StringUtils.hasText(item.getPrice()) ? BigDecimal.valueOf(Double.parseDouble(item.getPrice())): BigDecimal.valueOf(0));
                 orderItem.setPicPath(item.getPic_path());
-                orderItem.setNumIid(item.getNum_iid());
+                orderItem.setNumIid(item.getNum_iid()+"");
                 orderItem.setSkuId(item.getSku_id());
 //                orderItem.setOuterIid(item.getOuterIid());
                 orderItem.setOuterSkuId(item.getOuter_sku_id());
@@ -102,6 +103,100 @@ public class OrderAssembleHelper {
                 orderItem.setShippingType(item.getShipping_type());
                 orderItem.setLogisticsCompany(item.getLogistics_company());
                 orderItem.setInvoiceNo(item.getInvoice_no());
+
+            items.add(orderItem);
+        }
+        order.setItems(items);
+        return order;
+
+    }
+
+    public static TaoOrder assembleOrder(TaoOrderDetailResponse trade) {
+
+        TaoOrder order = new TaoOrder();
+        order.setTid(trade.getTid());
+        order.setTitle(trade.getTitle());
+        order.setType(trade.getType());
+        order.setSellerFlag(trade.getSellerFlag() + "");
+//        order.setHasBuyerMessage(trade.isHas_buyer_message() + "");
+//        order.setCreditCardFee(trade.getCredit_card_fee());
+        order.setCreated(trade.getCreated());
+        order.setModified(trade.getModified());
+        order.setPayTime(trade.getPayTime());
+//            order.setPrice(Double.parseDouble(trade.getPrice()));
+        try {
+            order.setTotalFee(StringUtils.hasText(trade.getTotalFee()) ? Double.parseDouble(trade.getTotalFee()) : null);
+            order.setAdjustFee(StringUtils.hasText(trade.getAdjustFee()) ? Double.parseDouble(trade.getAdjustFee()) : null);
+            order.setPostFee(StringUtils.hasText(trade.getPostFee()) ? BigDecimal.valueOf(Double.parseDouble(trade.getPostFee())) : null);
+            order.setDiscountFee(StringUtils.hasText(trade.getDiscountFee()) ? BigDecimal.valueOf(Double.parseDouble(trade.getDiscountFee())) : null);
+            order.setPayment(BigDecimal.valueOf(Double.parseDouble(trade.getPayment())));
+            order.setReceivedPayment(StringUtils.hasText(trade.getReceivedPayment()) ? BigDecimal.valueOf(Double.parseDouble(trade.getReceivedPayment())) : null);
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        }
+        order.setBuyerNick(trade.getBuyerNick());
+        order.setBuyerOpenUid(trade.getBuyerOpenUid());
+        order.setAlipayNo(trade.getAlipayNo());
+//            order.setBuyerAlipayNo(trade.getBuyerAlipayNo());
+//            order.setBuyerEmail(trade.getBuyerEmail());
+//        order.setBuyerMemo(trade.getBuyerMemo());
+//        order.setBuyerMessage(trade.getBuyerMessage());
+//        order.setMarkDesc(trade.getMarkDesc());
+//        order.setSellerMemo(trade.getSellerMemo());
+
+//        order.setReceiverCountry(trade.getReceiverCountry());
+        order.setReceiverState(trade.getReceiverState());
+        order.setReceiverCity(trade.getReceiverCity());
+        order.setReceiverDistrict(trade.getReceiverDistrict());
+        order.setReceiverTown(trade.getReceiverTown());
+        order.setReceiverAddress(trade.getReceiverAddress());
+        order.setReceiverName(trade.getReceiverName());
+        order.setReceiverMobile(trade.getReceiverMobile());
+//        order.setReceiverPhone(trade.getReceiverPhone());
+        order.setSid(trade.getSid());
+//        order.setYfxFee(trade.getYfxFee());
+        order.setHasYfx(trade.getHasYfx() + "");
+//            order.setLogisticsInvoiceNo(trade.getinvoice);
+//            order.setNumIid(trade.getNumIid() + "");
+//            order.setNum(trade.getNum().intValue());
+        order.setStatus(trade.getStatus());
+//        order.setConsignTime(trade.getConsignTime());
+//        order.setEndTime(trade.getEndTime());
+        order.setOaid(trade.getOaid());
+        List<TaoOrderItem> items = new ArrayList<>();
+        for (var item : trade.getOrders().getOrder()) {
+            TaoOrderItem orderItem = new TaoOrderItem();
+            orderItem.setTitle(item.getTitle());
+            orderItem.setTid(Long.parseLong(trade.getTid()));
+            orderItem.setOid(Long.parseLong(item.getOid()));
+            orderItem.setTotalFee(StringUtils.hasText(item.getTotalFee()) ? BigDecimal.valueOf(Double.parseDouble(item.getTotalFee())): BigDecimal.valueOf(0));
+            orderItem.setDiscountFee(StringUtils.hasText(item.getDiscountFee()) ? BigDecimal.valueOf(Double.parseDouble(item.getDiscountFee())): BigDecimal.valueOf(0));
+            orderItem.setAdjustFee(StringUtils.hasText(item.getAdjustFee()) ?BigDecimal.valueOf(Double.parseDouble(item.getAdjustFee())): BigDecimal.valueOf(0));
+            orderItem.setDivideOrderFee( StringUtils.hasText(item.getDivideOrderFee()) ? Double.parseDouble(item.getDivideOrderFee()):null);
+            orderItem.setPartMjzDiscount(StringUtils.hasText(item.getPartMjzDiscount()) ? Double.parseDouble(item.getPartMjzDiscount()):0.0);
+            orderItem.setPayment(StringUtils.hasText(item.getPayment()) ? Double.parseDouble(item.getPayment()):0.0);
+            orderItem.setPrice(StringUtils.hasText(item.getPrice()) ? BigDecimal.valueOf(Double.parseDouble(item.getPrice())): BigDecimal.valueOf(0));
+            orderItem.setPicPath(item.getPicPath());
+            orderItem.setNumIid(item.getNumIid());
+            orderItem.setSkuId(item.getSkuId());
+            orderItem.setOuterIid(item.getOuterIid());
+            orderItem.setOuterSkuId(item.getOuterSkuId());
+            orderItem.setSkuPropertiesName(item.getSkuPropertiesName());
+            orderItem.setItemMealId(item.getItemMealId());
+            orderItem.setItemMealName(item.getItemMealName());
+            orderItem.setNum(item.getNum());
+            orderItem.setRefundStatus(item.getRefundStatus());
+            orderItem.setStatus(item.getStatus());
+            orderItem.setBuyerRate(item.getBuyerRate() + "");
+            orderItem.setSellerRate(item.getSellerRate() + "");
+            orderItem.setRefundId(item.getRefundId());
+//            orderItem.setSellerType(item.getSeller_type());
+            orderItem.setCid(item.getCid());
+            orderItem.setEndTime(item.getEndTime());
+            orderItem.setConsignTime(item.getConsignTime());
+//            orderItem.setShippingType(item.getShippingType());
+            orderItem.setLogisticsCompany(item.getLogisticsCompany());
+            orderItem.setInvoiceNo(item.getLogisticsCode());
 
             items.add(orderItem);
         }

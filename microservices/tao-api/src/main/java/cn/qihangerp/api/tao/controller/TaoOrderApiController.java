@@ -205,20 +205,10 @@ public class TaoOrderApiController {
 
 
 //        ApiResultVo<TaoOrderResponse> resultVo = OrderApiHelper.pullOrderDetail(taoRequest.getOrderId(), url, appKey, appSecret, sessionKey);
-        ApiResultVo<TaoOrderDetailResponse> resultVo = TaoOrderApiHelper.pullOrderDetail(taoRequest.getOrderId(), appKey, appSecret, sessionKey);
+        ApiResultVo<TaoOrderDetailResponse> resultVo = TaoOrderApiHelper.pullOrderDetail(taoRequest.getOrderId().toString(), appKey, appSecret, sessionKey);
 
         if (resultVo.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-            TaoOrder taoOrder = new TaoOrder();
-            BeanUtils.copyProperties(resultVo.getData(),taoOrder);
-//            List<TaoOrderItem> orderItems = new ArrayList<>();
-//            if(resultVo.getData().getItems()!=null && resultVo.getData().getItems().size()>0){
-//                for (var item : resultVo.getData().getItems()) {
-//                    TaoOrderItem orderItem = new TaoOrderItem();
-//                    BeanUtils.copyProperties(item,orderItem);
-//                    orderItems.add(orderItem);
-//                }
-//            }
-//            taoOrder.setItems(orderItems);
+            TaoOrder taoOrder = OrderAssembleHelper.assembleOrder(resultVo.getData());
             var result = orderService.saveOrder(taoRequest.getShopId(), taoOrder);
             if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
                 //已经存在

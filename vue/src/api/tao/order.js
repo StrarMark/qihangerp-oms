@@ -44,4 +44,12 @@ export function pushOms(data) {
   })
 }
 
+// 确认订单
+export function confirmOrder(data) {
+  return request({
+    url: '/api/open-api/tao/order/confirmOrder',
+    method: 'post',
+    data: data
+  })
+}
 

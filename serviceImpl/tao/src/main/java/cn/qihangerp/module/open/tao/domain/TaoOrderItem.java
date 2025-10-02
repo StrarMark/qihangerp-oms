@@ -78,7 +78,7 @@ public class TaoOrderItem implements Serializable {
     /**
      * 商品数字ID
      */
-    private Long numIid;
+    private String numIid;
 
     /**
      * 商品的最小库存单位Sku的id.可以通过taobao.item.sku.get获取详细的Sku信息天猫的SKUID
@@ -412,14 +412,14 @@ PAY_PENDING(国际信用卡支付付款确认中)
     /**
      * 商品数字ID
      */
-    public Long getNumIid() {
+    public String getNumIid() {
         return numIid;
     }
 
     /**
      * 商品数字ID
      */
-    public void setNumIid(Long numIid) {
+    public void setNumIid(String numIid) {
         this.numIid = numIid;
     }
 
