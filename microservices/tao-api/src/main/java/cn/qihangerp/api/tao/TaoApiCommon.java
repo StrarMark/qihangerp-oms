@@ -6,6 +6,7 @@ import cn.qihangerp.common.api.ShopApiParams;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPlatform;
+import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.module.service.OShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import org.springframework.util.StringUtils;
 @Component
 public class TaoApiCommon {
     private final OShopService shopService;
-//    private final OShopPlatformService platformService;
+    private final OShopPlatformService platformService;
 
     /**
      * 更新前的检查
@@ -35,26 +36,36 @@ public class TaoApiCommon {
 //            return ApiResult.build(HttpStatus.PARAMS_ERROR, "参数错误，店铺不是淘系店铺");
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "参数错误，店铺不是淘系店铺");
         }
+        String appKey = shop.getAppKey();
+        String appSecret = shop.getAppSecret();
+        Long sellId = shop.getSellerId();
+        if(StringUtils.isEmpty(appKey) || StringUtils.isEmpty(appSecret)){
+            OShopPlatform platform = platformService.selectById(EnumShopType.TAO.getIndex());
+            if(platform != null){
+                appKey = platform.getAppKey();
+                appSecret = platform.getAppSecret();
+            }
+        }
+//
 
-//        OShopPlatform platform = platformService.selectById(EnumShopType.TAO.getIndex());
-
-        if(!StringUtils.hasText(shop.getAppKey())) {
+        if(!StringUtils.hasText(appKey)) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "平台配置错误，没有找到AppKey");
         }
-        if(!StringUtils.hasText(shop.getAppSecret())) {
-            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到AppSercet");
+        if(!StringUtils.hasText(appSecret)) {
+            return ResultVo.error(HttpStatus.PARAMS_ERROR, "平台配置错误，没有找到AppSercet");
         }
 //        if(!StringUtils.hasText(platform.getServerUrl())) {
 //            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到ServerUrl");
 //        }
-        if(shop.getSellerId() == null || shop.getSellerId() <= 0) {
-            return ResultVo.error(HttpStatus.PARAMS_ERROR,  "第三方平台配置错误，没有找到SellerUserId");
-        }
+//        if(sellId == null || sellId <= 0) {
+//            return ResultVo.error(HttpStatus.PARAMS_ERROR,  "店铺配置错误，没有找到SellerUserId");
+//        }
 
         ShopApiParams params = new ShopApiParams();
-        params.setAppKey(shop.getAppKey());
-        params.setAppSecret(shop.getAppSecret());
+        params.setAppKey(appKey);
+        params.setAppSecret(appSecret);
         params.setAccessToken(shop.getAccessToken());
+        params.setSellerId(sellId);
 //        params.setRedirectUri(serverConfig.getUrl()+"/taoapi2/tao_oauth");
         params.setRedirectUri(shop.getApiRedirectUrl());
         params.setServerUrl(shop.getApiRequestUrl());
