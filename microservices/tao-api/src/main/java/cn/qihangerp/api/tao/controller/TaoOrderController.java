@@ -1,6 +1,5 @@
 package cn.qihangerp.api.tao.controller;
 
-
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
@@ -12,12 +11,16 @@ import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.module.open.tao.domain.TaoOrder;
 import cn.qihangerp.module.open.tao.domain.bo.TaoOrderBo;
+import cn.qihangerp.module.open.tao.domain.bo.TaoOrderConfirmBo;
 import cn.qihangerp.module.open.tao.domain.bo.TaoOrderPushBo;
 import cn.qihangerp.module.open.tao.service.TaoOrderService;
 import cn.qihangerp.security.common.BaseController;
+import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping("/tao/order")
@@ -56,5 +59,14 @@ public class TaoOrderController extends BaseController {
         return success();
     }
 
+    @PostMapping("/confirmOrder")
+    public AjaxResult confirmOrder(@RequestBody TaoOrderConfirmBo bo) {
+        log.info("=========确认订单======={}", JSONObject.toJSONString(bo));
 
+//        var result = orderService.confirmOrder(bo);
+//        if(result.getCode()==0) return success();
+//        else return AjaxResult.error(result.getMsg());
+
+        return AjaxResult.error("未实现");
+    }
 }

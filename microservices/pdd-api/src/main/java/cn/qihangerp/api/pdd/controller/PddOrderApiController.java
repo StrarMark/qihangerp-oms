@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -203,28 +204,27 @@ public class PddOrderApiController {
      * @return
      * @throws
      */
-//    @RequestMapping("/pull_order_detail")
-//    @ResponseBody
-//    public AjaxResult getOrderPullDetail(@RequestBody PullRequest req) throws Exception {
-//        log.info("/**************主动更新pdd订单by number****************/");
-//        if (req.getShopId() == null || req.getShopId() <= 0) {
-//            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
-//        }
-//        if (req.getOrderId() !=null) {
-//            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，缺少orderId");
-//        }
-//
-//        var checkResult = apiCommon.checkBefore(req.getShopId());
-//        if (checkResult.getCode() != HttpStatus.SUCCESS) {
-//            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
-//        }
-//        String accessToken = checkResult.getData().getAccessToken();
-//        String url = checkResult.getData().getServerUrl();
-//        String appKey = checkResult.getData().getAppKey();
-//        String appSecret = checkResult.getData().getAppSecret();
-//
-//
-//        ApiResultVo<PddOrderResponse> resultVo = OrderApiHelper.pullOrderDetail(appKey, appSecret, accessToken,req.getOrderId());
+    @PostMapping("/pull_order_detail")
+    @ResponseBody
+    public AjaxResult getOrderPullDetail(@RequestBody PddPullRequest req) throws Exception {
+        log.info("/**************主动更新pdd订单by number****************/");
+        if (req.getShopId() == null || req.getShopId() <= 0) {
+            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
+        }
+        if (StringUtils.isEmpty(req.getOrderId())) {
+            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，缺少orderId");
+        }
+
+        var checkResult = pddApiCommon.checkBefore(req.getShopId());
+        if (checkResult.getCode() != HttpStatus.SUCCESS) {
+            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(),checkResult.getData());
+        }
+        String accessToken = checkResult.getData().getAccessToken();
+        String appKey = checkResult.getData().getAppKey();
+        String appSecret = checkResult.getData().getAppSecret();
+
+
+//        ApiResultVo<PddOrderResponse> resultVo = PddOrderApiHelper.pullOrderDetail(appKey, appSecret, accessToken,req.getOrderId());
 //        if (resultVo.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
 //            PddOrder pddOrder = new PddOrder();
 //            BeanUtils.copyProperties(resultVo.getData(),pddOrder);
@@ -251,5 +251,6 @@ public class PddOrderApiController {
 //        } else {
 //            return AjaxResult.error(resultVo.getCode(), resultVo.getMsg());
 //        }
-//    }
+        return AjaxResult.error("未知错误");
+    }
 }
