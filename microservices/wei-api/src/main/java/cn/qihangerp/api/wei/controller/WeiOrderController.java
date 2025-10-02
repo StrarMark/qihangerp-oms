@@ -10,12 +10,16 @@ import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.module.open.wei.domain.WeiOrder;
+import cn.qihangerp.module.open.wei.domain.bo.WeiOrderConfirmBo;
 import cn.qihangerp.module.open.wei.domain.bo.WeiOrderPushBo;
 import cn.qihangerp.module.open.wei.service.WeiOrderService;
 import cn.qihangerp.security.common.BaseController;
+import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping("/wei/order")
@@ -46,5 +50,14 @@ public class WeiOrderController extends BaseController {
         }
         return success();
     }
+    @PostMapping("/confirmOrder")
+    public AjaxResult confirmOrder(@RequestBody WeiOrderConfirmBo bo) {
+        log.info("=========确认订单======={}", JSONObject.toJSONString(bo));
 
+//        var result = orderService.confirmOrder(bo);
+//        if(result.getCode()==0) return success();
+//        else return AjaxResult.error(result.getMsg());
+
+        return AjaxResult.error("未实现");
+    }
 }
