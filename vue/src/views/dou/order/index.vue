@@ -136,7 +136,11 @@
               </template>
             </el-table-column>
             <el-table-column label="商品名" align="left" width="250px" prop="productName" />
-            <el-table-column label="SKU名" align="left" prop="spec" width="150"  :show-overflow-tooltip="true"/>
+            <el-table-column label="规格" align="left" prop="spec" width="150"  :show-overflow-tooltip="true">
+              <template slot-scope="scope">
+                {{getSkuValues(scope.row.spec)}}
+              </template>
+            </el-table-column>
             <el-table-column label="Sku编码" align="left" prop="outerSkuId" width="200"/>
             <el-table-column label="平台SkuId" align="left" prop="skuId" width="150"/>
             <el-table-column label="商品数量" align="center" prop="itemNum" width="50px">
@@ -415,6 +419,17 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    },
+    getSkuValues(spec){
+      try {
+        // 解析 JSON，返回一个数组
+        const parsedSpec = JSON.parse(spec) || [];
+
+        // 使用 map 提取所有 value，使用 join() 用逗号连接
+        return parsedSpec.map(item => item.value).join(', ') || '';
+      } catch (error) {
+        return spec; // 如果 JSON 解析出错，返回空字符串
+      }
     },
     // 取消按钮
     cancel() {
