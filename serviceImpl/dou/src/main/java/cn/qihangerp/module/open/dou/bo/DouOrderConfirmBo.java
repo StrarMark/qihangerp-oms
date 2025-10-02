@@ -26,6 +26,6 @@ public class DouOrderConfirmBo {
     /**
      * 发货类型 0仓库发货1供应商代发
      */
-    private Integer shipType;
+//    private Integer shipType;
 
 }

@@ -301,12 +301,12 @@
         <el-form-item label="详细地址" prop="maskPostAddress" v-if="isAudit">
           <el-input v-model="form.maskPostAddress" placeholder="请输入收件地址" style="width:350px" />
         </el-form-item>
-        <el-form-item label="发货方式" prop="shipType" v-if="isAudit">
-          <el-select v-model="form.shipType" placeholder="发货类型" style="width:350px">
-            <el-option label="供应商代发" value="1"></el-option>
-            <el-option label="仓库发货" value="0"></el-option>
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="发货方式" prop="shipType" v-if="isAudit">-->
+<!--          <el-select v-model="form.shipType" placeholder="发货类型" style="width:350px">-->
+<!--            <el-option label="供应商代发" value="1"></el-option>-->
+<!--            <el-option label="仓库发货" value="0"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
 
       </el-form>
       <div slot="footer" class="dialog-footer" v-if="isAudit">
@@ -367,7 +367,7 @@ export default {
         maskPostTel: [{ required: true, message: '不能为空' }],
         provinces: [{ required: true, message: '不能为空' }],
         maskPostAddress: [{ required: true, message: '不能为空' }],
-        shipType: [{ required: true, message: '不能为空' }],
+        // shipType: [{ required: true, message: '不能为空' }],
       }
     };
   },

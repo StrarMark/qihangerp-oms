@@ -257,26 +257,19 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
+          <el-button style="padding-right: 6px;padding-left: 6px"
             size="mini"
             type="text"
             icon="el-icon-view"
             @click="handleDetail(scope.row)"
           >详情</el-button>
-          <el-button
-            size="mini"
+          <el-button v-if="scope.row.orderStatus===1"
+            size="mini" style="padding-right: 6px;padding-left: 6px"
             type="text"
             icon="el-icon-delete"
             @click="handleCancel(scope.row)"
           >取消订单</el-button>
-          <div>
-            <el-button style="padding-right: 6px;padding-left: 6px"
-              size="mini" plain
-              type="success"
-              icon="el-icon-share"
-              @click="handleShip(scope.row)"
-            >订单发货</el-button>
-          </div>
+
         </template>
       </el-table-column>
     </el-table>
