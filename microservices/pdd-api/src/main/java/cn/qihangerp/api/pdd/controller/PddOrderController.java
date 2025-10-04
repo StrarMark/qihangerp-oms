@@ -67,6 +67,5 @@ public class PddOrderController extends BaseController {
         if(result.getCode()==0) return success();
         else return AjaxResult.error(result.getMsg());
 
-        return AjaxResult.error("未实现");
     }
 }
