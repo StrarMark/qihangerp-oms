@@ -251,7 +251,7 @@
           <el-descriptions-item label="平台优惠金额">{{form.promotionTalentAmount}}</el-descriptions-item>
           <el-descriptions-item label="运费">{{form.postAmount}}</el-descriptions-item>
           <el-descriptions-item label="实际支付金额">{{form.orderAmount}}</el-descriptions-item>
-          <el-descriptions-item label="支付方式"> {{ form.payAmount }}</el-descriptions-item>
+          <el-descriptions-item label="支付金额"> {{ form.payAmount }}</el-descriptions-item>
         </el-descriptions>
 
 
@@ -274,13 +274,13 @@
         <el-table :data="form.items"  style="margin-bottom: 10px;">
           <el-table-column label="序号" align="center" type="index" width="50"/>
 
-          <el-table-column label="商品图片" width="80">
+          <el-table-column label="图片" width="60">
             <template slot-scope="scope">
-              <el-image style="width: 70px; height: 70px" :src="scope.row.productPic"></el-image>
+              <el-image style="width: 40px; height: 40px" :src="scope.row.productPic"></el-image>
             </template>
           </el-table-column>
-          <el-table-column label="商品标题" prop="productName" ></el-table-column>
-          <el-table-column label="SKU" prop="goodsSpec" width="150"></el-table-column>
+          <el-table-column label="标题" prop="productName" ></el-table-column>
+          <el-table-column label="规格" prop="goodsSpec" width="150"></el-table-column>
           <el-table-column label="sku编码" prop="specNum"></el-table-column>
           <el-table-column label="单价" prop="goodsPrice"></el-table-column>
           <el-table-column label="数量" prop="comboNum"></el-table-column>

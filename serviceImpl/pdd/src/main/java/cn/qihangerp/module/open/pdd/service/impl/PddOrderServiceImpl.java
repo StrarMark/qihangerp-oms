@@ -5,10 +5,14 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
+import cn.qihangerp.model.entity.DouOrder;
+import cn.qihangerp.model.entity.DouOrderItem;
+import cn.qihangerp.model.entity.OOrder;
 import cn.qihangerp.module.open.pdd.domain.PddGoodsSku;
 import cn.qihangerp.module.open.pdd.domain.PddOrder;
 import cn.qihangerp.module.open.pdd.domain.PddOrderItem;
 import cn.qihangerp.module.open.pdd.domain.bo.PddOrderBo;
+import cn.qihangerp.module.open.pdd.domain.bo.PddOrderConfirmBo;
 import cn.qihangerp.module.open.pdd.mapper.PddGoodsSkuMapper;
 import cn.qihangerp.module.open.pdd.mapper.PddOrderItemMapper;
 import cn.qihangerp.module.open.pdd.mapper.PddOrderMapper;
@@ -216,6 +220,33 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
             log.info("保存订单数据错误："+e.getMessage());
             return ResultVo.error(ResultVoEnum.SystemException, "系统异常：" + e.getMessage());
         }
+    }
+
+    @Override
+    public ResultVo<Long> confirmOrder(PddOrderConfirmBo confirmBo) {
+        PddOrder pddOrder = mapper.selectById(confirmBo.getOrderId());
+        if(pddOrder==null) return ResultVo.error("订单数据不存在");
+        if(pddOrder.getAuditStatus()!=0) return ResultVo.error("已经确认过了！");
+
+        List<PddOrderItem> pddOrderItems = itemMapper.selectList(
+                new LambdaQueryWrapper<PddOrderItem>()
+                .eq(PddOrderItem::getOrderSn, pddOrder.getOrderSn()));
+        if(pddOrderItems==null || pddOrderItems.isEmpty()){
+            return ResultVo.error("找不到订单item");
+        }
+
+//        OOrder erpOrder = oOrderMapper.selectOne(new LambdaQueryWrapper<OOrder>().eq(OOrder::getOrderNum,pddOrder.getOrderId()));
+//        if(erpOrder!=null) {
+//            // 已经确认过了，更新自己
+//            PddOrder douOrderUpdate = new PddOrder();
+//            douOrderUpdate.setId(pddOrder.getId());
+//            douOrderUpdate.setAuditStatus(1);
+//            douOrderUpdate.setAuditTime(new Date());
+//            mapper.updateById(douOrderUpdate);
+//
+//            return ResultVo.error("已经确认过了");
+//        }
+        return null;
     }
 
 }
