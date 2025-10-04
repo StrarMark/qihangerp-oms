@@ -6,11 +6,18 @@ import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.bo.ShopOrderShipBo;
+import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.common.utils.DateUtils;
+import cn.qihangerp.mapper.ErpOrderItemMapper;
+import cn.qihangerp.mapper.ErpOrderMapper;
+import cn.qihangerp.model.entity.OOrder;
+import cn.qihangerp.model.entity.OOrderItem;
 import cn.qihangerp.module.open.tao.domain.TaoGoodsSku;
 import cn.qihangerp.module.open.tao.domain.TaoOrder;
 import cn.qihangerp.module.open.tao.domain.TaoOrderItem;
 import cn.qihangerp.module.open.tao.domain.TaoOrderPromotion;
 import cn.qihangerp.module.open.tao.domain.bo.TaoOrderBo;
+import cn.qihangerp.module.open.tao.domain.bo.TaoOrderConfirmBo;
 import cn.qihangerp.module.open.tao.mapper.TaoOrderItemMapper;
 import cn.qihangerp.module.open.tao.mapper.TaoOrderMapper;
 import cn.qihangerp.module.open.tao.mapper.TaoOrderPromotionMapper;
@@ -45,6 +52,9 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
     private final TaoOrderItemMapper itemMapper;
     private final TaoOrderPromotionMapper promotionDetailsMapper;
     private final TaoGoodsSkuService goodsSkuService;
+    private final ErpOrderMapper erpOrderMapper;
+    private final ErpOrderItemMapper erpOrderItemMapper;
+
     private final String DATE_PATTERN =
             "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
     private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
@@ -221,6 +231,98 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
             // 不存在，新增
             return ResultVo.error(ResultVoEnum.NotFound, "订单不存在");
         }
+    }
+
+    @Override
+    public ResultVo<Long> confirmOrder(TaoOrderConfirmBo confirmBo) {
+        TaoOrder pddOrder = mapper.selectById(confirmBo.getOrderId());
+        if(pddOrder==null) return ResultVo.error("订单数据不存在");
+        if(pddOrder.getAuditStatus()!=0) return ResultVo.error("已经确认过了！");
+
+        List<TaoOrderItem> pddOrderItems = itemMapper.selectList(
+                new LambdaQueryWrapper<TaoOrderItem>()
+                        .eq(TaoOrderItem::getTid, pddOrder.getTid()));
+        if(pddOrderItems==null || pddOrderItems.isEmpty()){
+            return ResultVo.error("找不到订单item");
+        }
+
+        OOrder erpOrder = erpOrderMapper.selectOne(new LambdaQueryWrapper<OOrder>().eq(OOrder::getOrderNum,pddOrder.getTid()));
+        if(erpOrder!=null) {
+            // 已经确认过了，更新自己
+            TaoOrder douOrderUpdate = new TaoOrder();
+            douOrderUpdate.setId(pddOrder.getId());
+            douOrderUpdate.setAuditStatus(1);
+            douOrderUpdate.setAuditTime(new Date());
+            mapper.updateById(douOrderUpdate);
+
+            return ResultVo.error("已经确认过了");
+        }
+        OOrder order = new OOrder();
+        order.setOrderNum(pddOrder.getTid());
+        order.setShopType(EnumShopType.TAO.getIndex());
+        order.setShopId(pddOrder.getShopId());
+//        order.setShipType(confirmBo.getShipType());
+        order.setShipType(0);
+        order.setBuyerMemo(pddOrder.getBuyerMemo());
+        order.setSellerMemo(pddOrder.getSellerMemo());
+        order.setRefundStatus(1);
+        order.setOrderStatus(1);
+        order.setGoodsAmount(pddOrder.getTotalFee()!=null?pddOrder.getTotalFee():0.0);
+        order.setPostFee(pddOrder.getPostFee()!=null?pddOrder.getPostFee().doubleValue():0.0);
+        order.setSellerDiscount(pddOrder.getDiscountFee()!=null?pddOrder.getDiscountFee().doubleValue():0.0);
+        order.setPlatformDiscount(0.0);
+        order.setAmount(pddOrder.getTotalFee()!=null?pddOrder.getTotalFee().doubleValue():0.0);
+        order.setPayment(pddOrder.getPayment()!=null?pddOrder.getPayment().doubleValue():0.0);
+        order.setReceiverName(confirmBo.getReceiver());
+        order.setReceiverMobile(confirmBo.getMobile());
+        order.setAddress(confirmBo.getAddress());
+        order.setProvince(confirmBo.getProvince());
+        order.setCity(confirmBo.getCity());
+        order.setTown(confirmBo.getTown());
+        order.setOrderTime(StringUtils.hasText(pddOrder.getCreated())? DateUtils.dateTime("yyyy-MM-dd HH:mm:ss",pddOrder.getCreated()):new Date());
+        order.setShipper(-1);
+        order.setShipStatus(0);
+        order.setCreateTime(new Date());
+        order.setCreateBy("手动确认订单");
+        erpOrderMapper.insert(order);
+        //插入item
+        for (var item : pddOrderItems) {
+            OOrderItem oOrderItem = new OOrderItem();
+            oOrderItem.setOrderId(order.getId());
+            oOrderItem.setOrderNum(order.getOrderNum());
+            oOrderItem.setSubOrderNum(item.getOid().toString());
+            oOrderItem.setShopType(EnumShopType.TAO.getIndex());
+            oOrderItem.setShopId(pddOrder.getShopId());
+            oOrderItem.setSkuId(item.getSkuId().toString());
+            oOrderItem.setGoodsId(StringUtils.hasText(item.getoGoodsId())?Long.parseLong(item.getoGoodsId()):0L);
+            oOrderItem.setGoodsSkuId(StringUtils.hasText(item.getoGoodsSkuId())?Long.parseLong(item.getoGoodsSkuId()):0L);
+            oOrderItem.setGoodsTitle(item.getTitle());
+            oOrderItem.setGoodsImg(item.getPicPath());
+            oOrderItem.setGoodsNum(item.getOuterIid());
+            oOrderItem.setGoodsSpec(item.getSkuPropertiesName());
+            oOrderItem.setSkuNum(item.getOuterSkuId());
+            oOrderItem.setGoodsPrice(item.getPrice()!=null?item.getPrice().doubleValue():0.0);
+            oOrderItem.setQuantity(item.getNum());
+            oOrderItem.setItemAmount(oOrderItem.getGoodsPrice()*oOrderItem.getQuantity());
+            oOrderItem.setDiscountAmount(0.0);
+            oOrderItem.setPayment(0.0);
+
+            oOrderItem.setRefundCount(0);
+            oOrderItem.setRefundStatus(1);
+            oOrderItem.setShipper(-1);
+            oOrderItem.setShipType(order.getShipType());
+            oOrderItem.setShipStatus(0);
+            oOrderItem.setCreateTime(new Date());
+            oOrderItem.setCreateBy("手动确认订单");
+            erpOrderItemMapper.insert(oOrderItem);
+        }
+        // 更新自己
+        TaoOrder douOrderUpdate = new TaoOrder();
+        douOrderUpdate.setId(pddOrder.getId());
+        douOrderUpdate.setAuditStatus(1);
+        douOrderUpdate.setAuditTime(new Date());
+        mapper.updateById(douOrderUpdate);
+        return ResultVo.success();
     }
 
 //    @Transactional(rollbackFor = Exception.class)

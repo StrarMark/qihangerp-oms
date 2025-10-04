@@ -63,10 +63,8 @@ public class TaoOrderController extends BaseController {
     public AjaxResult confirmOrder(@RequestBody TaoOrderConfirmBo bo) {
         log.info("=========确认订单======={}", JSONObject.toJSONString(bo));
 
-//        var result = orderService.confirmOrder(bo);
-//        if(result.getCode()==0) return success();
-//        else return AjaxResult.error(result.getMsg());
-
-        return AjaxResult.error("未实现");
+        var result = orderService.confirmOrder(bo);
+        if(result.getCode()==0) return success();
+        else return AjaxResult.error(result.getMsg());
     }
 }
