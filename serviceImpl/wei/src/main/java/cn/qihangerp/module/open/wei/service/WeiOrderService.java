@@ -4,6 +4,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.module.open.wei.domain.WeiOrder;
+import cn.qihangerp.module.open.wei.domain.bo.WeiOrderConfirmBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 
@@ -17,4 +18,5 @@ public interface WeiOrderService extends IService<WeiOrder> {
     ResultVo<Integer> saveOrder(Long shopId, WeiOrder order);
     WeiOrder queryDetailById(Long id);
     WeiOrder queryDetailByOrderId(String orderId);
+    ResultVo<Long> confirmOrder(WeiOrderConfirmBo confirmBo);
 }
