@@ -71,8 +71,8 @@ public class WeiOrderApiController extends BaseController {
                     order.setOrderId(orderInfo.getOrder_id());
                     order.setShopId(params.getShopId());
                     order.setOpenid(orderInfo.getOpenid());
-                    order.setCreateTime(orderInfo.getCreate_time());
-                    order.setUpdateTime(orderInfo.getUpdate_time());
+                    order.setCreateTime(orderInfo.getCreate_time().longValue());
+                    order.setUpdateTime(orderInfo.getUpdate_time().longValue());
                     order.setUnionid(orderInfo.getUnionid());
                     order.setStatus(orderInfo.getStatus());
                     order.setAftersaleDetail(JSONObject.toJSONString(orderInfo.getAftersale_detail()));
