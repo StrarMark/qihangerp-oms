@@ -378,8 +378,8 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 .like(org.springframework.util.StringUtils.hasText(bo.getReceiverMobile()),OOrder::getReceiverMobile,bo.getReceiverMobile())
                 ;
 
-        pageQuery.setOrderByColumn("order_time");
-        pageQuery.setIsAsc("desc");
+//        pageQuery.setOrderByColumn("order_time");
+//        pageQuery.setIsAsc("desc");
         Page<OOrder> pages = orderMapper.selectPage(pageQuery.build(), queryWrapper);
 
         // 查询子订单
