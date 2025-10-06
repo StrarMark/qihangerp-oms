@@ -293,14 +293,20 @@
         </el-table>
 
         <el-form-item label="收件人姓名" prop="userName" v-if="isAudit">
-          <el-input v-model="form.userName" placeholder="请输入收件人姓名" style="width:250px" />
+          <el-input v-model="form.userName" placeholder="请输入收件人姓名" style="width:350px" />
         </el-form-item>
         <el-form-item label="收件人电话" prop="telNumber" v-if="isAudit">
-          <el-input v-model="form.telNumber" placeholder="请输入收件人电话" style="width:250px" />
+          <el-input v-model="form.telNumber" placeholder="请输入收件人电话" style="width:350px" />
         </el-form-item>
-
+        <el-form-item label="省市区" prop="provinces" v-if="isAudit">
+          <el-cascader style="width:350px"
+                       size="large"
+                       :options="pcaTextArr"
+                       v-model="form.provinces">
+          </el-cascader>
+        </el-form-item>
         <el-form-item label="详细地址" prop="detailInfo" v-if="isAudit">
-          <el-input v-model="form.detailInfo" placeholder="请输入收件地址" style="width:250px" />
+          <el-input v-model="form.detailInfo" placeholder="请输入收件地址" style="width:350px" />
         </el-form-item>
 
       </el-form>
@@ -317,9 +323,8 @@
 
 import { listShop } from "@/api/shop/shop";
 import {listOrder,getOrder,pushOms,pullOrder,pullOrderDetail,confirmOrder} from "@/api/wei/order";
-import {pcaTextArr} from "element-china-area-data";
 import Clipboard from "clipboard";
-
+import {pcaTextArr} from "element-china-area-data";
 export default {
   name: "OrderWei",
   data() {
@@ -497,7 +502,7 @@ export default {
         this.form.provinces = []
         this.form.provinces.push(response.data.provinceName)
         this.form.provinces.push(response.data.cityName)
-        this.form.provinces.push(response.data.townName)
+        this.form.provinces.push(response.data.countyName)
         this.detailOpen = true;
         this.detailTitle = "确认订单";
         this.isAudit = true
@@ -511,9 +516,9 @@ export default {
             province:this.form.provinces[0],
             city:this.form.provinces[1],
             town:this.form.provinces[2],
-            address:this.form.maskPostAddress,
-            receiver:this.form.maskPostReceiver,
-            mobile:this.form.maskPostTel
+            address:this.form.detailInfo,
+            receiver:this.form.userName,
+            mobile:this.form.telNumber
           }
 
           confirmOrder(form).then(response => {

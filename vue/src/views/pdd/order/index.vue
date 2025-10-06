@@ -316,7 +316,6 @@
 <script>
 import {listOrder, pullOrder, getOrder, pushOms, pullOrderDetail,confirmOrder} from "@/api/pdd/order";
 import { listShop } from "@/api/shop/shop";
-import { searchSku } from "@/api/goods/goods";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "../../../utils/request";
 import Clipboard from 'clipboard'
@@ -548,9 +547,9 @@ export default {
             province:this.form.provinces[0],
             city:this.form.provinces[1],
             town:this.form.provinces[2],
-            address:this.form.maskPostAddress,
-            receiver:this.form.maskPostReceiver,
-            mobile:this.form.maskPostTel
+            address:this.form.receiverAddressMask,
+            receiver:this.form.receiverNameMask,
+            mobile:this.form.receiverPhoneMask
           }
 
           confirmOrder(form).then(response => {
