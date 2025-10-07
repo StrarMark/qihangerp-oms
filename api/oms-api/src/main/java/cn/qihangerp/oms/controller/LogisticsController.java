@@ -77,5 +77,9 @@ public class LogisticsController extends BaseController {
     {
         return success(logisticsCompanyService.getById(id));
     }
-
+    @DeleteMapping("/logistics/{id}")
+    public AjaxResult remove(@PathVariable Long id)
+    {
+        return toAjax(logisticsCompanyService.removeById(id));
+    }
 }

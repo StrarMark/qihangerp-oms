@@ -841,7 +841,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
         return ResultVo.success();
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo cancelOrder(Long id, String cancelReason, String man) {
         OOrder shopOrder = this.baseMapper.selectById(id);
@@ -879,7 +879,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
         return ResultVo.success();
     }
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo cancelOrderItem(Long orderItemId, String cancelReason, String man) {
         OOrderItem shopOrderItem = orderItemMapper.selectById(orderItemId);

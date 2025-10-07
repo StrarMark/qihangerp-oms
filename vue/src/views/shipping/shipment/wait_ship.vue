@@ -221,16 +221,16 @@
           <!-- <el-table-column type="selection" width="50" align="center" /> -->
           <el-table-column label="序号" align="center" type="index" width="50"/>
 
-          <el-table-column label="商品图片" prop="goodsImg" width="80">
+          <el-table-column label="图片" prop="goodsImg" width="60">
             <template slot-scope="scope">
-              <el-image style="width: 70px; height: 70px" :src="scope.row.goodsImg"></el-image>
+              <el-image style="width: 40px; height: 40px" :src="scope.row.goodsImg"></el-image>
             </template>
           </el-table-column>
-          <el-table-column label="商品标题" prop="goodsTitle" ></el-table-column>
-          <el-table-column label="SKU" prop="goodsSpec" width="150"></el-table-column>
-          <el-table-column label="sku编码" prop="skuNum"></el-table-column>
+          <el-table-column label="标题" prop="goodsTitle" ></el-table-column>
+          <el-table-column label="规格" prop="goodsSpec"></el-table-column>
+          <el-table-column label="sku编码" prop="skuNum"  width="180"></el-table-column>
           <!--          <el-table-column label="单价" prop="goodsPrice"></el-table-column>-->
-          <el-table-column label="数量" prop="quantity"></el-table-column>
+          <el-table-column label="数量" prop="quantity" width="50"></el-table-column>
           <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
         </el-table>
         <el-form-item label="包裹尺寸" prop="height">
@@ -305,16 +305,16 @@
           <!-- <el-table-column type="selection" width="50" align="center" /> -->
           <el-table-column label="序号" align="center" type="index" width="50"/>
 
-          <el-table-column label="商品图片" prop="goodsImg" width="80">
+          <el-table-column label="图片" prop="goodsImg" width="60">
             <template slot-scope="scope">
-              <el-image style="width: 70px; height: 70px" :src="scope.row.goodsImg"></el-image>
+              <el-image style="width: 40px; height: 40px" :src="scope.row.goodsImg"></el-image>
             </template>
           </el-table-column>
-          <el-table-column label="商品标题" prop="goodsTitle" ></el-table-column>
-          <el-table-column label="SKU" prop="goodsSpec" width="150"></el-table-column>
-          <el-table-column label="sku编码" prop="skuNum"></el-table-column>
+          <el-table-column label="标题" prop="goodsTitle" ></el-table-column>
+          <el-table-column label="规格" prop="goodsSpec"></el-table-column>
+          <el-table-column label="sku编码" prop="skuNum"  width="180"></el-table-column>
           <!--          <el-table-column label="单价" prop="goodsPrice"></el-table-column>-->
-          <el-table-column label="数量" prop="quantity"></el-table-column>
+          <el-table-column label="数量" prop="quantity" width="50"></el-table-column>
           <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
         </el-table>
         <el-form-item label="收件人" prop="receiverName">
