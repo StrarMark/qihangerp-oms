@@ -100,6 +100,36 @@ public class OShipment implements Serializable {
     private String shipOperator;
 
     /**
+     * 收件人姓名
+     */
+    private String receiverName;
+
+    /**
+     * 收件人手机号
+     */
+    private String receiverMobile;
+
+    /**
+     * 收件人地址
+     */
+    private String address;
+
+    /**
+     * 省
+     */
+    private String province;
+
+    /**
+     * 市
+     */
+    private String city;
+
+    /**
+     * 区
+     */
+    private String town;
+
+    /**
      * 物流状态（0 待发货1已发货2已完成）
      */
     private Integer shipStatus;

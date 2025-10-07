@@ -2,8 +2,14 @@ package cn.qihangerp.module.order.service.impl;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
+import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.model.entity.OLogisticsCompany;
+import cn.qihangerp.model.entity.OShop;
+import cn.qihangerp.module.mapper.OLogisticsCompanyMapper;
+import cn.qihangerp.module.mapper.OShopMapper;
 import cn.qihangerp.module.order.domain.OShipment;
 import cn.qihangerp.module.order.domain.OShipmentItem;
+import cn.qihangerp.module.order.domain.bo.OrderShipBo;
 import cn.qihangerp.module.order.mapper.OShipmentItemMapper;
 import cn.qihangerp.module.order.mapper.OShipmentMapper;
 import cn.qihangerp.module.order.service.ErpShipmentService;
@@ -13,6 +19,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
 * @author qilip
@@ -24,10 +33,13 @@ import org.springframework.util.StringUtils;
 public class ErpShipmentServiceImpl extends ServiceImpl<OShipmentMapper, OShipment>
     implements ErpShipmentService{
     private final OShipmentItemMapper shipmentItemMapper;
+    private final OLogisticsCompanyMapper logisticsCompanyMapper;
+    private final OShopMapper shopMapper;
     @Override
     public PageResult<OShipment> queryPageList(OShipment shipping, PageQuery pageQuery) {
         LambdaQueryWrapper<OShipment> queryWrapper = new LambdaQueryWrapper<OShipment>()
                 .eq(shipping.getShipper()!=null, OShipment::getShipper,shipping.getShipper())
+                .eq(shipping.getShipType()!=null, OShipment::getShipType,shipping.getShipType())
                 .eq(StringUtils.hasText(shipping.getOrderNum()), OShipment::getOrderNum, shipping.getOrderNum())
                 .eq(StringUtils.hasText(shipping.getShipCode()), OShipment::getShipCode, shipping.getShipCode())
                 .eq(shipping.getShopId() != null, OShipment::getShopId, shipping.getShopId());
@@ -49,6 +61,43 @@ public class ErpShipmentServiceImpl extends ServiceImpl<OShipmentMapper, OShipme
             oShipment.setItemList(shipmentItemMapper.selectList(new LambdaQueryWrapper<OShipmentItem>().eq(OShipmentItem::getShipmentId, oShipment.getId())));
         }
         return oShipment;
+    }
+
+    @Override
+    public ResultVo<Long> addRecord(OrderShipBo shipping) {
+        OLogisticsCompany oLogisticsCompany = logisticsCompanyMapper.selectById(shipping.getShipCompany());
+        if(oLogisticsCompany==null){
+            return ResultVo.error("快递公司不存在");
+        }
+        OShop oShop = shopMapper.selectById(shipping.getShopId());
+        if(oShop==null){
+            return ResultVo.error("店铺不存在");
+        }
+
+        OShipment shipment = new OShipment();
+        shipment.setShipType(shipping.getShipType());
+        shipment.setShopId(shipping.getShopId());
+        shipment.setShopType(shipping.getShipType());
+        shipment.setShipCode(shipping.getShipCode());
+        shipment.setShipCompanyCode(oLogisticsCompany.getCode());
+        shipment.setShipCompany(oLogisticsCompany.getName());
+        shipment.setReceiverName(shipping.getReceiverName());
+        shipment.setReceiverMobile(shipping.getReceiverMobile());
+        shipment.setProvince(shipping.getProvince());
+        shipment.setCity(shipping.getCity());
+        shipment.setTown(shipping.getTown());
+        shipment.setAddress(shipping.getAddress());
+        shipment.setOrderNum(shipping.getOrderNum());
+        shipment.setShipOperator(shipping.getShipOperator());
+        shipment.setOrderId(0L);
+        shipment.setShipper(0);
+        shipment.setSupplierId(0L);
+        shipment.setShipFee(BigDecimal.ZERO);
+        shipment.setShipStatus(1);
+        shipment.setCreateBy("手动添加发货记录");
+        shipment.setCreateTime(new Date());
+        this.baseMapper.insert(shipment);
+        return ResultVo.success(shipment.getId());
     }
 }
 

@@ -527,7 +527,12 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         oShipment.setShipTime(new Date());
         oShipment.setShipOperator(shipBo.getShippingMan());
         oShipment.setShipStatus(1);//物流状态（0 待发货1已发货2已完成）
-
+        oShipment.setReceiverName(erpOrder.getReceiverName());
+        oShipment.setReceiverMobile(erpOrder.getReceiverMobile());
+        oShipment.setProvince(erpOrder.getProvince());
+        oShipment.setCity(erpOrder.getCity());
+        oShipment.setTown(erpOrder.getTown());
+        oShipment.setAddress(erpOrder.getAddress());
         oShipment.setPackageHeight(shipBo.getHeight());
         oShipment.setPackageWeight(shipBo.getWeight());
         oShipment.setPackageLength(shipBo.getLength());

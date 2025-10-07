@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="店铺" prop="name">
+      <el-form-item label="店铺" prop="shopId">
         <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
           <el-option
             v-for="item in shopList"
@@ -9,11 +9,21 @@
             :label="item.name"
             :value="item.id">
             <span style="float: left">{{ item.name }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 1">淘宝天猫</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 2">京东</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">抖店</span>
-            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 4">拼多多</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 500">微信小店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 200">京东POP</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 280">京东自营</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 100">淘宝天猫</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 300">拼多多</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 400">抖店</span>
+            <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">线下渠道</span>
           </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="发货类型" prop="shipType">
+        <el-select v-model="queryParams.shipType" placeholder="发货类型" clearable @change="handleQuery">
+          <el-option label="订单发货" value="1"></el-option>
+          <el-option label="商品补发" value="2"></el-option>
+          <el-option label="商品换货" value="3"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="订单号" prop="orderNum">
@@ -48,7 +58,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleShipping"
-        >手动发货</el-button>
+        >手动添加发货记录</el-button>
       </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
@@ -102,20 +112,30 @@
       @pagination="getList"
     />
     <!-- 对话框 -->
-    <el-dialog title="手动发货" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog title="手动添加发货记录" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="发货类型" prop="shipType">
+          <el-select v-model="form.shipType" placeholder="发货类型" >
+            <el-option label="订单发货" value="1"></el-option>
+            <el-option label="商品补发" value="2"></el-option>
+            <el-option label="商品换货" value="3"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="店铺" prop="shopId">
-          <el-select v-model="form.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
+          <el-select v-model="form.shopId" placeholder="请选择店铺" >
             <el-option
               v-for="item in shopList"
               :key="item.id"
               :label="item.name"
               :value="item.id">
               <span style="float: left">{{ item.name }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 1">淘宝天猫</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 2">京东</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 3">抖店</span>
-              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 4">拼多多</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 500">微信小店</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 200">京东POP</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 280">京东自营</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 100">淘宝天猫</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 300">拼多多</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 400">抖店</span>
+              <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.type === 999">线下渠道</span>
             </el-option>
           </el-select>
         </el-form-item>
@@ -124,36 +144,45 @@
           <el-input v-model="form.orderNum" placeholder="请输入订单号" />
         </el-form-item>
         <el-form-item label="快递公司" prop="shipCompany">
-          <el-select v-model="form.shipCompany" placeholder="请选择快递公司" clearable @change="handleQuery">
+          <el-select v-model="form.shipCompany" placeholder="请选择快递公司" >
             <el-option
               v-for="item in logisticsList"
               :key="item.id"
               :label="item.name"
-              :value="item.code">
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="快递单号" prop="shipCode">
           <el-input v-model="form.shipCode" placeholder="请输入快递单号" />
         </el-form-item>
-        <el-form-item label="快递费用" prop="shipFee">
-          <el-input v-model="form.shipFee" placeholder="请输入快递费用" />
+<!--        <el-form-item label="快递费用" prop="shipFee">-->
+<!--          <el-input v-model="form.shipFee" placeholder="请输入快递费用" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="收件人" prop="receiverName">
+          <el-input v-model="form.receiverName" placeholder="请输入收件人" />
+        </el-form-item>
+        <el-form-item label="手机号" prop="receiverMobile">
+          <el-input v-model="form.receiverMobile" placeholder="请输入手机号" />
+        </el-form-item>
+        <el-form-item label="收货地址" prop="address">
+          <el-input v-model="form.address" placeholder="请输入收货地址" />
         </el-form-item>
         <el-form-item label="发货人" prop="shipOperator">
           <el-input v-model="form.shipOperator" placeholder="请输入发货人" />
         </el-form-item>
-        <el-form-item label="包裹重量" prop="packageWeight">
-          <el-input v-model="form.packageWeight" placeholder="请输入包裹重量" />
-        </el-form-item>
-        <el-form-item label="包裹长度" prop="packageLength">
-          <el-input v-model="form.packageLength" placeholder="包裹长度" />
-        </el-form-item>
-        <el-form-item label="包裹宽度" prop="packageWidth">
-          <el-input v-model="form.width" placeholder="请输入包裹宽度" />
-        </el-form-item>
-        <el-form-item label="包裹高度" prop="packageHeight">
-          <el-input v-model="form.height" placeholder="请输入包裹高度" />
-        </el-form-item>
+<!--        <el-form-item label="包裹重量" prop="packageWeight">-->
+<!--          <el-input v-model="form.packageWeight" placeholder="请输入包裹重量" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="包裹长度" prop="packageLength">-->
+<!--          <el-input v-model="form.packageLength" placeholder="包裹长度" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="包裹宽度" prop="packageWidth">-->
+<!--          <el-input v-model="form.width" placeholder="请输入包裹宽度" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="包裹高度" prop="packageHeight">-->
+<!--          <el-input v-model="form.height" placeholder="请输入包裹高度" />-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -164,9 +193,10 @@
 </template>
 
 <script>
-import {listLogistics, listLogisticsStatus, listShop} from "@/api/shop/shop";
+import {listShop} from "@/api/shop/shop";
+import {listLogisticsStatus} from "@/api/shipping/logistics";
 import {MessageBox} from "element-ui";
-import {handShip, listShipping} from "@/api/api/shipping";
+import {handShip, listShipping} from "@/api/shipping/record";
 
 export default {
   name: "Shop",
@@ -206,10 +236,14 @@ export default {
       },
       // 表单校验
       rules: {
+        shipType: [{ required: true, message: "不能为空", trigger: "blur" }],
         shopId: [{ required: true, message: "不能为空", trigger: "blur" }],
         orderNum: [{ required: true, message: "不能为空", trigger: "blur" }],
         shipCompany: [{ required: true, message: "不能为空", trigger: "blur" }],
         shipCode: [{ required: true, message: "不能为空", trigger: "blur" }],
+        receiverName: [{ required: true, message: "不能为空", trigger: "blur" }],
+        receiverMobile: [{ required: true, message: "不能为空", trigger: "blur" }],
+        address: [{ required: true, message: "不能为空", trigger: "blur" }],
       }
     };
   },
@@ -263,9 +297,14 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           handShip(this.form).then(response => {
-            this.$modal.msgSuccess("发货成功");
-            this.open = false;
-            this.getList();
+            if(response.code===200) {
+              this.$modal.msgSuccess("发货成功");
+              this.form={}
+              this.open = false;
+              this.getList();
+            }else{
+              this.$modal.msgError(response.msg)
+            }
           });
 
         }

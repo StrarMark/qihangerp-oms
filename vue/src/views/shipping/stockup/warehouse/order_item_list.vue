@@ -154,7 +154,7 @@
               <template slot-scope="scope">
                 <el-button
                   v-if="!scope.row.specId||scope.row.specId === 0"
-                  size="mini"
+                  size="mini" plain
                   type="primary"
                   icon="el-icon-edit"
                   @click="handleUpdateLink(scope.row)"
