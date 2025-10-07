@@ -87,3 +87,11 @@ export function manualShipmentOrder(data) {
     data: data
   })
 }
+//修改订单item skuId
+export function orderItemSpecIdUpdate(data) {
+  return request({
+    url: '/api/oms-api/order/order_item_sku_id_update',
+    method: 'post',
+    data: data
+  })
+}

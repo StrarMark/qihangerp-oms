@@ -41,6 +41,8 @@ import DictData from '@/components/DictData'
 import Avue from '@smallwei/avue';
 import '@smallwei/avue/lib/index.css';
 
+import Print from 'vue-print-nb'
+Vue.use(Print)
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
