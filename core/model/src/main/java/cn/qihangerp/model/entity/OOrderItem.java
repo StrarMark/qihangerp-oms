@@ -137,7 +137,7 @@ public class OOrderItem implements Serializable {
     private Integer shipper;
 
     /**
-     * 发货方式1电子面单发货2手动发货
+     * 发货方式 0 自己发货或待处理2供应商发货
      */
     private Integer shipType;
 

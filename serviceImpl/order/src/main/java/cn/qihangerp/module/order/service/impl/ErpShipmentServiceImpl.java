@@ -2,10 +2,10 @@ package cn.qihangerp.module.order.service.impl;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
-import cn.qihangerp.module.order.domain.ErpShipment;
-import cn.qihangerp.module.order.domain.ErpShipmentItem;
-import cn.qihangerp.module.order.mapper.ErpShipmentItemMapper;
-import cn.qihangerp.module.order.mapper.ErpShipmentMapper;
+import cn.qihangerp.module.order.domain.OShipment;
+import cn.qihangerp.module.order.domain.OShipmentItem;
+import cn.qihangerp.module.order.mapper.OShipmentItemMapper;
+import cn.qihangerp.module.order.mapper.OShipmentMapper;
 import cn.qihangerp.module.order.service.ErpShipmentService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,34 +21,34 @@ import org.springframework.util.StringUtils;
 */
 @AllArgsConstructor
 @Service
-public class ErpShipmentServiceImpl extends ServiceImpl<ErpShipmentMapper, ErpShipment>
+public class ErpShipmentServiceImpl extends ServiceImpl<OShipmentMapper, OShipment>
     implements ErpShipmentService{
-    private final ErpShipmentItemMapper shipmentItemMapper;
+    private final OShipmentItemMapper shipmentItemMapper;
     @Override
-    public PageResult<ErpShipment> queryPageList(ErpShipment shipping, PageQuery pageQuery) {
-        LambdaQueryWrapper<ErpShipment> queryWrapper = new LambdaQueryWrapper<ErpShipment>()
-                .eq(shipping.getShipper()!=null,ErpShipment::getShipper,shipping.getShipper())
-                .eq(StringUtils.hasText(shipping.getOrderNum()), ErpShipment::getOrderNum, shipping.getOrderNum())
-                .eq(StringUtils.hasText(shipping.getShipCode()), ErpShipment::getShipCode, shipping.getShipCode())
-                .eq(shipping.getShopId() != null, ErpShipment::getShopId, shipping.getShopId());
+    public PageResult<OShipment> queryPageList(OShipment shipping, PageQuery pageQuery) {
+        LambdaQueryWrapper<OShipment> queryWrapper = new LambdaQueryWrapper<OShipment>()
+                .eq(shipping.getShipper()!=null, OShipment::getShipper,shipping.getShipper())
+                .eq(StringUtils.hasText(shipping.getOrderNum()), OShipment::getOrderNum, shipping.getOrderNum())
+                .eq(StringUtils.hasText(shipping.getShipCode()), OShipment::getShipCode, shipping.getShipCode())
+                .eq(shipping.getShopId() != null, OShipment::getShopId, shipping.getShopId());
 
-        Page<ErpShipment> pages = this.baseMapper.selectPage(pageQuery.build(), queryWrapper);
+        Page<OShipment> pages = this.baseMapper.selectPage(pageQuery.build(), queryWrapper);
         if(pages.getRecords().size()>0){
-            for(ErpShipment item : pages.getRecords()){
-                item.setItemList(shipmentItemMapper.selectList(new LambdaQueryWrapper<ErpShipmentItem>()
-                        .eq(ErpShipmentItem::getShipmentId,item.getId())));
+            for(OShipment item : pages.getRecords()){
+                item.setItemList(shipmentItemMapper.selectList(new LambdaQueryWrapper<OShipmentItem>()
+                        .eq(OShipmentItem::getShipmentId,item.getId())));
             }
         }
         return PageResult.build(pages);
     }
 
     @Override
-    public ErpShipment queryDetailById(Long id) {
-        ErpShipment erpShipment = this.baseMapper.selectById(id);
-        if(erpShipment!=null){
-            erpShipment.setItemList(shipmentItemMapper.selectList(new LambdaQueryWrapper<ErpShipmentItem>().eq(ErpShipmentItem::getShipmentId,erpShipment.getId())));
+    public OShipment queryDetailById(Long id) {
+        OShipment oShipment = this.baseMapper.selectById(id);
+        if(oShipment !=null){
+            oShipment.setItemList(shipmentItemMapper.selectList(new LambdaQueryWrapper<OShipmentItem>().eq(OShipmentItem::getShipmentId, oShipment.getId())));
         }
-        return erpShipment;
+        return oShipment;
     }
 }
 

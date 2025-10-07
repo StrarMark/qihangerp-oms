@@ -73,6 +73,5 @@ public class PddOrderController extends BaseController {
         var result = orderService.confirmOrder(bo);
         if(result.getCode()==0) return success();
         else return AjaxResult.error(result.getMsg());
-
     }
 }

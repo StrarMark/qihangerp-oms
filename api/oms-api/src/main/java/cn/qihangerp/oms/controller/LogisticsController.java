@@ -5,6 +5,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.OLogisticsCompany;
+import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.module.service.OLogisticsCompanyService;
 import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.module.service.OShopService;
@@ -49,7 +50,32 @@ public class LogisticsController extends BaseController {
     @PostMapping("/logistics/add")
     public AjaxResult add(@RequestBody OLogisticsCompany company)
     {
-        company.setPlatformId(0);
+//        company.setPlatformId(0);
         return toAjax(logisticsCompanyService.save(company));
     }
+
+    @PutMapping("/logistics/updateStatus")
+    public AjaxResult logisticsUpdateStatus(@RequestBody OLogisticsCompany company)
+    {
+        Integer newStatus = null;
+        if(company.getStatus()==null || company.getStatus().intValue() ==0){
+            newStatus = 1;
+        }else{
+            newStatus = 0;
+        }
+        return toAjax(logisticsCompanyService.updateStatus(company.getId(),newStatus));
+    }
+
+    @PutMapping("/logistics/update")
+    public AjaxResult edit(@RequestBody OLogisticsCompany shop)
+    {
+        return toAjax(logisticsCompanyService.updateById(shop));
+    }
+
+    @GetMapping(value = "/logistics/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(logisticsCompanyService.getById(id));
+    }
+
 }

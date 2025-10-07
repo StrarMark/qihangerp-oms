@@ -149,7 +149,9 @@ import {
   addLogistics,
   getLogistics,
   updateLogistics,
-  delLogistics,
+  delLogistics
+} from "@/api/shipping/logistics";
+import {
   listPlatform
 } from "@/api/shop/shop";
 import {MessageBox} from "element-ui";

@@ -13,9 +13,9 @@ import java.util.Date;
  * 发货明细表
  * @TableName erp_shipment_item
  */
-@TableName(value ="erp_shipment_item")
+@TableName(value ="o_shipment_item")
 @Data
-public class ErpShipmentItem implements Serializable {
+public class OShipmentItem implements Serializable {
     /**
      * id，自增
      */

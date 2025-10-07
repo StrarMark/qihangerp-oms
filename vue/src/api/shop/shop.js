@@ -69,13 +69,7 @@ export function updatePlatform(data) {
   })
 }
 
-export function listLogistics(query) {
-  return request({
-    url: '/api/oms-api/shop/logistics',
-    method: 'get',
-    params: query
-  })
-}
+
 export function listLogisticsStatus(query) {
   return request({
     url: '/api/oms-api/shop/logistics_status',

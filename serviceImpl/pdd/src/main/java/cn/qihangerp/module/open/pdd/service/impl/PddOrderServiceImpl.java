@@ -110,7 +110,7 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
             return null;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Integer> saveOrder(Long shopId, PddOrder order) {
         if(order == null ) return ResultVo.error(ResultVoEnum.SystemException);
@@ -230,6 +230,7 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Long> confirmOrder(PddOrderConfirmBo confirmBo) {
         PddOrder pddOrder = mapper.selectById(confirmBo.getOrderId());
