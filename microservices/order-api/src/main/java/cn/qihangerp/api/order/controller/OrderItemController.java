@@ -53,18 +53,5 @@ public class OrderItemController extends BaseController
         } else return AjaxResult.error(result.getMsg());
 
     }
-//    /**
-//     * 更新erp sku id
-//     * @param orderItem
-//     * @return
-//     */
-//    @PostMapping("/updateErpSkuId")
-//    public AjaxResult ship(@RequestBody OOrderItem orderItem)
-//    {
-//        if(StringUtils.isEmpty(orderItem.getId()) || orderItem.getGoodsSkuId()==null){
-//            return AjaxResult.error("确少必要参数");
-//        }
-//        itemService.updateErpSkuId(orderItem.getId(), orderItem.getGoodsSkuId());
-//        return AjaxResult.success();
-//    }
+
 }

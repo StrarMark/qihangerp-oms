@@ -1,9 +1,7 @@
 package cn.qihangerp.api.order.controller;
 
 import cn.qihangerp.api.order.OrderCancelRequest;
-import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.PageQuery;
-import cn.qihangerp.common.TableDataInfo;
+import cn.qihangerp.common.*;
 import cn.qihangerp.model.request.OrderSearchRequest;
 import cn.qihangerp.module.order.domain.bo.OrderAllocateShipRequest;
 import cn.qihangerp.module.order.domain.bo.OrderShipRequest;
@@ -143,6 +141,10 @@ public class OrderController extends BaseController
     @PostMapping("/allocateShipmentOrder")
     public AjaxResult allocateShipmentOrder(@RequestBody OrderAllocateShipRequest shipBo)
     {
+        if (StringUtils.isEmpty(shipBo.getId()) || shipBo.getId().equals("0"))
+            return AjaxResult.error("缺少参数：id");
+        if(shipBo.getSupplierId() == null || shipBo.getSupplierId()<=0)
+            return AjaxResult.error("缺少参数：supplierId");
         var result = orderService.allocateShipmentOrder(shipBo,getUsername());
         if(result.getCode() == 0) return AjaxResult.success();
         else return AjaxResult.error(result.getMsg());

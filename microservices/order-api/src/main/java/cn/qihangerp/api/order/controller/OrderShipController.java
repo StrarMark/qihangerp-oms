@@ -2,15 +2,21 @@ package cn.qihangerp.api.order.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.module.order.domain.bo.ShipStockUpBo;
 import cn.qihangerp.module.order.domain.bo.ShipStockUpCompleteBo;
+import cn.qihangerp.module.order.domain.bo.SupplierOrderShipBo;
 import cn.qihangerp.module.order.service.OOrderShipListItemService;
 import cn.qihangerp.module.order.service.OOrderShipListService;
 import cn.qihangerp.security.common.BaseController;
+import com.alibaba.fastjson2.JSON;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping("/ship")
@@ -53,6 +59,11 @@ public class OrderShipController extends BaseController {
         return getDataTable(pageList);
     }
 
+    /**
+     * 仓库备货完善
+     * @param bo
+     * @return
+     */
     @PostMapping("/stock_up_complete")
     public AjaxResult stock_up_complete(@RequestBody ShipStockUpCompleteBo bo)
     {
@@ -65,6 +76,11 @@ public class OrderShipController extends BaseController {
         return toAjax(1);
     }
 
+    /**
+     * 仓库备货完善
+     * @param bo
+     * @return
+     */
     @PostMapping("/stock_up_complete_by_order")
     public AjaxResult stock_up_completeByOrder(@RequestBody ShipStockUpCompleteBo bo)
     {
@@ -75,5 +91,26 @@ public class OrderShipController extends BaseController {
         else if(result == -1002) return AjaxResult.error("存在错误的订单数据：名单明细中没有skuId请修改！");
         //wmsStockOutEntryService.insertWmsStockOutEntry(wmsStockOutEntry)
         return toAjax(1);
+    }
+
+    /**
+     //     * 供应商发货确认
+     //     * @param request
+     //     * @return
+     //     */
+    @PostMapping("/supplier_ship_confirm")
+    public AjaxResult SupplierShipConfirm(@RequestBody SupplierOrderShipBo request) {
+        log.info("========供应商发货确认：{}", JSON.toJSONString(request));
+        if (request.getId() == null || request.getId() == 0)
+            return AjaxResult.error("缺少参数：orderId");
+        if (StringUtils.isEmpty(request.getLogisticsCompany()))
+            return AjaxResult.error("缺少参数：logisticsCompany");
+        if (StringUtils.isEmpty(request.getLogisticsCode()))
+            return AjaxResult.error("缺少参数：logisticsCode");
+
+        ResultVo<Integer> result = shipStockUpService.supplierShipOrderManualLogistics(request, getUsername());
+        if(result.getCode() == 0) {
+            return AjaxResult.success();
+        }else  return AjaxResult.error(result.getMsg());
     }
 }

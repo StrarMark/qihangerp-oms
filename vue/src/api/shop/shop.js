@@ -70,13 +70,13 @@ export function updatePlatform(data) {
 }
 
 
-export function listLogisticsStatus(query) {
-  return request({
-    url: '/api/oms-api/shop/logistics_status',
-    method: 'get',
-    params: query
-  })
-}
+// export function listLogisticsStatus(query) {
+//   return request({
+//     url: '/api/oms-api/shop/logistics_status',
+//     method: 'get',
+//     params: query
+//   })
+// }
 
 
 
@@ -87,11 +87,11 @@ export function listShopPullLogs(query) {
     params: query
   })
 }
-// 修改物流状态
-export function updateStatus(data) {
-  return request({
-    url: '/api/oms-api/shop/logistics/updateStatus',
-    method: 'put',
-    data: data
-  })
-}
+// // 修改物流状态
+// export function updateStatus(data) {
+//   return request({
+//     url: '/api/oms-api/shop/logistics/updateStatus',
+//     method: 'put',
+//     data: data
+//   })
+// }

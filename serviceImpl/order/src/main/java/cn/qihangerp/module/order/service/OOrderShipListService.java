@@ -2,9 +2,11 @@ package cn.qihangerp.module.order.service;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
+import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.module.order.domain.OOrderShipList;
 import cn.qihangerp.module.order.domain.bo.ShipStockUpBo;
 import cn.qihangerp.module.order.domain.bo.ShipStockUpCompleteBo;
+import cn.qihangerp.module.order.domain.bo.SupplierOrderShipBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -21,4 +23,12 @@ public interface OOrderShipListService extends IService<OOrderShipList> {
      * @return
      */
     int stockUpComplete(ShipStockUpCompleteBo bo);
+
+    /**
+     * 供应商发货手动填写发货物流信息
+     * @param bo
+     * @param operator
+     * @return
+     */
+    ResultVo<Integer> supplierShipOrderManualLogistics(SupplierOrderShipBo bo, String operator);
 }

@@ -33,7 +33,7 @@ public class LogisticsController extends BaseController {
     public TableDataInfo logisticsStatusList(Integer status, Integer shopType, Integer shopId)
     {
         if(status==null) status=1;
-        if(shopType==null)shopType=0;
+//        if(shopType==null)shopType=0;
         return getDataTable(logisticsCompanyService.queryListByStatus(status,shopType, shopId));
     }
     /**

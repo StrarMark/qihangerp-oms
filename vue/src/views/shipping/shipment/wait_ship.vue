@@ -40,26 +40,26 @@
       <el-col :span="1.5">
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          :disabled="single"
-          icon="el-icon-download"
-          size="mini"
-          @click="handleShip"
-        >手动发货</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type=""
-          plain
-          :disabled="single"
-          icon="el-icon-download"
-          size="mini"
-          @click="allocateShipmentToSupplier"
-        >分配给供应商发货</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          :disabled="single"-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleShip"-->
+<!--        >手动发货</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type=""-->
+<!--          plain-->
+<!--          :disabled="single"-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="allocateShipmentToSupplier"-->
+<!--        >分配给供应商发货</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
@@ -276,7 +276,7 @@
     <!-- 分配给供应商发货对话框 -->
     <el-dialog title="分配给供应商发货" :visible.sync="allocateShipmentOpen" width="1100px" append-to-body>
 
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px" >
+      <el-form ref="form" :model="form" :rules="rules" label-width="98px" >
         <el-descriptions title="订单信息">
           <el-descriptions-item label="订单号">{{form.orderNum}}</el-descriptions-item>
 
@@ -301,7 +301,7 @@
         </el-descriptions>
 
         <el-divider content-position="center">商品明细</el-divider>
-        <el-table :data="form.itemVoList"  style="margin-bottom: 10px;">
+        <el-table :data="form.itemVoList"  style="margin-bottom: 20px;">
           <!-- <el-table-column type="selection" width="50" align="center" /> -->
           <el-table-column label="序号" align="center" type="index" width="50"/>
 
@@ -317,11 +317,19 @@
           <el-table-column label="数量" prop="quantity" width="50"></el-table-column>
           <!-- <el-table-column label="商品金额" prop="itemAmount"></el-table-column> -->
         </el-table>
+        <el-form-item label="发货供应商" prop="supplierId">
+          <el-select v-model="form.supplierId" filterable r placeholder="选择发货供应商" style="width:300px">
+            <el-option v-for="item in supplierList" :key="item.id" :label="item.name" :value="item.id">
+              <span style="float: left">{{ item.name }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px" >{{item.number}}</span>
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="收件人" prop="receiverName">
           <el-input v-model="form.receiverName" placeholder="请输入收件人" style="width:300px" />
         </el-form-item>
         <el-form-item label="手机号" prop="receiverMobile">
-          <el-input type="number" v-model.number="form.receiverMobile" placeholder="请输入收件人" style="width:300px" />
+          <el-input v-model="form.receiverMobile" placeholder="请输入收件人手机号" style="width:300px" />
         </el-form-item>
         <el-form-item label="详细地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入详细地址" style="width:300px" />
@@ -351,9 +359,11 @@ import {
   waitSelfShipmentList
 } from "@/api/order/order";
 
-import {listShop,listLogisticsStatus} from "@/api/shop/shop";
+import {listShop} from "@/api/shop/shop";
+import {listLogisticsStatus} from "@/api/shipping/logistics";
 import {amountFormatter, parseTime} from "@/utils/zhijian";
 import {getDicts} from "@/api/system/dict/data";
+import {listSupplier} from "../../../api/goods/supplier";
 
 export default {
   name: "ShipmentWait",
@@ -367,6 +377,7 @@ export default {
       shopList: [],
       orderList: [],
       logisticsList: [],
+      supplierList: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -395,7 +406,8 @@ export default {
       },
       // 表单参数
       form: {
-        weight:0.0
+        weight:0.0,
+        sellerMemo:null
       },
       printerList: [],
       deliverList: [],
@@ -408,6 +420,7 @@ export default {
         packageAmount: [{ required: true, message: '不能为空' }],
         shippingCost: [{ required: true, message: '不能为空' }],
         // shippingMan: [{ required: true, message: '不能为空' }],
+        supplierId: [{ required: true, message: '不能为空' }],
         receiverName: [{ required: true, message: '不能为空' }],
         receiverMobile: [{ required: true, message: '不能为空' }],
         address: [{ required: true, message: '不能为空' }],
@@ -501,6 +514,9 @@ export default {
         this.form.weight=0.0
         this.form.shippingCost=0.0
         this.form.packageAmount=0.0
+        listSupplier().then(resp=>{
+          this.supplierList = resp.rows
+        })
         this.allocateShipmentOpen = true;
         // this.detailTitle = "订单详情";
       });
@@ -545,7 +561,16 @@ export default {
     submitAllocateShipmentForm(){
       this.$refs["form"].validate(valid => {
         if (valid) {
-          allocateShipmentOrder(this.form).then(resp =>{
+          const form ={
+            id:this.form.id,
+            supplierId:this.form.supplierId,
+            receiverName:this.form.receiverName,
+            receiverMobile:this.form.receiverMobile,
+            address:this.form.address,
+            sellerMemo:this.form.sellerMemo,
+            buyerMemo:this.form.buyerMemo,
+          }
+          allocateShipmentOrder(form).then(resp =>{
             if(resp.code==200){
               this.$modal.msgSuccess("分配发货成功");
               this.allocateShipmentOpen = false

@@ -8,6 +8,13 @@ export function listLogistics(query) {
     params: query
   })
 }
+export function listLogisticsStatus(query) {
+  return request({
+    url: '/api/oms-api/shop/logistics_status',
+    method: 'get',
+    params: query
+  })
+}
 
 // 查询物流公司详细
 export function getLogistics(id) {

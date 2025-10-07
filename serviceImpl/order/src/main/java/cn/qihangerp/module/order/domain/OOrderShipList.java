@@ -36,7 +36,7 @@ public class OOrderShipList implements Serializable {
     /**
      * 发货方 0 仓库发货 1 供应商发货
      */
-    private Integer shipper;
+    private Long shipper;
 
     /**
      * 发货供应商ID（0自己发货）

@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 
 @Data
 public class OrderAllocateShipRequest {
-    private String Id;//订单id
-
+    private String id;//订单id
+    private Long supplierId;//供应商ID
     private BigDecimal purAmount;//采购金额
     private String receiverName;//
     private String receiverMobile;//

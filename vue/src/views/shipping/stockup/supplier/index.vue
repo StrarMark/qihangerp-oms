@@ -113,11 +113,20 @@
 
     <el-table v-loading="loading" :data="agentShippingList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="订单编号" align="center" prop="orderNum" />
       <!-- <el-table-column label="主键ID" align="center" prop="id" /> -->
-      <el-table-column label="供应商" align="center" prop="shopId" >
+      <el-table-column label="订单编号" align="left" prop="orderNum" width="200px">
         <template slot-scope="scope">
-          <el-tag>{{scope.row.supplier}}</el-tag>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-view"
+          >{{scope.row.orderNum}} </el-button>
+          <i class="el-icon-copy-document tag-copy" :data-clipboard-text="scope.row.orderNum" @click="copyActiveCode($event,scope.row.orderNum)" ></i>
+        </template>
+      </el-table-column>
+      <el-table-column label="供应商" align="center" prop="shipSupplier" width="220px">
+        <template slot-scope="scope">
+          <el-tag>{{scope.row.shipSupplier}}</el-tag>
 <!--          <span>{{ shopList.find(x=>x.id === scope.row.shopId)?shopList.find(x=>x.id === scope.row.shopId).name:''  }}</span>-->
         </template>
       </el-table-column>
@@ -131,11 +140,7 @@
       </el-table-column> -->
 
 <!--      <el-table-column label="子订单编号" align="center" prop="subOrderNum" />-->
-      <el-table-column label="下单日期" align="center" prop="orderDate" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.orderTime) }}</span>
-        </template>
-      </el-table-column>
+
       <el-table-column label="商品明细" align="center" width="900px" >
         <template slot="header">
           <table>
@@ -150,7 +155,7 @@
           </table>
         </template>
         <template slot-scope="scope" >
-          <el-table :data="scope.row.itemList" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
+          <el-table :data="scope.row.items" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
             <el-table-column label="商品图片" width="50px">
               <template slot-scope="scope">
                 <!--                <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>-->
@@ -167,9 +172,9 @@
                 <el-tag size="small" v-if="scope.row.refundStatus === 11">已取消</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="SKU名" align="left" prop="goodsSpec" width="150"  :show-overflow-tooltip="true">
+            <el-table-column label="SKU名" align="left" prop="skuName" width="150"  :show-overflow-tooltip="true">
               <template slot-scope="scope">
-                {{ scope.row.goodsSpec }}
+                {{ scope.row.skuName }}
               </template>
             </el-table-column>
             <el-table-column label="Sku编码" align="left" prop="skuNum" width="200"/>
@@ -182,34 +187,36 @@
           </el-table>
         </template>
       </el-table-column>
-<!--      <el-table-column label="商品" >-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-image  style="width: 70px; height: 70px;" :src="scope.row.goodsImg"></el-image>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
-<!--      <el-table-column label="商品标题" align="center" prop="goodsTitle" />-->
-<!--      <el-table-column label="商品SKU" align="center" prop="goodsSpec" />-->
-<!--      <el-table-column label="数量" align="center" prop="quantity" />-->
-
-<!--      <el-table-column label="SKU编码" align="center" prop="skuNum" />-->
+      <el-table-column label="创建时间" align="center" prop="orderDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" align="center" prop="status" width="100">
+        <template slot-scope="scope">
+          <el-tag size="small" v-if="scope.row.shipStatus === 1">待发货</el-tag>
+          <el-tag size="small" v-if="scope.row.shipStatus === 2">已发货</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" >
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.shipStatus === 0"
+            v-if="scope.row.shipStatus === 1"
             size="mini"
+            plain
             type="primary"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['scm:agentShipping:edit']"
           >供应商发货</el-button>
-          <el-button
-            v-if="scope.row.status === 1"
-            size="mini"
-            type="text"
-            icon="el-icon-document-checked"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['scm:agentShipping:remove']"
-          >付款确认</el-button>
+<!--          <el-button-->
+<!--            v-if="scope.row.status === 1"-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-document-checked"-->
+<!--            @click="handleDelete(scope.row)"-->
+<!--            v-hasPermi="['scm:agentShipping:remove']"-->
+<!--          >付款确认</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -229,15 +236,15 @@
           <el-input v-model="form.orderNum" placeholder="请输入订单编号" disabled/>
         </el-form-item>
 
-        <el-form-item label="订单日期" prop="orderDate">
-          <el-date-picker clearable
-            v-model="form.orderTime"
-                          disabled
-            type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            placeholder="请选择订单日期">
-          </el-date-picker>
-        </el-form-item>
+<!--        <el-form-item label="订单日期" prop="orderDate">-->
+<!--          <el-date-picker clearable-->
+<!--            v-model="form.orderTime"-->
+<!--                          disabled-->
+<!--            type="datetime"-->
+<!--            value-format="yyyy-MM-dd HH:mm:ss"-->
+<!--            placeholder="请选择订单日期">-->
+<!--          </el-date-picker>-->
+<!--        </el-form-item>-->
 
 <!--        <el-form-item label="商品总价" prop="goodsAmount">-->
 <!--          <el-input type="number" v-model.number="form.goodsAmount"  placeholder="请输入商品总价" />-->
@@ -258,9 +265,9 @@
         <el-form-item label="物流单号" prop="shipNo">
           <el-input v-model="form.shipNo" placeholder="请输入物流单号" />
         </el-form-item>
-        <el-form-item label="运费" prop="shipCost">
-          <el-input type="number" v-model.number="form.shipCost" placeholder="请输入运费" />
-        </el-form-item>
+<!--        <el-form-item label="运费" prop="shipCost">-->
+<!--          <el-input type="number" v-model.number="form.shipCost" placeholder="请输入运费" />-->
+<!--        </el-form-item>-->
         <el-form-item label="发货时间" prop="shipTime">
           <el-date-picker clearable
             v-model="form.shipTime"
@@ -288,11 +295,13 @@
 
 import { listSupplier} from "@/api/scm/supplier";
 import { listShop } from "@/api/shop/shop";
-import {listLogistics, listLogisticsStatus} from "@/api/api/logistics";
+import {listLogisticsStatus} from "@/api/shipping/logistics";
 import {
-  listShipStockupSupplier
+  listShipStockupSupplier,supplierShipConfirm
 } from "@/api/shipping/shipping";
-// import {listShippingSupplier, getShippingDetail, supplierAgentShipment} from "@/api/wms/shipping";
+import Clipboard from "clipboard";
+
+
 export default {
   name: "supplierShipment",
   data() {
@@ -334,7 +343,7 @@ export default {
         goodsAmount: [{ required: true, message: '不能为空' }],
         shipCompanyId: [{ required: true, message: '不能为空' }],
         shipNo: [{ required: true, message: '不能为空' }],
-        shipCost: [{ required: true, message: '不能为空' }],
+        // shipCost: [{ required: true, message: '不能为空' }],
         shipTime: [{ required: true, message: '不能为空' }],
       },
       supplierLoading:false,
@@ -364,6 +373,21 @@ export default {
         this.supplierList = response.rows;
         this.supplierLoading = false;
       });
+    },
+    copyActiveCode(event,queryParams) {
+      console.log(queryParams)
+      const clipboard = new Clipboard(".tag-copy")
+      clipboard.on('success', e => {
+        this.$message({ type: 'success', message: '复制成功' })
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        this.$message({ type: 'waning', message: '该浏览器不支持自动复制' })
+        // 释放内存
+        clipboard.destroy()
+      })
     },
     /** 查询供应商代发货列表 */
     getList() {
@@ -420,26 +444,33 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getShippingDetail(id).then(response => {
-        // this.form = response.data;
-        this.form.shipmentId=response.data.id
-        this.form.orderNum=response.data.orderNum
-        this.form.orderTime=response.data.orderTime
-        this.form.goodsAmount=response.data.goodsAmount
-        listLogisticsStatus({}).then(resp=>{
+      // getShippingDetail(id).then(response => {
+        this.form = row;
+      this.form.shipTime = new Date()
+        // this.form.shipmentId=response.data.id
+        // this.form.orderNum=response.data.orderNum
+        // this.form.orderTime=response.data.orderTime
+        // this.form.goodsAmount=response.data.goodsAmount
+      listLogisticsStatus({}).then(resp=>{
           this.logisticsList = resp.rows
           this.open = true;
           this.title = "填写供应商发货物流信息";
         })
 
-      });
+      // });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          supplierAgentShipment(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+          const form={
+            id:this.form.id,
+            logisticsCompany:this.form.shipCompanyId,
+            logisticsCode:this.form.shipNo,
+            shipTime:this.form.shipTime
+          }
+          supplierShipConfirm(form).then(response => {
+              this.$modal.msgSuccess("供应商发货成功");
               this.open = false;
               this.getList();
             });

@@ -57,6 +57,15 @@ export function distributeSupplierShip(data) {
     data: data
   })
 }
+// 供应商发货手动确认
+export function supplierShipConfirm(data) {
+  return request({
+    url: '/api/oms-api/ship/supplier_ship_confirm',
+    method: 'post',
+    data: data
+  })
+}
+
 
 // 订单待出库列表
 export function listOrderStockOutEntry(query) {
