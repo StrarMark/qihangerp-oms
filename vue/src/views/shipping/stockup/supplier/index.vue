@@ -36,32 +36,41 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="供应商" prop="shipSupplierId">
+        <el-select v-model="queryParams.shipSupplierId" placeholder="请选择供应商" clearable @change="handleQuery">
+          <el-option
+            v-for="item in supplierList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+<!--      <el-form-item label="订单日期" prop="orderDate">-->
+<!--        <el-date-picker clearable-->
+<!--          v-model="queryParams.orderDate"-->
+<!--          type="date"-->
+<!--          value-format="yyyy-MM-dd"-->
+<!--          placeholder="请选择订单日期">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="商品ID" prop="goodsId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.goodsId"-->
+<!--          placeholder="请输入erp系统商品id"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
 
-      <el-form-item label="订单日期" prop="orderDate">
-        <el-date-picker clearable
-          v-model="queryParams.orderDate"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择订单日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="商品ID" prop="goodsId">
-        <el-input
-          v-model="queryParams.goodsId"
-          placeholder="请输入erp系统商品id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-
-      <el-form-item label="商品编码" prop="goodsNum">
-        <el-input
-          v-model="queryParams.goodsNum"
-          placeholder="请输入商品编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="商品编码" prop="goodsNum">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.goodsNum"-->
+<!--          placeholder="请输入商品编码"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
 
 <!--      <el-form-item label="物流单号" prop="shipNo">-->
 <!--        <el-input-->
@@ -81,13 +90,19 @@
 <!--        </el-date-picker>-->
 <!--      </el-form-item>-->
 
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
     </el-form>
 
     <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-col>
 <!--      <el-col :span="1.5">-->
 <!--        <el-button-->
 <!--          type="danger"-->
@@ -293,7 +308,7 @@
 
 <script>
 
-import { listSupplier} from "@/api/scm/supplier";
+import {listSupplier} from "@/api/goods/supplier";
 import { listShop } from "@/api/shop/shop";
 import {listLogisticsStatus} from "@/api/shipping/logistics";
 import {
@@ -351,8 +366,11 @@ export default {
     };
   },
   created() {
+    listSupplier().then(resp=>{
+      this.supplierList = resp.rows
+      this.getList();
+    })
 
-    this.getList();
     // listShop({}).then(response => {
     //     this.shopList = response.rows;
     //   });

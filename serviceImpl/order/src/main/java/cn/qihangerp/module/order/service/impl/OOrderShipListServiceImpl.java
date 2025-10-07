@@ -49,6 +49,7 @@ public class OOrderShipListServiceImpl extends ServiceImpl<OOrderShipListMapper,
     public PageResult<OOrderShipList> querySupplierPageList(ShipStockUpBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OOrderShipList> queryWrapper = new LambdaQueryWrapper<OOrderShipList>()
                 .eq(OOrderShipList::getShipper,1)
+                .eq(bo.getShipSupplierId()!=null,OOrderShipList::getShipSupplierId,bo.getShipSupplierId())
                 .eq(bo.getShopId()!=null,OOrderShipList::getShopId,bo.getShopId())
                 .eq(bo.getStatus()!=null,OOrderShipList::getStatus,bo.getStatus())
                 .eq(StringUtils.hasText(bo.getOrderNum()),OOrderShipList::getOrderNum,bo.getOrderNum())

@@ -363,7 +363,7 @@ import {listShop} from "@/api/shop/shop";
 import {listLogisticsStatus} from "@/api/shipping/logistics";
 import {amountFormatter, parseTime} from "@/utils/zhijian";
 import {getDicts} from "@/api/system/dict/data";
-import {listSupplier} from "../../../api/goods/supplier";
+import {listSupplier} from "@/api/goods/supplier";
 
 export default {
   name: "ShipmentWait",

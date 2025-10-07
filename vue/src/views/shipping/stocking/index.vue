@@ -165,7 +165,7 @@
 <script>
 import {listShipStockUp } from "@/api/shipping/stockUp";
 import { listShop } from "@/api/shop/shop";
-import {listSupplier} from "@/api/scm/supplier";
+
 export default {
   name: "ShipStockUp",
   computed: {
