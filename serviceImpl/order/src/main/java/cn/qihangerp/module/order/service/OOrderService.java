@@ -38,10 +38,6 @@ public interface OOrderService extends IService<OOrder> {
      */
     PageResult<OOrder> queryWaitShipmentPageList(OrderSearchRequest bo, PageQuery pageQuery);
 
-
-
-
-    List<OOrder> getList(OOrder order);
     PageResult<OOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery);
 
     OOrder queryDetailById(Long id);

@@ -270,13 +270,6 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         return PageResult.build(pages);
     }
 
-
-
-    @Override
-    public List<OOrder> getList(OOrder order) {
-        return orderMapper.selectList(new LambdaQueryWrapper<>());
-    }
-
     @Override
     public PageResult<OOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery) {
         if(org.springframework.util.StringUtils.hasText(bo.getStartTime())){
