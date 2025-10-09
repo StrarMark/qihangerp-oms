@@ -4,7 +4,7 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.module.stock.domain.ErpStockOut;
+import cn.qihangerp.model.entity.ErpStockOut;
 import cn.qihangerp.module.stock.request.StockOutCreateRequest;
 import cn.qihangerp.module.stock.request.StockOutItemRequest;
 import cn.qihangerp.module.stock.service.ErpStockOutService;

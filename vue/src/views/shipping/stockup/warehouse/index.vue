@@ -134,7 +134,7 @@
           </table>
         </template>
         <template slot-scope="scope">
-          <el-table :data="scope.row.children"  :show-header="false" style="width: 100%"  >
+          <el-table :data="scope.row.items"  :show-header="false" style="width: 100%"  >
             <el-table-column label="图片" width="50px">
               <template slot-scope="scope">
                 <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>
@@ -184,19 +184,20 @@
           <el-tag size="small" v-if="scope.row.status === 0">待备货</el-tag>
           <el-tag size="small" v-if="scope.row.status === 1">备货中</el-tag>
           <el-tag size="small" v-if="scope.row.status === 2">备货完成</el-tag>
-          <el-tag size="small" v-if="scope.row.status === 3">已发货</el-tag>
+          <el-tag size="small" v-if="scope.row.status === 3">已生成出库单</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="150">
         <template slot-scope="scope">
+          <!--v-if="scope.row.status ===0 || scope.row.status === 1"-->
           <el-button
             size="mini"
-            v-if="scope.row.status ===0 || scope.row.status === 1"
+            v-if="scope.row.status !=3"
             plain
             type="success"
             icon="el-icon-document-copy"
             @click="stockupCompleteByOrder(scope.row)"
-          >确认备货完成</el-button>
+          >生成出库单</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -270,8 +271,8 @@
 <!--        <el-form-item label="ERP商品ID" prop="erpGoodsId" >-->
 <!--          <el-input v-model="form2.erpGoodsId" disabled placeholder="请输入ERP商品ID" />-->
 <!--        </el-form-item>-->
-        <el-form-item label="ERP商品SkuId" prop="erpGoodsSpecId" >
-          <el-input type="number" v-model="form2.erpGoodsSpecId" placeholder="请输入ERP商品SkuId" />
+        <el-form-item label="商品SkuId" prop="erpGoodsSkuId" >
+          <el-input type="number" v-model="form2.erpGoodsSkuId" placeholder="请输入商品库商品SkuId" />
         </el-form-item>
 
       </el-form>
@@ -287,11 +288,13 @@
 <script>
 import {
   listShipStockupWarehouse,
-  shipStockupCompleteByOrder
+  generateStockOutEntry,
+  shipOrderItemSkuIdUpdate
 } from "@/api/shipping/shipping";
-import {orderItemSpecIdUpdate} from "@/api/order/order";
+
 import { listShop } from "@/api/shop/shop";
 import Clipboard from "clipboard";
+
 
 export default {
   name: "ShipStockupOrder",
@@ -348,15 +351,14 @@ export default {
       shopList: [],
       skuList:[],
       supplierList:[],
-      // 备货原始数据
-      shippingListOrigin:[],
+
       statusList: [
         {
           value: '0',
           label: '待备货'
         }, {
-          value: '2',
-          label: '备货完成'
+          value: '3',
+          label: '已生成出库单'
         }
       ],
       // 表单校验
@@ -371,7 +373,7 @@ export default {
         supplierId: [{ required: true, message: "请选择供应商", trigger: "blur" }],
       },
       rules2: {
-        erpGoodsSpecId: [{ required: true, message: "请选择填写ERP商品SkuId", trigger: "blur" }],
+        erpGoodsSkuId: [{ required: true, message: "请选择填写商品库商品SkuId", trigger: "blur" }],
       }
     };
   },
@@ -423,44 +425,8 @@ export default {
     getList() {
       this.loading = true;
       listShipStockupWarehouse(this.queryParams).then(response => {
-        this.shippingListOrigin = response.rows;
-        // this.shippingList = response.rows;
-        // this.total = response.total;
-        // 数据处理
-        // 原数据格式 [obj...]
-        let newList=[]
-// 用 Array.prototype.reduct 实现类似于 groupBy 的效果。
-        var categoryAndObjMapList = response.rows.reduce((result, currValue) => {
-          let currCategory = currValue.orderNum;
-          // 当前分类已经有了，非空数组，则向对应分类下的列表中新增一个元素
-          if (Object.keys(result).includes(currCategory)) {
-            result[currCategory].push(currValue);
-          } else {
-            // 初始化新的分类，并同时设置第一个元素
-            result[currCategory] = [currValue];
-          }
-          console.log({currCategory, result});
-          return result;
-        }, {});
-
-        console.log(categoryAndObjMapList);
-        Object.keys(categoryAndObjMapList).forEach(x=>{
-          let newObj = {
-            orderNum:x,
-            status:categoryAndObjMapList[x][0].status,
-            shopId:categoryAndObjMapList[x][0].shopId,
-            hasChildren:true,
-            children:categoryAndObjMapList[x]
-          }
-          newList.push(newObj)
-          // newList.push(...categoryAndObjMapList[x])
-          // console.log("============")
-          // console.log(categoryAndObjMapList[x])
-        })
-        console.log("----------------",newList)
-        this.shippingList = newList
-        this.total = newList.length
-
+        this.shippingList = response.rows
+        this.total = response.total
         this.loading = false;
       });
     },
@@ -495,7 +461,7 @@ export default {
             this.$modal.msgError("请选择备货商品");
           }
           this.form.orderNums = this.ids;
-          shipStockupCompleteByOrder(this.form).then(response => {
+          generateStockOutEntry(this.form).then(response => {
             this.$modal.msgSuccess("备货完成");
             this.open = false;
             this.getList();
@@ -506,13 +472,30 @@ export default {
     },
     /** 单个备货 **/
     stockupCompleteByOrder(row) {
-      this.form.orderNums = [];
-      this.form.orderNums.push(row.orderNum)
-      shipStockupCompleteByOrder(this.form).then(response => {
-        this.$modal.msgSuccess("备货完成");
-        this.open = false;
-        this.getList();
-      });
+      const form= {
+        id : row.id
+      }
+
+      this.$confirm('确认生成订单出库单吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        generateStockOutEntry(form).then(response => {
+          if(response.code===200) {
+            this.$modal.msgSuccess("出库单生成完成");
+            this.open = false;
+            this.getList();
+          }else{
+            this.$modal.msgError(response.msg)
+          }
+        }).finally(() => {
+          this.loading = false
+        })
+      })
+
+
 
 
     },
@@ -595,13 +578,14 @@ export default {
     /** 修改商品关联 */
     handleUpdateLink(row){
       this.skuIdUpdateOpen = true
-      this.form2.orderItemId = row.id
+      // this.form2.orderItemId = row.id
+      this.form2.id = row.id
       // this.$modal.msgError("修改商品关联");
     },
     submitSkuIdUpdateForm(){
       this.$refs["form2"].validate(valid => {
         if (valid) {
-          orderItemSpecIdUpdate(this.form2).then(response => {
+          shipOrderItemSkuIdUpdate(this.form2).then(response => {
             this.$modal.msgSuccess("SkuId修改成功");
             this.skuIdUpdateOpen = false;
             this.getList();

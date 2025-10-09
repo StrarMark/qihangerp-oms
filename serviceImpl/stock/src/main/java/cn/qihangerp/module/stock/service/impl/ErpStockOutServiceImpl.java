@@ -5,15 +5,15 @@ import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.utils.DateUtils;
+import cn.qihangerp.mapper.ErpStockOutMapper;
 import cn.qihangerp.model.entity.OGoodsInventory;
 import cn.qihangerp.model.entity.OGoodsInventoryBatch;
 import cn.qihangerp.module.goods.service.OGoodsInventoryBatchService;
 import cn.qihangerp.module.goods.service.OGoodsInventoryService;
-import cn.qihangerp.module.stock.domain.ErpStockOut;
-import cn.qihangerp.module.stock.domain.ErpStockOutItem;
+import cn.qihangerp.model.entity.ErpStockOut;
+import cn.qihangerp.model.entity.ErpStockOutItem;
 import cn.qihangerp.module.stock.domain.ErpStockOutItemPosition;
 import cn.qihangerp.module.stock.mapper.ErpStockOutItemPositionMapper;
-import cn.qihangerp.module.stock.mapper.ErpStockOutMapper;
 import cn.qihangerp.module.stock.request.GoodsSkuInventoryVo;
 import cn.qihangerp.module.stock.request.StockOutCreateRequest;
 import cn.qihangerp.module.stock.request.StockOutItemRequest;
@@ -127,8 +127,6 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
             outItem.setStatus(0);
             outItem.setCreateTime(new Date());
             itemList.add(outItem);
-
-
         }
         outItemService.saveBatch(itemList);
         return ResultVo.success();

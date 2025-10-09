@@ -20,30 +20,10 @@ export function listShipStockupSupplier(query) {
 }
 
 
-
-// 备货完成
-export function shipStockupComplete(data) {
-  return request({
-    url: '/api/oms-api/ship/stock_up_complete',
-    method: 'post',
-    data: data
-  })
-}
-// 备货完成by order
-export function shipStockupCompleteByOrder(data) {
-  return request({
-    url: '/api/oms-api/ship/stock_up_complete_by_order',
-    method: 'post',
-    data: data
-  })
-}
-
-
-
 // 生成出库单（备货清单生成出库单）
 export function generateStockOutEntry(data) {
   return request({
-    url: '/shipping/generate_stock_out_entry',
+    url: '/api/oms-api/ship/generate_stock_out_entry',
     method: 'post',
     data: data
   })
@@ -61,6 +41,15 @@ export function distributeSupplierShip(data) {
 export function supplierShipConfirm(data) {
   return request({
     url: '/api/oms-api/ship/supplier_ship_confirm',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改备货单item skuId
+export function shipOrderItemSkuIdUpdate(data) {
+  return request({
+    url: '/api/oms-api/ship/order_item_sku_id_update',
     method: 'post',
     data: data
   })
@@ -84,3 +73,4 @@ export function listOrderStockOutEntryItem(query) {
     params: query
   })
 }
+

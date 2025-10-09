@@ -2,6 +2,7 @@ package cn.qihangerp.module.order.service;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
+import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.module.order.domain.OOrderShipListItem;
 import cn.qihangerp.module.order.domain.bo.ShipStockUpBo;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -14,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface OOrderShipListItemService extends IService<OOrderShipListItem> {
     PageResult<OOrderShipListItem> queryWarehousePageList(ShipStockUpBo bo, PageQuery pageQuery);
     PageResult<OOrderShipListItem> querySupplierPageList(ShipStockUpBo bo, PageQuery pageQuery);
+    ResultVo<Integer> updateErpSkuId(Long id, Long erpSkuId);
 }

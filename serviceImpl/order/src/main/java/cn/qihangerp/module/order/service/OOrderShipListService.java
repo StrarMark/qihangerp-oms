@@ -16,13 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface OOrderShipListService extends IService<OOrderShipList> {
     PageResult<OOrderShipList> querySupplierPageList(ShipStockUpBo bo, PageQuery pageQuery);
-    int stockUpCompleteByOrder(ShipStockUpCompleteBo bo);
-    /**
-     * 备货完成
-     * @param bo
-     * @return
-     */
-    int stockUpComplete(ShipStockUpCompleteBo bo);
+    PageResult<OOrderShipList> queryWarehousePageList(ShipStockUpBo bo, PageQuery pageQuery);
 
     /**
      * 供应商发货手动填写发货物流信息
@@ -31,4 +25,11 @@ public interface OOrderShipListService extends IService<OOrderShipList> {
      * @return
      */
     ResultVo<Integer> supplierShipOrderManualLogistics(SupplierOrderShipBo bo, String operator);
+
+    /**
+     * 生成出库单（按发货订单）
+     * @param shipOrderId
+     * @return
+     */
+    ResultVo<Long> generateStockOutEntryByShipOrderId(Long shipOrderId);
 }
