@@ -38,22 +38,8 @@ public interface OOrderService extends IService<OOrder> {
      */
     PageResult<OOrder> queryWaitShipmentPageList(OrderSearchRequest bo, PageQuery pageQuery);
 
-    /**
-     * 获取已分配发货的list
-     * @param bo
-     * @param pageQuery
-     * @return
-     */
-    PageResult<OOrder> queryAssignedShipmentList(OrderSearchRequest bo, PageQuery pageQuery);
 
 
-    /**
-     * 已经发货的list
-     * @param bo
-     * @param pageQuery
-     * @return
-     */
-    PageResult<OOrder> queryShippedPageList(OrderSearchRequest bo, PageQuery pageQuery);
 
     List<OOrder> getList(OOrder order);
     PageResult<OOrder> queryPageList(OrderSearchRequest bo, PageQuery pageQuery);

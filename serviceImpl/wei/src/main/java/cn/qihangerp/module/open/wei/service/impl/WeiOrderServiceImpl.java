@@ -206,7 +206,7 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
         order.setOrderTime(pddOrder.getCreateTime()!=null?new Date(pddOrder.getCreateTime()*1000):new Date());
-        order.setShipper(-1);
+        order.setShipper(0l);
         order.setShipStatus(0);
         order.setCreateTime(new Date());
         order.setCreateBy("手动确认订单");
@@ -235,7 +235,7 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
 
             oOrderItem.setRefundCount(0);
             oOrderItem.setRefundStatus(1);
-            oOrderItem.setShipper(-1);
+            oOrderItem.setShipper(0l);
             oOrderItem.setShipType(order.getShipType());
             oOrderItem.setShipStatus(0);
             oOrderItem.setCreateTime(new Date());

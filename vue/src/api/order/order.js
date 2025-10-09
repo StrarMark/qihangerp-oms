@@ -36,38 +36,17 @@ export function listOrderItem(query) {
   })
 }
 
-export function updateErpSkuId(data) {
-  return request({
-    url: '/api/oms-api/order/updateErpSkuId',
-    method: 'post',
-    data: data
-  })
-}
 
 // 查询待自己发货的订单列表（待发货的）
-export function waitSelfShipmentList(query) {
+export function waitShipList(query) {
   return request({
     url: '/api/oms-api/order/waitShipmentList',
     method: 'get',
     params: query
   })
 }
-// 查询已分配给供应商发货的订单
-export function assignedShipmentList(query) {
-  return request({
-    url: '/api/oms-api/order/assignedShipmentList',
-    method: 'get',
-    params: query
-  })
-}
-// 查询己发货的订单列表(已发货的)
-export function selfShippedList(query) {
-  return request({
-    url: '/api/oms-api/order/shippedList',
-    method: 'get',
-    params: query
-  })
-}
+
+
 
 // 分配供应商发货
 export function allocateShipmentOrder(data) {

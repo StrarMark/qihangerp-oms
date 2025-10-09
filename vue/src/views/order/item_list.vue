@@ -135,16 +135,16 @@
            <el-tag v-if="scope.row.refundStatus === 4">退款成功</el-tag>
         </template>
       </el-table-column>
-<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-edit"-->
-<!--            @click="handleEditErpSku(scope.row)"-->
-<!--          >补充ERP SKU</el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleEditErpSku(scope.row)"
+          >补充ERP SKU</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination
@@ -157,8 +157,8 @@
     <!-- 修改Erp Sku 对话框 -->
     <el-dialog title="修改ERP SKU ID" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="ERP商品skuId" prop="erpSkuId">
-          <el-input type="number" v-model="form.erpSkuId" placeholder="请输入ERP商品skuId" />
+        <el-form-item label="商品库SkuId" prop="erpGoodsSpecId">
+          <el-input type="number" v-model="form.erpGoodsSpecId" placeholder="请输入商品库SkuId" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -170,9 +170,10 @@
 </template>
 
 <script>
-import {listOrderItem, updateErpSkuId} from "@/api/order/order";
+import {listOrderItem, orderItemSpecIdUpdate} from "@/api/order/order";
 import { listShop } from "@/api/shop/shop";
 import Clipboard from "clipboard";
+
 
 export default {
   name: "Order",
@@ -215,11 +216,11 @@ export default {
       // 表单参数
       form: {
         id:null,
-        erpSkuId:null
+        erpGoodsSpecId:null
       },
       // 表单校验
       rules: {
-        erpSkuId: [{ required: true, message: "请输入ERP系统商品SkuId", trigger: "change" }],
+        erpGoodsSpecId: [{ required: true, message: "请输入ERP系统商品SkuId", trigger: "change" }],
       }
     };
   },
@@ -308,7 +309,7 @@ export default {
       this.open = false
     },
     handleEditErpSku(row){
-      this.form.id = row.id
+      this.form.orderItemId = row.id
       if(this.form.erpSkuId && this.form.erpSkuId > 0) {
         this.form.erpSkuId = row.erpSkuId
       }
@@ -318,7 +319,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           console.log('====修改参数====',this.form)
-          updateErpSkuId(this.form).then(response => {
+          orderItemSpecIdUpdate(this.form).then(response => {
             this.$modal.msgSuccess("修改成功");
             this.open = false;
             this.getList();

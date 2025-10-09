@@ -64,31 +64,7 @@ public class OrderController extends BaseController
         var pageList = orderService.queryWaitShipmentPageList(order,pageQuery);
         return getDataTable(pageList);
     }
-    /**
-     * 已分配供应商发货列表
-     * @param order
-     * @param pageQuery
-     * @return
-     */
-    @GetMapping("/assignedShipmentList")
-    public TableDataInfo assignedShipmentList(OrderSearchRequest order, PageQuery pageQuery)
-    {
-        var pageList = orderService.queryAssignedShipmentList(order,pageQuery);
-        return getDataTable(pageList);
-    }
 
-    /**
-     * 已发货列表
-     * @param order
-     * @param pageQuery
-     * @return
-     */
-    @GetMapping("/shippedList")
-    public TableDataInfo shippedList(OrderSearchRequest order, PageQuery pageQuery)
-    {
-        var pageList = orderService.queryShippedPageList(order,pageQuery);
-        return getDataTable(pageList);
-    }
 
 
 //    @PostMapping

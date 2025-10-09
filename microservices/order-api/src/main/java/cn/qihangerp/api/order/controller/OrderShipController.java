@@ -94,10 +94,10 @@ public class OrderShipController extends BaseController {
     }
 
     /**
-     //     * 供应商发货确认
-     //     * @param request
-     //     * @return
-     //     */
+      * 供应商发货确认
+      * @param request
+      * @return
+      */
     @PostMapping("/supplier_ship_confirm")
     public AjaxResult SupplierShipConfirm(@RequestBody SupplierOrderShipBo request) {
         log.info("========供应商发货确认：{}", JSON.toJSONString(request));
