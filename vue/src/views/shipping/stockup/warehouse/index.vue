@@ -82,21 +82,21 @@
 <!--          @click="handleSelection"-->
 <!--        >备货完成</el-button>-->
 <!--      </el-col>-->
-      <el-col :span="1.5">
-      <el-button
-        type="primary"
-        plain
-        icon="el-icon-printer"
-        size="mini"
-        :disabled="multiple"
-        @click="handleStatistics"
-      >打印备货单</el-button>
+<!--      <el-col :span="1.5">-->
+<!--      <el-button-->
+<!--        type="primary"-->
+<!--        plain-->
+<!--        icon="el-icon-printer"-->
+<!--        size="mini"-->
+<!--        :disabled="multiple"-->
+<!--        @click="handleStatistics"-->
+<!--      >打印备货单</el-button>-->
 
-      </el-col>
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <el-table v-loading="loading" :data="shippingList" @selection-change="handleSelectionChange"  >
-       <el-table-column type="selection" width="55"  align="center" />
+<!--       <el-table-column type="selection" width="55"  align="center" />-->
       <!-- <el-table-column label="主键" align="center" prop="id" v-if="queryParams.status==='0'"/> -->
       <el-table-column label="订单编号" align="left" prop="orderNum" width="200px">
         <template slot-scope="scope">

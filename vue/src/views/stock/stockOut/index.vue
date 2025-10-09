@@ -64,8 +64,18 @@
 
     <el-table v-loading="loading" :data="stockOutEntryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="出库单号" align="center" prop="stockOutNum" />
+      <el-table-column label="ID" align="center" prop="id" width="60"/>
+      <el-table-column label="出库单号" align="center" prop="stockOutNum" width="200px">
+        <template slot-scope="scope">
+        <el-button
+          size="mini"
+          type="text"
+          icon="el-icon-view"
+          @click="handleDetail(scope.row)"
+        >{{scope.row.stockOutNum}} </el-button>
+        <i class="el-icon-copy-document tag-copy" :data-clipboard-text="scope.row.stockOutNum" @click="copyActiveCode($event,scope.row.stockOutNum)" ></i>
+        </template>
+      </el-table-column>
 <!--      <el-table-column label="源单号" align="center" prop="sourceNo" />-->
 <!--      <el-table-column label="源单Id" align="center" prop="sourceId" />-->
       <el-table-column label="出库类型" align="center" prop="stockOutType" >
@@ -92,24 +102,24 @@
       </el-table-column>
       <el-table-column label="打印时间" align="center" prop="printTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.printTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.printTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建日期" align="center" prop="createTime" width="180">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
 <!--      <el-table-column label="创建人" align="center" prop="createBy" />-->
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.updateTime) }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
 <!--      <el-table-column label="更新人" align="center" prop="updateBy" />-->
       <el-table-column label="完成时间" align="center" prop="completeTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.completeTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.completeTime) }}</span>
         </template>
       </el-table-column>
 <!--      <el-table-column label="出库操作人userid" align="center" prop="stockOutOperatorId" />-->
@@ -127,8 +137,8 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
-            size="mini"
-            type="primary"
+            size="mini" style="padding-left: 6px;padding-right: 6px;"
+            type="primary" plain
             icon="el-icon-d-arrow-right"
             @click="handleStockOut(scope.row)"
             v-hasPermi="['wms:stockOutEntry:edit']"
@@ -146,48 +156,48 @@
     />
 
     <!-- 添加或修改出库单对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body :close-on-click-modal="false">
+    <el-dialog :title="title" :visible.sync="open" :width="isEdit?'1000px':'760px'" append-to-body :close-on-click-modal="false">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-descriptions title="出库单详情">
+        <div id="dialogContent">
+        <el-descriptions title="" :column="2">
           <el-descriptions-item label="单号">{{form.stockOutNum}}</el-descriptions-item>
           <el-descriptions-item label="来源">
-            <el-tag size="small" v-if="form.stockOutType === 1">订单拣货出库</el-tag>
+            <el-tag size="small" v-if="form.stockOutType === 1">订单发货出库</el-tag>
             <el-tag size="small" v-if="form.stockOutType === 2">采购退货出库</el-tag>
             <el-tag size="small" v-if="form.stockOutType === 3">盘点出库</el-tag>
             <el-tag size="small" v-if="form.stockOutType === 4">报损出库</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item label="备注">{{form.remark}}</el-descriptions-item>
-          <el-descriptions-item label="商品数">{{form.goodsUnit}}</el-descriptions-item>
+
+<!--          <el-descriptions-item label="商品数">{{form.goodsUnit}}</el-descriptions-item>-->
           <el-descriptions-item label="规格数">{{form.specUnit}}</el-descriptions-item>
           <el-descriptions-item label="总件数">{{form.specUnitTotal}}</el-descriptions-item>
-<!--          <el-descriptions-item label="店铺">-->
-<!--            <span v-if="form.shopId==6">梦小妮牛仔裤</span>-->
-<!--          </el-descriptions-item>-->
+          <el-descriptions-item label="备注">{{form.remark}}</el-descriptions-item>
         </el-descriptions>
 
 
         <el-divider content-position="center">出库商品明细</el-divider>
-        <el-table :data="wmsStockOutEntryItemList" :row-class-name="rowWmsStockOutEntryItemIndex" ref="wmsStockOutEntryItem">
+        <el-table :data="form.itemList" :row-class-name="rowWmsStockOutEntryItemIndex" ref="wmsStockOutEntryItem">
 <!--          <el-table-column type="selection" width="50" align="center" />-->
           <el-table-column label="序号" align="center" prop="index" width="50"/>
+<!--          <el-table-column label="id" align="center" prop="id" width="50"/>-->
           <el-table-column label="商品图片" prop="colorImage" >
             <template slot-scope="scope">
               <el-image style="width: 70px; height: 70px" :src="scope.row.colorImage"></el-image>
             </template>
           </el-table-column>
           <el-table-column label="规格编码" prop="specNum"></el-table-column>
-          <el-table-column label="规格"  >
-            <template slot-scope="scope">
-              <el-tag size="small">{{scope.row.colorValue}} {{scope.row.sizeValue}} {{scope.row.styleValue}}</el-tag>
-            </template>
-          </el-table-column>
+<!--          <el-table-column label="规格"  >-->
+<!--            <template slot-scope="scope">-->
+<!--              <el-tag size="small">{{scope.row.colorValue}} {{scope.row.sizeValue}} {{scope.row.styleValue}}</el-tag>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
           <el-table-column label="数量" prop="originalQuantity"></el-table-column>
           <el-table-column label="已出库数量" prop="outQuantity"></el-table-column>
 
-          <el-table-column label="出库仓位" prop="inventoryId" width="150">
+          <el-table-column label="库存批次" prop="inventoryId" width="130" v-if="isEdit">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.inventoryDetailId" placeholder="请选择出库仓位" v-if="scope.row.status < 2">
-                <el-option v-for="item in scope.row.inventoryDetails" :key="item.id" :label="item.locationNum" :value="item.id">
+              <el-select v-model="scope.row.inventoryDetailId" placeholder="库存批次" v-if="scope.row.status < 2">
+                <el-option v-for="item in scope.row.inventoryBatchList" :key="item.id" :label="item.locationNum" :value="item.id">
                   <span style="float: left">{{ item.locationNum }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px"  >剩余库存：{{ item.currentQty }}</span>
 
@@ -196,15 +206,15 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="出库数量" prop="outQty" width="100">
+          <el-table-column label="出库数量" prop="outQty" width="110"  v-if="isEdit">
             <template slot-scope="scope">
-              <el-input v-model.number="scope.row.outQty" placeholder="出库数量"  v-if="scope.row.status < 2" />
+              <el-input v-model.number="scope.row.outQty" placeholder="出库数量"   v-if="scope.row.status < 2" />
             </template>
           </el-table-column>
-          <el-table-column label="出库操作" prop="outQuantity" width="100"  >
+          <el-table-column label="出库操作" prop="outQuantity" width="100" v-if="isEdit" >
           <template slot-scope="scope">
           <el-button
-            v-if="scope.row.status < 2"
+            v-if="scope.row.status < 2" style="padding-left: 6px;padding-right: 6px;"
             size="mini"
             plain
             type="danger"
@@ -214,14 +224,19 @@
         </template>
           </el-table-column>
         </el-table>
+        </div>
       </el-form>
-
+      <div slot="footer" class="dialog-footer" v-if="!isEdit">
+        <el-button v-print="'#dialogContent'" @click="handlePrint(form.id)">打印</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import { listStockOut, getStockOutEntry, delStockOutEntry, addStockOutEntry, stockOut } from "@/api/wms/stockOut";
+import Clipboard from "clipboard";
+import {stockOutPrint} from "../../../api/wms/stockOut";
 
 export default {
   name: "StockOutEntry",
@@ -249,6 +264,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      isEdit: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -282,6 +298,21 @@ export default {
     this.getList();
   },
   methods: {
+    copyActiveCode(event,queryParams) {
+      console.log(queryParams)
+      const clipboard = new Clipboard(".tag-copy")
+      clipboard.on('success', e => {
+        this.$message({ type: 'success', message: '复制成功' })
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        this.$message({ type: 'waning', message: '该浏览器不支持自动复制' })
+        // 释放内存
+        clipboard.destroy()
+      })
+    },
     /** 查询出库单列表 */
     getList() {
       this.loading = true;
@@ -340,6 +371,19 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
+    handleDetail(row){
+      getStockOutEntry(row.id).then(response => {
+        this.form = response.data;
+        this.wmsStockOutEntryItemList = response.data.wmsStockOutEntryItemList;
+        // this.wmsStockOutEntryItemList.forEach(x=>{
+        //   x.inventoryId = null;
+        //   x.outQty = null
+        // })
+        this.open = true;
+        this.isEdit = false
+        this.title = "出库单详情";
+      });
+    },
     /** 修改按钮操作 */
     handleStockOut(row) {
       this.reset();
@@ -351,9 +395,17 @@ export default {
         //   x.inventoryId = null;
         //   x.outQty = null
         // })
+        this.isEdit = true
         this.open = true;
         this.title = "出库操作";
       });
+    },
+    handlePrint(id){
+      console.log("=====打印：",id)
+      stockOutPrint(id).then(resp=>{
+
+      })
+      // this.$modal.msgSuccess("打印成功")
     },
     /** 提交按钮 */
     stockOutSubmit(row) {
@@ -363,7 +415,7 @@ export default {
         return
       }
       if(!row.inventoryDetailId){
-        this.$modal.msgError("请选择库存仓位");
+        this.$modal.msgError("请选择库存批次");
         return
       }else{
         // 判断填写的数量是否小于等于当前仓位库存

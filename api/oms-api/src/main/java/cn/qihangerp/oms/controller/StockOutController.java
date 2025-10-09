@@ -12,6 +12,8 @@ import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/stockOut")
@@ -39,9 +41,18 @@ public class StockOutController extends BaseController {
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-
         ErpStockOut entry = stockOutService.getDetailAndItemById(id);
         return success(entry);
+    }
+    @GetMapping(value = "/print/{id}")
+    public AjaxResult print(@PathVariable("id") Long id)
+    {
+        ErpStockOut out = new ErpStockOut();
+        out.setId(id);
+        out.setPrintStatus(1);
+        out.setPrintTime(new Date());
+        stockOutService.updateById(out);
+        return AjaxResult.success();
     }
     @PostMapping("/out")
     public AjaxResult out(@RequestBody StockOutItemRequest request)

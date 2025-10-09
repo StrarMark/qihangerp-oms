@@ -12,24 +12,27 @@ export function listStockOut(query) {
 // 查询出库单详细
 export function getStockOutEntry(id) {
   return request({
-    url: '/wms/stockOutEntry/' + id,
+    url: '/api/oms-api/stockOut/' + id,
     method: 'get'
   })
 }
 
-export function getStockOutEntryItem(id) {
-  return request({
-    url: '/wms/stockOutEntry/item/' + id,
-    method: 'get'
-  })
-}
+
 
 // 出库
 export function stockOut(data) {
   return request({
-    url: '/wms/stockOutEntry/stockOut',
+    url: '/api/oms-api/stockOut/out',
     method: 'post',
     data: data
+  })
+}
+
+// 打印
+export function stockOutPrint(id) {
+  return request({
+    url: '/api/oms-api/stockOut/print/'+id,
+    method: 'get'
   })
 }
 

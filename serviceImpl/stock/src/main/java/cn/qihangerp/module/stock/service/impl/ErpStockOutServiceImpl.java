@@ -141,8 +141,8 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
                 // 查找outItem skuid相对应的库存批次list
                 for(ErpStockOutItem item: outItemList){
                     item.setOutQuantity(item.getOriginalQuantity()-item.getOutQuantity());
-//                    List<ErpGoodsInventoryBatch> erpGoodsInventoryBatches = goodsInventoryBatchService.querySkuBatchList(item.getSkuId());
-//                    item.setInventoryBatchList(erpGoodsInventoryBatches);
+                    List<OGoodsInventoryBatch> erpGoodsInventoryBatches = goodsInventoryBatchService.selectGoodsInventoryBatchBySpecId(item.getSpecId());
+                    item.setInventoryBatchList(erpGoodsInventoryBatches);
                 }
 
             }
