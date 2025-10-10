@@ -29,14 +29,7 @@ export function generateStockOutEntry(data) {
   })
 }
 
-// 分配给供应商发货
-export function distributeSupplierShip(data) {
-  return request({
-    url: '/shipping/supplier_ship_dist',
-    method: 'post',
-    data: data
-  })
-}
+
 // 供应商发货手动确认
 export function supplierShipConfirm(data) {
   return request({
