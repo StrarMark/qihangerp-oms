@@ -13,10 +13,10 @@
         <version>2.12.0</version>
     </parent>
 
-    <artifactId>open-api</artifactId>
+    <artifactId>erp-api</artifactId>
     <packaging>jar</packaging>
 
-    <name>open-api</name>
+    <name>erp-api</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -48,13 +48,25 @@
 <!--            <artifactId>spring-boot-starter-undertow</artifactId>-->
 <!--        </dependency>-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>4.0.0</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.kafka</groupId>-->
 <!--            <artifactId>spring-kafka</artifactId>-->
 <!--        </dependency>-->
+
 <!--        <dependency>-->
 <!--            <groupId>com.alibaba.cloud</groupId>-->
 <!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
@@ -70,6 +82,43 @@
             <version>1.0</version>
         </dependency>
         <dependency>
+            <groupId>cn.qihangerp.service</groupId>
+            <artifactId>erp</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.qihangerp.module</groupId>-->
+<!--            <artifactId>goods</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>cn.qihangerp.module</groupId>-->
+<!--            <artifactId>order</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>cn.qihangerp.service</groupId>
+            <artifactId>stock</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.qihangerp.services</groupId>
+            <artifactId>goods-api</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.qihangerp.service</groupId>
+            <artifactId>order</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.qihangerp.services</groupId>
+            <artifactId>order-api</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
@@ -80,61 +129,17 @@
             <version>3.5.5</version>
         </dependency>
         <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>7.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.qihangerp.open</groupId>
-            <artifactId>open-sdk</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/open-sdk-1.10.9.3.jar</systemPath>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.5</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.13</version> <!-- jd-sdk依赖 -->
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
-
-
-        <dependency>
-            <groupId>cn.qihangerp.services</groupId>
-            <artifactId>jd-api</artifactId>
-            <version>1.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.qihangerp.services</groupId>
-            <artifactId>dou-api</artifactId>
-            <version>1.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.qihangerp.services</groupId>
-            <artifactId>tao-api</artifactId>
-            <version>1.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.qihangerp.services</groupId>
-            <artifactId>pdd-api</artifactId>
-            <version>1.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.qihangerp.services</groupId>
-            <artifactId>wei-api</artifactId>
-            <version>1.0.6</version>
-        </dependency>
-
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -157,20 +162,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <includeSystemScope>true</includeSystemScope>
-                </configuration>
             </plugin>
         </plugins>
     </build>
