@@ -1,4 +1,4 @@
-package cn.qihangerp.open.service;
+package cn.qihangerp.oms.service;
 
 import cn.qihangerp.model.entity.SysUser;
 import cn.qihangerp.service.ISysUserService;

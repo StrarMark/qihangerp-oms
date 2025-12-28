@@ -1,4 +1,4 @@
-package cn.qihangerp.open.config;
+package cn.qihangerp.oms.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

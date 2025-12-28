@@ -1,4 +1,4 @@
-package cn.qihangerp.open.service;
+package cn.qihangerp.oms.service;
 
 import cn.qihangerp.model.entity.SysConfig;
 import cn.qihangerp.service.SysConfigService;

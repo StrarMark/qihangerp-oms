@@ -13,10 +13,10 @@
         <version>2.12.0</version>
     </parent>
 
-    <artifactId>open-api</artifactId>
+    <artifactId>oms-api</artifactId>
     <packaging>jar</packaging>
 
-    <name>open-api</name>
+    <name>oms-api</name>
     <url>http://maven.apache.org</url>
 
     <properties>

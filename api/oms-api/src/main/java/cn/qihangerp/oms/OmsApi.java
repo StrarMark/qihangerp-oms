@@ -1,4 +1,4 @@
-package cn.qihangerp.open;
+package cn.qihangerp.oms;
 
 //import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.ComponentScan;
 //@MapperScan("com.qihang.oms.mapper")
 @ComponentScan(basePackages={"cn.qihangerp.open","cn.qihangerp"})
 @SpringBootApplication
-public class OpenApi {
+public class OmsApi {
     public static void main( String[] args )
     {
         System.out.println( "Hello open-api!" );
-        SpringApplication.run(OpenApi.class, args);
+        SpringApplication.run(OmsApi.class, args);
     }
 
 }

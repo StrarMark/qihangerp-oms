@@ -1,4 +1,4 @@
-package cn.qihangerp.open.kwai.controller;//package com.qihang.kwai.controller;
+package cn.qihangerp.oms.kwai.controller;//package com.qihang.kwai.controller;
 //
 //import com.qihang.kwai.service.KwaiOrderService;
 //import com.qihang.kwai.service.SysShopService;
