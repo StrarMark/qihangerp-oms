@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询店铺列表
 export function listShop(query) {
   return request({
-    url: '/api/oms-api/shop/list',
+    url: '/api/erp-api/shop/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listShop(query) {
 // 查询店铺详细
 export function getShop(id) {
   return request({
-    url: '/api/oms-api/shop/shop/' + id,
+    url: '/api/erp-api/shop/shop/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getShop(id) {
 // 新增店铺
 export function addShop(data) {
   return request({
-    url: '/api/oms-api/shop/shop',
+    url: '/api/erp-api/shop/shop',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addShop(data) {
 // 修改店铺
 export function updateShop(data) {
   return request({
-    url: '/api/oms-api/shop/shop',
+    url: '/api/erp-api/shop/shop',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateShop(data) {
 // 删除店铺
 export function delShop(id) {
   return request({
-    url: '/api/oms-api/shop/shop/' + id,
+    url: '/api/erp-api/shop/shop/' + id,
     method: 'delete'
   })
 }
@@ -46,7 +46,7 @@ export function delShop(id) {
 // 查询店铺平台列表
 export function listPlatform(query) {
   return request({
-    url: '/api/oms-api/shop/platformList',
+    url: '/api/erp-api/shop/platformList',
     method: 'get',
     params: query
   })
@@ -55,7 +55,7 @@ export function listPlatform(query) {
 // 查询店铺详细
 export function getPlatform(id) {
   return request({
-    url: '/api/oms-api/shop/platform/' + id,
+    url: '/api/erp-api/shop/platform/' + id,
     method: 'get'
   })
 }
@@ -63,7 +63,7 @@ export function getPlatform(id) {
 // 修改店铺
 export function updatePlatform(data) {
   return request({
-    url: '/api/oms-api/shop/platform',
+    url: '/api/erp-api/shop/platform',
     method: 'put',
     data: data
   })
@@ -72,7 +72,7 @@ export function updatePlatform(data) {
 
 // export function listLogisticsStatus(query) {
 //   return request({
-//     url: '/api/oms-api/shop/logistics_status',
+//     url: '/api/erp-api/shop/logistics_status',
 //     method: 'get',
 //     params: query
 //   })
@@ -82,7 +82,7 @@ export function updatePlatform(data) {
 
 export function listShopPullLogs(query) {
   return request({
-    url: '/api/oms-api/shop/pull_logs_list',
+    url: '/api/erp-api/shop/pull_logs_list',
     method: 'get',
     params: query
   })
@@ -90,7 +90,7 @@ export function listShopPullLogs(query) {
 // // 修改物流状态
 // export function updateStatus(data) {
 //   return request({
-//     url: '/api/oms-api/shop/logistics/updateStatus',
+//     url: '/api/erp-api/shop/logistics/updateStatus',
 //     method: 'put',
 //     data: data
 //   })

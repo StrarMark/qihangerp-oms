@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 备货清单-仓库发货
 export function listShipStockupWarehouse(query) {
   return request({
-    url: '/api/oms-api/ship/stock_up_list_by_warehouse',
+    url: '/api/erp-api/ship/stock_up_list_by_warehouse',
     method: 'get',
     params: query
   })
@@ -13,7 +13,7 @@ export function listShipStockupWarehouse(query) {
 // 备货清单-供应商发货
 export function listShipStockupSupplier(query) {
   return request({
-    url: '/api/oms-api/ship/stock_up_list_by_supplier',
+    url: '/api/erp-api/ship/stock_up_list_by_supplier',
     method: 'get',
     params: query
   })
@@ -23,7 +23,7 @@ export function listShipStockupSupplier(query) {
 // 生成出库单（备货清单生成出库单）
 export function generateStockOutEntry(data) {
   return request({
-    url: '/api/oms-api/ship/generate_stock_out_entry',
+    url: '/api/erp-api/ship/generate_stock_out_entry',
     method: 'post',
     data: data
   })
@@ -33,7 +33,7 @@ export function generateStockOutEntry(data) {
 // 供应商发货手动确认
 export function supplierShipConfirm(data) {
   return request({
-    url: '/api/oms-api/ship/supplier_ship_confirm',
+    url: '/api/erp-api/ship/supplier_ship_confirm',
     method: 'post',
     data: data
   })
@@ -42,7 +42,7 @@ export function supplierShipConfirm(data) {
 // 修改备货单item skuId
 export function shipOrderItemSkuIdUpdate(data) {
   return request({
-    url: '/api/oms-api/ship/order_item_sku_id_update',
+    url: '/api/erp-api/ship/order_item_sku_id_update',
     method: 'post',
     data: data
   })

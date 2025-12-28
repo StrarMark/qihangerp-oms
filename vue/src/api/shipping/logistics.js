@@ -3,14 +3,14 @@ import request from '@/utils/request'
 // 查询物流公司列表
 export function listLogistics(query) {
   return request({
-    url: '/api/oms-api/shop/logistics',
+    url: '/api/erp-api/shop/logistics',
     method: 'get',
     params: query
   })
 }
 export function listLogisticsStatus(query) {
   return request({
-    url: '/api/oms-api/shop/logistics_status',
+    url: '/api/erp-api/shop/logistics_status',
     method: 'get',
     params: query
   })
@@ -19,7 +19,7 @@ export function listLogisticsStatus(query) {
 // 查询物流公司详细
 export function getLogistics(id) {
   return request({
-    url: '/api/oms-api/shop/logistics/' + id,
+    url: '/api/erp-api/shop/logistics/' + id,
     method: 'get'
   })
 }
@@ -27,7 +27,7 @@ export function getLogistics(id) {
 // 新增物流公司
 export function addLogistics(data) {
   return request({
-    url: '/api/oms-api/shop/logistics/add',
+    url: '/api/erp-api/shop/logistics/add',
     method: 'post',
     data: data
   })
@@ -36,14 +36,14 @@ export function addLogistics(data) {
 // 修改物流公司
 export function updateStatus(data) {
   return request({
-    url: '/api/oms-api/shop/logistics/updateStatus',
+    url: '/api/erp-api/shop/logistics/updateStatus',
     method: 'put',
     data: data
   })
 }
 export function updateLogistics(data) {
   return request({
-    url: '/api/oms-api/shop/logistics/update',
+    url: '/api/erp-api/shop/logistics/update',
     method: 'put',
     data: data
   })

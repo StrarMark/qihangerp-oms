@@ -3,7 +3,7 @@
 // // 查询
 // export function listShipping(query) {
 //   return request({
-//     url: '/api/oms-api/shipping/list',
+//     url: '/api/erp-api/shipping/list',
 //     method: 'get',
 //     params: query
 //   })
@@ -19,7 +19,7 @@
 // // 新增
 // export function handShip(data) {
 //   return request({
-//     url: '/api/oms-api/shipping/handShip',
+//     url: '/api/erp-api/shipping/handShip',
 //     method: 'post',
 //     data: data
 //   })

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 首页今日销售统计
 export function todayDaily(query) {
   return request({
-    url: '/api/oms-api/report/todayDaily',
+    url: '/api/erp-api/report/todayDaily',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function todayDaily(query) {
 // 销售统计
 export function salesDaily(query) {
   return request({
-    url: '/api/oms-api/report/salesDaily',
+    url: '/api/erp-api/report/salesDaily',
     method: 'get',
     params: query
   })
@@ -21,7 +21,7 @@ export function salesDaily(query) {
 
 export function salesTopSku(query) {
   return request({
-    url: '/api/oms-api/report/salesTopSku',
+    url: '/api/erp-api/report/salesTopSku',
     method: 'get',
     params: query
   })

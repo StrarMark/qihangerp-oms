@@ -157,7 +157,7 @@
         class="upload-demo"
         :headers="headers"
         drag
-        action="/dev-api/api/oms-api/goods/goods_sku_import"
+        action="/dev-api/api/erp-api/goods/goods_sku_import"
         accept="xlsx"
         multiple >
         <i class="el-icon-upload"></i>

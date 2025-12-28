@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询店铺订单列表
 export function listOrder(query) {
   return request({
-    url: '/api/oms-api/order/list',
+    url: '/api/erp-api/order/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listOrder(query) {
 // 查询店铺订单详细
 export function getOrder(id) {
   return request({
-    url: '/api/oms-api/order/' + id,
+    url: '/api/erp-api/order/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getOrder(id) {
 // 取消订单
 export function cancelOrder(data) {
   return request({
-    url: '/api/oms-api/order/cancelOrder',
+    url: '/api/erp-api/order/cancelOrder',
     method: 'post',
     data: data
   })
@@ -30,7 +30,7 @@ export function cancelOrder(data) {
 // 订单明细list
 export function listOrderItem(query) {
   return request({
-    url: '/api/oms-api/order/item_list',
+    url: '/api/erp-api/order/item_list',
     method: 'get',
     params: query
   })
@@ -40,7 +40,7 @@ export function listOrderItem(query) {
 // 查询待自己发货的订单列表（待发货的）
 export function waitShipList(query) {
   return request({
-    url: '/api/oms-api/order/waitShipmentList',
+    url: '/api/erp-api/order/waitShipmentList',
     method: 'get',
     params: query
   })
@@ -51,7 +51,7 @@ export function waitShipList(query) {
 // 分配供应商发货
 export function allocateShipmentOrder(data) {
   return request({
-    url: '/api/oms-api/order/allocateShipmentOrder',
+    url: '/api/erp-api/order/allocateShipmentOrder',
     method: 'post',
     data: data
   })
@@ -61,7 +61,7 @@ export function allocateShipmentOrder(data) {
 // 手动发货
 export function manualShipmentOrder(data) {
   return request({
-    url: '/api/oms-api/order/manualShipment',
+    url: '/api/erp-api/order/manualShipment',
     method: 'post',
     data: data
   })
@@ -69,7 +69,7 @@ export function manualShipmentOrder(data) {
 //修改订单item skuId
 export function orderItemSpecIdUpdate(data) {
   return request({
-    url: '/api/oms-api/order/order_item_sku_id_update',
+    url: '/api/erp-api/order/order_item_sku_id_update',
     method: 'post',
     data: data
   })

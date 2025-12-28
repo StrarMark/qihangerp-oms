@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询入库单列表
 export function listStockIn(query) {
   return request({
-    url: '/api/oms-api/stockIn/list',
+    url: '/api/erp-api/stockIn/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listStockIn(query) {
 // 查询入库单详细
 export function getWmsStockInEntry(id) {
   return request({
-    url: '/api/oms-api/stockIn/' + id,
+    url: '/api/erp-api/stockIn/' + id,
     method: 'get'
   })
 }
@@ -20,14 +20,14 @@ export function getWmsStockInEntry(id) {
 // 新增入库单
 export function stockInCreate(data) {
   return request({
-    url: '/api/oms-api/stockIn/create',
+    url: '/api/erp-api/stockIn/create',
     method: 'post',
     data: data
   })
 }
 export function stockIn(data) {
   return request({
-    url: '/api/oms-api/stockIn/in',
+    url: '/api/erp-api/stockIn/in',
     method: 'post',
     data: data
   })
