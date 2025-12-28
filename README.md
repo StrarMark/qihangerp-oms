@@ -184,44 +184,46 @@ graph TD
 
 #### 2.3 `api`微服务
 + `gateway`
-网关项目，负责微服务接口转发，前端统一通过网关调用其他微服务接口；
 
-采用`gateway`进行api分发，引入Sentinel进行流量治理。
+  网关项目，负责微服务接口转发，前端统一通过网关调用其他微服务接口；
+
+  采用`gateway`进行api分发，引入Sentinel进行流量治理。
 
 + `sys-api`
-项目系统微服务，主要功能包括：
 
-+ 用户
-+ 菜单
+  项目系统微服务，主要功能包括：
+
+  + 用户
+  + 系统菜单
+  + 字典
+  等等...
 
 + `erp-api`
-erp主功能微服务，主要功能包括：
 
-+ 队列消息处理（订单消息、退款消息）
-+ 订单接口
-+ 退款接口
-+ 店铺接口
+  erp主功能微服务，主要功能包括：
+  + 商品库
+  + 采购模块
+  + 库存模块
+  + 队列消息处理（订单消息、退款消息）
+  + 订单接口
+  + 退款接口
+  + 店铺接口
 
 + `open-api`
-各开放平台微服务
 
-+ 淘宝开放平台接口api
+  各电商开放平台接口相关微服务：
 
+  + 淘宝开放平台接口api
 
-+ 京东开放平台接口api
+  + 京东开放平台接口api
 
+  + 抖店开放平台接口api
 
-+ 抖店开放平台接口api
+  + 拼多多开放平台接口api
 
+  + 微信小店开放平台接口api
 
-+ 拼多多开放平台接口api
-
-
-+ 微信小店开放平台接口api
-
-
-
-+ 快手小店开放平台接口api
+  + 快手小店开放平台接口api
 
 
 ### 3、运行说明
@@ -243,8 +245,8 @@ erp主功能微服务，主要功能包括：
 
 
 #### 3.3、启动服务(项目)
-1.  启动开放平台微服务（`open-api`）
-2.  启动`sys-api`、`oms-api`微服务
+1.  启动开放平台微服务（`oms-api`）
+2.  启动`sys-api`、`erp-api`微服务
 3.  启动微服务网关（`gateway`）
 
 #### 3.4、运行前端
@@ -261,32 +263,45 @@ erp主功能微服务，主要功能包括：
 #### 4.1 打包
 
 ##### 后端打包
-`mvn clean package`
++ 1、install
+
+  `mvn clean install`
++ 2、package
+
+  `mvn clean package`
 
 ##### 前端打包
-`pnpm run build:prod`
+`npm run build:prod`
 
+#### 4.2 部署
+##### 后端部署
 
-#### 4.2 Nginx配置
++ jar部署
+
++ docker部署
+
+##### 前端部署 
++ Nginx配置
 ```
-# 上传文件至远程服务器
-将打包生成在 `dist` 目录下的文件拷贝至 `/usr/share/nginx/html` 目录
+# 处理 /prod-api/ 的代理请求
+location /prod-api/ {
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header REMOTE-HOST $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    # --- 新增 SSE 关键配置 ---
+    proxy_http_version 1.1;       # 必须使用 HTTP/1.1
+    proxy_buffering off;          # 关闭缓冲，确保数据实时发送
+    proxy_read_timeout 1800s;     # 增加读取超时时间 (例如 30 分钟)
+    proxy_send_timeout 1800s;     # 增加发送超时时间 (例如 30 分钟)
+    proxy_connect_timeout 60s;    # 连接超时时间
+    # --- 结束新增 ---
 
-# nginx.cofig 配置（主要是配置接口转发）
-server {
-	listen     88;
-	server_name  localhost;
-	location / {
-			root /usr/share/nginx/html;
-			index index.html index.htm;
-	}
-	# 反向代理配置
-	location /prod-api/ {
-			proxy_pass http://127.0.0.1:8088/; # 替换成你的后端网关API地址
-	}
+    #proxy_pass http://10.0.2.22:8088/;
+    proxy_pass http://172.17.62.227:8088/;
 }
 ```
-
++ docker运行
 
 ## 五、支持一下
 
