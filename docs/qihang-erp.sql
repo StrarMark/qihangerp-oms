@@ -11,7 +11,7 @@
  Target Server Version : 80043 (8.0.43)
  File Encoding         : 65001
 
- Date: 10/10/2025 08:45:53
+ Date: 28/12/2025 15:30:44
 */
 
 SET NAMES utf8mb4;
@@ -1237,7 +1237,7 @@ CREATE TABLE `o_shop`  (
 -- Records of o_shop
 -- ----------------------------
 INSERT INTO `o_shop` VALUES (1007, '抖店测试', 400, NULL, 9, 1, NULL, '4463798', NULL, NULL, 'c3tzx2q5p41h7zl69zjws9900002noae-11', NULL, NULL, '070t45roa51h7zl69zjws9900002noae-12', NULL, NULL, NULL, NULL, NULL, 0, 1759307372, 1759307261);
-INSERT INTO `o_shop` VALUES (1010, '淘宝测试店铺', 100, NULL, 9, 1, NULL, '0', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1759365108, 1759365108);
+INSERT INTO `o_shop` VALUES (1010, '淘宝测试店铺', 100, NULL, 9, 1, NULL, '0', NULL, NULL, '6102522199aaa4a42a2e6be95d0a5e18657c1576ec563a0351855490', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1759365108, 1759365108);
 INSERT INTO `o_shop` VALUES (1011, '爱顾家的小店', 300, NULL, 9, 1, NULL, '0', NULL, NULL, 'f8e7159a3af348729f9761df8252a8b24edd25ac', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1759371874, 1759371874);
 INSERT INTO `o_shop` VALUES (1012, '微信小店测试', 500, NULL, 9, 1, NULL, '0', 'wx82dd65f284dd6ee3', 'a6054ccf2694e8dc51d2616e634cad39', '96_KI-x2ByMfcE_X37Orem1O7qW03jVdUdiQU8QtGbZWjWS1LqOn9lXaxArEhlnCAL-AFNhia6IGIN1gHyvCa2gkMK_KcofMs7AnKGqj_ssy3L6vKP9vVklqvNBIUgEGDgAGANPM', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1759373401, 1759373401);
 
@@ -1334,7 +1334,7 @@ CREATE TABLE `o_shop_platform`  (
 -- ----------------------------
 -- Records of o_shop_platform
 -- ----------------------------
-INSERT INTO `o_shop_platform` VALUES (100, '淘宝天猫', 'TMALL', '', '', 'http://www.qihangerp.cn', 'http://gw.api.taobao.com/router/rest', 0, 3, 1);
+INSERT INTO `o_shop_platform` VALUES (100, '淘宝天猫', 'TMALL', '12175777', '368dbbd183a77d551735be13f59bbcda', 'http://www.qihangerp.cn', 'http://gw.api.taobao.com/router/rest', 0, 3, 1);
 INSERT INTO `o_shop_platform` VALUES (200, '京东POP', 'JD-POP', '', NULL, 'http://www.qihangerp.cn', 'https://api.jd.com/routerjson', 0, 4, 1);
 INSERT INTO `o_shop_platform` VALUES (300, '拼多多', 'PDD', 'dc953bcf16d24b27abf3e64a59e1ecd1', '89c639b1ceaf8e5260acc73b2bdbb5c529cf23a4', 'https://qihangerp.cn', 'https://gw-api.pinduoduo.com/api/router', 0, 1, 1);
 INSERT INTO `o_shop_platform` VALUES (400, '抖店', 'DOUDIAN', '7005157746437834253', '8104c8b8-9085-4a80-9248-629759b4f1a3', 'https://www.qihangerp.cn', 'https://openapi-fxg.jinritemai.com/', 0, 0, 1);
@@ -3202,6 +3202,7 @@ INSERT INTO `sys_menu` VALUES (2115, '库存管理', 7, 0, 'goods_inventory', 's
 INSERT INTO `sys_menu` VALUES (2116, '出库管理', 7, 20, 'stock_out', 'stock/stockOut/index', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-09-21 20:44:46', 'admin', '2025-10-09 05:05:24', '');
 INSERT INTO `sys_menu` VALUES (2117, '仓位管理', 7, 91, 'position', 'stock/warehouse/position', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 11:52:18', 'admin', '2025-03-24 13:47:04', '');
 INSERT INTO `sys_menu` VALUES (2118, '新建入库单', 7, 11, 'stock_in/create', 'stock/stockIn/create.vue', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 14:49:40', 'admin', '2025-10-09 05:05:17', '');
+INSERT INTO `sys_menu` VALUES (2122, '创建采购单', 8, 2, 'order/create', 'purchase/order/create', NULL, 1, 0, 'C', '1', '0', NULL, 'checkbox', 'admin', '2024-12-08 16:53:55', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2129, '订单发货', 6, 0, 'ship_order', 'shipping/wait_ship.vue', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2025-06-01 13:36:57', 'admin', '2025-10-09 02:43:33', '');
 
 -- ----------------------------
@@ -3511,7 +3512,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-10-09 14:32:01', 'admin', '2023-08-07 19:31:37', '', '2025-10-09 06:32:01', '管理员');
+INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-12-28 14:31:41', 'admin', '2023-08-07 19:31:37', '', '2025-12-28 06:31:40', '管理员');
 INSERT INTO `sys_user` VALUES (2, NULL, 'openapi', 'openApi接口专用', '00', '2806456181@qq.com', '15818590000', '0', '', '$2a$10$fHkhoqbMiyracAsTzl38H.55bu.M.of1FXk2EK7RQBjfic3tLU0Ue', '0', '0', '127.0.0.1', '2024-06-24 10:23:35', 'admin', '2024-03-17 14:55:22', 'admin', '2024-06-24 10:23:35', NULL);
 INSERT INTO `sys_user` VALUES (101, 101, '15818590119', 'aaa123', '00', '', '', '0', '', '$2a$10$pXcT6cHaObMeKuYd9vZb5uEb8PyUdF2AcqqRN1cBqiA9rV4qYQW7G', '0', '2', '', NULL, 'admin', '2024-08-15 13:45:25', '', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, 101, '15818590119', '老齐', '00', '', '', '0', '', '$2a$10$ysk.zgJ8wh25c7vOjKyZ8uarM2hkG0S51j8GYdJSo2kZmc3f8HdKe', '0', '0', '', NULL, 'admin', '2024-08-15 13:49:59', 'admin', '2025-02-10 16:26:20', NULL);
