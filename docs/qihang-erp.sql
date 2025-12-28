@@ -11,7 +11,7 @@
  Target Server Version : 80043 (8.0.43)
  File Encoding         : 65001
 
- Date: 28/12/2025 15:30:44
+ Date: 28/12/2025 15:36:32
 */
 
 SET NAMES utf8mb4;
@@ -59,11 +59,13 @@ CREATE TABLE `erp_purchase_order`  (
   `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购订单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购订单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_purchase_order
 -- ----------------------------
+INSERT INTO `erp_purchase_order` VALUES (2, 34, 'PUR20251228153252', '2025-12-28', 1766907172, 0.00, 0.00, NULL, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2025-12-28 15:32:53', NULL, NULL);
+INSERT INTO `erp_purchase_order` VALUES (3, 34, 'PUR20251228153353', '2025-12-28', 1766907233, 0.00, 0.00, NULL, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2025-12-28 15:33:54', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for erp_purchase_order_cost
@@ -134,11 +136,13 @@ CREATE TABLE `erp_purchase_order_item`  (
   INDEX `transType`(`trans_type` ASC) USING BTREE,
   INDEX `iid`(`order_id` ASC) USING BTREE,
   INDEX `id`(`id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购订单明细' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '采购订单明细' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of erp_purchase_order_item
 -- ----------------------------
+INSERT INTO `erp_purchase_order_item` VALUES (2, 2, 'PUR20251228153252', 'Purchase', 22.9, '2025-12-28', '', 16, NULL, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 47, 'LSZMLED0010024W', '白光', 'https://img.pddpic.com/mms-material-img/2025-05-29/25bf5df9-764b-428c-aae2-59c3ee16f7e6.jpeg.a.jpeg', '24W', '', 22.90, 0.00, 0.00, 1, 0, NULL, 0, 0);
+INSERT INTO `erp_purchase_order_item` VALUES (3, 3, 'PUR20251228153353', 'Purchase', 22.9, '2025-12-28', '', 16, NULL, '雷士照明LED光源灯芯正品保障客厅卧室餐厅书房吸顶灯LED灯板替换', 46, 'LSZMLED0010018W', '白光', 'https://img.pddpic.com/mms-material-img/2025-05-29/25bf5df9-764b-428c-aae2-59c3ee16f7e6.jpeg.a.jpeg', '18W', '', 22.90, 0.00, 0.00, 1, 0, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for erp_purchase_order_payable
@@ -3184,6 +3188,8 @@ INSERT INTO `sys_menu` VALUES (808, '供应商管理', 8, 90, 'supplier_list', '
 INSERT INTO `sys_menu` VALUES (831, '采购订单管理', 8, 0, 'order_list', 'purchase/order/index', NULL, 1, 0, 'C', '0', '0', NULL, 'button', 'admin', '2025-09-08 19:36:15', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (832, '采购入库管理', 8, 10, 'stock_in', 'purchase/stock_in/index', NULL, 1, 0, 'C', '0', '0', NULL, 'post', 'admin', '2025-09-08 19:39:11', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (833, '采购承运商', 8, 20, 'shipper', 'purchase/shipper/index', NULL, 1, 0, 'C', '0', '0', NULL, 'online', 'admin', '2025-09-08 19:40:43', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (834, '创建采购单', 8, 2, 'order/create', 'purchase/order/create', NULL, 1, 0, 'C', '1', '0', NULL, 'checkbox', 'admin', '2024-12-08 16:53:55', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (835, '采购单详情', 8, 3, 'order/detail', 'purchase/order/detail', NULL, 1, 0, 'C', '1', '0', '', 'date', 'admin', '2024-12-08 16:54:28', 'admin', '2025-02-17 21:54:17', '');
 INSERT INTO `sys_menu` VALUES (2079, '字典管理', 5, 9, 'dict', 'system/dict/index', NULL, 1, 0, 'C', '0', '0', '', 'dict', 'admin', '2024-03-18 08:43:55', 'admin', '2024-03-18 08:44:08', '');
 INSERT INTO `sys_menu` VALUES (2088, '发货设置', 6, 9, 'ship_set', 'shipping/logistics/index', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2024-03-30 17:37:01', 'admin', '2025-06-01 15:02:10', '');
 INSERT INTO `sys_menu` VALUES (2089, '发货记录', 6, 3, 'record', 'shipping/record/index', NULL, 1, 0, 'C', '0', '0', '', 'list', 'admin', '2024-03-30 17:37:42', 'admin', '2025-10-10 00:44:48', '');
@@ -3202,7 +3208,6 @@ INSERT INTO `sys_menu` VALUES (2115, '库存管理', 7, 0, 'goods_inventory', 's
 INSERT INTO `sys_menu` VALUES (2116, '出库管理', 7, 20, 'stock_out', 'stock/stockOut/index', NULL, 1, 0, 'C', '0', '0', '', 'guide', 'admin', '2024-09-21 20:44:46', 'admin', '2025-10-09 05:05:24', '');
 INSERT INTO `sys_menu` VALUES (2117, '仓位管理', 7, 91, 'position', 'stock/warehouse/position', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 11:52:18', 'admin', '2025-03-24 13:47:04', '');
 INSERT INTO `sys_menu` VALUES (2118, '新建入库单', 7, 11, 'stock_in/create', 'stock/stockIn/create.vue', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 14:49:40', 'admin', '2025-10-09 05:05:17', '');
-INSERT INTO `sys_menu` VALUES (2122, '创建采购单', 8, 2, 'order/create', 'purchase/order/create', NULL, 1, 0, 'C', '1', '0', NULL, 'checkbox', 'admin', '2024-12-08 16:53:55', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2129, '订单发货', 6, 0, 'ship_order', 'shipping/wait_ship.vue', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2025-06-01 13:36:57', 'admin', '2025-10-09 02:43:33', '');
 
 -- ----------------------------

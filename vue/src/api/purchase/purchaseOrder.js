@@ -12,7 +12,7 @@ export function listPurchaseOrder(query) {
 // 查询采购订单详细
 export function getPurchaseOrder(id) {
   return request({
-    url: '/erp-api/scm/purchase/detail/' + id,
+    url: '/erp-api/erp/purchase/detail/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getPurchaseOrder(id) {
 // 新增采购订单
 export function addPurchaseOrder(data) {
   return request({
-    url: '/erp-api/scm/purchase/create',
+    url: '/erp-api/erp/purchase/create',
     method: 'post',
     data: data
   })
