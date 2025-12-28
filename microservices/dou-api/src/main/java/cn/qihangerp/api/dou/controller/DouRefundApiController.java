@@ -35,7 +35,7 @@ import java.util.Date;
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("/refund")
+@RequestMapping("/dou/refund")
 public class DouRefundApiController {
     private static Logger log = LoggerFactory.getLogger(DouRefundApiController.class);
 

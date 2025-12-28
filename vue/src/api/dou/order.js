@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询抖店订单列表
 export function listOrder(query) {
   return request({
-    url: '/api/open-api/dou/order/list',
+    url: '/api/oms-api/dou/order/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listOrder(query) {
 // 查询抖店订单详细
 export function getOrder(id) {
   return request({
-    url: '/api/open-api/dou/order/' + id,
+    url: '/api/oms-api/dou/order/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getOrder(id) {
 // 新增抖店订单
 export function addOrder(data) {
   return request({
-    url: '/api/open-api/dou/order',
+    url: '/api/oms-api/dou/order',
     method: 'post',
     data: data
   })
@@ -30,7 +30,7 @@ export function addOrder(data) {
 // 接口拉取订单
 export function pullOrder(data) {
   return request({
-    url: '/api/open-api/dou/order/pull_order',
+    url: '/api/oms-api/dou/order/pull_order',
     method: 'post',
     data: data
   })
@@ -38,7 +38,7 @@ export function pullOrder(data) {
 
 export function pullOrderDetail(data) {
   return request({
-    url: '/api/open-api/dou/order/pull_order_detail',
+    url: '/api/oms-api/dou/order/pull_order_detail',
     method: 'post',
     data: data
   })
@@ -46,7 +46,7 @@ export function pullOrderDetail(data) {
 
 export function pushOms(data) {
   return request({
-    url: '/api/open-api/dou/order/push_oms',
+    url: '/api/oms-api/dou/order/push_oms',
     method: 'post',
     data: data
   })
@@ -54,7 +54,7 @@ export function pushOms(data) {
 // 确认抖店订单
 export function confirmOrder(data) {
   return request({
-    url: '/api/open-api/dou/order/confirmOrder',
+    url: '/api/oms-api/dou/order/confirmOrder',
     method: 'post',
     data: data
   })

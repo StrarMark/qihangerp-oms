@@ -182,7 +182,7 @@
         <el-descriptions-item label="授权URL"> {{ tokenForm.url }}</el-descriptions-item>
         </el-descriptions>
         <el-descriptions v-if="tokenForm.shopType === 100">
-          <el-descriptions-item label="请设置淘宝开放平台回调URL"> http://127.0.0.1:8088/api/open-api/tao/code_callback</el-descriptions-item>
+          <el-descriptions-item label="请设置淘宝开放平台回调URL"> http://127.0.0.1:8088/api/oms-api/tao/code_callback</el-descriptions-item>
         </el-descriptions>
         <div slot="footer" class="dialog-footer">
           请手动复制上面的URL到浏览器中访问

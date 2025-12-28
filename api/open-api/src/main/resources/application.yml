@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: open-api
+    name: oms-api
   cloud:
     nacos:
 #      serverAddr: 127.0.0.1:8848

@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function listOrder(query) {
   return request({
     // url: '/api/tao-api/order/list',
-    url: '/api/open-api/tao/order/list',
+    url: '/api/oms-api/tao/order/list',
     method: 'get',
     params: query
   })
@@ -13,7 +13,7 @@ export function listOrder(query) {
 // 查询淘宝订单详细
 export function getOrder(id) {
   return request({
-    url: '/api/open-api/tao/order/' + id,
+    url: '/api/oms-api/tao/order/' + id,
     method: 'get'
   })
 }
@@ -22,7 +22,7 @@ export function getOrder(id) {
 // 接口拉取淘宝订单
 export function pullOrder(data) {
   return request({
-    url: '/api/open-api/tao/order/pull_order_tao',
+    url: '/api/oms-api/tao/order/pull_order_tao',
     method: 'post',
     data: data
   })
@@ -30,7 +30,7 @@ export function pullOrder(data) {
 
 export function pullOrderDetail(data) {
   return request({
-    url: '/api/open-api/tao/order/pull_order_detail',
+    url: '/api/oms-api/tao/order/pull_order_detail',
     method: 'post',
     data: data
   })
@@ -38,7 +38,7 @@ export function pullOrderDetail(data) {
 
 export function pushOms(data) {
   return request({
-    url: '/api/open-api/tao/order/push_oms',
+    url: '/api/oms-api/tao/order/push_oms',
     method: 'post',
     data: data
   })
@@ -47,7 +47,7 @@ export function pushOms(data) {
 // 确认订单
 export function confirmOrder(data) {
   return request({
-    url: '/api/open-api/tao/order/confirmOrder',
+    url: '/api/oms-api/tao/order/confirmOrder',
     method: 'post',
     data: data
   })
