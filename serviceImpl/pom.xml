@@ -25,6 +25,7 @@
         <module>dou</module>
         <module>tao</module>
         <module>pdd</module>
+        <module>erp</module>
 
     </modules>
     <properties>
