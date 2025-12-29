@@ -66,6 +66,7 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
         OShop shop = new OShop();
         shop.setId(shopId);
         shop.setAccessToken(sessionKey);
+        shop.setApiStatus(1);
         mapper.updateById(shop);
     }
     @Override
@@ -74,6 +75,7 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
         shop.setId(shopId);
         shop.setAccessToken(token);
         shop.setRefreshToken(refreshToken);
+        shop.setApiStatus(1);
         mapper.updateById(shop);
     }
 //    @Override
