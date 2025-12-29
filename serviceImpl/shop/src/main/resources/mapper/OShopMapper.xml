@@ -25,13 +25,14 @@
             <result property="manageUserId" column="manage_user_id" jdbcType="BIGINT"/>
             <result property="manageDeptId" column="manage_dept_id" jdbcType="BIGINT"/>
             <result property="regionId" column="region_id" jdbcType="BIGINT"/>
+        <result property="apiStatus" column="api_status" jdbcType="INTEGER"/>
             <result property="modifyOn" column="modify_on" jdbcType="BIGINT"/>
             <result property="createOn" column="create_on" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,type,
-        url,sort,status,
+        url,sort,status,api_status,
         remark,seller_id,app_key,
         app_secret,access_token,expires_in,
         access_token_begin,refresh_token,refresh_token_timeout,

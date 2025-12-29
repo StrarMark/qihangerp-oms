@@ -43,6 +43,6 @@ public class SysTask implements Serializable {
      * 
      */
     private Date createTime;
-
+    private Integer status;
     private static final long serialVersionUID = 1L;
 }

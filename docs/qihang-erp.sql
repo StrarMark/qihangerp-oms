@@ -11,7 +11,7 @@
  Target Server Version : 80043 (8.0.43)
  File Encoding         : 65001
 
- Date: 28/12/2025 15:36:32
+ Date: 29/12/2025 16:09:18
 */
 
 SET NAMES utf8mb4;
@@ -1232,6 +1232,7 @@ CREATE TABLE `o_shop`  (
   `manage_user_id` bigint NULL DEFAULT NULL COMMENT '负责人id',
   `manage_dept_id` bigint NULL DEFAULT NULL COMMENT '负责人部门id',
   `region_id` bigint NOT NULL DEFAULT 0 COMMENT '国家/地区',
+  `api_status` int NOT NULL COMMENT 'api运行状态0不运行1运行',
   `modify_on` bigint NOT NULL COMMENT '更新时间',
   `create_on` bigint NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
@@ -1240,10 +1241,10 @@ CREATE TABLE `o_shop`  (
 -- ----------------------------
 -- Records of o_shop
 -- ----------------------------
-INSERT INTO `o_shop` VALUES (1007, '抖店测试', 400, NULL, 9, 1, NULL, '4463798', NULL, NULL, 'c3tzx2q5p41h7zl69zjws9900002noae-11', NULL, NULL, '070t45roa51h7zl69zjws9900002noae-12', NULL, NULL, NULL, NULL, NULL, 0, 1759307372, 1759307261);
-INSERT INTO `o_shop` VALUES (1010, '淘宝测试店铺', 100, NULL, 9, 1, NULL, '0', NULL, NULL, '6102522199aaa4a42a2e6be95d0a5e18657c1576ec563a0351855490', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1759365108, 1759365108);
-INSERT INTO `o_shop` VALUES (1011, '爱顾家的小店', 300, NULL, 9, 1, NULL, '0', NULL, NULL, 'f8e7159a3af348729f9761df8252a8b24edd25ac', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1759371874, 1759371874);
-INSERT INTO `o_shop` VALUES (1012, '微信小店测试', 500, NULL, 9, 1, NULL, '0', 'wx82dd65f284dd6ee3', 'a6054ccf2694e8dc51d2616e634cad39', '96_KI-x2ByMfcE_X37Orem1O7qW03jVdUdiQU8QtGbZWjWS1LqOn9lXaxArEhlnCAL-AFNhia6IGIN1gHyvCa2gkMK_KcofMs7AnKGqj_ssy3L6vKP9vVklqvNBIUgEGDgAGANPM', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1759373401, 1759373401);
+INSERT INTO `o_shop` VALUES (1007, '抖店测试', 400, NULL, 9, 1, NULL, '4463798', NULL, NULL, 'c3tzx2q5p41h7zl69zjws9900002noae-11', NULL, NULL, '070t45roa51h7zl69zjws9900002noae-12', NULL, NULL, NULL, NULL, NULL, 0, 0, 1759307372, 1759307261);
+INSERT INTO `o_shop` VALUES (1010, '淘宝测试店铺', 100, NULL, 9, 1, NULL, '0', NULL, NULL, '6102522199aaa4a42a2e6be95d0a5e18657c1576ec563a0351855490', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1759365108, 1759365108);
+INSERT INTO `o_shop` VALUES (1011, '爱顾家的小店', 300, NULL, 9, 1, NULL, '0', NULL, NULL, 'f8e7159a3af348729f9761df8252a8b24edd25ac', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1759371874, 1759371874);
+INSERT INTO `o_shop` VALUES (1012, '微信小店测试', 500, NULL, 9, 1, NULL, '0', 'wx82dd65f284dd6ee3', 'a6054ccf2694e8dc51d2616e634cad39', '96_KI-x2ByMfcE_X37Orem1O7qW03jVdUdiQU8QtGbZWjWS1LqOn9lXaxArEhlnCAL-AFNhia6IGIN1gHyvCa2gkMK_KcofMs7AnKGqj_ssy3L6vKP9vVklqvNBIUgEGDgAGANPM', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1759373401, 1759373401);
 
 -- ----------------------------
 -- Table structure for o_shop_daily
@@ -3153,7 +3154,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2134 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2135 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -3209,6 +3210,7 @@ INSERT INTO `sys_menu` VALUES (2116, '出库管理', 7, 20, 'stock_out', 'stock/
 INSERT INTO `sys_menu` VALUES (2117, '仓位管理', 7, 91, 'position', 'stock/warehouse/position', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 11:52:18', 'admin', '2025-03-24 13:47:04', '');
 INSERT INTO `sys_menu` VALUES (2118, '新建入库单', 7, 11, 'stock_in/create', 'stock/stockIn/create.vue', NULL, 1, 0, 'C', '1', '0', '', '404', 'admin', '2024-09-22 14:49:40', 'admin', '2025-10-09 05:05:17', '');
 INSERT INTO `sys_menu` VALUES (2129, '订单发货', 6, 0, 'ship_order', 'shipping/wait_ship.vue', NULL, 1, 0, 'C', '0', '0', '', 'checkbox', 'admin', '2025-06-01 13:36:57', 'admin', '2025-10-09 02:43:33', '');
+INSERT INTO `sys_menu` VALUES (2134, '平台自动任务', 3, 50, 'task', 'shop/task', NULL, 1, 0, 'C', '0', '0', NULL, 'email', 'admin', '2025-12-29 08:04:12', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_menu2
@@ -3447,6 +3449,7 @@ CREATE TABLE `sys_task`  (
   `cron` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `status` int NOT NULL DEFAULT 0,
   `create_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台任务配置表' ROW_FORMAT = DYNAMIC;
@@ -3454,19 +3457,19 @@ CREATE TABLE `sys_task`  (
 -- ----------------------------
 -- Records of sys_task
 -- ----------------------------
-INSERT INTO `sys_task` VALUES (1, '拉取淘宝订单', '-', NULL, '定时更新淘宝订单', '2024-03-07 09:52:40');
-INSERT INTO `sys_task` VALUES (2, '拉取京东POP订单', '-', NULL, '拉取京东POP订单', '2024-03-07 09:23:36');
-INSERT INTO `sys_task` VALUES (3, '拉取拼多多订单', '-', NULL, '定时拉取拼多多订单', '2024-04-09 11:24:14');
-INSERT INTO `sys_task` VALUES (4, '拉取抖店订单', '-', NULL, '定时拉取抖店订单', '2024-04-09 11:24:54');
-INSERT INTO `sys_task` VALUES (5, '拉取天猫退款', '-', NULL, '定时拉取天猫退款', '2024-04-09 11:25:43');
-INSERT INTO `sys_task` VALUES (6, '拉取京东售后', '-', NULL, '定时拉取京东售后', '2024-04-09 11:26:26');
-INSERT INTO `sys_task` VALUES (7, '拉取拼多多退款', '-', NULL, '定时拉取拼多多退款', '2024-04-09 11:27:01');
-INSERT INTO `sys_task` VALUES (8, '拉取抖店退款', '-', NULL, '定时拉取抖店退款', '2024-04-09 11:27:38');
-INSERT INTO `sys_task` VALUES (11, '拉取京东自营订单', '-', NULL, '拉取京东自营订单', '2024-05-27 10:57:44');
-INSERT INTO `sys_task` VALUES (12, '拉取京东自营退货', '-', NULL, '拉取京东自营退货', NULL);
-INSERT INTO `sys_task` VALUES (21, '推送待发货订单到ERP', '-', NULL, '推送待发货订单到ERP', '2024-04-22 15:48:48');
-INSERT INTO `sys_task` VALUES (22, '推送待处理售后到ERP', '-', NULL, '推送待处理售后到ERP', '2024-04-22 15:48:48');
-INSERT INTO `sys_task` VALUES (23, '推送已取消的订单到ERP', '-', NULL, '推送已取消的订单到ERP', '2024-05-29 17:57:02');
+INSERT INTO `sys_task` VALUES (1, '拉取淘宝订单', '-', NULL, '定时更新淘宝订单', 0, '2024-03-07 09:52:40');
+INSERT INTO `sys_task` VALUES (2, '拉取京东POP订单', '-', NULL, '拉取京东POP订单', 0, '2024-03-07 09:23:36');
+INSERT INTO `sys_task` VALUES (3, '拉取拼多多订单', '-', NULL, '定时拉取拼多多订单', 0, '2024-04-09 11:24:14');
+INSERT INTO `sys_task` VALUES (4, '拉取抖店订单', '-', NULL, '定时拉取抖店订单', 0, '2024-04-09 11:24:54');
+INSERT INTO `sys_task` VALUES (5, '拉取天猫退款', '-', NULL, '定时拉取天猫退款', 0, '2024-04-09 11:25:43');
+INSERT INTO `sys_task` VALUES (6, '拉取京东售后', '-', NULL, '定时拉取京东售后', 0, '2024-04-09 11:26:26');
+INSERT INTO `sys_task` VALUES (7, '拉取拼多多退款', '-', NULL, '定时拉取拼多多退款', 0, '2024-04-09 11:27:01');
+INSERT INTO `sys_task` VALUES (8, '拉取抖店退款', '-', NULL, '定时拉取抖店退款', 0, '2024-04-09 11:27:38');
+INSERT INTO `sys_task` VALUES (11, '拉取京东自营订单', '-', NULL, '拉取京东自营订单', 0, '2024-05-27 10:57:44');
+INSERT INTO `sys_task` VALUES (12, '拉取京东自营退货', '-', NULL, '拉取京东自营退货', 0, NULL);
+INSERT INTO `sys_task` VALUES (21, '推送待发货订单到ERP', '-', NULL, '推送待发货订单到ERP', 0, '2024-04-22 15:48:48');
+INSERT INTO `sys_task` VALUES (22, '推送待处理售后到ERP', '-', NULL, '推送待处理售后到ERP', 0, '2024-04-22 15:48:48');
+INSERT INTO `sys_task` VALUES (23, '推送已取消的订单到ERP', '-', NULL, '推送已取消的订单到ERP', 0, '2024-05-29 17:57:02');
 
 -- ----------------------------
 -- Table structure for sys_task_logs
@@ -3517,7 +3520,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-12-28 14:31:41', 'admin', '2023-08-07 19:31:37', '', '2025-12-28 06:31:40', '管理员');
+INSERT INTO `sys_user` VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-12-29 15:20:06', 'admin', '2023-08-07 19:31:37', '', '2025-12-29 07:20:06', '管理员');
 INSERT INTO `sys_user` VALUES (2, NULL, 'openapi', 'openApi接口专用', '00', '2806456181@qq.com', '15818590000', '0', '', '$2a$10$fHkhoqbMiyracAsTzl38H.55bu.M.of1FXk2EK7RQBjfic3tLU0Ue', '0', '0', '127.0.0.1', '2024-06-24 10:23:35', 'admin', '2024-03-17 14:55:22', 'admin', '2024-06-24 10:23:35', NULL);
 INSERT INTO `sys_user` VALUES (101, 101, '15818590119', 'aaa123', '00', '', '', '0', '', '$2a$10$pXcT6cHaObMeKuYd9vZb5uEb8PyUdF2AcqqRN1cBqiA9rV4qYQW7G', '0', '2', '', NULL, 'admin', '2024-08-15 13:45:25', '', NULL, NULL);
 INSERT INTO `sys_user` VALUES (102, 101, '15818590119', '老齐', '00', '', '', '0', '', '$2a$10$ysk.zgJ8wh25c7vOjKyZ8uarM2hkG0S51j8GYdJSo2kZmc3f8HdKe', '0', '0', '', NULL, 'admin', '2024-08-15 13:49:59', 'admin', '2025-02-10 16:26:20', NULL);

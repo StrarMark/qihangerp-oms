@@ -10,11 +10,12 @@
             <result property="cron" column="cron" jdbcType="VARCHAR"/>
             <result property="method" column="method" jdbcType="VARCHAR"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,task_name,cron,
+        id,task_name,cron,status,
         method,remark,create_time
     </sql>
 </mapper>

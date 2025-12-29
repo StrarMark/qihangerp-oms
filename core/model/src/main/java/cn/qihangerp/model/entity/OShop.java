@@ -101,6 +101,8 @@ public class OShop implements Serializable {
      */
     private String apiRedirectUrl;
 
+    private Integer apiStatus;
+
     /**
      * 负责人id
      */
