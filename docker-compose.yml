@@ -1,6 +1,24 @@
 version: '3.8'
 
 services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: qihang_erp
+      MYSQL_USER: qihang_erp
+      MYSQL_PASSWORD: qihang_erp@123
+    ports:
+      - "3306:3306"
+    volumes:
+      - /opt/qihangerp-open/mysql_data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+    restart: always
+    networks:
+      - my-network
+
+
   redis:
     image: redis:7
     container_name: redis
@@ -35,7 +53,7 @@ services:
       timeout: 5s
 
   gateway:
-    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/gateway
+    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/gateway:v251229
     container_name: qihangerp-gateway
     environment:
       SPRING_CLOUD_NACOS_DISCOVERY_SERVER-ADDR: "nacos:8848"
@@ -51,7 +69,7 @@ services:
       - my-network
 
   sys-api:
-    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/sys-api
+    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/sys-api:v251229
     container_name: qihangerp-sys-api
     environment:
       SPRING_CLOUD_NACOS_DISCOVERY_SERVER-ADDR: "nacos:8848"
@@ -63,6 +81,9 @@ services:
       spring.data.redis.host: "redis"
       spring.data.redis.port: 6379
       spring.data.redis.password: ""
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/qihang_erp?useSSL=false&serverTimezone=UTC"
+      SPRING_DATASOURCE_USERNAME: "qihang_erp"
+      SPRING_DATASOURCE_PASSWORD: "qihang_erp@123"
       spring.profiles.active: dev
     depends_on:
       - redis
@@ -72,7 +93,7 @@ services:
       - my-network
 
   oms-api:
-    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/oms-api
+    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/oms-api:v251229
     container_name: qihangerp-oms-api
     environment:
       SPRING_CLOUD_NACOS_DISCOVERY_SERVER-ADDR: "nacos:8848"
@@ -84,6 +105,9 @@ services:
       spring.data.redis.host: "redis"
       spring.data.redis.port: 6379
       spring.data.redis.password: ""
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/qihang_erp?useSSL=false&serverTimezone=UTC"
+      SPRING_DATASOURCE_USERNAME: "qihang_erp"
+      SPRING_DATASOURCE_PASSWORD: "qihang_erp@123"
       spring.profiles.active: dev
     depends_on:
       - redis
@@ -93,7 +117,7 @@ services:
       - my-network
 
   erp-api:
-    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/erp-api
+    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/erp-api:v251229
     container_name: qihangerp-erp-api
     environment:
       SPRING_CLOUD_NACOS_DISCOVERY_SERVER-ADDR: "nacos:8848"
@@ -105,6 +129,9 @@ services:
       spring.data.redis.host: "redis"
       spring.data.redis.port: 6379
       spring.data.redis.password: ""
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/qihang_erp?useSSL=false&serverTimezone=UTC"
+      SPRING_DATASOURCE_USERNAME: "qihang_erp"
+      SPRING_DATASOURCE_PASSWORD: "qihang_erp@123"
       spring.profiles.active: dev
     depends_on:
       - redis
@@ -114,11 +141,10 @@ services:
       - my-network
 
   vue:
-    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/vue-erp
+    image: crpi-km68smz26eegv27m.cn-shenzhen.personal.cr.aliyuncs.com/qihang-open/vue-erp:v251229a
     container_name: qihangerp-vue
     ports:
-      - "80:80"  # 映射88端口
-      - "443:443"  # 映射88端口
+      - "88:88"  # 映射88端口
 #    volumes:
 #      - /opt/qihangerp/nginx/dist:/usr/share/nginx/html  # HTML 文件目录
 #      - /opt/qihangerp/nginx/nginx_conf/nginx:/etc/nginx  # Nginx 配置目录
