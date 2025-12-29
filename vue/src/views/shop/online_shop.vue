@@ -111,14 +111,14 @@
             v-hasPermi="['shop:shop:remove']"
           >删除</el-button>
           </el-row>
-                      <el-button
-                        v-if="scope.row.type===100 || scope.row.type===200 || scope.row.type===280 || scope.row.type===300"
-                        type="success"
-                        plain
-                        icon="el-icon-refresh"
-                        size="mini"
-                        @click="handleUpdateToken(scope.row)"
-                      >更新AccessToken</el-button>
+          <el-button
+            v-if="scope.row.type===100 || scope.row.type===200 || scope.row.type===280 || scope.row.type===300"
+            type="success"
+            plain
+            icon="el-icon-refresh"
+            size="mini"
+            @click="handleUpdateToken(scope.row)"
+          >更新AccessToken</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -196,6 +196,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="getTokenSubmit">确 定</el-button>
+        <el-button type="primary" @click="getTokenUrl" size="mini">去授权</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
 <!--      <div slot="footer" class="dialog-footer">-->
@@ -295,6 +296,10 @@ export default {
         status:'1'
       };
       this.resetForm("form");
+    },
+    getTokenUrl(){
+      console.log("手动跳转授权")
+      window.location.href = this.tokenForm.url
     },
     /** 搜索按钮操作 */
     handleQuery() {
