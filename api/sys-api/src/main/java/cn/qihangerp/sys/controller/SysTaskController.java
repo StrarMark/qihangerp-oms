@@ -10,6 +10,7 @@ import cn.qihangerp.module.service.SysTaskLogsService;
 import cn.qihangerp.security.common.BaseController;
 
 import lombok.AllArgsConstructor;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -46,6 +47,11 @@ public class SysTaskController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody SysTask task)
     {
+        if(StringUtils.hasText(task.getCron())&&!task.getCron().equals("-")){
+            task.setStatus(1);
+        }else{
+            task.setStatus(0);
+        }
         return toAjax(taskService.updateById(task));
     }
 }
