@@ -29,6 +29,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
         if(url.equals("/api/sys-api/login") || url.equals("/api/sys-api/getInfo") || url.equals("/api/sys-api/logout")
                 || url.contains("/system/config")
                 || url.contains("/captchaImage")
+                || url.contains("/oauth_callback")
         )
         {
             // 登录页面 放行
