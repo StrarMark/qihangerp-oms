@@ -1,5 +1,6 @@
 package cn.qihangerp.api.pdd.task;
 
+import cn.qihangerp.api.pdd.PddOrderApiService;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.task.IPollableService;
 import cn.qihangerp.model.entity.OShop;
@@ -28,6 +29,7 @@ public class PddOrderPullTask implements IPollableService {
     private final OShopService shopService;
     private final OShopPlatformService platformService;
     private final OShopPullLogsService pullLogsService;
+    private final PddOrderApiService pddOrderApiService;
 
     @Override
     public void poll() {
@@ -60,9 +62,8 @@ public class PddOrderPullTask implements IPollableService {
                         String appkey = StringUtils.hasText(shop.getAppKey())?shop.getAppKey():commonAppKey;
                         String appsecret = StringUtils.hasText(shop.getAppSecret())?shop.getAppSecret():commonAppSecret;
                         //拉取新订单
-//                        orderApiService.pullOrder("定时任务拉取订单", shop.getId(), appkey, appsecret, shop.getAccessToken(),null);
-                        // 增量更新订单
-//                        orderApiService.pullOrderIncrement("定时任务增量拉取订单", shop.getId().longValue(), appkey, appsecret, shop.getAccessToken());
+                        pddOrderApiService.pullOrder( shop.getId(), appkey, appsecret, shop.getAccessToken());
+
                     } else {
                         log.error("========未开启自动任务，手动获取token之后自动开启==========");
                     }

@@ -19,6 +19,7 @@ import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.pdd.PddOrderApiHelper;
 import cn.qihangerp.open.pdd.model.OrderListResultVo;
+import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 淘系订单更新
@@ -47,6 +50,10 @@ public class PddOrderApiController {
     private final MqUtils mqUtils;
     private final OShopPullLogsService pullLogsService;
     private final OShopPullLasttimeService pullLasttimeService;
+    private final String DATE_PATTERN =
+            "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
+    private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
+
     /**
      * 增量更新订单
      * @param req
@@ -56,10 +63,39 @@ public class PddOrderApiController {
     @PostMapping("/pull_order")
     @ResponseBody
     public AjaxResult pullIncrementOrder(@RequestBody PddPullRequest req) throws Exception {
-        log.info("/**************增量拉取pdd订单****************/");
+        log.info("===============主动拉取pdd订单：{}", JSONObject.toJSONString(req));
         if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
+        String orderDate = null;
+        if(StringUtils.hasText(req.getStartTime())) {
+            // 判断时间格式
+            Matcher matcher = DATE_FORMAT.matcher(req.getStartTime());
+            boolean b = matcher.find();
+            if (!b) {
+                return AjaxResult.error("开始时间格式错误");
+            }
+            if (org.springframework.util.StringUtils.hasText(req.getEndTime())) {
+                Matcher matcher1 = DATE_FORMAT.matcher(req.getEndTime());
+                boolean b1 = matcher1.find();
+                if (!b1) {
+                    return AjaxResult.error("结束时间格式错误");
+                }
+            }
+            // 判断开始时间，结束时间 是不是一天
+            if(!req.getStartTime().equals(req.getEndTime())){
+                return AjaxResult.error("开始时间-结束时间不能超过1天");
+            }
+            orderDate = req.getStartTime();
+        }else{
+            return AjaxResult.error("请选择订单时间");
+        }
+
+        // 将时间字符串转换为 LocalDateTime
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startTime = LocalDateTime.parse(orderDate + " 00:00:01", formatter);
+        LocalDateTime endTime = LocalDateTime.parse(orderDate + " 23:59:59", formatter);
+
         Date currDateTime = new Date();
         long beginTime = System.currentTimeMillis();
 
@@ -71,51 +107,20 @@ public class PddOrderApiController {
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 
-
-        // 取当前时间30分钟前
-//        LocalDateTime endTime = LocalDateTime.now();
-//        LocalDateTime startTime = endTime.minus(60*24, ChronoUnit.MINUTES);
-        // 获取最后更新时间
-        LocalDateTime startTime = null;
-        LocalDateTime  endTime = null;
-        OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(req.getShopId(), "ORDER");
-        if(lasttime == null){
-            endTime = LocalDateTime.now();
-            startTime = endTime.minusDays(1);
-        }else {
-            startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
-            Duration duration = Duration.between(startTime, LocalDateTime.now());
-            long hours = duration.toHours();
-            if (hours > 24) {
-                // 大于24小时，只取24小时
-                endTime = startTime.plusHours(24);
-            } else {
-                endTime = LocalDateTime.now();
-            }
-//            endTime = startTime.plusDays(1);//取24小时
-//            if(endTime.isAfter(LocalDateTime.now())){
-//                endTime = LocalDateTime.now();
-//            }
-        }
         String pullParams = "{startTime:"+startTime+",endTime:"+endTime+"}";
         String startTimeStr = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String endTimeStr = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Long startTimestamp = startTime.toEpochSecond(ZoneOffset.ofHours(8));
         Long endTimestamp = endTime.toEpochSecond(ZoneOffset.ofHours(8));
 
-        log.info("开始循环更新拼多多订单。开始时间：" + startTimeStr + "结束时间：" + endTimeStr);
+        log.info("===============拉取pdd订单：startTime：" + startTimeStr + "endTime：" + endTimeStr);
 
         //获取
-        ApiResultVo<OrderListResultVo> upResult = PddOrderApiHelper.pullOrderList(appKey, appSecret, accessToken, startTimestamp.intValue(), endTimestamp.intValue(), 1, 20);
-        if (upResult.getCode() != 0) return AjaxResult.error(upResult.getCode(), upResult.getMsg());
-
-//        ApiResultVo<PddOrderResponse> upResult = OrderApiHelper.pullOrderList(appKey, appSecret, accessToken,startTime, endTime);
-
-
+        ApiResultVo<OrderListResultVo> upResult = PddOrderApiHelper.pullOrderList(appKey, appSecret, accessToken, startTimestamp.intValue(), endTimestamp.intValue(), 1, 100);
         if(upResult.getCode() !=0 ){
             OShopPullLogs logs = new OShopPullLogs();
             logs.setShopId(req.getShopId());
-            logs.setShopType(EnumShopType.DOU.getIndex());
+            logs.setShopType(EnumShopType.PDD.getIndex());
             logs.setPullType("ORDER");
             logs.setPullWay("主动拉取订单");
             logs.setPullParams(pullParams);
@@ -127,8 +132,7 @@ public class PddOrderApiController {
         }
 
 
-
-        log.info("/**************主动更新pdd订单：获取结果：总记录数" + upResult.getTotalRecords() + "****************/");
+        log.info("===============拉取pdd订单：total=" + upResult.getTotalRecords() );
         int insertSuccess = 0;//新增成功的订单
         int totalError = 0;
         int hasExistOrder = 0;//已存在的订单数
@@ -148,38 +152,19 @@ public class PddOrderApiController {
             var result = orderService.saveOrder(req.getShopId(), pddOrder);
             if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
                 //已经存在
-                log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "存在、更新************开始通知****/");
+                log.info("===============拉取pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "存在、更新");
                 mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD, MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
                 hasExistOrder++;
             } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-                log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "不存在、新增************开始通知****/");
+                log.info("===============拉取pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "不存在、新增");
                 mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD,MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
                 insertSuccess++;
             } else {
-                log.info("/**************主动更新pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "报错****************/");
+                log.info("===============拉取pdd订单：开始更新数据库：" + pddOrder.getOrderSn() + "报错：{}",result.getMsg());
                 totalError++;
             }
         }
-        if(totalError == 0) {
-            if (lasttime == null) {
-                // 新增
-                OShopPullLasttime insertLasttime = new OShopPullLasttime();
-                insertLasttime.setShopId(req.getShopId());
-                insertLasttime.setCreateTime(new Date());
-                insertLasttime.setLasttime(endTime);
-                insertLasttime.setPullType("ORDER");
-                pullLasttimeService.save(insertLasttime);
 
-            } else {
-                // 修改
-                OShopPullLasttime updateLasttime = new OShopPullLasttime();
-                updateLasttime.setId(lasttime.getId());
-                updateLasttime.setUpdateTime(new Date());
-                updateLasttime.setLasttime(endTime);
-                pullLasttimeService.updateById(updateLasttime);
-            }
-        }
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         OShopPullLogs logs = new OShopPullLogs();
         logs.setShopType(EnumShopType.PDD.getIndex());
         logs.setShopId(req.getShopId());
@@ -191,7 +176,7 @@ public class PddOrderApiController {
         logs.setDuration(System.currentTimeMillis() - beginTime);
         pullLogsService.save(logs);
 
-        String msg = "成功{startTime:"+startTime.format(df)+",endTime:"+endTime.format(df)+"}总共找到：" + upResult.getTotalRecords() + "条订单，新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
+        String msg = "成功{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}总共找到：" + upResult.getTotalRecords() + "条订单，新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
         log.info("/**************主动更新pdd订单：END：" + msg + "****************/");
         return AjaxResult.success(msg);
     }
