@@ -56,12 +56,13 @@ public class ApiMessageServiceImpl implements ApiMessageService {
                 log.info("订单消息PDD");
                 JSONObject jsonObject = openApiService.getPddOrderDetail(mqMessage.getKeyId());
                 if (jsonObject.getInteger("code") != 200 || jsonObject.getJSONObject("data") == null) {
-                    log.info("=====pdd order message===没有找到订单");
+                    log.info("=====pdd order message===没有找到订单:{}",jsonObject.getString("msg"));
                     return ResultVo.error(404, "没有找到订单");
                 }
 
                 JSONObject orderDetail = jsonObject.getJSONObject("data");
-                orderService.pddOrderMessage(mqMessage.getKeyId(), orderDetail);
+                ResultVo<Long> longResultVo = orderService.pddOrderMessage(mqMessage.getKeyId(), orderDetail);
+                log.info("===========pdd order message result={}",JSONObject.toJSONString(longResultVo));
             } else if (mqMessage.getShopType().getIndex() == EnumShopType.DOU.getIndex()) {
                 log.info("订单消息DOU");
                 JSONObject jsonObject = openApiService.getDouOrderDetail(mqMessage.getKeyId());

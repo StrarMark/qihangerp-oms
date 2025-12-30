@@ -13,6 +13,7 @@ import cn.qihangerp.model.vo.OrderDiscountVo;
 import cn.qihangerp.module.order.domain.vo.SalesDailyVo;
 import cn.qihangerp.module.order.mapper.*;
 import cn.qihangerp.module.order.service.OOrderService;
+import cn.qihangerp.module.order.service.msg.PddOrderMessageService;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -58,7 +59,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
     private final OfflineOrderMapper offlineOrderMapper;
     private final OfflineOrderItemMapper offlineOrderItemMapper;
-
+    private final PddOrderMessageService pddOrderMessageService;
 
 
     private final String DATE_PATTERN =
@@ -85,9 +86,9 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
     @Transactional
     @Override
-    public ResultVo<Integer> pddOrderMessage(String orderSn,JSONObject orderDetail ) {
-        log.info("=====pdd order message===订单号{}===" + orderSn);
-        return ResultVo.success();
+    public ResultVo<Long> pddOrderMessage(String orderSn,JSONObject orderDetail ) {
+        log.info("=====pdd order message===订单号{}===", orderSn);
+        return pddOrderMessageService.pddOrderMessage(orderSn, orderDetail);
     }
 
     @Transactional

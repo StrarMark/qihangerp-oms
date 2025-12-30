@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -133,7 +134,7 @@ public class OOrder implements Serializable {
     /**
      * 订单时间
      */
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     /**
      * 发货方 0 自己发货1联合发货2供应商发货

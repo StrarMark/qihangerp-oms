@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -148,7 +149,7 @@ public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, Off
         order.setCity(bo.getCity());
         order.setTown(bo.getTown());
         order.setAddress(bo.getAddress());
-        order.setOrderTime(new Date());
+        order.setOrderTime(LocalDateTime.now());
         order.setCreateTime(new Date());
         order.setShipType(0);
         order.setCreateBy(createBy);
