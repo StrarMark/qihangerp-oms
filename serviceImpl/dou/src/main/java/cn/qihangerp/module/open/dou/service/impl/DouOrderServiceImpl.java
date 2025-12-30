@@ -21,6 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -227,7 +231,9 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        order.setOrderTime(douOrder.getCreateTime()!=null?new Date(douOrder.getCreateTime()*1000):new Date());
+        LocalDateTime orderTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getCreateTime()), ZoneId.systemDefault());
+        order.setOrderTime(douOrder.getCreateTime()!=null?orderTime:LocalDateTime.now());
+//        order.setOrderTime(douOrder.getCreateTime()!=null?new Date(douOrder.getCreateTime()*1000):new Date());
         order.setShipper(0L);
         order.setShipStatus(0);
         order.setCreateTime(new Date());

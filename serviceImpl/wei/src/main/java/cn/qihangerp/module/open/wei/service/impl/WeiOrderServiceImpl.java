@@ -28,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -161,22 +164,22 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Long> confirmOrder(WeiOrderConfirmBo confirmBo) {
-        WeiOrder pddOrder = mapper.selectById(confirmBo.getOrderId());
-        if(pddOrder==null) return ResultVo.error("订单数据不存在");
-        if(pddOrder.getAuditStatus()!=0) return ResultVo.error("已经确认过了！");
+        WeiOrder weiOrder = mapper.selectById(confirmBo.getOrderId());
+        if(weiOrder==null) return ResultVo.error("订单数据不存在");
+        if(weiOrder.getAuditStatus()!=0) return ResultVo.error("已经确认过了！");
 
         List<WeiOrderItem> pddOrderItems = itemMapper.selectList(
                 new LambdaQueryWrapper<WeiOrderItem>()
-                        .eq(WeiOrderItem::getOrderId, pddOrder.getOrderId()));
+                        .eq(WeiOrderItem::getOrderId, weiOrder.getOrderId()));
         if(pddOrderItems==null || pddOrderItems.isEmpty()){
             return ResultVo.error("找不到订单item");
         }
 
-        OOrder erpOrder = erpOrderMapper.selectOne(new LambdaQueryWrapper<OOrder>().eq(OOrder::getOrderNum,pddOrder.getOrderId()));
+        OOrder erpOrder = erpOrderMapper.selectOne(new LambdaQueryWrapper<OOrder>().eq(OOrder::getOrderNum,weiOrder.getOrderId()));
         if(erpOrder!=null) {
             // 已经确认过了，更新自己
             WeiOrder douOrderUpdate = new WeiOrder();
-            douOrderUpdate.setId(pddOrder.getId());
+            douOrderUpdate.setId(weiOrder.getId());
             douOrderUpdate.setAuditStatus(1);
             douOrderUpdate.setAuditTime(new Date());
             mapper.updateById(douOrderUpdate);
@@ -184,20 +187,20 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
             return ResultVo.error("已经确认过了");
         }
         OOrder order = new OOrder();
-        order.setOrderNum(pddOrder.getOrderId());
+        order.setOrderNum(weiOrder.getOrderId());
         order.setShopType(EnumShopType.WEI.getIndex());
-        order.setShopId(pddOrder.getShopId());
+        order.setShopId(weiOrder.getShopId());
 //        order.setShipType(confirmBo.getShipType());
         order.setShipType(0);
         order.setBuyerMemo("");
         order.setSellerMemo("");
         order.setRefundStatus(1);
         order.setOrderStatus(1);
-        order.setGoodsAmount(pddOrder.getProductPrice()!=null?pddOrder.getProductPrice().doubleValue()/100:0.0);
-        order.setPostFee(pddOrder.getFreight()!=null?pddOrder.getFreight().doubleValue()/100:0.0);
-        order.setSellerDiscount(pddOrder.getDiscountedPrice()!=null?pddOrder.getDiscountedPrice().doubleValue()/100:0.0);
+        order.setGoodsAmount(weiOrder.getProductPrice()!=null?weiOrder.getProductPrice().doubleValue()/100:0.0);
+        order.setPostFee(weiOrder.getFreight()!=null?weiOrder.getFreight().doubleValue()/100:0.0);
+        order.setSellerDiscount(weiOrder.getDiscountedPrice()!=null?weiOrder.getDiscountedPrice().doubleValue()/100:0.0);
         order.setPlatformDiscount(0.0);
-        order.setAmount(pddOrder.getOrderPrice()!=null?pddOrder.getOrderPrice().doubleValue()/100:0.0);
+        order.setAmount(weiOrder.getOrderPrice()!=null?weiOrder.getOrderPrice().doubleValue()/100:0.0);
         order.setPayment(order.getAmount());
         order.setReceiverName(confirmBo.getReceiver());
         order.setReceiverMobile(confirmBo.getMobile());
@@ -205,7 +208,9 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        order.setOrderTime(pddOrder.getCreateTime()!=null?new Date(pddOrder.getCreateTime()*1000):new Date());
+
+        LocalDateTime orderTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(weiOrder.getCreateTime()), ZoneId.systemDefault());
+        order.setOrderTime(weiOrder.getCreateTime()!=null?orderTime:LocalDateTime.now());
         order.setShipper(0l);
         order.setShipStatus(0);
         order.setCreateTime(new Date());
@@ -218,7 +223,7 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
             oOrderItem.setOrderNum(order.getOrderNum());
             oOrderItem.setSubOrderNum(order.getOrderNum()+"-"+item.getSkuId());
             oOrderItem.setShopType(EnumShopType.WEI.getIndex());
-            oOrderItem.setShopId(pddOrder.getShopId());
+            oOrderItem.setShopId(weiOrder.getShopId());
             oOrderItem.setSkuId(item.getSkuId());
             oOrderItem.setGoodsId(item.getOGoodsId()!=null?item.getOGoodsId():0L);
             oOrderItem.setGoodsSkuId(item.getOGoodsSkuId()!=null?item.getOGoodsSkuId():0L);
@@ -244,7 +249,7 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
         }
         // 更新自己
         WeiOrder douOrderUpdate = new WeiOrder();
-        douOrderUpdate.setId(pddOrder.getId());
+        douOrderUpdate.setId(weiOrder.getId());
         douOrderUpdate.setAuditStatus(1);
         douOrderUpdate.setAuditTime(new Date());
         mapper.updateById(douOrderUpdate);

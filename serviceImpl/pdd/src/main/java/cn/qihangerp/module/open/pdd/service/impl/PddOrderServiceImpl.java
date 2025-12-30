@@ -32,6 +32,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -277,7 +281,12 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        order.setOrderTime(StringUtils.hasText(pddOrder.getCreatedTime())?DateUtils.dateTime("yyyy-MM-dd HH:mm:ss",pddOrder.getCreatedTime()):new Date());
+        // 定义日期时间格式
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // 将字符串转换为LocalDateTime
+        LocalDateTime orderTime = LocalDateTime.parse(pddOrder.getCreatedTime(), formatter);
+
+        order.setOrderTime(StringUtils.hasText(pddOrder.getCreatedTime())?orderTime:LocalDateTime.now());
         order.setShipper(0L);
         order.setShipStatus(0);
         order.setCreateTime(new Date());

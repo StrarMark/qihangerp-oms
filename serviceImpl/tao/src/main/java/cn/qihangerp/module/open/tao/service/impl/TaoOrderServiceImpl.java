@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -236,22 +238,22 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ResultVo<Long> confirmOrder(TaoOrderConfirmBo confirmBo) {
-        TaoOrder pddOrder = mapper.selectById(confirmBo.getOrderId());
-        if(pddOrder==null) return ResultVo.error("订单数据不存在");
-        if(pddOrder.getAuditStatus()!=0) return ResultVo.error("已经确认过了！");
+        TaoOrder taoOrder = mapper.selectById(confirmBo.getOrderId());
+        if(taoOrder==null) return ResultVo.error("订单数据不存在");
+        if(taoOrder.getAuditStatus()!=0) return ResultVo.error("已经确认过了！");
 
         List<TaoOrderItem> pddOrderItems = itemMapper.selectList(
                 new LambdaQueryWrapper<TaoOrderItem>()
-                        .eq(TaoOrderItem::getTid, pddOrder.getTid()));
+                        .eq(TaoOrderItem::getTid, taoOrder.getTid()));
         if(pddOrderItems==null || pddOrderItems.isEmpty()){
             return ResultVo.error("找不到订单item");
         }
 
-        OOrder erpOrder = erpOrderMapper.selectOne(new LambdaQueryWrapper<OOrder>().eq(OOrder::getOrderNum,pddOrder.getTid()));
+        OOrder erpOrder = erpOrderMapper.selectOne(new LambdaQueryWrapper<OOrder>().eq(OOrder::getOrderNum,taoOrder.getTid()));
         if(erpOrder!=null) {
             // 已经确认过了，更新自己
             TaoOrder douOrderUpdate = new TaoOrder();
-            douOrderUpdate.setId(pddOrder.getId());
+            douOrderUpdate.setId(taoOrder.getId());
             douOrderUpdate.setAuditStatus(1);
             douOrderUpdate.setAuditTime(new Date());
             mapper.updateById(douOrderUpdate);
@@ -259,28 +261,33 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
             return ResultVo.error("已经确认过了");
         }
         OOrder order = new OOrder();
-        order.setOrderNum(pddOrder.getTid());
+        order.setOrderNum(taoOrder.getTid());
         order.setShopType(EnumShopType.TAO.getIndex());
-        order.setShopId(pddOrder.getShopId());
+        order.setShopId(taoOrder.getShopId());
 //        order.setShipType(confirmBo.getShipType());
         order.setShipType(0);
-        order.setBuyerMemo(pddOrder.getBuyerMemo());
-        order.setSellerMemo(pddOrder.getSellerMemo());
+        order.setBuyerMemo(taoOrder.getBuyerMemo());
+        order.setSellerMemo(taoOrder.getSellerMemo());
         order.setRefundStatus(1);
         order.setOrderStatus(1);
-        order.setGoodsAmount(pddOrder.getTotalFee()!=null?pddOrder.getTotalFee():0.0);
-        order.setPostFee(pddOrder.getPostFee()!=null?pddOrder.getPostFee().doubleValue():0.0);
-        order.setSellerDiscount(pddOrder.getDiscountFee()!=null?pddOrder.getDiscountFee().doubleValue():0.0);
+        order.setGoodsAmount(taoOrder.getTotalFee()!=null?taoOrder.getTotalFee():0.0);
+        order.setPostFee(taoOrder.getPostFee()!=null?taoOrder.getPostFee().doubleValue():0.0);
+        order.setSellerDiscount(taoOrder.getDiscountFee()!=null?taoOrder.getDiscountFee().doubleValue():0.0);
         order.setPlatformDiscount(0.0);
-        order.setAmount(pddOrder.getTotalFee()!=null?pddOrder.getTotalFee().doubleValue():0.0);
-        order.setPayment(pddOrder.getPayment()!=null?pddOrder.getPayment().doubleValue():0.0);
+        order.setAmount(taoOrder.getTotalFee()!=null?taoOrder.getTotalFee().doubleValue():0.0);
+        order.setPayment(taoOrder.getPayment()!=null?taoOrder.getPayment().doubleValue():0.0);
         order.setReceiverName(confirmBo.getReceiver());
         order.setReceiverMobile(confirmBo.getMobile());
         order.setAddress(confirmBo.getAddress());
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        order.setOrderTime(StringUtils.hasText(pddOrder.getCreated())? DateUtils.dateTime("yyyy-MM-dd HH:mm:ss",pddOrder.getCreated()):new Date());
+        // 定义日期时间格式
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // 将字符串转换为LocalDateTime
+        LocalDateTime orderTime = LocalDateTime.parse(taoOrder.getCreated(), formatter);
+
+        order.setOrderTime(StringUtils.hasText(taoOrder.getCreated())?orderTime:LocalDateTime.now());
         order.setShipper(0l);
         order.setShipStatus(0);
         order.setCreateTime(new Date());
@@ -293,7 +300,7 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
             oOrderItem.setOrderNum(order.getOrderNum());
             oOrderItem.setSubOrderNum(item.getOid().toString());
             oOrderItem.setShopType(EnumShopType.TAO.getIndex());
-            oOrderItem.setShopId(pddOrder.getShopId());
+            oOrderItem.setShopId(taoOrder.getShopId());
             oOrderItem.setSkuId(item.getSkuId().toString());
             oOrderItem.setGoodsId(StringUtils.hasText(item.getoGoodsId())?Long.parseLong(item.getoGoodsId()):0L);
             oOrderItem.setGoodsSkuId(StringUtils.hasText(item.getoGoodsSkuId())?Long.parseLong(item.getoGoodsSkuId()):0L);
@@ -319,7 +326,7 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
         }
         // 更新自己
         TaoOrder douOrderUpdate = new TaoOrder();
-        douOrderUpdate.setId(pddOrder.getId());
+        douOrderUpdate.setId(taoOrder.getId());
         douOrderUpdate.setAuditStatus(1);
         douOrderUpdate.setAuditTime(new Date());
         mapper.updateById(douOrderUpdate);
