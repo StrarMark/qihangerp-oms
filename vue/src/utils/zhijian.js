@@ -1,9 +1,8 @@
-
-
 /**
  * 通用js方法封装处理
  * Copyright (c) 2023 zhijian
  */
+import { float } from 'quill/ui/icons'
 
 // 日期格式化
 export function parseTime(time, pattern) {
@@ -235,6 +234,6 @@ export function blobValidate(data) {
 
 // 金额格式化
 export function amountFormatter(row, column, cellValue, index) {
-  return '￥' + cellValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  return '￥' + parseFloat(cellValue).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
