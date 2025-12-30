@@ -24,12 +24,12 @@ public class DouGoodsSku implements Serializable {
     /**
      * 商品ID；抖店系统生成。
      */
-    private Long productId;
+    private String productId;
 
     /**
      * 规格ID
      */
-    private Long specId;
+    private String specId;
 
     /**
      * sku外部编码

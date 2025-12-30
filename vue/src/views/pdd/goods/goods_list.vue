@@ -186,6 +186,7 @@ import {listGoods,pullGoodsList,getGoodsSku,linkErpGoodsSkuId,pushToOms} from "@
 
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
+import { amountFormatter } from '@/utils/zhijian'
 
 
 export default {
@@ -248,6 +249,7 @@ export default {
     this.loading = false;
   },
   methods: {
+    amountFormatter,
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)

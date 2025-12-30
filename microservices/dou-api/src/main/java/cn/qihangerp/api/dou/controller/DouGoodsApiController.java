@@ -95,7 +95,7 @@ public class DouGoodsApiController {
         for (var goods: resultVo.getData().getGoodsList()){
             DouGoods douGoods = new DouGoods();
             BeanUtils.copyProperties(goods,douGoods);
-
+            douGoods.setProductId(goods.getProductId().toString());
             // TODO:转换goods
             douGoods.setShopId(params.getShopId());
             douGoods.setPullTime(new Date());

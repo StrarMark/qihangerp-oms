@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="108px">
-      <el-form-item label="平台SkuId" prop="skuId">
+      <el-form-item label="平台SkuId" prop="id">
         <el-input
-          v-model="queryParams.skuId"
+          v-model="queryParams.id"
           placeholder="请输入平台SkuId"
           clearable
           @keyup.enter.native="handleQuery"
@@ -66,9 +66,9 @@
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-<!--      <el-table-column label="ID" align="center" prop="id" />-->
+      <el-table-column label="SkuId" align="center" prop="id" />
       <el-table-column label="商品ID" align="center" prop="productId" />
-      <el-table-column label="规格Id" align="center" prop="specId" />
+<!--      <el-table-column label="规格Id" align="center" prop="specId" />-->
       <el-table-column label="商品名称" align="center" prop="name" />
       <el-table-column label="图片" align="center" prop="logo" width="100">
         <template slot-scope="scope">

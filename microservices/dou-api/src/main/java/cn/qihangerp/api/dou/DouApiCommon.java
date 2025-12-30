@@ -84,11 +84,14 @@ public class DouApiCommon {
             }
         }else{
             if(StringUtils.hasText(shop.getRefreshToken())) {
-                ApiResultVo<Token> token1 = DouTokenApiHelper.refreshToken(appKey, appSecret, accessToken, shop.getRefreshToken());
+                ApiResultVo<Token> token1 = DouTokenApiHelper.getToken(appKey, appSecret, shop.getSellerId());
+//                ApiResultVo<Token> token1 = DouTokenApiHelper.refreshToken(appKey, appSecret, accessToken, shop.getRefreshToken());
                 if (token1.getCode() == 0) {
                     shopService.updateSessionKey(shopId, token1.getData().getAccessToken(), token1.getData().getRefreshToken());
                     params.setAccessToken(token1.getData().getAccessToken());
                     accessToken = token1.getData().getAccessToken();
+                }else{
+                    return ResultVo.error(ResultVoEnum.API_FAIL.getIndex(), token1.getMsg(), params);
                 }
             }
         }

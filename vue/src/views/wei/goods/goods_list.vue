@@ -168,6 +168,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {listShop} from "@/api/shop/shop";
 import {pullGoodsList,listGoods,getGoodsSku,linkErpGoodsSkuId} from "@/api/wei/goods";
 import {MessageBox} from "element-ui";
+import { amountFormatter } from '@/utils/zhijian'
 
 export default {
   name: "GoodsListWei",
@@ -228,6 +229,7 @@ export default {
     this.loading = false;
   },
   methods: {
+    amountFormatter,
     /** 查看SKU List*/
     handleViewSkuList(row){
       this.skuList = row.skuList
@@ -265,6 +267,12 @@ export default {
     resetQuery() {
       this.resetForm("queryForm");
       this.handleQuery();
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
     },
     handleLink(row) {
       this.reset();
