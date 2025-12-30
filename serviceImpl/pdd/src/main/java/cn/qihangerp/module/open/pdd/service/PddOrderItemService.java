@@ -1,7 +1,7 @@
 package cn.qihangerp.module.open.pdd.service;
 
 
-import cn.qihangerp.module.open.pdd.domain.PddOrderItem;
+import cn.qihangerp.model.entity.PddOrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

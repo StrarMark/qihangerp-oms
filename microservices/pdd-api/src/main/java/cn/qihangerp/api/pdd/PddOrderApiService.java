@@ -1,7 +1,5 @@
 package cn.qihangerp.api.pdd;
 
-import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.PullOrderResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.mq.MqMessage;
@@ -9,8 +7,8 @@ import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
-import cn.qihangerp.module.open.pdd.domain.PddOrder;
-import cn.qihangerp.module.open.pdd.domain.PddOrderItem;
+import cn.qihangerp.model.entity.PddOrder;
+import cn.qihangerp.model.entity.PddOrderItem;
 import cn.qihangerp.module.open.pdd.service.PddOrderService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;

@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.pdd.service.impl;
 
-import cn.qihangerp.module.open.pdd.domain.PddOrderItem;
+import cn.qihangerp.model.entity.PddOrderItem;
 import cn.qihangerp.module.open.pdd.mapper.PddOrderItemMapper;
 import cn.qihangerp.module.open.pdd.service.PddOrderItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -1,6 +1,6 @@
-package cn.qihangerp.module.open.pdd.domain.vo;
+package cn.qihangerp.model.vo;
 
-import cn.qihangerp.module.open.pdd.domain.PddGoodsSku;
+import cn.qihangerp.model.entity.PddGoodsSku;
 import lombok.Data;
 
 @Data

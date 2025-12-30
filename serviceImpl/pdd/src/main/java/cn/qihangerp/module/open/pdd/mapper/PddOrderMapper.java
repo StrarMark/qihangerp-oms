@@ -1,7 +1,7 @@
 package cn.qihangerp.module.open.pdd.mapper;
 
 
-import cn.qihangerp.module.open.pdd.domain.PddOrder;
+import cn.qihangerp.model.entity.PddOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

@@ -3,8 +3,8 @@ package cn.qihangerp.module.open.pdd.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.module.open.pdd.domain.PddRefund;
-import cn.qihangerp.module.open.pdd.domain.bo.PddRefundBo;
+import cn.qihangerp.model.entity.PddRefund;
+import cn.qihangerp.model.bo.PddRefundBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

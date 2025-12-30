@@ -3,9 +3,9 @@ package cn.qihangerp.module.open.pdd.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.module.open.pdd.domain.PddOrder;
-import cn.qihangerp.module.open.pdd.domain.bo.PddOrderBo;
-import cn.qihangerp.module.open.pdd.domain.bo.PddOrderConfirmBo;
+import cn.qihangerp.model.entity.PddOrder;
+import cn.qihangerp.model.bo.PddOrderBo;
+import cn.qihangerp.model.bo.PddOrderConfirmBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 
