@@ -97,7 +97,6 @@ public class PddOrderApiService {
             return;
         }
 
-        log.info("==========自动任务拉取PDD订单,总记录数" + upResult.getTotalRecords());
         int insertSuccess = 0;//新增成功的订单
         int totalError = 0;
         int hasExistOrder = 0;//已存在的订单数
@@ -117,15 +116,15 @@ public class PddOrderApiService {
             var result = orderService.saveOrder(shopId, pddOrder);
             if (result.getCode() == ResultVoEnum.DataExist.getIndex()) {
                 //已经存在
-                log.info("==========自动任务拉取PDD订单,：开始更新数据库：" + pddOrder.getOrderSn() + "存在、更新************开始通知****/");
+                log.info("==========自动任务拉取PDD订单,：开始更新数据库：" + pddOrder.getOrderSn() + "存在、更新============开始通知");
                 mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD, MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
                 hasExistOrder++;
             } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
-                log.info("==========自动任务拉取PDD订单,：开始更新数据库：" + pddOrder.getOrderSn() + "不存在、新增************开始通知****/");
+                log.info("==========自动任务拉取PDD订单,：开始更新数据库：" + pddOrder.getOrderSn() + "不存在、新增=============开始通知");
                 mqUtils.sendApiMessage(MqMessage.build(EnumShopType.PDD,MqType.ORDER_MESSAGE,pddOrder.getOrderSn()));
                 insertSuccess++;
             } else {
-                log.info("==========自动任务拉取PDD订单,：开始更新数据库：" + pddOrder.getOrderSn() + "报错****************/");
+                log.info("==========自动任务拉取PDD订单,：开始更新数据库：" + pddOrder.getOrderSn() + "报错:{}",result.getMsg());
                 totalError++;
             }
         }
@@ -159,7 +158,7 @@ public class PddOrderApiService {
         logs.setDuration(System.currentTimeMillis() - beginTime);
         pullLogsService.save(logs);
 
-        String msg = "成功{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}总共找到：" + upResult.getTotalRecords() + "条订单，新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
+        String msg = "成功{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}，新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
         log.info("==========自动任务拉取PDD订单,END：" + msg);
     }
 }

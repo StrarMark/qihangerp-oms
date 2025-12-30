@@ -1,6 +1,9 @@
 package cn.qihangerp.module.erp.service;
 
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.PageResult;
 import cn.qihangerp.model.entity.ErpPurchaseOrderShip;
+import cn.qihangerp.model.query.PurchaseOrderSearchBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,5 +12,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-09-09 10:40:41
 */
 public interface ErpPurchaseOrderShipService extends IService<ErpPurchaseOrderShip> {
+    PageResult<ErpPurchaseOrderShip> queryPageList(PurchaseOrderSearchBo bo, PageQuery pageQuery);
+
+    int updateScmPurchaseOrderShip(ErpPurchaseOrderShip erpPurchaseOrderShip);
 
 }

@@ -4,7 +4,9 @@ import cn.qihangerp.module.service.ApiMessageService;
 import com.alibaba.fastjson2.JSON;
 import cn.qihangerp.common.mq.MqMessage;
 import cn.qihangerp.common.utils.SpringUtils;
+import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.Message;
@@ -12,11 +14,10 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @AllArgsConstructor
 @Component
 public class ApiMessageReceiver implements MessageListener {
-    private static final Logger logger = LoggerFactory.getLogger(ApiMessageReceiver.class);
-
     private final RedisTemplate redisTemplate;
 
 //    private final OOrderService orderService;
@@ -36,7 +37,7 @@ public class ApiMessageReceiver implements MessageListener {
         String messageContent = new String(message.getBody());
         MqMessage vo = JSON.parseObject(messageContent, MqMessage.class);
 
-        logger.info("收到通知消息：",vo);
+        log.info("收到通知消息：{}", JSONObject.toJSONString(vo));
         cn.qihangerp.module.service.ApiMessageService apiMessageService = SpringUtils.getBean(ApiMessageService.class);
         apiMessageService.messageHandle(vo);
 //        System.out.println(vo.getMqType());

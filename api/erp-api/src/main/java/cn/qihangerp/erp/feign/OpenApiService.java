@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "open-api")
+@FeignClient(name = "oms-api")
 public interface OpenApiService {
     @GetMapping(value = "/dou/order/get_detail")
     JSONObject getDouOrderDetail(@RequestParam String orderId);
