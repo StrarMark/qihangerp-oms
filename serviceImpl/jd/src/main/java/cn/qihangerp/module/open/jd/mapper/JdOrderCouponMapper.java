@@ -1,7 +1,7 @@
 package cn.qihangerp.module.open.jd.mapper;
 
 
-import cn.qihangerp.module.open.jd.domain.JdOrderCoupon;
+import cn.qihangerp.model.entity.JdOrderCoupon;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

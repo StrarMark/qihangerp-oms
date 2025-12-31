@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.wei.service;
 
-import cn.qihangerp.module.open.wei.domain.WeiOrderItem;
+import cn.qihangerp.model.entity.WeiOrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

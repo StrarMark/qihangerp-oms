@@ -1,8 +1,8 @@
 package cn.qihangerp.module.open.jd.service.impl;
 
-import cn.qihangerp.module.open.jd.domain.JdGoodsSku;
-import cn.qihangerp.module.open.jd.domain.JdOrder;
-import cn.qihangerp.module.open.jd.domain.JdOrderCoupon;
+import cn.qihangerp.model.entity.JdGoodsSku;
+import cn.qihangerp.model.entity.JdOrder;
+import cn.qihangerp.model.entity.JdOrderCoupon;
 import cn.qihangerp.module.open.jd.mapper.JdGoodsSkuMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,8 +11,8 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.module.open.jd.domain.JdOrderItem;
-import cn.qihangerp.module.open.jd.domain.bo.JdOrderBo;
+import cn.qihangerp.model.entity.JdOrderItem;
+import cn.qihangerp.model.bo.JdOrderBo;
 import cn.qihangerp.module.open.jd.mapper.JdOrderCouponMapper;
 import cn.qihangerp.module.open.jd.mapper.JdOrderItemMapper;
 import cn.qihangerp.module.open.jd.service.JdOrderService;

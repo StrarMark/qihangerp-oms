@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.wei.mapper;
 
-import cn.qihangerp.module.open.wei.domain.WeiWaybillAccount;
+import cn.qihangerp.model.entity.WeiWaybillAccount;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

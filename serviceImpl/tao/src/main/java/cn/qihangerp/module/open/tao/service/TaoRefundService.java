@@ -2,8 +2,8 @@ package cn.qihangerp.module.open.tao.service;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
-import cn.qihangerp.module.open.tao.domain.TaoRefund;
-import cn.qihangerp.module.open.tao.domain.bo.TaoRefundBo;
+import cn.qihangerp.model.entity.TaoRefund;
+import cn.qihangerp.model.bo.TaoRefundBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

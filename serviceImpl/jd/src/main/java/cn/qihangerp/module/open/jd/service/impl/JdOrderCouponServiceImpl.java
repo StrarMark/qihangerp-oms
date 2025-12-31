@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.jd.service.impl;
 
-import cn.qihangerp.module.open.jd.domain.JdOrderCoupon;
+import cn.qihangerp.model.entity.JdOrderCoupon;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.module.open.jd.service.JdOrderCouponService;
 import cn.qihangerp.module.open.jd.mapper.JdOrderCouponMapper;

@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.jd.service;
 
-import cn.qihangerp.module.open.jd.domain.JdOrderItem;
+import cn.qihangerp.model.entity.JdOrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -1,7 +1,7 @@
 package cn.qihangerp.module.open.tao.mapper;
 
 
-import cn.qihangerp.module.open.tao.domain.TaoOrder;
+import cn.qihangerp.model.entity.TaoOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

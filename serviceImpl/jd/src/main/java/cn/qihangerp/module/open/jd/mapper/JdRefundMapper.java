@@ -1,7 +1,7 @@
 package cn.qihangerp.module.open.jd.mapper;
 
 
-import cn.qihangerp.module.open.jd.domain.JdRefund;
+import cn.qihangerp.model.entity.JdRefund;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

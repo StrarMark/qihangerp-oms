@@ -1,7 +1,7 @@
 package cn.qihangerp.api.wei.controller.feign;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.wei.domain.WeiRefund;
+import cn.qihangerp.model.entity.WeiRefund;
 import cn.qihangerp.module.open.wei.service.WeiRefundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;

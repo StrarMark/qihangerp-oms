@@ -69,7 +69,7 @@
         select coupon_type as name,coupon_price as discount_amount from oms_jd_order_coupon
         where order_id = #{orderId}
     </select>
-    <select id="salesDaily" resultType="cn.qihangerp.module.order.domain.vo.SalesDailyVo">
+    <select id="salesDaily" resultType="cn.qihangerp.model.vo.SalesDailyVo">
         SELECT
             DATE(order_time) AS date,
             COUNT(*) AS count,
@@ -86,7 +86,7 @@
             LIMIT 30
     </select>
 
-    <select id="getTodaySalesDaily" resultType="cn.qihangerp.module.order.domain.vo.SalesDailyVo">
+    <select id="getTodaySalesDaily" resultType="cn.qihangerp.model.vo.SalesDailyVo">
         SELECT
 
             COUNT(*) AS count,

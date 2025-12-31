@@ -1,7 +1,7 @@
 package cn.qihangerp.api.jd.controller.feign;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.jd.domain.JdRefund;
+import cn.qihangerp.model.entity.JdRefund;
 import cn.qihangerp.module.open.jd.service.JdRefundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;

@@ -50,7 +50,7 @@
         create_by,update_time,update_by
     </sql>
 
-    <select id="selectPageVo" parameterType="cn.qihangerp.module.order.domain.bo.OrderItemListBo" resultType="cn.qihangerp.model.vo.OrderItemListVo">
+    <select id="selectPageVo" parameterType="cn.qihangerp.model.bo.OrderItemListBo" resultType="cn.qihangerp.model.vo.OrderItemListVo">
         SELECT
         oi.*,o.shop_id,o.order_time,gs.outer_erp_sku_id
         FROM o_order_item as oi
@@ -93,7 +93,7 @@
         WHERE oi.order_id = #{orderId}
 
     </select>
-    <select id="selectTopSku" resultType="cn.qihangerp.module.order.domain.vo.SalesTopSkuVo">
+    <select id="selectTopSku" resultType="cn.qihangerp.model.vo.SalesTopSkuVo">
         SELECT
             sku_num as `name`,
             SUM(quantity) AS `value`

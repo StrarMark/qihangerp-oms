@@ -3,7 +3,7 @@ package cn.qihangerp.module.order.service.impl;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.model.request.RefundSearchRequest;
-import cn.qihangerp.module.order.domain.OfflineRefund;
+import cn.qihangerp.model.entity.OfflineRefund;
 import cn.qihangerp.module.order.mapper.OfflineRefundMapper;
 import cn.qihangerp.module.order.service.OfflineRefundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

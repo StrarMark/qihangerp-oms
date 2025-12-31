@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.tao.service.impl;
 
-import cn.qihangerp.module.open.tao.domain.TaoOrderItem;
+import cn.qihangerp.model.entity.TaoOrderItem;
 import cn.qihangerp.module.open.tao.mapper.TaoOrderItemMapper;
 import cn.qihangerp.module.open.tao.service.TaoOrderItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -1,7 +1,7 @@
 package cn.qihangerp.module.open.wei.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.module.open.wei.domain.WeiWaybillAccount;
+import cn.qihangerp.model.entity.WeiWaybillAccount;
 import cn.qihangerp.module.open.wei.service.WeiWaybillAccountService;
 import cn.qihangerp.module.open.wei.mapper.WeiWaybillAccountMapper;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package cn.qihangerp.module.stock.mapper;
 
 
-import cn.qihangerp.module.stock.domain.WmsInventoryOperation;
+import cn.qihangerp.model.entity.WmsInventoryOperation;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

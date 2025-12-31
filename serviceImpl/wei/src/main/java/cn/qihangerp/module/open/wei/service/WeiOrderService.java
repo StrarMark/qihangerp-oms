@@ -3,8 +3,8 @@ package cn.qihangerp.module.open.wei.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.module.open.wei.domain.WeiOrder;
-import cn.qihangerp.module.open.wei.domain.bo.WeiOrderConfirmBo;
+import cn.qihangerp.model.entity.WeiOrder;
+import cn.qihangerp.model.bo.WeiOrderConfirmBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

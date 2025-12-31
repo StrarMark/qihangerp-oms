@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.wei.mapper;
 
-import cn.qihangerp.module.open.wei.domain.WeiOrder;
+import cn.qihangerp.model.entity.WeiOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

@@ -3,10 +3,9 @@ package cn.qihangerp.module.open.tao.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.common.bo.ShopOrderShipBo;
-import cn.qihangerp.module.open.tao.domain.TaoOrder;
-import cn.qihangerp.module.open.tao.domain.bo.TaoOrderBo;
-import cn.qihangerp.module.open.tao.domain.bo.TaoOrderConfirmBo;
+import cn.qihangerp.model.entity.TaoOrder;
+import cn.qihangerp.model.bo.TaoOrderBo;
+import cn.qihangerp.model.bo.TaoOrderConfirmBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

@@ -1,7 +1,7 @@
 package cn.qihangerp.module.open.tao.service;
 
 
-import cn.qihangerp.module.open.tao.domain.TaoOrderItem;
+import cn.qihangerp.model.entity.TaoOrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

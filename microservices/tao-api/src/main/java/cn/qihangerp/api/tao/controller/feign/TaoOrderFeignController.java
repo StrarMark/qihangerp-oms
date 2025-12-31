@@ -1,7 +1,7 @@
 package cn.qihangerp.api.tao.controller.feign;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.open.tao.domain.TaoOrder;
+import cn.qihangerp.model.entity.TaoOrder;
 import cn.qihangerp.module.open.tao.service.TaoOrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

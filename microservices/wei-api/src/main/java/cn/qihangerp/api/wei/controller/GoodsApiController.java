@@ -7,8 +7,8 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
 
-import cn.qihangerp.module.open.wei.domain.WeiGoods;
-import cn.qihangerp.module.open.wei.domain.WeiGoodsSku;
+import cn.qihangerp.model.entity.WeiGoods;
+import cn.qihangerp.model.entity.WeiGoodsSku;
 import cn.qihangerp.module.open.wei.service.WeiGoodsService;
 import cn.qihangerp.open.common.ApiResultVo;
 

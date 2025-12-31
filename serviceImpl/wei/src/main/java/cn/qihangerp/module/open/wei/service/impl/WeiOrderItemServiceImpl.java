@@ -2,7 +2,7 @@ package cn.qihangerp.module.open.wei.service.impl;
 
 import cn.qihangerp.module.open.wei.service.WeiOrderItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.module.open.wei.domain.WeiOrderItem;
+import cn.qihangerp.model.entity.WeiOrderItem;
 import cn.qihangerp.module.open.wei.mapper.WeiOrderItemMapper;
 import org.springframework.stereotype.Service;
 

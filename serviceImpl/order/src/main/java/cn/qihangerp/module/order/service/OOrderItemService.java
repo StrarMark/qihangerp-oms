@@ -6,9 +6,9 @@ import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 
 import cn.qihangerp.model.entity.OOrderItem;
-import cn.qihangerp.module.order.domain.bo.OrderItemListBo;
+import cn.qihangerp.model.bo.OrderItemListBo;
 import cn.qihangerp.model.vo.OrderItemListVo;
-import cn.qihangerp.module.order.domain.vo.SalesTopSkuVo;
+import cn.qihangerp.model.vo.SalesTopSkuVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

@@ -3,7 +3,7 @@ package cn.qihangerp.module.open.wei.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.module.open.wei.domain.WeiRefund;
+import cn.qihangerp.model.entity.WeiRefund;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

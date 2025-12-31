@@ -3,8 +3,8 @@ package cn.qihangerp.module.open.jd.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.module.open.jd.domain.JdRefund;
-import cn.qihangerp.module.open.jd.domain.bo.JdAfterBo;
+import cn.qihangerp.model.entity.JdRefund;
+import cn.qihangerp.model.bo.JdAfterBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

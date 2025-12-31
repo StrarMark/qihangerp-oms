@@ -1,6 +1,6 @@
 package cn.qihangerp.module.open.wei.mapper;
 
-import cn.qihangerp.module.open.wei.domain.WeiRefund;
+import cn.qihangerp.model.entity.WeiRefund;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

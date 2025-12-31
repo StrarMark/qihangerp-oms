@@ -3,8 +3,7 @@ package cn.qihangerp.module.open.wei.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.module.open.wei.domain.WeiGoods;
-import cn.qihangerp.module.open.wei.domain.WeiGoodsSku;
+import cn.qihangerp.model.entity.WeiGoods;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
