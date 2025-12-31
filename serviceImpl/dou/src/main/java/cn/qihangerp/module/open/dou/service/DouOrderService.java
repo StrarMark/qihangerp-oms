@@ -5,7 +5,7 @@ import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.entity.DouOrder;
 import cn.qihangerp.model.bo.DouOrderBo;
-import cn.qihangerp.module.open.dou.bo.DouOrderConfirmBo;
+import cn.qihangerp.model.bo.DouOrderConfirmBo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 

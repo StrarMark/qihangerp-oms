@@ -1,6 +1,6 @@
 package cn.qihangerp.module.erp.service;
 
-import cn.qihangerp.module.erp.domain.ErpLogistics;
+import cn.qihangerp.model.entity.ErpLogistics;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -2,7 +2,7 @@ package cn.qihangerp.erp.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.module.erp.domain.ErpLogistics;
+import cn.qihangerp.model.entity.ErpLogistics;
 import cn.qihangerp.module.erp.service.ErpLogisticsService;
 import cn.qihangerp.security.common.BaseController;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

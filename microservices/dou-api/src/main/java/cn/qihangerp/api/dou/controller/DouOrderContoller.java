@@ -1,7 +1,7 @@
 package cn.qihangerp.api.dou.controller;
 
 
-import cn.qihangerp.module.open.dou.bo.DouOrderConfirmBo;
+import cn.qihangerp.model.bo.DouOrderConfirmBo;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
