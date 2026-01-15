@@ -5,7 +5,7 @@ import cn.qihangerp.model.request.OrderSearchRequest;
 import cn.qihangerp.module.goods.mapper.OGoodsMapper;
 import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
 import cn.qihangerp.module.goods.mapper.OGoodsSupplierMapper;
-import cn.qihangerp.module.mapper.OLogisticsCompanyMapper;
+import cn.qihangerp.mapper.OLogisticsCompanyMapper;
 import cn.qihangerp.model.bo.OrderAllocateShipRequest;
 import cn.qihangerp.model.bo.OrderShipRequest;
 import cn.qihangerp.model.vo.OrderDiscountVo;

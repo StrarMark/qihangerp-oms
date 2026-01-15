@@ -8,7 +8,7 @@ import cn.qihangerp.common.utils.DateUtils;
 import cn.qihangerp.mapper.ErpStockOutItemMapper;
 import cn.qihangerp.mapper.ErpStockOutMapper;
 import cn.qihangerp.model.entity.*;
-import cn.qihangerp.module.mapper.OLogisticsCompanyMapper;
+import cn.qihangerp.mapper.OLogisticsCompanyMapper;
 import cn.qihangerp.model.entity.OOrderShipListItem;
 import cn.qihangerp.model.bo.ShipStockUpBo;
 import cn.qihangerp.model.bo.SupplierOrderShipBo;
