@@ -1,4 +1,4 @@
-package cn.qihangerp.api.goods.controller;
+package cn.qihangerp.erp.controller;
 
 
 import cn.qihangerp.common.AjaxResult;
