@@ -1,7 +1,5 @@
-package cn.qihangerp.api.dou.controller;
+package cn.qihangerp.oms.dou.controller;
 
-import cn.qihangerp.api.dou.DouApiCommon;
-import cn.qihangerp.api.dou.DouPullRequest;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.EnumShopType;
@@ -15,6 +13,8 @@ import cn.qihangerp.model.entity.DouRefund;
 import cn.qihangerp.module.open.dou.service.DouRefundService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
+import cn.qihangerp.oms.dou.DouApiCommon;
+import cn.qihangerp.oms.dou.DouPullRequest;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouRefundApiHelper;
 import cn.qihangerp.open.dou.model.after.AfterSale;

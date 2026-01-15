@@ -1,4 +1,4 @@
-package cn.qihangerp.api.dou.controller;
+package cn.qihangerp.oms.dou.controller;
 
 
 import cn.qihangerp.common.*;

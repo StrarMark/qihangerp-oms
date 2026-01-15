@@ -1,4 +1,4 @@
-package cn.qihangerp.api.dou;
+package cn.qihangerp.oms.dou;
 
 import lombok.Data;
 

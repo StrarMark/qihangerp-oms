@@ -1,4 +1,4 @@
-package cn.qihangerp.api.dou.controller.feign;
+package cn.qihangerp.oms.dou.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.model.entity.DouRefund;

@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.qihangerp.api.dou.DouApiAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.qihangerp.oms.dou.DouApiAutoConfiguration
