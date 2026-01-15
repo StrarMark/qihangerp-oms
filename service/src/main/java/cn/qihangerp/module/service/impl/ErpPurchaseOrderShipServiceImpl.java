@@ -1,4 +1,4 @@
-package cn.qihangerp.module.erp.service.impl;
+package cn.qihangerp.module.service.impl;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
@@ -6,12 +6,12 @@ import cn.qihangerp.common.utils.DateUtils;
 import cn.qihangerp.model.entity.ErpPurchaseOrder;
 import cn.qihangerp.model.entity.ErpPurchaseOrderShip;
 import cn.qihangerp.model.query.PurchaseOrderSearchBo;
-import cn.qihangerp.module.erp.mapper.ErpPurchaseOrderMapper;
+import cn.qihangerp.mapper.ErpPurchaseOrderMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.module.erp.service.ErpPurchaseOrderShipService;
-import cn.qihangerp.module.erp.mapper.ErpPurchaseOrderShipMapper;
+import cn.qihangerp.module.service.ErpPurchaseOrderShipService;
+import cn.qihangerp.mapper.ErpPurchaseOrderShipMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

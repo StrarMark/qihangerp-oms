@@ -1,4 +1,4 @@
-package cn.qihangerp.module.erp.mapper;
+package cn.qihangerp.mapper;
 
 import cn.qihangerp.model.entity.ErpPurchaseOrderShip;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

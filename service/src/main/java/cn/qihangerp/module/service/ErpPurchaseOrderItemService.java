@@ -1,4 +1,4 @@
-package cn.qihangerp.module.erp.service;
+package cn.qihangerp.module.service;
 
 import cn.qihangerp.model.entity.ErpPurchaseOrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;

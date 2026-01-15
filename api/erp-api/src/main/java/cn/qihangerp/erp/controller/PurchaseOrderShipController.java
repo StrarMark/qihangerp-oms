@@ -5,7 +5,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.ErpPurchaseOrderShip;
 import cn.qihangerp.model.query.PurchaseOrderSearchBo;
-import cn.qihangerp.module.erp.service.ErpPurchaseOrderShipService;
+import cn.qihangerp.module.service.ErpPurchaseOrderShipService;
 import cn.qihangerp.security.common.BaseController;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
