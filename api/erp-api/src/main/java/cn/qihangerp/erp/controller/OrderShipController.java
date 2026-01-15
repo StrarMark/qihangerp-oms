@@ -1,7 +1,7 @@
-package cn.qihangerp.api.order.controller;
+package cn.qihangerp.erp.controller;
 
-import cn.qihangerp.api.order.ShipOrderItemSkuIdUpdateBo;
-import cn.qihangerp.api.order.StockOutEntryGenerateBo;
+import cn.qihangerp.erp.request.ShipOrderItemSkuIdUpdateBo;
+import cn.qihangerp.erp.request.StockOutEntryGenerateBo;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.ResultVo;

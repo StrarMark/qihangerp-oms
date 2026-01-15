@@ -1,8 +1,8 @@
-package cn.qihangerp.api.order.controller;
+package cn.qihangerp.erp.controller;
 
 
 
-import cn.qihangerp.api.order.OrderItemSpecIdUpdateBo;
+import cn.qihangerp.erp.request.OrderItemSpecIdUpdateBo;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;

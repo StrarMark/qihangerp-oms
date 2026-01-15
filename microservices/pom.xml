@@ -17,7 +17,7 @@
     <url>http://maven.apache.org</url>
     <modules>
 <!--        <module>goods-api</module>-->
-        <module>order-api</module>
+<!--        <module>order-api</module>-->
         <module>jd-api</module>
 <!--        <module>dou-api</module>-->
         <module>tao-api</module>

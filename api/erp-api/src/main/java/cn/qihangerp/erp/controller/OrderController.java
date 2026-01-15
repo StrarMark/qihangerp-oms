@@ -1,6 +1,6 @@
-package cn.qihangerp.api.order.controller;
+package cn.qihangerp.erp.controller;
 
-import cn.qihangerp.api.order.OrderCancelRequest;
+import cn.qihangerp.erp.request.OrderCancelRequest;
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.request.OrderSearchRequest;
 import cn.qihangerp.model.bo.OrderAllocateShipRequest;
