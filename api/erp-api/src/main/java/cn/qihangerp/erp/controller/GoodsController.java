@@ -10,8 +10,10 @@ import cn.qihangerp.module.goods.service.OGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -119,6 +121,18 @@ public class GoodsController extends BaseController
     @PutMapping("/sku")
     public AjaxResult editSku(@RequestBody OGoodsSku sku)
     {
+        String skuName="";
+        if(StringUtils.hasText(sku.getColorValue())){
+            skuName+=sku.getColorValue();
+        }
+        if(StringUtils.hasText(sku.getSizeValue())){
+            skuName+=" "+sku.getSizeValue();
+        }
+        if(StringUtils.hasText(sku.getStyleValue())){
+            skuName+=" "+sku.getStyleValue();
+        }
+        sku.setSkuName(skuName);
+        sku.setUpdateTime(new Date());
         return toAjax(skuService.updateById(sku));
     }
 

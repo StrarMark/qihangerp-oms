@@ -115,13 +115,14 @@
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="商品名称" align="left" prop="name" width="300"/>
-      <el-table-column label="商品图片" align="center" prop="image" width="100">
+      <el-table-column label="ID" align="center" prop="id" width="100"/>
+      <el-table-column label="图片" align="center" prop="image" width="60">
         <template slot-scope="scope">
           <image-preview :src="scope.row.image" :width="50" :height="50"/>
         </template>
       </el-table-column>
+      <el-table-column label="商品名称" align="left" prop="name" width="300"/>
+
       <el-table-column label="商品编号" align="center" prop="goodsNum" />
       <!-- <el-table-column label="单位名称" align="center" prop="unitName" /> -->
       <el-table-column label="商品分类" align="center" prop="categoryId" >
@@ -150,9 +151,9 @@
       <el-table-column label="重量" align="center" prop="weight" />
       <el-table-column label="0启用   1禁用" align="center" prop="disable" />
       <el-table-column label="保质期" align="center" prop="period" /> -->
-      <el-table-column label="预计采购价格" align="center" prop="purPrice" />
-      <el-table-column label="建议批发价" align="center" prop="wholePrice" />
-      <el-table-column label="建议零售价" align="center" prop="retailPrice" />
+      <el-table-column label="采购价" align="center" prop="purPrice" />
+<!--      <el-table-column label="建议批发价" align="center" prop="wholePrice" />-->
+      <el-table-column label="零售价" align="center" prop="retailPrice" />
       <!-- <el-table-column label="单位成本" align="center" prop="unitCost" /> -->
       <el-table-column label="供应商" align="center" prop="supplierId" >
         <template slot-scope="scope">
@@ -243,7 +244,7 @@
         <el-form-item label="商品名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入商品名称" />
         </el-form-item>
-        <el-form-item label="商品图片地址" prop="image">
+        <el-form-item label="商品图片" prop="image">
           <image-upload v-model="form.image"/>
         </el-form-item>
         <el-form-item label="商品编号" prop="number">
@@ -259,9 +260,7 @@
         <!--        <el-form-item label="条码" prop="barCode">-->
         <!--          <el-input v-model="form.barCode" placeholder="请输入条码" />-->
         <!--        </el-form-item>-->
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
+
         <!--        <el-form-item label="衣长/裙长/裤长" prop="length">-->
         <!--          <el-input v-model="form.length" placeholder="请输入衣长/裙长/裤长" />-->
         <!--        </el-form-item>-->
@@ -289,13 +288,13 @@
         <!--        <el-form-item label="保质期" prop="period">-->
         <!--          <el-input v-model="form.period" placeholder="请输入保质期" />-->
         <!--        </el-form-item>-->
-        <el-form-item label="预计采购价格" prop="purPrice">
+        <el-form-item label="采购价" prop="purPrice">
           <el-input v-model="form.purPrice" placeholder="请输入预计采购价格" />
         </el-form-item>
-        <el-form-item label="建议批发价" prop="wholePrice">
-          <el-input v-model="form.wholePrice" placeholder="请输入建议批发价" />
-        </el-form-item>
-        <el-form-item label="建议零售价" prop="retailPrice">
+<!--        <el-form-item label="建议批发价" prop="wholePrice">-->
+<!--          <el-input v-model="form.wholePrice" placeholder="请输入建议批发价" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="零售价" prop="retailPrice">
           <el-input v-model="form.retailPrice" placeholder="请输入建议零售价" />
         </el-form-item>
         <!--        <el-form-item label="单位成本" prop="unitCost">-->
@@ -307,6 +306,9 @@
             <el-option v-for="item in supplierList" :key="item.id" :label="item.name" :value="item.id">
             </el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-select v-model="form.status"   placeholder="状态">
@@ -407,6 +409,11 @@ export default {
       skuList: [],
       // 表单校验
       rules: {
+        name: [{ required: true, message: "不能为空", trigger: "blur" }],
+        number: [{ required: true, message: "不能为空", trigger: "blur" }],
+        supplierId: [{ required: true, message: "不能为空", trigger: "blur" }],
+        purPrice: [{ required: true, message: "不能为空", trigger: "blur" }],
+        retailPrice: [{ required: true, message: "不能为空", trigger: "blur" }],
         status: [
           { required: true, message: "状态1销售中2已下架不能为空", trigger: "change" }
         ],
@@ -428,9 +435,8 @@ export default {
         width3: [
           { required: true, message: "臀阔不能为空", trigger: "blur" }
         ],
-        weight: [
-          { required: true, message: "重量不能为空", trigger: "blur" }
-        ],
+        weight: [{ required: true, message: "重量不能为空", trigger: "blur" }],
+
       }
     };
   },

@@ -59,20 +59,22 @@
 
     <el-table v-loading="loading" :data="goodsSpecList" @selection-change="handleSelectionChange">
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="SkuId" align="center" prop="id" />
-      <el-table-column label="外部ErpSkuId" align="center" prop="outerErpSkuId" />
-      <el-table-column label="商品名" align="center" prop="goodsName" />
-      <el-table-column label="Sku名" align="center" prop="skuName" />
-      <el-table-column label="Sku编码" align="center" prop="skuCode" />
-      <el-table-column label="规格1" align="center" prop="colorValue" />
-      <el-table-column label="图片" align="center" prop="colorImage" width="100">
+      <el-table-column label="SkuId" align="center" prop="id" width="100"/>
+      <el-table-column label="图片" align="center" prop="colorImage" width="60">
         <template slot-scope="scope">
           <image-preview :src="scope.row.colorImage" :width="50" :height="50"/>
         </template>
       </el-table-column>
+      <el-table-column label="商品名" align="left" prop="goodsName" width="300"/>
+<!--      <el-table-column label="Sku名" align="center" prop="skuName" width="200"/>-->
+      <el-table-column label="Sku编码" align="center" prop="skuCode" />
+      <el-table-column label="外部SkuId" align="center" prop="outerErpSkuId" />
+      <el-table-column label="规格1" align="center" prop="colorValue" />
+
       <el-table-column label="规格2" align="center" prop="sizeValue" />
       <el-table-column label="规格3" align="center" prop="styleValue" />
-      <el-table-column label="建议零售价" align="center" prop="retailPrice" :formatter="amountFormatter"/>
+      <el-table-column label="采购价" align="center" prop="purPrice" :formatter="amountFormatter"/>
+      <el-table-column label="零售价" align="center" prop="retailPrice" :formatter="amountFormatter"/>
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-tag size="small" v-if="scope.row.status===1">销售中</el-tag>
@@ -104,12 +106,12 @@
     <!-- 添加或修改商品规格库存管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-<!--        <el-form-item label="商品名" prop="goodsName">-->
-<!--          <el-input v-model="form.goodsName" placeholder="请输入商品名" />-->
-<!--        </el-form-item>-->
-        <el-form-item label="SKU名" prop="skuName">
-          <el-input v-model="form.skuName" placeholder="请输入SKU名" />
+        <el-form-item label="商品名" prop="goodsName">
+          <el-input v-model="form.goodsName" disabled placeholder="请输入商品名" />
         </el-form-item>
+<!--        <el-form-item label="SKU名" prop="skuName">-->
+<!--          <el-input v-model="form.skuName" placeholder="请输入SKU名" />-->
+<!--        </el-form-item>-->
         <el-form-item label="SKU编码" prop="skuCode">
           <el-input v-model="form.skuCode" placeholder="请输入SKU编码" />
         </el-form-item>
@@ -118,24 +120,27 @@
 <!--          <image-upload v-model="form.colorImage" :limit="1" />-->
           <el-input v-model="form.colorImage" placeholder="图片URL" />
         </el-form-item>
-        <el-form-item label="售价" prop="retailPrice">
-          <el-input type="number" v-model.number="form.retailPrice" placeholder="售价" />
+        <el-form-item label="采购价" prop="purPrice">
+          <el-input type="number" v-model.number="form.purPrice" placeholder="采购价" />
+        </el-form-item>
+        <el-form-item label="零售价" prop="retailPrice">
+          <el-input type="number" v-model.number="form.retailPrice" placeholder="零售价" />
         </el-form-item>
 
-<!--        <el-form-item label="规格1" prop="colorValue">-->
-<!--          <el-input v-model="form.colorValue" placeholder="请输入规格1" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="规格2" prop="sizeValue">-->
-<!--          <el-input v-model="form.sizeValue" placeholder="请输入规格2" />-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="规格3" prop="styleValue">-->
-<!--          <el-input v-model="form.styleValue" placeholder="请输入规格3" />-->
-<!--        </el-form-item>-->
-        <el-form-item label="ERP商品ID" prop="outerErpGoodsId">
-          <el-input type="number" v-model.number="form.outerErpGoodsId" placeholder="请输入ERP商品ID" />
+        <el-form-item label="规格1" prop="colorValue">
+          <el-input v-model="form.colorValue" placeholder="请输入规格1" />
         </el-form-item>
-        <el-form-item label="ERP商品SkuID" prop="outerErpSkuId">
-          <el-input type="number" v-model.number="form.outerErpSkuId" placeholder="请输入ERP商品SkuID" />
+        <el-form-item label="规格2" prop="sizeValue">
+          <el-input v-model="form.sizeValue" placeholder="请输入规格2" />
+        </el-form-item>
+        <el-form-item label="规格3" prop="styleValue">
+          <el-input v-model="form.styleValue" placeholder="请输入规格3" />
+        </el-form-item>
+<!--        <el-form-item label="外部SkuID" prop="outerErpGoodsId">-->
+<!--          <el-input type="number" v-model.number="form.outerErpGoodsId" placeholder="请输入ERP商品ID" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="外部SkuID" prop="outerErpSkuId">
+          <el-input type="number" v-model.number="form.outerErpSkuId" placeholder="请输入外部SkuID" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-select v-model="form.status" filterable  placeholder="状态">
@@ -207,10 +212,12 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        goodsName: [{ required: true, message: "不能为空", trigger: "blur" }],
-        skuName: [{ required: true, message: "不能为空", trigger: "blur" }],
+        // goodsName: [{ required: true, message: "不能为空", trigger: "blur" }],
+        // skuName: [{ required: true, message: "不能为空", trigger: "blur" }],
         skuCode: [{ required: true, message: "SKU不能为空", trigger: "blur" }],
+        purPrice: [{ required: true, message: "不能为空", trigger: "blur" }],
         retailPrice: [{ required: true, message: "不能为空", trigger: "blur" }],
+        status: [{ required: true, message: "不能为空", trigger: "blur" }],
 
       }
     };
