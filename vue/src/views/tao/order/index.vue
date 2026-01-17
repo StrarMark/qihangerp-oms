@@ -475,30 +475,41 @@ export default {
       }
     },
     handlePull() {
-      if(this.queryParams.shopId){
-        this.pullLoading = true
-        pullOrder({shopId:this.queryParams.shopId,updType:0}).then(response => {
-          console.log('拉取淘宝订单接口返回=====',response)
-          if(response.code === 1401) {
-              MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
-                this.$router.push({path:"/shop/shop_list",query:{type:1}})
-                // isRelogin.show = false;
-                // store.dispatch('LogOut').then(() => {
-                // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
-                // })
-              }).catch(() => {
-                isRelogin.show = false;
-              });
-
-            // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-          }else{
-            this.$modal.msgSuccess(JSON.stringify(response));
-          }
-          this.pullLoading = false
-        })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
+      if (!this.orderTime) {
+        this.$modal.msgError("请选择订单时间")
+        return
       }
+      if (!this.queryParams.shopId) {
+        this.$modal.msgSuccess("请先选择店铺");
+        return;
+      }
+      const orderDate = this.orderTime[0]
+      this.pullLoading = true
+      pullOrder({shopId: this.queryParams.shopId, updType: 0, orderDate: orderDate}).then(response => {
+        console.log('拉取淘宝订单接口返回=====', response)
+        if (response.code === 1401) {
+          MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', {
+            confirmButtonText: '前往授权',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({path: "/shop/shop_list", query: {type: 1}})
+            // isRelogin.show = false;
+            // store.dispatch('LogOut').then(() => {
+            // location.href = response.data.tokenRequestUrl+'?shopId='+this.queryParams.shopId
+            // })
+          }).catch(() => {
+            isRelogin.show = false;
+          });
+
+          // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+        } else {
+          this.$modal.msgSuccess(JSON.stringify(response));
+          this.getList()
+        }
+        this.pullLoading = false
+      })
+
 
       // this.$modal.msgSuccess("请先配置API");
     },

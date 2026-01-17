@@ -25,6 +25,7 @@ import cn.qihangerp.open.tao.response.TaoOrderListResponse;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -81,24 +82,33 @@ public class TaoOrderApiController {
         // 获取最后更新时间
         LocalDateTime startTime = null;
         LocalDateTime  endTime = null;
-        OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(req.getShopId(), "ORDER");
-        if(lasttime == null){
-            endTime = LocalDateTime.now();
-            startTime = endTime.minusDays(1);
-        }else {
-            startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
-            Duration duration = Duration.between(startTime, LocalDateTime.now());
-            long hours = duration.toHours();
-            if (hours > 24) {
-                // 大于24小时，只取24小时
-                endTime = startTime.plusHours(24);
-            } else {
+        OShopPullLasttime lasttime = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if(StringUtils.isEmpty(req.getOrderDate())) {
+            lasttime = pullLasttimeService.getLasttimeByShop(req.getShopId(), "ORDER");
+            if (lasttime == null) {
                 endTime = LocalDateTime.now();
-            }
+                startTime = endTime.minusDays(1);
+            } else {
+                startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
+                Duration duration = Duration.between(startTime, LocalDateTime.now());
+                long hours = duration.toHours();
+                if (hours > 24) {
+                    // 大于24小时，只取24小时
+                    endTime = startTime.plusHours(24);
+                } else {
+                    endTime = LocalDateTime.now();
+                }
 //            endTime = startTime.plusDays(1);//取24小时
 //            if(endTime.isAfter(LocalDateTime.now())){
 //                endTime = LocalDateTime.now();
 //            }
+            }
+        }else {
+            // 使用条件传过来的时间
+            // 将时间字符串转换为 LocalDateTime
+            startTime = LocalDateTime.parse(req.getOrderDate() + " 00:00:01", formatter);
+            endTime = LocalDateTime.parse(req.getOrderDate() + " 23:59:59", formatter);
         }
 
         //第一次获取
@@ -156,7 +166,7 @@ public class TaoOrderApiController {
                 pullLasttimeService.updateById(updateLasttime);
             }
         }
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         OShopPullLogs logs = new OShopPullLogs();
         logs.setShopType(EnumShopType.TAO.getIndex());
         logs.setShopId(req.getShopId());

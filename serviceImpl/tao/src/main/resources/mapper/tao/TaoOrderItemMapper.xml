@@ -46,6 +46,7 @@
             <result property="oGoodsId" column="o_goods_id" jdbcType="VARCHAR"/>
             <result property="oGoodsSkuId" column="o_goods_sku_id" jdbcType="VARCHAR"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="isShShip" column="is_sh_ship" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -62,6 +63,6 @@
         is_service_order,consign_time,shipping_type,
         logistics_company,invoice_no,bind_oid,
         status,refund_status,refund_id,o_goods_id,o_goods_sku_id,
-        remark
+        remark,is_sh_ship
     </sql>
 </mapper>

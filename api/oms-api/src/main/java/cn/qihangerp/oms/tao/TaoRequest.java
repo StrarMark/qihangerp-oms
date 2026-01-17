@@ -8,6 +8,16 @@ public class TaoRequest {
 
     private Integer pullType;//拉取类型：0或不传全量；1更新（用于拉取商品的条件）
 
+    private String orderDate;
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
     public Integer getPullType() {
         return pullType;
     }

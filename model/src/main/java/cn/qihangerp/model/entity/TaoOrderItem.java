@@ -220,10 +220,20 @@ PAY_PENDING(国际信用卡支付付款确认中)
      */
     private String remark;
 
+    private String isShShip;
+
     private String oGoodsId;
     private String oGoodsSkuId;
 
     private static final long serialVersionUID = 1L;
+
+    public String getIsShShip() {
+        return isShShip;
+    }
+
+    public void setIsShShip(String isShShip) {
+        this.isShShip = isShShip;
+    }
 
     public String getoGoodsId() {
         return oGoodsId;
