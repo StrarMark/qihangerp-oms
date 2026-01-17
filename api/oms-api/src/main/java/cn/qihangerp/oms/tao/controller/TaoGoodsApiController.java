@@ -135,7 +135,7 @@ public class TaoGoodsApiController  {
                         taoGoodsSku.setIid(s.getIid());
                         taoGoodsSku.setSkuId(s.getSku_id());
                         taoGoodsSku.setProperties(s.getProperties());
-                        taoGoodsSku.setPropertiesName(s.getProperties_name().replace(s.getProperties()+":",""));
+                        taoGoodsSku.setPropertiesName(s.getProperties_name());
                         taoGoodsSku.setQuantity(s.getQuantity());
                         taoGoodsSku.setSkuSpecId(s.getSku_spec_id() + "");
                         taoGoodsSku.setPrice(StringUtils.isEmpty(s.getPrice()) ? null : Double.parseDouble(s.getPrice()));

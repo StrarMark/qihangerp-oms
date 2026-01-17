@@ -97,6 +97,26 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
                         sku.setErpGoodsSkuId(oGoodsSkus.get(0).getId());
                     }
                 }
+                if(sku.getSkuId()==5953205541904L){
+                    String s="";
+                }
+                String skuNameOrigin = sku.getPropertiesName();
+                // 处理规格文本
+                String[] split = sku.getProperties().split(";");
+                for (String sp : split){
+                    skuNameOrigin = skuNameOrigin.replace(sp+":","");
+                }
+                String[] skuArr = skuNameOrigin.split(";");
+                String skuName="";
+                for (String s:skuArr){
+                    String[] split1 = s.split(":");
+                    if(split1.length>1){
+                        skuName+=" "+split1[1];
+                    }else{
+                        skuName+=" "+split1[0];
+                    }
+                }
+                sku.setSkuName(skuName);
                 List<TaoGoodsSku> taoGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, sku.getSkuId()));
                 if(taoGoodsSkus!=null && !taoGoodsSkus.isEmpty()){
                     // 更新

@@ -96,6 +96,7 @@ public class TaoGoodsSku implements Serializable {
      * 表示SKu上的产品规格信息
      */
     private String skuSpecId;
+    private String skuName;
 
     /**
      * 商品级别的条形码

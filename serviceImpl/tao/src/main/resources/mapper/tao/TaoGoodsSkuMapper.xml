@@ -17,6 +17,7 @@
             <result property="propertiesName" column="properties_name" jdbcType="VARCHAR"/>
             <result property="quantity" column="quantity" jdbcType="BIGINT"/>
             <result property="spec" column="spec" jdbcType="VARCHAR"/>
+            <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
             <result property="price" column="price" jdbcType="DOUBLE"/>
             <result property="outerId" column="outer_id" jdbcType="VARCHAR"/>
             <result property="created" column="created" jdbcType="TIMESTAMP"/>
@@ -33,7 +34,7 @@
     <sql id="Base_Column_List">
         id,tao_goods_id,num_iid,shop_id,
         iid,sku_id,properties,pic_url,title,
-        properties_name,quantity,spec,
+        properties_name,quantity,spec,sku_name,
         price,outer_id,created,
         modified,status,sku_spec_id,
         barcode,erp_goods_sku_id,erp_goods_id,

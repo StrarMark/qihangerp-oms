@@ -81,7 +81,7 @@
         </template>
       </el-table-column>
       <el-table-column label="标题" align="left" prop="title" width="350"/>
-      <el-table-column label="规格" align="left" prop="propertiesName" />
+      <el-table-column label="规格" align="left" prop="skuName" />
       <el-table-column label="平台商品ID" align="center" prop="numIid" width="138"/>
       <el-table-column label="商家编码" align="center" prop="outerId" width="188"/>
 
