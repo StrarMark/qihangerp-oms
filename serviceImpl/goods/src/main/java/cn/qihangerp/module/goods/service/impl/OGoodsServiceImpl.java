@@ -167,6 +167,9 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
             if(bo.getPurPrice() == null){
                 spec.setPurPrice(goods.getPurPrice());
             }else spec.setPurPrice(bo.getPurPrice());
+            if(bo.getRetailPrice() == null){
+                spec.setRetailPrice(goods.getRetailPrice());
+            }else spec.setRetailPrice(bo.getRetailPrice());
             spec.setStatus(1);
 
             skuMapper.insert(spec);

@@ -13,9 +13,18 @@ public class GoodsAddSkuBo {
     private String specNum;
 
     private BigDecimal purPrice;
+    private BigDecimal retailPrice;
 
     //外部ERP商品Sku Id
     private String outerErpSkuId;
+
+    public BigDecimal getRetailPrice() {
+        return retailPrice;
+    }
+
+    public void setRetailPrice(BigDecimal retailPrice) {
+        this.retailPrice = retailPrice;
+    }
 
     public String getOuterErpSkuId() {
         return outerErpSkuId;

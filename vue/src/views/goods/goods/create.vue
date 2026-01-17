@@ -22,18 +22,18 @@
         <el-form-item label="商品编号" prop="number" >
           <el-input v-model="form.number" placeholder="请输入商品编号" style="width:220px"/>
         </el-form-item>
-      <el-form-item label="外部ERP商品ID" prop="outerErpGoodsId" >
+      <el-form-item label="外部商品ID" prop="outerErpGoodsId" >
         <el-input v-model="form.outerErpGoodsId" placeholder="请输入外部ERP商品ID" style="width:220px"/>
       </el-form-item>
-         <el-form-item label="预计采购价" prop="purPrice">
+         <el-form-item label="采购价" prop="purPrice">
           <el-input type="number" v-model.number="form.purPrice" placeholder="请输入预计采购价格" style="width:220px"/>
         </el-form-item>
         <!-- <el-form-item label="建议批发价" prop="wholePrice">
           <el-input type="number" v-model.number="form.wholePrice" placeholder="请输入建议批发价" style="width:220px"/>
-        </el-form-item>
-        <el-form-item label="建议零售价" prop="retailPrice">
-          <el-input type="number" v-model.number="form.retailPrice" placeholder="请输入建议零售价" style="width:220px"/>
         </el-form-item> -->
+        <el-form-item label="零售价" prop="retailPrice">
+          <el-input type="number" v-model.number="form.retailPrice" placeholder="请输入建议零售价" style="width:220px"/>
+        </el-form-item>
 <!--        <el-form-item label="单位名称" prop="unitName">-->
 <!--          <el-input v-model="form.unitName" placeholder="请输入单位名称" style="width:220px" />-->
 <!--        </el-form-item>-->
@@ -182,14 +182,19 @@
               <el-input v-model="scope.row.specNum" placeholder="规格编码" />
             </template>
           </el-table-column>
-          <el-table-column label="预计采购价" prop="purPrice" width="150">
+          <el-table-column label="采购价" prop="purPrice" width="150">
             <template slot-scope="scope">
               <el-input v-model.number="scope.row.purPrice" placeholder="预计采购价" />
             </template>
           </el-table-column>
-          <el-table-column label="外部ERP商品Sku Id" prop="outerErpSkuId" width="200">
+          <el-table-column label="零售价" prop="retailPrice" width="150">
             <template slot-scope="scope">
-              <el-input v-model.number="scope.row.outerErpSkuId" placeholder="外部ERP商品Sku Id" />
+              <el-input v-model.number="scope.row.retailPrice" placeholder="预计零售价" />
+            </template>
+          </el-table-column>
+          <el-table-column label="外部商品SkuId" prop="outerErpSkuId" width="200">
+            <template slot-scope="scope">
+              <el-input v-model.number="scope.row.outerErpSkuId" placeholder="外部商品Skud" />
             </template>
           </el-table-column>
 <!--          <el-table-column label="规格图片" prop="colorImage" width="150">-->
@@ -278,6 +283,7 @@ export default {
         image: [{ required: true, message: '商品图片不能为空' }],
         number: [{ required: true, message: '商品编码不能为空' }],
         purPrice: [{ required: true, message: '请填写预计采购价' }],
+        retailPrice: [{ required: true, message: '请填写预计零售价' }],
 
       },
       // 子表选中数据
