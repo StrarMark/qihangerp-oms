@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>cn.qihangerp</groupId>
-        <artifactId>qihangerp-cloud</artifactId>
+        <artifactId>qihang-ecom-erp-open</artifactId>
         <version>2.0.6</version>
     </parent>
 
