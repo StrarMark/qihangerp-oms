@@ -74,20 +74,26 @@
 
     <el-table v-loading="loading" :data="goodsList" >
 <!--      <el-table-column type="selection" width="55" align="center" />-->
-      <el-table-column label="平台skuId" align="center" prop="skuId" />
-      <el-table-column label="平台商品ID" align="center" prop="numIid" />
-      <el-table-column label="商家编码" align="center" prop="outerId" />
-      <el-table-column label="标题" align="center" prop="title" />
-      <el-table-column label="主图" width="100">
-          <template slot-scope="scope">
-              <el-image  style="width: 70px; height: 70px;" :src="scope.row.picUrl"></el-image>
-          </template>
+      <el-table-column label="平台skuId" align="center" prop="skuId" width="138"/>
+      <el-table-column label="主图" width="60">
+        <template slot-scope="scope">
+          <el-image  style="width: 50px; height: 50px;" :src="scope.row.picUrl"></el-image>
+        </template>
       </el-table-column>
-      <el-table-column label="规格" align="center" prop="propertiesName" />
-      <el-table-column label="ERP商品sku Id" align="center" prop="erpGoodsSkuId" />
-<!--      <el-table-column label="快递单号" align="center" prop="logisticsCode" />-->
+      <el-table-column label="标题" align="left" prop="title" width="350"/>
+      <el-table-column label="规格" align="left" prop="propertiesName" />
+      <el-table-column label="平台商品ID" align="center" prop="numIid" width="138"/>
+      <el-table-column label="商家编码" align="center" prop="outerId" width="188"/>
 
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+
+
+      <el-table-column label="ERP商品SkuId" align="center" prop="erpGoodsSkuId" width="128"/>
+      <el-table-column label="价格" align="center" prop="price" :formatter="amountFormatter" width="148"/>
+      <el-table-column label="库存" align="center" prop="quantity" width="66"/>
+      <el-table-column label="创建时间" align="center" prop="created" />
+      <el-table-column label="修改时间" align="center" prop="modified" />
+
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="128">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -136,6 +142,7 @@ import { listShop } from "@/api/shop/shop";
 import { searchSku } from "@/api/goods/goods";
 import {MessageBox} from "element-ui";
 import {getGoodsSku, linkErpGoodsSkuId, listGoodsSku, pullGoodsList} from "@/api/tao/goods";
+import {amountFormatter} from "@/utils/zhijian";
 
 export default {
   name: "GoodsSkuTao",
@@ -196,6 +203,7 @@ export default {
     }
   },
   methods: {
+    amountFormatter,
     /** 查询淘宝订单列表 */
     getList() {
       this.loading = true;

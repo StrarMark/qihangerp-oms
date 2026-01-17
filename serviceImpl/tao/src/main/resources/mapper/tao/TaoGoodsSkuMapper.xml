@@ -9,6 +9,8 @@
             <result property="taoGoodsId" column="tao_goods_id" jdbcType="BIGINT"/>
             <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
             <result property="numIid" column="num_iid" jdbcType="BIGINT"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="picUrl" column="pic_url" jdbcType="VARCHAR"/>
             <result property="iid" column="iid" jdbcType="VARCHAR"/>
             <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
             <result property="properties" column="properties" jdbcType="VARCHAR"/>
@@ -30,7 +32,7 @@
 
     <sql id="Base_Column_List">
         id,tao_goods_id,num_iid,shop_id,
-        iid,sku_id,properties,
+        iid,sku_id,properties,pic_url,title,
         properties_name,quantity,spec,
         price,outer_id,created,
         modified,status,sku_spec_id,

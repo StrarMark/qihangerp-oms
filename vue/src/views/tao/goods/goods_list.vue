@@ -68,14 +68,15 @@
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主图" width="100">
+      <el-table-column label="平台商品ID" align="center" prop="numIid" width="138"/>
+      <el-table-column label="主图" width="60">
         <template slot-scope="scope">
 <!--          <el-image  style="width: 70px; height: 70px;" :src="scope.row.picUrl"></el-image>-->
-          <image-preview :src="scope.row.picUrl" :width="60" :height="40"/>
+          <image-preview :src="scope.row.picUrl" :width="50" :height="50"/>
         </template>
       </el-table-column>
-      <el-table-column label="标题" align="left" prop="title" />
-      <el-table-column label="平台商品ID" align="center" prop="numIid" />
+      <el-table-column label="标题" align="left" prop="title" width="350"/>
+
       <el-table-column label="商家编码" align="center" prop="outerId" />
       <el-table-column label="价格" align="left" prop="price" :formatter="amountFormatter" />
       <el-table-column label="SKU" align="center" >

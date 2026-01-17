@@ -36,6 +36,11 @@ public class TaoGoodsSku implements Serializable {
      * sku所属商品id(注意：iid近期即将废弃，请用num_iid参数)
      */
     private String iid;
+    private String title;
+    /**
+     * 图
+     */
+    private String picUrl;
 
     /**
      * 商品skuid，阿里

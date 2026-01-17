@@ -129,11 +129,13 @@ public class TaoGoodsApiController  {
                         TaoGoodsSku taoGoodsSku = new TaoGoodsSku();
                         BeanUtils.copyProperties(s, taoGoodsSku);
 //                        taoGoodsSku.setShopId(req.getShopId());
+                        taoGoodsSku.setTitle(taoGoods.getTitle());
+                        taoGoodsSku.setPicUrl(taoGoods.getPicUrl());
                         taoGoodsSku.setNumIid(s.getNum_iid());
                         taoGoodsSku.setIid(s.getIid());
                         taoGoodsSku.setSkuId(s.getSku_id());
                         taoGoodsSku.setProperties(s.getProperties());
-                        taoGoodsSku.setPropertiesName(s.getProperties_name());
+                        taoGoodsSku.setPropertiesName(s.getProperties_name().replace(s.getProperties()+":",""));
                         taoGoodsSku.setQuantity(s.getQuantity());
                         taoGoodsSku.setSkuSpecId(s.getSku_spec_id() + "");
                         taoGoodsSku.setPrice(StringUtils.isEmpty(s.getPrice()) ? null : Double.parseDouble(s.getPrice()));

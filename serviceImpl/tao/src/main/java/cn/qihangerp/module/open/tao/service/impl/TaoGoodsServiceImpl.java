@@ -64,6 +64,7 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
     @Transactional
     @Override
     public int saveAndUpdateGoods(Long shopId, TaoGoods goods) {
+        if(goods==null) return ResultVoEnum.Fail.getIndex();
         List<TaoGoods> goodsList = mapper.selectList(new LambdaQueryWrapper<TaoGoods>().eq(TaoGoods::getNumIid, goods.getNumIid()));
         if(goodsList!=null && goodsList.size()>0){
             // 存在，更新
@@ -73,8 +74,6 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
 //            goods.setOuterId(erpGoodsNum);
 //            goods.setErpGoodsId(erpGoodsId);
             mapper.updateById(goods);
-
-            return ResultVoEnum.DataExist.getIndex();
         }else {
             // 不存在，新增
             goods.setShopId(shopId);
@@ -101,6 +100,7 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
                 List<TaoGoodsSku> taoGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, sku.getSkuId()));
                 if(taoGoodsSkus!=null && !taoGoodsSkus.isEmpty()){
                     // 更新
+                    sku.setId(taoGoodsSkus.get(0).getId());
                     sku.setUpdateTime(new Date());
                     skuMapper.updateById(sku);
                 }else {
@@ -118,7 +118,10 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
             taoGoodsUpdate.setErpGoodsId(erpGoodsId);
             mapper.updateById(taoGoodsUpdate);
         }
-        return 0;
+
+        if(goodsList!=null && goodsList.size()>0) {
+            return ResultVoEnum.DataExist.getIndex();
+        }else return ResultVoEnum.SUCCESS.getIndex();
     }
 
     /**
