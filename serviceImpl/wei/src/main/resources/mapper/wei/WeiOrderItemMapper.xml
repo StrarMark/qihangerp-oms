@@ -31,6 +31,7 @@
             <result property="extraService" column="extra_service" jdbcType="VARCHAR"/>
             <result property="useDeduction" column="use_deduction" jdbcType="VARCHAR"/>
             <result property="deductionPrice" column="deduction_price" jdbcType="INTEGER"/>
+            <result property="merchantDiscountedPrice" column="merchant_discounted_price" jdbcType="INTEGER"/>
             <result property="orderProductCouponInfoList" column="order_product_coupon_info_list" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -43,6 +44,6 @@
         out_product_id,out_sku_id,is_discounted,
         estimate_price,is_change_price,change_price,
         out_warehouse_id,sku_deliver_info,extra_service,
-        use_deduction,deduction_price,order_product_coupon_info_list
+        use_deduction,deduction_price,order_product_coupon_info_list,merchant_discounted_price
     </sql>
 </mapper>

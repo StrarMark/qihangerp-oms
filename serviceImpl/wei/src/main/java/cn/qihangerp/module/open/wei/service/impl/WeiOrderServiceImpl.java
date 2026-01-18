@@ -17,6 +17,8 @@ import cn.qihangerp.module.open.wei.mapper.WeiGoodsSkuMapper;
 import cn.qihangerp.module.open.wei.mapper.WeiOrderItemMapper;
 import cn.qihangerp.module.open.wei.mapper.WeiOrderMapper;
 import cn.qihangerp.module.open.wei.service.WeiOrderService;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -179,23 +181,44 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
         order.setShipType(0);
         order.setBuyerMemo("");
         order.setSellerMemo("");
-        order.setRefundStatus(1);
-        order.setOrderStatus(1);
         order.setGoodsAmount(weiOrder.getProductPrice()!=null?weiOrder.getProductPrice().doubleValue()/100:0.0);
         order.setPostFee(weiOrder.getFreight()!=null?weiOrder.getFreight().doubleValue()/100:0.0);
         order.setSellerDiscount(weiOrder.getDiscountedPrice()!=null?weiOrder.getDiscountedPrice().doubleValue()/100:0.0);
         order.setPlatformDiscount(0.0);
+        order.setChangeAmount(0.0);
         order.setAmount(weiOrder.getOrderPrice()!=null?weiOrder.getOrderPrice().doubleValue()/100:0.0);
-        order.setPayment(order.getAmount());
+        order.setPayment(order.getPayment().doubleValue()/100);
+        order.setPayDiscount(0.0);
         order.setReceiverName(confirmBo.getReceiver());
         order.setReceiverMobile(confirmBo.getMobile());
         order.setAddress(confirmBo.getAddress());
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
+        order.setOrderStatus(weiOrder.getStatus().toString());
+        if(weiOrder.getStatus().intValue()==10){
+            order.setOrderStatusText("待付款");
+        }else if(weiOrder.getStatus().intValue()==12){
+            order.setOrderStatusText("礼物待收下");
+        }else if(weiOrder.getStatus().intValue()==13){
+            order.setOrderStatusText("一起买待成团");
+        }else if(weiOrder.getStatus().intValue()==20){
+            order.setOrderStatusText("待发货");
+        }else if(weiOrder.getStatus().intValue()==21){
+            order.setOrderStatusText("部分发货");
+        }else if(weiOrder.getStatus().intValue()==30){
+            order.setOrderStatusText("待收货");
+        }else if(weiOrder.getStatus().intValue()==100){
+            order.setOrderStatusText("完成");
+        }else if(weiOrder.getStatus().intValue()==200){
+            order.setOrderStatusText("全部商品售后之后，订单取消");
+        }else if(weiOrder.getStatus().intValue()==250){
+            order.setOrderStatusText("未付款用户主动取消或超时未付款订单自动取消");
+        }
 
-        LocalDateTime orderTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(weiOrder.getCreateTime()), ZoneId.systemDefault());
-        order.setOrderTime(weiOrder.getCreateTime()!=null?orderTime:LocalDateTime.now());
+        order.setOrderCreateTime(LocalDateTime.ofInstant(Instant.ofEpochSecond(weiOrder.getCreateTime()), ZoneId.systemDefault()));
+        order.setOrderUpdateTime(LocalDateTime.ofInstant(Instant.ofEpochSecond(weiOrder.getUpdateTime()), ZoneId.systemDefault()));
+
         order.setShipper(0l);
         order.setShipStatus(0);
         order.setCreateTime(new Date());
@@ -217,21 +240,59 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
             oOrderItem.setSubOrderNum(order.getOrderNum()+"-"+item.getSkuId());
             oOrderItem.setShopType(EnumShopType.WEI.getIndex());
             oOrderItem.setShopId(weiOrder.getShopId());
+            // 商品信息
+            oOrderItem.setProductId(item.getProductId());
             oOrderItem.setSkuId(item.getSkuId());
-
             oOrderItem.setGoodsTitle(item.getTitle());
             oOrderItem.setGoodsImg(item.getThumbImg());
             oOrderItem.setGoodsNum(item.getOutProductId());
-            oOrderItem.setGoodsSpec("");
+            if(StringUtils.hasText(item.getSkuAttrs())) {
+                try {
+                    String skuName = "";
+                    JSONArray jsonArray = JSONArray.parseArray(item.getSkuAttrs());
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        JSONObject it = jsonArray.getJSONObject(i);
+                        skuName += " "+it.getString("attr_value");
+                    }
+                    oOrderItem.setGoodsSpec(skuName);
+                } catch (Exception e) {
+                    oOrderItem.setGoodsSpec("");
+                }
+            }else oOrderItem.setGoodsSpec("");
+
             oOrderItem.setSkuNum(item.getOutSkuId());
             oOrderItem.setGoodsPrice(item.getSalePrice()!=null?item.getSalePrice().doubleValue()/100:0.0);
             oOrderItem.setQuantity(item.getSkuCnt());
-            oOrderItem.setItemAmount(oOrderItem.getGoodsPrice()*oOrderItem.getQuantity());
-            oOrderItem.setDiscountAmount(0.0);
-            oOrderItem.setPayment(0.0);
+            // 价格信息
+            Integer goodsAmount = item.getSalePrice() * item.getSkuCnt();
+            oOrderItem.setGoodsAmount(goodsAmount.doubleValue()/100);
+            oOrderItem.setItemAmount(item.getRealPrice().doubleValue()/100);
+            oOrderItem.setSellerDiscount(item.getMerchantDiscountedPrice().doubleValue()/100);
+            //优惠后
+//            Integer discountAfter = item.getEstimatePrice()!=null? item.getEstimatePrice():0;
+//            if(discountAfter==0) oOrderItem.setSellerDiscount(0.0);
+//            else{
+//               Integer discount = goodsAmount - discountAfter;
+//               oOrderItem.setSellerDiscount(discount.doubleValue()/100);
+//            }
+            oOrderItem.setPlatformDiscount(0.0);
+            //改价后
+            Integer changeAfter = item.getChangePrice()!=null?item.getChangePrice():0;
+            if(changeAfter==0) oOrderItem.setChangeAmount(0.0);
+            else{
+                Integer change = goodsAmount - changeAfter;
+                oOrderItem.setChangeAmount(change.doubleValue()/100);
+            }
 
-            oOrderItem.setRefundCount(0);
-            oOrderItem.setRefundStatus(1);
+            oOrderItem.setPayDiscount(0.0);
+            oOrderItem.setPayment(item.getRealPrice().doubleValue()/100);
+
+            oOrderItem.setRefundCount(item.getOnAftersaleSkuCnt()+item.getFinishAftersaleSkuCnt());
+            if(oOrderItem.getRefundCount().intValue()<oOrderItem.getQuantity().intValue()) {
+                oOrderItem.setRefundStatus(1);
+            }else{
+                oOrderItem.setRefundStatus(4);
+            }
             oOrderItem.setShipper(0l);
             oOrderItem.setShipType(order.getShipType());
             oOrderItem.setShipStatus(0);

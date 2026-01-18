@@ -61,15 +61,6 @@ public class OOrder implements Serializable {
      */
     private String tag;
 
-    /**
-     * 售后状态 1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功 
-     */
-    private Integer refundStatus;
-
-    /**
-     * 订单状态0：新订单，1：待发货，2：已发货，3：已完成，11已取消；12退款中；21待付款；22锁定，29删除，101部分发货
-     */
-    private Integer orderStatus;
 
     /**
      * 订单商品金额
@@ -90,6 +81,8 @@ public class OOrder implements Serializable {
      * 平台优惠金额，单位：元
      */
     private Double platformDiscount;
+    private Double payDiscount;
+    private Double changeAmount;
 
     /**
      * 订单实际金额
@@ -134,7 +127,11 @@ public class OOrder implements Serializable {
     /**
      * 订单时间
      */
-    private LocalDateTime orderTime;
+    private LocalDateTime orderCreateTime;
+    private LocalDateTime orderUpdateTime;
+    private LocalDateTime orderFinishTime;
+    private String orderStatus;
+    private String orderStatusText;
 
     /**
      * 发货方 0 自己发货1联合发货2供应商发货

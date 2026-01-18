@@ -1,7 +1,7 @@
 package cn.qihangerp.module.order.service.impl;
 
 import cn.qihangerp.model.entity.OShipmentItem;
-import cn.qihangerp.module.order.mapper.OShipmentItemMapper;
+import cn.qihangerp.mapper.OShipmentItemMapper;
 import cn.qihangerp.module.order.service.ErpShipmentItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;

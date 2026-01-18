@@ -1,4 +1,4 @@
-package cn.qihangerp.module.order.mapper;
+package cn.qihangerp.mapper;
 
 import cn.qihangerp.model.entity.OShipment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

@@ -125,7 +125,7 @@ public class WeiOrderApiController extends BaseController {
                         oi.setChangePrice(item.getChange_price());
                         oi.setOutWarehouseId(item.getOut_warehouse_id());
                         oi.setUseDeduction(item.getUse_deduction() + "");
-
+                        oi.setMerchantDiscountedPrice(item.getMerchant_discounted_price());
                         oi.setSkuAttrs(JSONObject.toJSONString(item.getSku_attrs()));
                         oi.setSkuDeliverInfo(JSONObject.toJSONString(item.getSku_deliver_info()));
                         oi.setExtraService(JSONObject.toJSONString(item.getExtra_service()));

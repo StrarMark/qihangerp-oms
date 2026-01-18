@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.qihangerp.module.order.mapper.OOrderMapper">
+<mapper namespace="cn.qihangerp.mapper.OOrderMapper">
 
     <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.OOrder">
             <id property="id" column="id" jdbcType="BIGINT"/>
@@ -13,21 +13,25 @@
             <result property="buyerMemo" column="buyer_memo" jdbcType="VARCHAR"/>
             <result property="sellerMemo" column="seller_memo" jdbcType="VARCHAR"/>
             <result property="tag" column="tag" jdbcType="VARCHAR"/>
-            <result property="refundStatus" column="refund_status" jdbcType="INTEGER"/>
-            <result property="orderStatus" column="order_status" jdbcType="INTEGER"/>
             <result property="goodsAmount" column="goods_amount" jdbcType="DOUBLE"/>
             <result property="postFee" column="post_fee" jdbcType="DOUBLE"/>
             <result property="sellerDiscount" column="seller_discount" jdbcType="DOUBLE"/>
             <result property="platformDiscount" column="platform_discount" jdbcType="DOUBLE"/>
+            <result property="changeAmount" column="change_amount" jdbcType="DOUBLE"/>
             <result property="amount" column="amount" jdbcType="DOUBLE"/>
             <result property="payment" column="payment" jdbcType="DOUBLE"/>
+            <result property="payDiscount" column="pay_discount" jdbcType="DOUBLE"/>
             <result property="receiverName" column="receiver_name" jdbcType="VARCHAR"/>
             <result property="receiverMobile" column="receiver_mobile" jdbcType="VARCHAR"/>
             <result property="address" column="address" jdbcType="VARCHAR"/>
             <result property="province" column="province" jdbcType="VARCHAR"/>
             <result property="city" column="city" jdbcType="VARCHAR"/>
             <result property="town" column="town" jdbcType="VARCHAR"/>
-            <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
+            <result property="orderCreateTime" column="order_create_time" jdbcType="TIMESTAMP"/>
+            <result property="orderUpdateTime" column="order_update_time" jdbcType="TIMESTAMP"/>
+            <result property="orderFinishTime" column="order_finish_time" jdbcType="TIMESTAMP"/>
+            <result property="orderStatus" column="order_status" jdbcType="VARCHAR"/>
+            <result property="orderStatusText" column="order_status_text" jdbcType="VARCHAR"/>
             <result property="shipper" column="shipper" jdbcType="BIGINT"/>
             <result property="shipType" column="ship_type" jdbcType="INTEGER"/>
             <result property="shipStatus" column="ship_status" jdbcType="INTEGER"/>
@@ -43,14 +47,12 @@
 
     <sql id="Base_Column_List">
         id,order_num,shop_type,
-        shop_id,remark,buyer_memo,
-        seller_memo,tag,refund_status,
-        order_status,goods_amount,post_fee,
-        seller_discount,platform_discount,amount,
-        payment,receiver_name,receiver_mobile,
-        address,province,city,
-        town,order_time,shipper,
-        ship_type,ship_status,ship_company,
+        shop_id,remark,buyer_memo,seller_memo,tag,
+          goods_amount,post_fee,seller_discount,platform_discount,change_amount,amount,payment,pay_discount,
+          receiver_name,receiver_mobile,
+        address,province,city,town,
+          order_create_time,order_update_time,order_finish_time,order_status,
+          shipper,ship_type,ship_status,ship_company,
         ship_code,ship_time,create_time,
         create_by,update_time,update_by,cancel_reason
     </sql>

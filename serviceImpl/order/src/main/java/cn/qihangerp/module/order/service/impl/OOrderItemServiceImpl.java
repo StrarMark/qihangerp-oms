@@ -7,7 +7,7 @@ import cn.qihangerp.module.goods.mapper.OGoodsSkuMapper;
 import cn.qihangerp.model.bo.OrderItemListBo;
 import cn.qihangerp.model.vo.OrderItemListVo;
 import cn.qihangerp.model.vo.SalesTopSkuVo;
-import cn.qihangerp.module.order.mapper.OOrderItemMapper;
+import cn.qihangerp.mapper.OOrderItemMapper;
 import cn.qihangerp.module.order.service.OOrderItemService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

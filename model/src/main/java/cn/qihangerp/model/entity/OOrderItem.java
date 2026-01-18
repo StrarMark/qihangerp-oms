@@ -50,6 +50,7 @@ public class OOrderItem implements Serializable {
      * 第三方平台skuId
      */
     private String skuId;
+    private String productId;
 
     /**
      * 商品id(o_goods外键)
@@ -95,11 +96,15 @@ public class OOrderItem implements Serializable {
      * 子订单金额
      */
     private Double itemAmount;
+    private Double goodsAmount;
 
     /**
-     * 子订单优惠金额
+     * 卖家优惠
      */
-    private Double discountAmount;
+    private Double sellerDiscount;
+    private Double platformDiscount;
+    private Double payDiscount;
+    private Double changeAmount;
 
     /**
      * 实际支付金额
@@ -126,10 +131,6 @@ public class OOrderItem implements Serializable {
      */
     private Integer refundStatus;
 
-    /**
-     * 订单状态1：待发货，2：已发货，3：已完成，11已取消；21待付款
-     */
-    private Integer orderStatus;
 
     /**
      * 发货人

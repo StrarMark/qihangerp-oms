@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.model.entity.OOrderShipListItem;
 import cn.qihangerp.module.order.service.OOrderShipListItemService;
-import cn.qihangerp.module.order.mapper.OOrderShipListItemMapper;
+import cn.qihangerp.mapper.OOrderShipListItemMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

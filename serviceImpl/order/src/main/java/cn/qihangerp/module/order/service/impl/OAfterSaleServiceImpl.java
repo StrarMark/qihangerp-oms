@@ -3,7 +3,7 @@ package cn.qihangerp.module.order.service.impl;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.model.entity.OAfterSale;
-import cn.qihangerp.module.order.mapper.OAfterSaleMapper;
+import cn.qihangerp.mapper.OAfterSaleMapper;
 import cn.qihangerp.module.order.service.OAfterSaleService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

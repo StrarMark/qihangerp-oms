@@ -175,6 +175,14 @@
           <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.auditStatus === 0 " size="small">待确认</el-tag>
         </template>
       </el-table-column>
+      <el-table-column label="确认状态" align="center" prop="status" >
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.auditStatus === 0 " size="small">待确认</el-tag>
+          <el-tag v-if="scope.row.auditStatus === 1 " size="small">已确认</el-tag>
+          <br/>
+          <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.auditStatus === 0 " size="small">待确认</el-tag>
+        </template>
+      </el-table-column>
 <!--      <el-table-column label="快递单号" align="center" prop="logisticsCode" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">

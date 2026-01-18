@@ -151,6 +151,7 @@ public class WeiOrderItem implements Serializable {
      * 商品优惠券信息，逐步替换 order.order_detail.coupon_info
      */
     private String orderProductCouponInfoList;
+    private Integer merchantDiscountedPrice;//商家优惠金额，单位为分
 
 
 
