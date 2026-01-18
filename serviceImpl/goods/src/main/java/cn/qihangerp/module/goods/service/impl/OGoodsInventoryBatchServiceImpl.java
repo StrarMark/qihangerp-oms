@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.model.entity.OGoodsInventoryBatch;
 import cn.qihangerp.module.goods.service.OGoodsInventoryBatchService;
-import cn.qihangerp.module.goods.mapper.OGoodsInventoryBatchMapper;
+import cn.qihangerp.mapper.OGoodsInventoryBatchMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

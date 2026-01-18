@@ -2,12 +2,12 @@ package cn.qihangerp.module.goods.service.impl;
 
 import cn.qihangerp.model.entity.OGoodsCategoryAttribute;
 import cn.qihangerp.model.entity.OGoodsCategoryAttributeValue;
-import cn.qihangerp.module.goods.mapper.OGoodsCategoryAttributeMapper;
-import cn.qihangerp.module.goods.mapper.OGoodsCategoryAttributeValueMapper;
+import cn.qihangerp.mapper.OGoodsCategoryAttributeMapper;
+import cn.qihangerp.mapper.OGoodsCategoryAttributeValueMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.model.entity.OGoodsCategory;
 import cn.qihangerp.module.goods.service.OGoodsCategoryService;
-import cn.qihangerp.module.goods.mapper.OGoodsCategoryMapper;
+import cn.qihangerp.mapper.OGoodsCategoryMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -194,11 +194,7 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
 
                 // 添加item
                 for (var item : order.getItems()) {
-                    List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
-                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                        item.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
-                        item.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
-                    }
+
                     item.setOrderSn(order.getOrderSn());
                     itemMapper.insert(item);
                 }
@@ -210,11 +206,6 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
-                    List<PddGoodsSku> pddGoodsSku = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
-                    if (pddGoodsSku != null && !pddGoodsSku.isEmpty()) {
-                        item.setOGoodsId(pddGoodsSku.get(0).getErpGoodsId().toString());
-                        item.setOGoodsSkuId(pddGoodsSku.get(0).getErpGoodsSkuId().toString());
-                    }
                     item.setOrderSn(order.getOrderSn());
                     itemMapper.insert(item);
                 }
@@ -262,14 +253,15 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
         order.setShipType(0);
         order.setBuyerMemo(pddOrder.getBuyerMemo());
         order.setSellerMemo(pddOrder.getRemark());
-        order.setRefundStatus(1);
-        order.setOrderStatus(1);
+
         order.setGoodsAmount(pddOrder.getGoodsAmount()!=null?pddOrder.getGoodsAmount():0.0);
         order.setPostFee(pddOrder.getPostage()!=null?pddOrder.getPostage():0.0);
         order.setSellerDiscount(pddOrder.getSellerDiscount()!=null?pddOrder.getSellerDiscount():0.0);
         order.setPlatformDiscount(pddOrder.getPlatformDiscount()!=null?pddOrder.getPlatformDiscount():0.0);
         order.setAmount(pddOrder.getPayAmount()!=null?pddOrder.getPayAmount():0.0);
         order.setPayment(pddOrder.getPayAmount()!=null?pddOrder.getPayAmount():0.0);
+        order.setPayDiscount(0.0);
+        order.setChangeAmount(pddOrder.getOrderChangeAmount());
         order.setReceiverName(confirmBo.getReceiver());
         order.setReceiverMobile(confirmBo.getMobile());
         order.setAddress(confirmBo.getAddress());
@@ -278,10 +270,18 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
         order.setTown(confirmBo.getTown());
         // 定义日期时间格式
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        // 将字符串转换为LocalDateTime
-        LocalDateTime orderTime = LocalDateTime.parse(pddOrder.getCreatedTime(), formatter);
+        order.setOrderCreateTime(StringUtils.hasText(pddOrder.getCreatedTime())?LocalDateTime.parse(pddOrder.getCreatedTime(), formatter):LocalDateTime.now());
+        order.setOrderUpdateTime(StringUtils.hasText(pddOrder.getUpdatedAt())?LocalDateTime.parse(pddOrder.getUpdatedAt(), formatter):LocalDateTime.now());
+        order.setOrderFinishTime(StringUtils.hasText(pddOrder.getReceiveTime())?LocalDateTime.parse(pddOrder.getReceiveTime(), formatter):null);
+        order.setOrderStatus(pddOrder.getOrderStatus().toString());
+        if(pddOrder.getOrderStatus().intValue() ==1){
+            order.setOrderStatusText("待发货");
+        }else if(pddOrder.getOrderStatus().intValue() ==2){
+            order.setOrderStatusText("已发货待签收");
+        }else if(pddOrder.getOrderStatus().intValue() ==3){
+            order.setOrderStatusText("已签收");
+        }
 
-        order.setOrderTime(StringUtils.hasText(pddOrder.getCreatedTime())?orderTime:LocalDateTime.now());
         order.setShipper(0L);
         order.setShipStatus(0);
         order.setCreateTime(new Date());
@@ -290,14 +290,22 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
         //插入item
         for (var item : pddOrderItems) {
             OOrderItem oOrderItem = new OOrderItem();
+            List<PddGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<PddGoodsSku>().eq(PddGoodsSku::getSkuId, item.getSkuId()));
+            if (skus != null && !skus.isEmpty()) {
+                oOrderItem.setGoodsId(skus.get(0).getErpGoodsId());
+                oOrderItem.setGoodsSkuId(skus.get(0).getErpGoodsSkuId());
+            }else {
+                return ResultVo.error("店铺商品找不到绑定的商品库商品");
+            }
+
             oOrderItem.setOrderId(order.getId());
             oOrderItem.setOrderNum(pddOrder.getOrderSn());
             oOrderItem.setSubOrderNum(pddOrder.getOrderSn()+"-"+item.getSkuId());
             oOrderItem.setShopType(EnumShopType.PDD.getIndex());
             oOrderItem.setShopId(pddOrder.getShopId());
+            // 商品信息
+            oOrderItem.setProductId(item.getGoodsId().toString());
             oOrderItem.setSkuId(item.getSkuId().toString());
-            oOrderItem.setGoodsId(StringUtils.hasText(item.getOGoodsId())?Long.parseLong(item.getOGoodsId()):0L);
-            oOrderItem.setGoodsSkuId(StringUtils.hasText(item.getOGoodsSkuId())?Long.parseLong(item.getOGoodsSkuId()):0L);
             oOrderItem.setGoodsTitle(item.getGoodsName());
             oOrderItem.setGoodsImg(item.getGoodsImg());
             oOrderItem.setGoodsNum(item.getOuterGoodsId());
@@ -305,12 +313,23 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
             oOrderItem.setSkuNum(item.getOuterId());
             oOrderItem.setGoodsPrice(item.getGoodsPrice()!=null?item.getGoodsPrice():0.0);
             oOrderItem.setQuantity(item.getGoodsCount());
-            oOrderItem.setItemAmount(oOrderItem.getGoodsPrice()*oOrderItem.getQuantity());
-            oOrderItem.setDiscountAmount(0.0);
-            oOrderItem.setPayment(0.0);
 
-            oOrderItem.setRefundCount(0);
-            oOrderItem.setRefundStatus(1);
+            // 价格信息
+            Double goodsAmount = item.getGoodsPrice() * item.getGoodsCount();
+            oOrderItem.setGoodsAmount(goodsAmount);
+            oOrderItem.setItemAmount(pddOrder.getPayAmount());
+            oOrderItem.setSellerDiscount(pddOrder.getSellerDiscount());
+            oOrderItem.setPlatformDiscount(pddOrder.getPlatformDiscount());
+            oOrderItem.setPayDiscount(0.0);
+            oOrderItem.setChangeAmount(pddOrder.getOrderChangeAmount());
+            oOrderItem.setPayment(pddOrder.getPayAmount());
+            if(pddOrder.getRefundStatus().intValue()==1) {
+                oOrderItem.setRefundCount(0);
+                oOrderItem.setRefundStatus(1);
+            }else{
+                oOrderItem.setRefundStatus(pddOrder.getRefundStatus());
+                oOrderItem.setRefundCount(item.getGoodsCount());
+            }
             oOrderItem.setShipper(0l);
             oOrderItem.setShipType(order.getShipType());
             oOrderItem.setShipStatus(0);

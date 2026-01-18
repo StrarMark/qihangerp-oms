@@ -100,11 +100,11 @@
 <!--            <artifactId>goods-api</artifactId>-->
 <!--            <version>1.0.6</version>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>order</artifactId>
-            <version>2.0.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.qihangerp.service</groupId>-->
+<!--            <artifactId>order</artifactId>-->
+<!--            <version>2.0.0</version>-->
+<!--        </dependency>-->
 <!--        <dependency>-->
 <!--            <groupId>cn.qihangerp.services</groupId>-->
 <!--            <artifactId>order-api</artifactId>-->

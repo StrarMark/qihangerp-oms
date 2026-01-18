@@ -74,8 +74,5 @@ public class PddOrderItem implements Serializable {
      * 备注
      */
     private String remark;
-    private String oGoodsId;
-    private String oGoodsSkuId;
-
     private static final long serialVersionUID = 1L;
 }

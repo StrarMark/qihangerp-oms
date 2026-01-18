@@ -9,7 +9,7 @@ import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.OfflineOrder;
 import cn.qihangerp.model.bo.OfflineOrderShipBo;
 import cn.qihangerp.model.bo.OrderShipSendBo;
-import cn.qihangerp.module.order.service.OfflineOrderService;
+import cn.qihangerp.module.service.OfflineOrderService;
 import cn.qihangerp.security.common.BaseController;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;

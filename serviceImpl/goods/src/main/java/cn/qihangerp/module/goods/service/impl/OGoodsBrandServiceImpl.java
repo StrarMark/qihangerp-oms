@@ -7,7 +7,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.model.entity.OGoodsBrand;
 import cn.qihangerp.module.goods.service.OGoodsBrandService;
-import cn.qihangerp.module.goods.mapper.OGoodsBrandMapper;
+import cn.qihangerp.mapper.OGoodsBrandMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
