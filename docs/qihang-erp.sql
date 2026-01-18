@@ -4742,8 +4742,6 @@ CREATE TABLE `oms_wei_refund`  (
   `refund_resp` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '微信支付退款的响应',
   `pull_status` int NULL DEFAULT NULL COMMENT '推送状态（0未推送；1推送成功；2推送失败）',
   `pull_time` datetime NULL DEFAULT NULL COMMENT '订单审核时间',
-  `o_goods_id` bigint NULL DEFAULT NULL COMMENT '商品id(o_goods外键)',
-  `o_goods_sku_id` bigint NULL DEFAULT NULL COMMENT '商品skuid(o_goods_sku外键)',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '视频号小店退款' ROW_FORMAT = DYNAMIC;
 

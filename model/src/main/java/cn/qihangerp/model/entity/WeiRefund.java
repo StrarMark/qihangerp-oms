@@ -168,15 +168,6 @@ USER_WAIT_HANDLE_MERCHANT_AFTER_SALE	待用户处理商家代发起的售后申�
      */
     private Date pullTime;
 
-    /**
-     * 商品id(o_goods外键)
-     */
-    private Long oGoodsId;
-
-    /**
-     * 商品skuid(o_goods_sku外键)
-     */
-    private Long oGoodsSkuId;
 
     private static final long serialVersionUID = 1L;
 }
