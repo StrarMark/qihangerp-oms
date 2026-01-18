@@ -3,7 +3,7 @@ package cn.qihangerp.oms.tao.controller;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
-import cn.qihangerp.module.goods.service.OGoodsSkuService;
+import cn.qihangerp.module.service.OGoodsSkuService;
 import cn.qihangerp.model.entity.TaoGoods;
 import cn.qihangerp.model.entity.TaoGoodsSku;
 import cn.qihangerp.model.bo.TaoGoodsBo;

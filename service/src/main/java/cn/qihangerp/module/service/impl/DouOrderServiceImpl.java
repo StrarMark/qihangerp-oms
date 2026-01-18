@@ -1,0 +1,312 @@
+package cn.qihangerp.module.service.impl;
+
+import cn.qihangerp.common.PageQuery;
+import cn.qihangerp.common.PageResult;
+import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.common.ResultVoEnum;
+import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.common.utils.DateUtils;
+import cn.qihangerp.mapper.*;
+import cn.qihangerp.model.entity.*;
+import cn.qihangerp.model.bo.DouOrderBo;
+import cn.qihangerp.model.bo.DouOrderConfirmBo;
+import cn.qihangerp.module.service.DouOrderService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.StringUtils;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+* @author TW
+* @description 针对表【dou_order(抖店订单表)】的数据库操作Service实现
+* @createDate 2024-06-05 15:06:31
+*/
+@Slf4j
+@AllArgsConstructor
+@Service
+public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
+    implements DouOrderService {
+    private final DouOrderMapper mapper;
+    private final DouOrderItemMapper itemMapper;
+    private final DouGoodsSkuMapper goodsSkuMapper;
+    private final DouOOrderMapper oOrderMapper;
+    private final DouOOrderItemMapper oOrderItemMapper;
+
+
+    private final String DATE_PATTERN =
+            "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
+    private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
+    @Override
+    public PageResult<DouOrder> queryPageList(DouOrderBo bo, PageQuery pageQuery) {
+        long startTimeStamp = 0;
+        long endTimeStamp = 0;
+        if(StringUtils.hasText(bo.getStartTime())){
+            Matcher matcher = DATE_FORMAT.matcher(bo.getStartTime());
+            boolean b = matcher.find();
+            if(b){
+                bo.setStartTime(bo.getStartTime()+" 00:00:00");
+                startTimeStamp = DateUtils.dateTimeStrToTimeStamp(null,bo.getStartTime());
+            }
+        }
+        if(StringUtils.hasText(bo.getEndTime())){
+            Matcher matcher = DATE_FORMAT.matcher(bo.getEndTime());
+            boolean b = matcher.find();
+            if(b){
+                bo.setEndTime(bo.getEndTime()+" 23:59:59");
+                endTimeStamp = DateUtils.dateTimeStrToTimeStamp(null,bo.getEndTime());
+            }
+        }
+
+        LambdaQueryWrapper<DouOrder> queryWrapper = new LambdaQueryWrapper<DouOrder>()
+                .eq(bo.getShopId()!=null,DouOrder::getSShopId,bo.getShopId())
+                .eq(StringUtils.hasText(bo.getOrderId()),DouOrder::getOrderId,bo.getOrderId())
+                .eq(StringUtils.hasText(bo.getOrderStatus()),DouOrder::getOrderStatus,bo.getOrderStatus())
+                .ge(StringUtils.hasText(bo.getStartTime()),DouOrder::getCreateTime, startTimeStamp)
+                .le(StringUtils.hasText(bo.getEndTime()),DouOrder::getCreateTime,endTimeStamp)
+                ;
+        pageQuery.setOrderByColumn("create_time");
+        pageQuery.setIsAsc("desc");
+        Page<DouOrder> taoGoodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
+        if(taoGoodsPage.getRecords()!=null){
+            for (var order:taoGoodsPage.getRecords()) {
+                order.setItems(itemMapper.selectList(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getParentOrderId,order.getOrderId())));
+            }
+        }
+        return PageResult.build(taoGoodsPage);
+    }
+
+    @Override
+    public DouOrder queryDetailById(Long id) {
+        DouOrder douOrder = mapper.selectById(id);
+        if(douOrder!=null) {
+            douOrder.setItems(itemMapper.selectList(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getParentOrderId,douOrder.getOrderId())));
+        }
+        return  douOrder;
+    }
+
+    @Override
+    public DouOrder queryDetailByOrderId(String orderId) {
+        List<DouOrder> douOrders = mapper.selectList(new LambdaQueryWrapper<DouOrder>().eq(DouOrder::getOrderId,orderId));
+        if(!douOrders.isEmpty()) {
+            douOrders.get(0).setItems(itemMapper.selectList(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getParentOrderId,douOrders.get(0).getOrderId())));
+            return douOrders.get(0);
+        }else return null;
+    }
+
+    @Transactional
+    @Override
+    public ResultVo<Integer> saveOrder(Long shopId, DouOrder order) {
+        if(order == null ) return ResultVo.error(ResultVoEnum.SystemException);
+        try {
+
+            List<DouOrder> taoOrders = mapper.selectList(new LambdaQueryWrapper<DouOrder>().eq(DouOrder::getOrderId, order.getOrderId()));
+            if (taoOrders != null && taoOrders.size() > 0) {
+                // 存在，修改
+                DouOrder update = new DouOrder();
+
+                update.setId(taoOrders.get(0).getId());
+                update.setSShopId(shopId);
+                update.setShopId(order.getShopId());
+                update.setOrderStatus(order.getOrderStatus());
+                update.setOrderStatusDesc(order.getOrderStatusDesc());
+                update.setBuyerWords(order.getBuyerWords());
+                update.setSellerWords(order.getSellerWords());
+                update.setSellerRemarkStars(order.getSellerRemarkStars());
+                update.setCancelReason(order.getCancelReason());
+                update.setChannelPaymentNo(order.getChannelPaymentNo());
+                update.setPayTime(order.getPayTime());
+                update.setUpdateTime(order.getUpdateTime());
+                update.setFinishTime(order.getFinishTime());
+                update.setOrderExpireTime(order.getOrderExpireTime());
+                update.setLogisticsInfo(order.getLogisticsInfo());
+                update.setMainStatus(order.getMainStatus());
+                update.setMainStatusDesc(order.getMainStatusDesc());
+                update.setMaskPostReceiver(order.getMaskPostReceiver());
+                update.setMaskPostTel(order.getMaskPostTel());
+                update.setMaskPostAddress(order.getMaskPostAddress());
+                update.setPayAmount(order.getPayAmount());
+                update.setPayType(order.getPayType());
+                update.setShipTime(order.getShipTime());
+                update.setTotalPromotionAmount(order.getTotalPromotionAmount());
+                update.setModifyAmount(order.getModifyAmount());
+                update.setModifyPostAmount(order.getModifyPostAmount());
+                update.setLastPullTime(new Date());
+                update.setCreateTime(order.getCreateTime());
+                mapper.updateById(update);
+                // 删除item
+                itemMapper.delete(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getParentOrderId,order.getOrderId()));
+                for (var item : order.getItems()) {
+                    // 新增
+//                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
+//                    if (goodsSku != null) {
+//                        item.setOGoodsId(goodsSku.getErpGoodsId());
+//                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId());
+//                    }
+                    itemMapper.insert(item);
+                }
+                return ResultVo.error(ResultVoEnum.DataExist, "订单已经存在，更新成功");
+            } else {
+                // 不存在，新增
+                order.setSShopId(shopId);
+                order.setAuditStatus(0);
+                order.setPullTime(new Date());
+                mapper.insert(order);
+                // 添加item
+                for (var item : order.getItems()) {
+//                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
+//                    if (goodsSku != null) {
+//                        item.setOGoodsId(goodsSku.getErpGoodsId());
+//                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId());
+//                    }
+                    itemMapper.insert(item);
+                }
+
+                return ResultVo.success();
+            }
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            e.printStackTrace();
+            log.info("保存订单数据错误："+e.getMessage());
+            return ResultVo.error(ResultVoEnum.SystemException, "系统异常：" + e.getMessage());
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ResultVo<Long> confirmOrder(DouOrderConfirmBo confirmBo) {
+        DouOrder douOrder = mapper.selectById(confirmBo.getOrderId());
+        if(douOrder==null) return ResultVo.error("订单数据不存在");
+        if(douOrder.getAuditStatus()!=0) return ResultVo.error("已经确认过了！");
+
+        List<DouOrderItem> douOrderItems = itemMapper.selectList(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getParentOrderId, douOrder.getOrderId()));
+        if(douOrderItems==null || douOrderItems.isEmpty()){
+            return ResultVo.error("找不到订单item");
+        }
+
+        OOrder erpOrder = oOrderMapper.selectOne(new LambdaQueryWrapper<OOrder>().eq(OOrder::getOrderNum,douOrder.getOrderId()));
+        if(erpOrder!=null) {
+            // 已经确认过了，更新自己
+            DouOrder douOrderUpdate = new DouOrder();
+            douOrderUpdate.setId(douOrder.getId());
+            douOrderUpdate.setAuditStatus(1);
+            douOrderUpdate.setAuditTime(new Date());
+            mapper.updateById(douOrderUpdate);
+
+            return ResultVo.error("已经确认过了");
+        }
+
+        OOrder order = new OOrder();
+        order.setOrderNum(douOrder.getOrderId());
+        order.setShopType(EnumShopType.DOU.getIndex());
+        order.setShopId(douOrder.getSShopId());
+//        order.setShipType(confirmBo.getShipType());
+        order.setShipType(0);
+        order.setBuyerMemo(douOrder.getBuyerWords());
+        order.setSellerMemo(douOrder.getSellerWords());
+
+        order.setGoodsAmount(douOrder.getOrderAmount()!=null?douOrder.getOrderAmount().doubleValue()/100:0.0);
+        order.setPostFee(douOrder.getPostAmount()!=null?douOrder.getPostAmount().doubleValue()/100:0.0);
+        order.setSellerDiscount(douOrder.getPromotionShopAmount()!=null?douOrder.getPromotionShopAmount().doubleValue()/100:0.0);
+        order.setPlatformDiscount(douOrder.getPromotionPlatformAmount()!=null?douOrder.getPromotionPlatformAmount().doubleValue()/100:0.0);
+        order.setAmount(douOrder.getPayAmount()!=null?douOrder.getPayAmount().doubleValue()/100:0.0);
+        order.setPayment(douOrder.getPayAmount()!=null?douOrder.getPayAmount().doubleValue()/100:0.0);
+        order.setPayDiscount(douOrder.getPromotionPayAmount()!=null?douOrder.getPromotionPayAmount().doubleValue()/100:0.0);
+        order.setChangeAmount(douOrder.getModifyAmount()!=null?douOrder.getModifyAmount().doubleValue()/100:0.0);
+
+        order.setReceiverName(confirmBo.getReceiver());
+        order.setReceiverMobile(confirmBo.getMobile());
+        order.setAddress(confirmBo.getAddress());
+        order.setProvince(confirmBo.getProvince());
+        order.setCity(confirmBo.getCity());
+        order.setTown(confirmBo.getTown());
+        //订单状态
+        order.setOrderStatus(douOrder.getOrderStatus().toString());
+        order.setOrderStatusText(douOrder.getOrderStatusDesc());
+
+//        LocalDateTime orderTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getCreateTime()), ZoneId.systemDefault());
+        order.setOrderCreateTime(douOrder.getCreateTime()!=null?LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getCreateTime()), ZoneId.systemDefault()):null);
+        order.setOrderUpdateTime(douOrder.getUpdateTime()!=null?LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getUpdateTime()), ZoneId.systemDefault()):null);
+        order.setOrderCreateTime(douOrder.getFinishTime()!=null?LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getFinishTime()), ZoneId.systemDefault()):null);
+//        order.setOrderTime(douOrder.getCreateTime()!=null?new Date(douOrder.getCreateTime()*1000):new Date());
+        order.setShipper(0L);
+        order.setShipStatus(0);
+        order.setCreateTime(new Date());
+        order.setCreateBy("手动确认订单");
+        oOrderMapper.insert(order);
+        //插入item
+        for (var item : douOrderItems) {
+            OOrderItem oOrderItem = new OOrderItem();
+            DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
+            if (goodsSku != null) {
+                oOrderItem.setGoodsId(Long.parseLong(goodsSku.getErpGoodsId()));
+                oOrderItem.setGoodsSkuId(Long.parseLong(goodsSku.getErpGoodsSkuId()));
+            }else {
+                return ResultVo.error("店铺商品找不到绑定的商品库商品");
+            }
+            oOrderItem.setOrderId(order.getId());
+            oOrderItem.setOrderNum(douOrder.getOrderId());
+            oOrderItem.setSubOrderNum(item.getOrderId());
+            oOrderItem.setShopType(EnumShopType.DOU.getIndex());
+            oOrderItem.setShopId(douOrder.getSShopId());
+            oOrderItem.setProductId(item.getProductId().toString());
+            oOrderItem.setSkuId(item.getSkuId().toString());
+            oOrderItem.setGoodsTitle(item.getProductName());
+            oOrderItem.setGoodsImg(item.getProductPic());
+            oOrderItem.setGoodsNum(item.getOutProductId());
+            oOrderItem.setGoodsSpec(item.getSpec());
+            oOrderItem.setSkuNum(item.getOutSkuId());
+            oOrderItem.setQuantity(item.getItemNum());
+
+            oOrderItem.setGoodsPrice(item.getGoodsPrice()!=null?item.getGoodsPrice().doubleValue()/100:0.0);
+            oOrderItem.setItemAmount(item.getOrderAmount()!=null?item.getOrderAmount().doubleValue()/100:0.0);
+            oOrderItem.setSellerDiscount(douOrder.getPromotionShopAmount()!=null?douOrder.getPromotionShopAmount().doubleValue()/100:0.0);
+            oOrderItem.setPlatformDiscount(douOrder.getPromotionPlatformAmount()!=null?douOrder.getPromotionPlatformAmount().doubleValue()/100:0.0);
+            oOrderItem.setChangeAmount(douOrder.getModifyAmount()!=null?douOrder.getModifyAmount().doubleValue()/100:0.0);
+            oOrderItem.setPayDiscount(douOrder.getPromotionPayAmount()!=null?douOrder.getPromotionPayAmount().doubleValue()/100:0.0);
+            oOrderItem.setPayment(item.getPayAmount()!=null?item.getPayAmount().doubleValue()/100:0.0);
+
+            //售后状态；6-售后申请；27-拒绝售后申请；12-售后成功；7-售后退货中；11-售后已发货；29-售后退货拒绝；
+            // 13-【换货返回：换货售后换货商家发货】，【补寄返回：补寄待用户收货】； 14-【换货返回：（换货）售后换货用户收货】，【补寄返回：（补寄）用户已收货】 ；
+            // 28-售后失败；51-订单取消成功；53-逆向交易已完成；
+            if(item.getAfterSaleStatus()==null||item.getAfterSaleStatus()==0){
+                oOrderItem.setRefundCount(0);
+                oOrderItem.setRefundStatus(1);
+            }else {
+                oOrderItem.setRefundCount(item.getItemNum());
+                oOrderItem.setRefundStatus(4);
+            }
+
+
+            oOrderItem.setShipper(0L);
+            oOrderItem.setShipType(order.getShipType());
+            oOrderItem.setShipStatus(0);
+            oOrderItem.setCreateTime(new Date());
+            oOrderItem.setCreateBy("手动确认订单");
+            oOrderItemMapper.insert(oOrderItem);
+        }
+        // 已经确认过了，更新自己
+        DouOrder douOrderUpdate = new DouOrder();
+        douOrderUpdate.setId(douOrder.getId());
+        douOrderUpdate.setAuditStatus(1);
+        douOrderUpdate.setAuditTime(new Date());
+        mapper.updateById(douOrderUpdate);
+        return ResultVo.success();
+    }
+}
+
+
+
+

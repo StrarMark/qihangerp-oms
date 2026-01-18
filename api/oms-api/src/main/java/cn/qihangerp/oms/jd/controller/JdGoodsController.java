@@ -3,7 +3,7 @@ package cn.qihangerp.oms.jd.controller;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
-import cn.qihangerp.module.goods.service.OGoodsSkuService;
+import cn.qihangerp.module.service.OGoodsSkuService;
 import cn.qihangerp.model.entity.JdGoods;
 import cn.qihangerp.model.entity.JdGoodsSku;
 import cn.qihangerp.model.bo.JdGoodsBo;

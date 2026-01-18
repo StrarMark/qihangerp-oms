@@ -18,8 +18,7 @@
             <result property="productNo" column="product_no" jdbcType="VARCHAR"/>
             <result property="serviceName" column="service_name" jdbcType="VARCHAR"/>
             <result property="newStoreId" column="new_store_id" jdbcType="VARCHAR"/>
-            <result property="erpGoodsId" column="erp_goods_id" jdbcType="BIGINT"/>
-            <result property="erpGoodsSkuId" column="erp_goods_sku_id" jdbcType="BIGINT"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">

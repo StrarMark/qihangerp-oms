@@ -112,11 +112,11 @@
 <!--            <version>1.18.30</version>-->
 <!--            <scope>provided</scope>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>cn.qihangerp.service</groupId>
-            <artifactId>dou</artifactId>
-            <version>2.0.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.qihangerp.service</groupId>-->
+<!--            <artifactId>dou</artifactId>-->
+<!--            <version>2.0.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>

@@ -8,8 +8,8 @@ import cn.qihangerp.common.utils.DateUtils;
 
 import cn.qihangerp.model.entity.OGoodsInventory;
 import cn.qihangerp.model.entity.OGoodsInventoryBatch;
-import cn.qihangerp.module.goods.service.OGoodsInventoryBatchService;
-import cn.qihangerp.module.goods.service.OGoodsInventoryService;
+import cn.qihangerp.module.service.OGoodsInventoryBatchService;
+import cn.qihangerp.module.service.OGoodsInventoryService;
 import cn.qihangerp.model.entity.ErpStockIn;
 import cn.qihangerp.model.entity.ErpStockInItem;
 import cn.qihangerp.module.stock.mapper.ErpStockInMapper;

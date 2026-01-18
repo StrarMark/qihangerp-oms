@@ -80,15 +80,7 @@ public class JdOrderItem implements Serializable {
      */
     private String newStoreId;
 
-    /**
-     * 商品id(o_goods外键)
-     */
-    private Long erpGoodsId;
 
-    /**
-     * 商品skuid(o_goods_sku外键)
-     */
-    private Long erpGoodsSkuId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

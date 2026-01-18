@@ -16,13 +16,13 @@
     <url>http://maven.apache.org</url>
     <modules>
         <module>sys</module>
-        <module>goods</module>
+<!--        <module>goods</module>-->
 <!--        <module>order</module>-->
 <!--        <module>service</module>-->
         <module>wei</module>
         <module>stock</module>
         <module>jd</module>
-        <module>dou</module>
+<!--        <module>dou</module>-->
         <module>tao</module>
         <module>pdd</module>
 <!--        <module>erp</module>-->
