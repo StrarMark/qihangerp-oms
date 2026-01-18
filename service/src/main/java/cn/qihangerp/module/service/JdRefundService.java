@@ -1,4 +1,4 @@
-package cn.qihangerp.module.open.jd.service;
+package cn.qihangerp.module.service;
 
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;

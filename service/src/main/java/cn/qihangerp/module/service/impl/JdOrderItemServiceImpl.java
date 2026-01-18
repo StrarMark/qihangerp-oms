@@ -1,4 +1,4 @@
-package cn.qihangerp.module.open.jd.service.impl;
+package cn.qihangerp.module.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.model.entity.JdOrderItem;

@@ -1,4 +1,4 @@
-package cn.qihangerp.module.open.jd.mapper;
+package cn.qihangerp.mapper;
 
 import cn.qihangerp.model.entity.JdOrderItem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

@@ -1,6 +1,5 @@
-package cn.qihangerp.module.open.jd.service.impl;
+package cn.qihangerp.module.service.impl;
 
-import cn.qihangerp.model.entity.JdGoodsSku;
 import cn.qihangerp.model.entity.JdOrder;
 import cn.qihangerp.model.entity.JdOrderCoupon;
 import cn.qihangerp.module.open.jd.mapper.JdGoodsSkuMapper;

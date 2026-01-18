@@ -1,4 +1,4 @@
-package cn.qihangerp.module.open.jd.service.impl;
+package cn.qihangerp.module.service.impl;
 
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
