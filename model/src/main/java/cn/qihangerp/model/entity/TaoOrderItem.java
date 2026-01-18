@@ -73,7 +73,7 @@ public class TaoOrderItem implements Serializable {
     /**
      * 商品价格
      */
-    private BigDecimal price;
+    private Double price;
 
     /**
      * 商品数字ID
@@ -222,8 +222,6 @@ PAY_PENDING(国际信用卡支付付款确认中)
 
     private String isShShip;
 
-    private String oGoodsId;
-    private String oGoodsSkuId;
 
     private static final long serialVersionUID = 1L;
 
@@ -235,21 +233,6 @@ PAY_PENDING(国际信用卡支付付款确认中)
         this.isShShip = isShShip;
     }
 
-    public String getoGoodsId() {
-        return oGoodsId;
-    }
-
-    public void setoGoodsId(String oGoodsId) {
-        this.oGoodsId = oGoodsId;
-    }
-
-    public String getoGoodsSkuId() {
-        return oGoodsSkuId;
-    }
-
-    public void setoGoodsSkuId(String oGoodsSkuId) {
-        this.oGoodsSkuId = oGoodsSkuId;
-    }
 
     /**
      * 
@@ -408,14 +391,14 @@ PAY_PENDING(国际信用卡支付付款确认中)
     /**
      * 商品价格
      */
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
     /**
      * 商品价格
      */
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

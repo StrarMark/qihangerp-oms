@@ -165,20 +165,20 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
                         itemUpdate.setShippingType(item.getShippingType());
                         itemUpdate.setLogisticsCompany(item.getLogisticsCompany());
                         itemUpdate.setInvoiceNo(item.getInvoiceNo());
-                        List<TaoGoodsSku> skus = goodsSkuService.list(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, item.getSkuId()));
-                        if (skus != null && !skus.isEmpty()) {
-                            itemUpdate.setoGoodsId(skus.get(0).getErpGoodsId().toString());
-                            itemUpdate.setoGoodsSkuId(skus.get(0).getErpGoodsSkuId().toString());
-                        }
+//                        List<TaoGoodsSku> skus = goodsSkuService.list(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, item.getSkuId()));
+//                        if (skus != null && !skus.isEmpty()) {
+//                            itemUpdate.setoGoodsId(skus.get(0).getErpGoodsId().toString());
+//                            itemUpdate.setoGoodsSkuId(skus.get(0).getErpGoodsSkuId().toString());
+//                        }
 
                         itemMapper.updateById(itemUpdate);
                     } else {
                         // 新增
-                        List<TaoGoodsSku> skus = goodsSkuService.list(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, item.getSkuId()));
-                        if (skus != null && !skus.isEmpty()) {
-                            item.setoGoodsId(skus.get(0).getErpGoodsId().toString());
-                            item.setoGoodsSkuId(skus.get(0).getErpGoodsSkuId().toString());
-                        }
+//                        List<TaoGoodsSku> skus = goodsSkuService.list(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, item.getSkuId()));
+//                        if (skus != null && !skus.isEmpty()) {
+//                            item.setoGoodsId(skus.get(0).getErpGoodsId().toString());
+//                            item.setoGoodsSkuId(skus.get(0).getErpGoodsSkuId().toString());
+//                        }
                         itemMapper.insert(item);
                     }
                 }
@@ -266,8 +266,6 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
         order.setShipType(0);
         order.setBuyerMemo(taoOrder.getBuyerMemo());
         order.setSellerMemo(taoOrder.getSellerMemo());
-        order.setRefundStatus(1);
-        order.setOrderStatus(1);
         order.setGoodsAmount(taoOrder.getTotalFee()!=null?taoOrder.getTotalFee():0.0);
         order.setPostFee(taoOrder.getPostFee()!=null?taoOrder.getPostFee().doubleValue():0.0);
         order.setSellerDiscount(taoOrder.getDiscountFee()!=null?taoOrder.getDiscountFee().doubleValue():0.0);
@@ -282,10 +280,41 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
         order.setTown(confirmBo.getTown());
         // 定义日期时间格式
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        // 将字符串转换为LocalDateTime
-        LocalDateTime orderTime = LocalDateTime.parse(taoOrder.getCreated(), formatter);
+        order.setOrderCreateTime(StringUtils.hasText(taoOrder.getCreated())?LocalDateTime.parse(taoOrder.getCreated(), formatter):LocalDateTime.now());
+        order.setOrderUpdateTime(StringUtils.hasText(taoOrder.getModified())?LocalDateTime.parse(taoOrder.getModified(), formatter):LocalDateTime.now());
+        order.setOrderFinishTime(StringUtils.hasText(taoOrder.getEndTime())?LocalDateTime.parse(taoOrder.getEndTime(), formatter):LocalDateTime.now());
 
-        order.setOrderTime(StringUtils.hasText(taoOrder.getCreated())?orderTime:LocalDateTime.now());
+        order.setOrderStatus(taoOrder.getStatus());
+        // 交易状态。可选值: * TRADE_NO_CREATE_PAY(没有创建支付宝交易) * WAIT_BUYER_PAY(等待买家付款) * SELLER_CONSIGNED_PART(卖家部分发货)
+        // * WAIT_SELLER_SEND_GOODS(等待卖家发货,即:买家已付款) * WAIT_BUYER_CONFIRM_GOODS(等待买家确认收货,即:卖家已发货)
+        // * TRADE_BUYER_SIGNED(买家已签收,货到付款专用) * TRADE_FINISHED(交易成功) * TRADE_CLOSED(付款以后用户退款成功，交易自动关闭)
+        // * TRADE_CLOSED_BY_TAOBAO(付款以前，卖家或买家主动关闭交易) * PAY_PENDING(国际信用卡支付付款确认中) * WAIT_PRE_AUTH_CONFIRM(0元购合约中)
+        // * PAID_FORBID_CONSIGN(拼团中订单或者发货强管控的订单，已付款但禁止发货)
+        if(taoOrder.getStatus().equals("TRADE_NO_CREATE_PAY")) {
+            order.setOrderStatusText("没有创建支付宝交易");
+        }else if(taoOrder.getStatus().equals("WAIT_BUYER_PAY")) {
+            order.setOrderStatusText("等待买家付款");
+        }else if(taoOrder.getStatus().equals("SELLER_CONSIGNED_PART")) {
+            order.setOrderStatusText("卖家部分发货");
+        }else if(taoOrder.getStatus().equals("WAIT_SELLER_SEND_GOODS")) {
+            order.setOrderStatusText("等待卖家发货");
+        }else if(taoOrder.getStatus().equals("WAIT_BUYER_CONFIRM_GOODS")) {
+            order.setOrderStatusText("等待买家确认收货");
+        }else if(taoOrder.getStatus().equals("TRADE_BUYER_SIGNED")) {
+            order.setOrderStatusText("买家已签收,货到付款专用");
+        }else if(taoOrder.getStatus().equals("TRADE_FINISHED")) {
+            order.setOrderStatusText("交易成功");
+        }else if(taoOrder.getStatus().equals("TRADE_CLOSED")) {
+            order.setOrderStatusText("付款以后用户退款成功，交易自动关闭");
+        }else if(taoOrder.getStatus().equals("TRADE_CLOSED_BY_TAOBAO")) {
+            order.setOrderStatusText("付款以前，卖家或买家主动关闭交易");
+        }else if(taoOrder.getStatus().equals("PAY_PENDING")) {
+            order.setOrderStatusText("国际信用卡支付付款确认中");
+        }else if(taoOrder.getStatus().equals("WAIT_PRE_AUTH_CONFIRM")) {
+            order.setOrderStatusText("0元购合约中");
+        }else if(taoOrder.getStatus().equals("PAID_FORBID_CONSIGN")) {
+            order.setOrderStatusText("拼团中订单或者发货强管控的订单，已付款但禁止发货");
+        }
         order.setShipper(0l);
         order.setShipStatus(0);
         order.setCreateTime(new Date());
@@ -294,14 +323,20 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
         //插入item
         for (var item : pddOrderItems) {
             OOrderItem oOrderItem = new OOrderItem();
+            List<TaoGoodsSku> skus = goodsSkuService.list(new LambdaQueryWrapper<TaoGoodsSku>().eq(TaoGoodsSku::getSkuId, item.getSkuId()));
+            if (skus != null && !skus.isEmpty()) {
+                oOrderItem.setGoodsId(skus.get(0).getErpGoodsId());
+                oOrderItem.setGoodsSkuId(skus.get(0).getErpGoodsSkuId());
+            }else {
+                return ResultVo.error("店铺商品找不到绑定的商品库商品");
+            }
             oOrderItem.setOrderId(order.getId());
             oOrderItem.setOrderNum(order.getOrderNum());
             oOrderItem.setSubOrderNum(item.getOid().toString());
             oOrderItem.setShopType(EnumShopType.TAO.getIndex());
             oOrderItem.setShopId(taoOrder.getShopId());
             oOrderItem.setSkuId(item.getSkuId().toString());
-            oOrderItem.setGoodsId(StringUtils.hasText(item.getoGoodsId())?Long.parseLong(item.getoGoodsId()):0L);
-            oOrderItem.setGoodsSkuId(StringUtils.hasText(item.getoGoodsSkuId())?Long.parseLong(item.getoGoodsSkuId()):0L);
+            oOrderItem.setProductId(item.getNumIid());
             oOrderItem.setGoodsTitle(item.getTitle());
             oOrderItem.setGoodsImg(item.getPicPath());
             oOrderItem.setGoodsNum(item.getOuterIid());
@@ -309,12 +344,26 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
             oOrderItem.setSkuNum(item.getOuterSkuId());
             oOrderItem.setGoodsPrice(item.getPrice()!=null?item.getPrice().doubleValue():0.0);
             oOrderItem.setQuantity(item.getNum());
-            oOrderItem.setItemAmount(oOrderItem.getGoodsPrice()*oOrderItem.getQuantity());
-            oOrderItem.setDiscountAmount(0.0);
-            oOrderItem.setPayment(0.0);
+            // 价格信息
+            Double goodsAmount = item.getPrice() * item.getNum();
+            oOrderItem.setGoodsAmount(goodsAmount);
+            oOrderItem.setItemAmount(item.getTotalFee().doubleValue());
+            oOrderItem.setSellerDiscount(item.getDiscountFee().doubleValue());
+            oOrderItem.setPlatformDiscount(item.getPartMjzDiscount());
+            oOrderItem.setChangeAmount(item.getAdjustFee().doubleValue());
+            oOrderItem.setPayDiscount(0.0);
+            oOrderItem.setPayment(item.getPayment());
 
-            oOrderItem.setRefundCount(0);
-            oOrderItem.setRefundStatus(1);
+            // 退款状态。退款状态。可选值 WAIT_SELLER_AGREE(买家已经申请退款，等待卖家同意)
+            // WAIT_BUYER_RETURN_GOODS(卖家已经同意退款，等待买家退货) WAIT_SELLER_CONFIRM_GOODS(买家已经退货，等待卖家确认收货)
+            // SELLER_REFUSE_BUYER(卖家拒绝退款) CLOSED(退款关闭) SUCCESS(退款成功)
+            if(StringUtils.isEmpty(item.getRefundStatus())||item.getRefundStatus().equals("NO_REFUND")||item.getRefundStatus().equals("CLOSED")) {
+                oOrderItem.setRefundCount(0);
+                oOrderItem.setRefundStatus(1);
+            } else {
+                oOrderItem.setRefundCount(item.getNum());
+                oOrderItem.setRefundStatus(4);
+            }
             oOrderItem.setShipper(0l);
             oOrderItem.setShipType(order.getShipType());
             oOrderItem.setShipStatus(0);

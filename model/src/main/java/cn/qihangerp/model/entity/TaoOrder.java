@@ -192,7 +192,7 @@ public class TaoOrder implements Serializable {
     /**
      * 交易结束时间。交易成功时间(更新交易状态为成功的同时更新)/确认收货时间或者交易关闭时间 。格式:yyyy-MM-dd HH:mm:ss
      */
-    private Date endTime;
+    private String endTime;
 
     /**
      * 卖家备忘信息

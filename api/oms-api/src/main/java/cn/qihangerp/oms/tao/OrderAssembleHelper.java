@@ -113,7 +113,7 @@ public class OrderAssembleHelper {
             orderItem.setDivideOrderFee(StringUtils.hasText(item.getDivideOrderFee()) ? Double.parseDouble(item.getDivideOrderFee()) : null);
             orderItem.setPartMjzDiscount(StringUtils.hasText(item.getPartMjzDiscount()) ? Double.parseDouble(item.getPartMjzDiscount()) : 0.0);
             orderItem.setPayment(StringUtils.hasText(item.getPayment()) ? Double.parseDouble(item.getPayment()) : 0.0);
-            orderItem.setPrice(StringUtils.hasText(item.getPrice()) ? BigDecimal.valueOf(Double.parseDouble(item.getPrice())) : BigDecimal.valueOf(0));
+            orderItem.setPrice(StringUtils.hasText(item.getPrice()) ? Double.parseDouble(item.getPrice()) : 0.0);
             orderItem.setPicPath(item.getPicPath());
             orderItem.setNumIid(item.getNumIid());
             orderItem.setSkuId(item.getSkuId());
@@ -208,7 +208,7 @@ public class OrderAssembleHelper {
             orderItem.setDivideOrderFee( StringUtils.hasText(item.getDivideOrderFee()) ? Double.parseDouble(item.getDivideOrderFee()):null);
             orderItem.setPartMjzDiscount(StringUtils.hasText(item.getPartMjzDiscount()) ? Double.parseDouble(item.getPartMjzDiscount()):0.0);
             orderItem.setPayment(StringUtils.hasText(item.getPayment()) ? Double.parseDouble(item.getPayment()):0.0);
-            orderItem.setPrice(StringUtils.hasText(item.getPrice()) ? BigDecimal.valueOf(Double.parseDouble(item.getPrice())): BigDecimal.valueOf(0));
+            orderItem.setPrice(StringUtils.hasText(item.getPrice()) ? Double.parseDouble(item.getPrice()): 0.0);
             orderItem.setPicPath(item.getPicPath());
             orderItem.setNumIid(item.getNumIid());
             orderItem.setSkuId(item.getSkuId());

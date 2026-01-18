@@ -261,6 +261,7 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
             oOrderItem.setSubOrderNum(item.getOrderId());
             oOrderItem.setShopType(EnumShopType.DOU.getIndex());
             oOrderItem.setShopId(douOrder.getSShopId());
+            oOrderItem.setProductId(item.getProductId().toString());
             oOrderItem.setSkuId(item.getSkuId().toString());
             oOrderItem.setGoodsTitle(item.getProductName());
             oOrderItem.setGoodsImg(item.getProductPic());

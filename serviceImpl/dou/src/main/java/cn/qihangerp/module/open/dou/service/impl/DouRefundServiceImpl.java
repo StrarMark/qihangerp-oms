@@ -56,8 +56,8 @@ public class DouRefundServiceImpl extends ServiceImpl<DouRefundMapper, DouRefund
             List<DouOrderItem> douOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getOrderId, refund.getOrderSkuOrderId()));
             if(!douOrderItems.isEmpty()){
                 update.setSkuId(douOrderItems.get(0).getSkuId().toString());
-                update.setOGoodsId(douOrderItems.get(0).getOGoodsId());
-                update.setOGoodsSkuId(douOrderItems.get(0).getOGoodsSkuId());
+//                update.setOGoodsId(douOrderItems.get(0).getOGoodsId());
+//                update.setOGoodsSkuId(douOrderItems.get(0).getOGoodsSkuId());
             }
 
 
@@ -101,8 +101,8 @@ public class DouRefundServiceImpl extends ServiceImpl<DouRefundMapper, DouRefund
             List<DouOrderItem> douOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getOrderId, refund.getOrderSkuOrderId()));
             if(!douOrderItems.isEmpty()){
                 refund.setSkuId(douOrderItems.get(0).getSkuId().toString());
-                refund.setOGoodsId(douOrderItems.get(0).getOGoodsId());
-                refund.setOGoodsSkuId(douOrderItems.get(0).getOGoodsSkuId());
+//                refund.setOGoodsId(douOrderItems.get(0).getOGoodsId());
+//                refund.setOGoodsSkuId(douOrderItems.get(0).getOGoodsSkuId());
             }
             refund.setShopId(shopId);
             refund.setPullTime(new Date());
