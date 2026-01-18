@@ -1,7 +1,5 @@
 package cn.qihangerp.oms.wei.controller;
 
-
-
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
@@ -12,7 +10,7 @@ import cn.qihangerp.common.mq.MqType;
 import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.WeiRefund;
 import cn.qihangerp.model.bo.WeiOrderPushBo;
-import cn.qihangerp.module.open.wei.service.WeiRefundService;
+import cn.qihangerp.module.service.WeiRefundService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

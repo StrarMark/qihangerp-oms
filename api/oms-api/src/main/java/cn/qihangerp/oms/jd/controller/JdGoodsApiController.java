@@ -6,7 +6,7 @@ import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.JdGoodsSku;
-import cn.qihangerp.module.open.jd.service.JdGoodsService;
+import cn.qihangerp.module.service.JdGoodsService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.oms.jd.JdApiCommon;

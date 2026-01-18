@@ -2,7 +2,7 @@ package cn.qihangerp.oms.wei.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.model.entity.WeiRefund;
-import cn.qihangerp.module.open.wei.service.WeiRefundService;
+import cn.qihangerp.module.service.WeiRefundService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

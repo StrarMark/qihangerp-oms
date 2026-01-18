@@ -1,13 +1,15 @@
 package cn.qihangerp.module.service.impl;
 
 import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.mapper.JdGoodsMapper;
+import cn.qihangerp.mapper.JdGoodsSkuMapper;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.model.entity.OGoods;
 import cn.qihangerp.model.entity.OGoodsSku;
+import cn.qihangerp.module.service.JdGoodsSkuService;
 import cn.qihangerp.module.service.OGoodsService;
 import cn.qihangerp.module.service.OGoodsSkuService;
 import cn.qihangerp.model.entity.JdGoods;
-import cn.qihangerp.module.open.jd.mapper.JdGoodsMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,8 +17,6 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.model.entity.JdGoodsSku;
 import cn.qihangerp.model.bo.JdGoodsBo;
-import cn.qihangerp.module.open.jd.service.JdGoodsSkuService;
-import cn.qihangerp.module.open.jd.mapper.JdGoodsSkuMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +32,7 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class JdGoodsSkuServiceImpl extends ServiceImpl<JdGoodsSkuMapper, JdGoodsSku>
-    implements JdGoodsSkuService{
+    implements JdGoodsSkuService {
     private final JdGoodsSkuMapper mapper;
     private final JdGoodsMapper jdGoodsMapper;
     private final OGoodsSkuService oGoodsSkuService;

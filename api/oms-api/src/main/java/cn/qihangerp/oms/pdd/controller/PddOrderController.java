@@ -13,7 +13,7 @@ import cn.qihangerp.model.entity.PddOrder;
 import cn.qihangerp.model.bo.PddOrderBo;
 import cn.qihangerp.model.bo.PddOrderConfirmBo;
 import cn.qihangerp.model.bo.PddOrderPushBo;
-import cn.qihangerp.module.open.pdd.service.PddOrderService;
+import cn.qihangerp.module.service.PddOrderService;
 import cn.qihangerp.security.common.BaseController;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;

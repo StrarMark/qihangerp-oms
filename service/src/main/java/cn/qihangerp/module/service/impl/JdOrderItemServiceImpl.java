@@ -1,9 +1,9 @@
 package cn.qihangerp.module.service.impl;
 
+import cn.qihangerp.mapper.JdOrderItemMapper;
+import cn.qihangerp.module.service.JdOrderItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.qihangerp.model.entity.JdOrderItem;
-import cn.qihangerp.module.open.jd.service.JdOrderItemService;
-import cn.qihangerp.module.open.jd.mapper.JdOrderItemMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class JdOrderItemServiceImpl extends ServiceImpl<JdOrderItemMapper, JdOrderItem>
-    implements JdOrderItemService{
+    implements JdOrderItemService {
 
 }
 

@@ -12,7 +12,7 @@ import cn.qihangerp.model.entity.TaoOrder;
 import cn.qihangerp.model.bo.TaoOrderBo;
 import cn.qihangerp.model.bo.TaoOrderConfirmBo;
 import cn.qihangerp.model.bo.TaoOrderPushBo;
-import cn.qihangerp.module.open.tao.service.TaoOrderService;
+import cn.qihangerp.module.service.TaoOrderService;
 import cn.qihangerp.security.common.BaseController;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;

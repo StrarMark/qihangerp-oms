@@ -1,8 +1,12 @@
 package cn.qihangerp.module.service.impl;
 
+import cn.qihangerp.mapper.JdGoodsSkuMapper;
+import cn.qihangerp.mapper.JdOrderCouponMapper;
+import cn.qihangerp.mapper.JdOrderItemMapper;
+import cn.qihangerp.mapper.JdOrderMapper;
 import cn.qihangerp.model.entity.JdOrder;
 import cn.qihangerp.model.entity.JdOrderCoupon;
-import cn.qihangerp.module.open.jd.mapper.JdGoodsSkuMapper;
+import cn.qihangerp.module.service.JdOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,11 +16,6 @@ import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.model.entity.JdOrderItem;
 import cn.qihangerp.model.bo.JdOrderBo;
-import cn.qihangerp.module.open.jd.mapper.JdOrderCouponMapper;
-import cn.qihangerp.module.open.jd.mapper.JdOrderItemMapper;
-import cn.qihangerp.module.open.jd.service.JdOrderService;
-import cn.qihangerp.module.open.jd.mapper.JdOrderMapper;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +35,7 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 @Service
 public class JdOrderServiceImpl extends ServiceImpl<JdOrderMapper, JdOrder>
-    implements JdOrderService{
+    implements JdOrderService {
     private final JdOrderMapper mapper;
     private final JdOrderItemMapper itemMapper;
     private final JdOrderCouponMapper couponMapper;

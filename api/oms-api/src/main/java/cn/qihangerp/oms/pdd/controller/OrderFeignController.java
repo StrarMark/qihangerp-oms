@@ -2,7 +2,7 @@ package cn.qihangerp.oms.pdd.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.model.entity.PddOrder;
-import cn.qihangerp.module.open.pdd.service.PddOrderService;
+import cn.qihangerp.module.service.PddOrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

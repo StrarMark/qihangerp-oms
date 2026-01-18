@@ -1,6 +1,5 @@
 package cn.qihangerp.oms.wei.controller;
 
-
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
@@ -12,7 +11,7 @@ import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.WeiOrder;
 import cn.qihangerp.model.bo.WeiOrderConfirmBo;
 import cn.qihangerp.model.bo.WeiOrderPushBo;
-import cn.qihangerp.module.open.wei.service.WeiOrderService;
+import cn.qihangerp.module.service.WeiOrderService;
 import cn.qihangerp.security.common.BaseController;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;

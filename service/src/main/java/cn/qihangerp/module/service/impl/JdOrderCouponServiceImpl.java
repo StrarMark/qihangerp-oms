@@ -1,9 +1,9 @@
 package cn.qihangerp.module.service.impl;
 
+import cn.qihangerp.mapper.JdOrderCouponMapper;
 import cn.qihangerp.model.entity.JdOrderCoupon;
+import cn.qihangerp.module.service.JdOrderCouponService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.module.open.jd.service.JdOrderCouponService;
-import cn.qihangerp.module.open.jd.mapper.JdOrderCouponMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class JdOrderCouponServiceImpl extends ServiceImpl<JdOrderCouponMapper, JdOrderCoupon>
-    implements JdOrderCouponService{
+    implements JdOrderCouponService {
 
 }
 

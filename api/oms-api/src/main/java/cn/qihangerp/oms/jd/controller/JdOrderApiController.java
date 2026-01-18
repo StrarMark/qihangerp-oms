@@ -11,7 +11,7 @@ import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.JdOrder;
 import cn.qihangerp.model.entity.JdOrderItem;
-import cn.qihangerp.module.open.jd.service.JdOrderService;
+import cn.qihangerp.module.service.JdOrderService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.oms.jd.JdApiCommon;

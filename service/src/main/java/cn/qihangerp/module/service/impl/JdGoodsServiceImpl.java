@@ -2,12 +2,11 @@ package cn.qihangerp.module.service.impl;
 
 
 import cn.qihangerp.common.ResultVoEnum;
+import cn.qihangerp.mapper.*;
 import cn.qihangerp.model.entity.OGoods;
 import cn.qihangerp.model.entity.OGoodsInventory;
 import cn.qihangerp.model.entity.OGoodsSku;
-import cn.qihangerp.mapper.OGoodsInventoryMapper;
-import cn.qihangerp.mapper.OGoodsMapper;
-import cn.qihangerp.mapper.OGoodsSkuMapper;
+import cn.qihangerp.module.service.JdGoodsService;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -19,12 +18,7 @@ import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.model.entity.JdGoods;
 import cn.qihangerp.model.entity.JdGoodsSku;
-
 import cn.qihangerp.model.bo.JdGoodsBo;
-import cn.qihangerp.module.open.jd.mapper.JdGoodsSkuMapper;
-
-import cn.qihangerp.module.open.jd.service.JdGoodsService;
-import cn.qihangerp.module.open.jd.mapper.JdGoodsMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +35,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class JdGoodsServiceImpl extends ServiceImpl<JdGoodsMapper, JdGoods>
-    implements JdGoodsService{
+    implements JdGoodsService {
     private final JdGoodsMapper mapper;
     private final JdGoodsSkuMapper skuMapper;
     private final OGoodsSkuMapper goodsSkuMapper;

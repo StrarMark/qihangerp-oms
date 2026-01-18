@@ -1,14 +1,13 @@
 package cn.qihangerp.oms.pdd.controller;
 
-
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.module.service.OGoodsSkuService;
 import cn.qihangerp.model.entity.PddGoods;
 import cn.qihangerp.model.entity.PddGoodsSku;
 import cn.qihangerp.model.bo.PddGoodsBo;
-import cn.qihangerp.module.open.pdd.service.PddGoodsService;
-import cn.qihangerp.module.open.pdd.service.PddGoodsSkuService;
+import cn.qihangerp.module.service.PddGoodsService;
+import cn.qihangerp.module.service.PddGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

@@ -19,12 +19,12 @@
 <!--        <module>goods</module>-->
 <!--        <module>order</module>-->
 <!--        <module>service</module>-->
-        <module>wei</module>
-        <module>stock</module>
+<!--        <module>wei</module>-->
+<!--        <module>stock</module>-->
 <!--        <module>jd</module>-->
 <!--        <module>dou</module>-->
-        <module>tao</module>
-        <module>pdd</module>
+<!--        <module>tao</module>-->
+<!--        <module>pdd</module>-->
 <!--        <module>erp</module>-->
 
     </modules>

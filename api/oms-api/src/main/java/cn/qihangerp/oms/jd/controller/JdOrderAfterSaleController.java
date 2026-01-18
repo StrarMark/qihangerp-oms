@@ -1,6 +1,5 @@
 package cn.qihangerp.oms.jd.controller;
 
-
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
@@ -12,8 +11,8 @@ import cn.qihangerp.common.mq.MqUtils;
 import cn.qihangerp.model.entity.JdRefund;
 import cn.qihangerp.model.bo.JdAfterBo;
 import cn.qihangerp.model.bo.JdOrderPushBo;
-import cn.qihangerp.module.open.jd.service.JdOrderService;
-import cn.qihangerp.module.open.jd.service.JdRefundService;
+import cn.qihangerp.module.service.JdOrderService;
+import cn.qihangerp.module.service.JdRefundService;
 import cn.qihangerp.security.common.BaseController;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

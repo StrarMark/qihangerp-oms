@@ -5,12 +5,10 @@ import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.WeiOrder;
 import cn.qihangerp.model.entity.WeiOrderItem;
-import cn.qihangerp.module.open.wei.service.WeiOrderService;
-
+import cn.qihangerp.module.service.WeiOrderService;
 import cn.qihangerp.oms.wei.PullRequest;
 import cn.qihangerp.oms.wei.WeiApiCommon;
 import cn.qihangerp.open.common.ApiResultVo;
-
 import cn.qihangerp.open.wei.WeiOrderApiHelper;
 import cn.qihangerp.open.wei.model.Order;
 import cn.qihangerp.open.wei.model.OrderDetailDeliverInfoAddress;

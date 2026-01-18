@@ -11,10 +11,9 @@ import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.TaoGoods;
 import cn.qihangerp.model.entity.TaoGoodsSku;
-import cn.qihangerp.module.open.tao.service.TaoGoodsService;
-
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
+import cn.qihangerp.module.service.TaoGoodsService;
 import cn.qihangerp.oms.tao.TaoApiCommon;
 import cn.qihangerp.oms.tao.TaoRequest;
 import cn.qihangerp.open.common.ApiResultVo;
