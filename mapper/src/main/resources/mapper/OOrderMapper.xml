@@ -73,7 +73,7 @@
     </select>
     <select id="salesDaily" resultType="cn.qihangerp.model.vo.SalesDailyVo">
         SELECT
-            DATE(order_time) AS date,
+            DATE(order_create_time) AS date,
             COUNT(*) AS count,
             SUM(payment) AS amount
 
@@ -97,13 +97,13 @@
         FROM
             o_order
 
-        WHERE DATE(`order_time`) = CURDATE();
+        WHERE DATE(`order_create_time`) = CURDATE();
     </select>
     <select id="getWaitShipOrderAllCount" resultType="int">
         SELECT
             COUNT(*) AS count
         FROM
             o_order as o
-        WHERE order_status=1 and refund_status=1 and ship_status != 2
+        WHERE ship_status != 11 and (ship_status =0 or ship_status=1)
     </select>
 </mapper>

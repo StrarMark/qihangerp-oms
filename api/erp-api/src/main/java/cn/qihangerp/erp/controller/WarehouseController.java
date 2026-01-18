@@ -1,12 +1,11 @@
 package cn.qihangerp.erp.controller;
 
-
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.ErpWarehouse;
 import cn.qihangerp.model.entity.ErpWarehousePosition;
-import cn.qihangerp.module.stock.service.ErpWarehousePositionService;
-import cn.qihangerp.module.stock.service.ErpWarehouseService;
+import cn.qihangerp.module.service.ErpWarehousePositionService;
+import cn.qihangerp.module.service.ErpWarehouseService;
 import cn.qihangerp.security.common.BaseController;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;

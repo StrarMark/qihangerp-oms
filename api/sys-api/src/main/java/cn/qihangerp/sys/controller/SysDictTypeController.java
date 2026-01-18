@@ -4,7 +4,7 @@ package cn.qihangerp.sys.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.module.domain.SysDictType;
+import cn.qihangerp.model.SysDictType;
 import cn.qihangerp.module.service.ISysDictTypeService;
 import cn.qihangerp.security.common.BaseController;
 

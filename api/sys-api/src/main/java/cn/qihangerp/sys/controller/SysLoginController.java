@@ -1,8 +1,8 @@
 package cn.qihangerp.sys.controller;
 
 import cn.qihangerp.model.entity.SysUser;
-import cn.qihangerp.module.domain.LoginBody;
-import cn.qihangerp.module.domain.SysMenu;
+import cn.qihangerp.model.LoginBody;
+import cn.qihangerp.model.SysMenu;
 import cn.qihangerp.module.service.ISysMenuService;
 import cn.qihangerp.module.service.SysPermissionService;
 import cn.qihangerp.security.common.Constants;

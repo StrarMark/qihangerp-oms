@@ -15,7 +15,7 @@
     <name>serviceImpl</name>
     <url>http://maven.apache.org</url>
     <modules>
-        <module>sys</module>
+<!--        <module>sys</module>-->
 <!--        <module>goods</module>-->
 <!--        <module>order</module>-->
 <!--        <module>service</module>-->
