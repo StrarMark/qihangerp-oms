@@ -152,15 +152,7 @@ public class WeiOrderItem implements Serializable {
      */
     private String orderProductCouponInfoList;
 
-    /**
-     * 商品id(o_goods外键)
-     */
-    private Long oGoodsId;
 
-    /**
-     * 商品skuid(o_goods_sku外键)
-     */
-    private Long oGoodsSkuId;
 
     private static final long serialVersionUID = 1L;
 }

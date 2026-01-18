@@ -4700,15 +4700,13 @@ CREATE TABLE `oms_wei_order_item`  (
   `use_deduction` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否使用了会员积分抵扣\r\n',
   `deduction_price` int NULL DEFAULT NULL COMMENT '会员积分抵扣金额，单位为分',
   `order_product_coupon_info_list` varchar(2550) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品优惠券信息，逐步替换 order.order_detail.coupon_info',
-  `o_goods_id` bigint NULL DEFAULT NULL COMMENT '商品id(o_goods外键)',
-  `o_goods_sku_id` bigint NULL DEFAULT NULL COMMENT '商品skuid(o_goods_sku外键)',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of oms_wei_order_item
 -- ----------------------------
-INSERT INTO `oms_wei_order_item` VALUES (34, 1012, '3731295703781745408', '10000239803737', '3531475359', 'https://wst.wxapp.tc.qq.com/161/20304/snscosdownload/SZ/reserved/6839f1ff00015fba288ae5867af20115000000a000004f50', 1, 3990, '雷士照明led吸顶灯灯芯替换圆形灯板节能灯芯冷光高显6W至40W护眼', 0, 0, '', 3990, '[{\"attr_key\":\"规格\",\"attr_value\":\"18W白光\"}]', 3990, NULL, NULL, 'null', 3990, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":0}', 'null', NULL, '[]', NULL, NULL);
+INSERT INTO `oms_wei_order_item` VALUES (34, 1012, '3731295703781745408', '10000239803737', '3531475359', 'https://wst.wxapp.tc.qq.com/161/20304/snscosdownload/SZ/reserved/6839f1ff00015fba288ae5867af20115000000a000004f50', 1, 3990, '雷士照明led吸顶灯灯芯替换圆形灯板节能灯芯冷光高显6W至40W护眼', 0, 0, '', 3990, '[{\"attr_key\":\"规格\",\"attr_value\":\"18W白光\"}]', 3990, NULL, NULL, 'null', 3990, 'null', NULL, '', '{\"stock_type\":0}', '{\"seven_day_return\":1,\"freight_insurance\":0}', 'null', NULL, '[]');
 
 -- ----------------------------
 -- Table structure for oms_wei_refund

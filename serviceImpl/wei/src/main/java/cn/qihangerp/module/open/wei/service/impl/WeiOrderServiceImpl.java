@@ -100,19 +100,9 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
                         // 更新
                         WeiOrderItem itemUpdate = new WeiOrderItem();
                         itemUpdate.setId(taoOrderItems.get(0).getId());
-                        List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
-                        if (skus != null && !skus.isEmpty()) {
-                            itemUpdate.setOGoodsId(skus.get(0).getErpGoodsId());
-                            itemUpdate.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
-                        }
                         itemMapper.updateById(itemUpdate);
                     } else {
                         // 新增
-                        List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
-                        if (skus != null && !skus.isEmpty()) {
-                            item.setOGoodsId(skus.get(0).getErpGoodsId());
-                            item.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
-                        }
                         item.setShopId(shopId);
                         item.setOrderId(order.getOrderId());
                         itemMapper.insert(item);
@@ -126,11 +116,7 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
-                    List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
-                    if (skus != null && !skus.isEmpty()) {
-                        item.setOGoodsId(skus.get(0).getErpGoodsId());
-                        item.setOGoodsSkuId(skus.get(0).getErpGoodsSkuId());
-                    }
+
                     item.setShopId(shopId);
                     item.setOrderId(order.getOrderId());
                     itemMapper.insert(item);
@@ -218,14 +204,21 @@ public class WeiOrderServiceImpl extends ServiceImpl<WeiOrderMapper, WeiOrder>
         //插入item
         for (var item : pddOrderItems) {
             OOrderItem oOrderItem = new OOrderItem();
+            // 确认订单时查找OGoodsSkuId是否存在
+            List<WeiGoodsSku> skus = goodsSkuMapper.selectList(new LambdaQueryWrapper<WeiGoodsSku>().eq(WeiGoodsSku::getSkuId, item.getSkuId()));
+            if (skus != null && !skus.isEmpty()) {
+                oOrderItem.setGoodsId(skus.get(0).getErpGoodsId());
+                oOrderItem.setGoodsSkuId(skus.get(0).getErpGoodsSkuId());
+            }else {
+                return ResultVo.error("店铺商品找不到绑定的商品库商品");
+            }
             oOrderItem.setOrderId(order.getId());
             oOrderItem.setOrderNum(order.getOrderNum());
             oOrderItem.setSubOrderNum(order.getOrderNum()+"-"+item.getSkuId());
             oOrderItem.setShopType(EnumShopType.WEI.getIndex());
             oOrderItem.setShopId(weiOrder.getShopId());
             oOrderItem.setSkuId(item.getSkuId());
-            oOrderItem.setGoodsId(item.getOGoodsId()!=null?item.getOGoodsId():0L);
-            oOrderItem.setGoodsSkuId(item.getOGoodsSkuId()!=null?item.getOGoodsSkuId():0L);
+
             oOrderItem.setGoodsTitle(item.getTitle());
             oOrderItem.setGoodsImg(item.getThumbImg());
             oOrderItem.setGoodsNum(item.getOutProductId());
