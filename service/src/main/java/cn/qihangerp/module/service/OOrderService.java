@@ -22,12 +22,7 @@ import java.util.List;
 * @createDate 2024-03-09 13:15:57
 */
 public interface OOrderService extends IService<OOrder> {
-    ResultVo<Integer> jdOrderMessage(String orderId, JSONObject orderDetail);
 
-    ResultVo<Integer> taoOrderMessage(String tid,JSONObject orderDetail );
-    ResultVo<Integer> douOrderMessage(String orderId,JSONObject orderDetail );
-    ResultVo<Integer> offlineOrderMessage(String orderNum);
-    ResultVo<Integer> weiOrderMessage(String orderNum,JSONObject orderDetail );
 
     /**
      * 获取待发货list（去除处理过的）

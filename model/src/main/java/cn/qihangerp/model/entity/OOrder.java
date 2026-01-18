@@ -144,7 +144,7 @@ public class OOrder implements Serializable {
     private Integer shipType;
 
     /**
-     * 发货状态 0 待发货 1 已分配供应商发货 2全部发货
+     * 发货状态 0 待发货 1 已分配供应商发货 2全部发货 11已取消无需发货
      */
     private Integer shipStatus;
 

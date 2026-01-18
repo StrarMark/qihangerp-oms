@@ -150,11 +150,11 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
                 itemMapper.delete(new LambdaQueryWrapper<DouOrderItem>().eq(DouOrderItem::getParentOrderId,order.getOrderId()));
                 for (var item : order.getItems()) {
                     // 新增
-                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
-                    if (goodsSku != null) {
-                        item.setOGoodsId(goodsSku.getErpGoodsId());
-                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId());
-                    }
+//                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
+//                    if (goodsSku != null) {
+//                        item.setOGoodsId(goodsSku.getErpGoodsId());
+//                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId());
+//                    }
                     itemMapper.insert(item);
                 }
                 return ResultVo.error(ResultVoEnum.DataExist, "订单已经存在，更新成功");
@@ -166,11 +166,11 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
                 mapper.insert(order);
                 // 添加item
                 for (var item : order.getItems()) {
-                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
-                    if (goodsSku != null) {
-                        item.setOGoodsId(goodsSku.getErpGoodsId());
-                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId());
-                    }
+//                    DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
+//                    if (goodsSku != null) {
+//                        item.setOGoodsId(goodsSku.getErpGoodsId());
+//                        item.setOGoodsSkuId(goodsSku.getErpGoodsSkuId());
+//                    }
                     itemMapper.insert(item);
                 }
 
@@ -216,22 +216,30 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
         order.setShipType(0);
         order.setBuyerMemo(douOrder.getBuyerWords());
         order.setSellerMemo(douOrder.getSellerWords());
-        order.setRefundStatus(1);
-        order.setOrderStatus(1);
+
         order.setGoodsAmount(douOrder.getOrderAmount()!=null?douOrder.getOrderAmount().doubleValue()/100:0.0);
         order.setPostFee(douOrder.getPostAmount()!=null?douOrder.getPostAmount().doubleValue()/100:0.0);
         order.setSellerDiscount(douOrder.getPromotionShopAmount()!=null?douOrder.getPromotionShopAmount().doubleValue()/100:0.0);
         order.setPlatformDiscount(douOrder.getPromotionPlatformAmount()!=null?douOrder.getPromotionPlatformAmount().doubleValue()/100:0.0);
-        order.setAmount(douOrder.getOrderAmount()!=null?douOrder.getOrderAmount().doubleValue()/100:0.0);
+        order.setAmount(douOrder.getPayAmount()!=null?douOrder.getPayAmount().doubleValue()/100:0.0);
         order.setPayment(douOrder.getPayAmount()!=null?douOrder.getPayAmount().doubleValue()/100:0.0);
+        order.setPayDiscount(douOrder.getPromotionPayAmount()!=null?douOrder.getPromotionPayAmount().doubleValue()/100:0.0);
+        order.setChangeAmount(douOrder.getModifyAmount()!=null?douOrder.getModifyAmount().doubleValue()/100:0.0);
+
         order.setReceiverName(confirmBo.getReceiver());
         order.setReceiverMobile(confirmBo.getMobile());
         order.setAddress(confirmBo.getAddress());
         order.setProvince(confirmBo.getProvince());
         order.setCity(confirmBo.getCity());
         order.setTown(confirmBo.getTown());
-        LocalDateTime orderTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getCreateTime()), ZoneId.systemDefault());
-        order.setOrderTime(douOrder.getCreateTime()!=null?orderTime:LocalDateTime.now());
+        //订单状态
+        order.setOrderStatus(douOrder.getOrderStatus().toString());
+        order.setOrderStatusText(douOrder.getOrderStatusDesc());
+
+//        LocalDateTime orderTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getCreateTime()), ZoneId.systemDefault());
+        order.setOrderCreateTime(douOrder.getCreateTime()!=null?LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getCreateTime()), ZoneId.systemDefault()):null);
+        order.setOrderUpdateTime(douOrder.getUpdateTime()!=null?LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getUpdateTime()), ZoneId.systemDefault()):null);
+        order.setOrderCreateTime(douOrder.getFinishTime()!=null?LocalDateTime.ofInstant(Instant.ofEpochSecond(douOrder.getFinishTime()), ZoneId.systemDefault()):null);
 //        order.setOrderTime(douOrder.getCreateTime()!=null?new Date(douOrder.getCreateTime()*1000):new Date());
         order.setShipper(0L);
         order.setShipStatus(0);
@@ -241,26 +249,46 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
         //插入item
         for (var item : douOrderItems) {
             OOrderItem oOrderItem = new OOrderItem();
+            DouGoodsSku goodsSku = goodsSkuMapper.selectById(item.getSkuId());
+            if (goodsSku != null) {
+                oOrderItem.setGoodsId(Long.parseLong(goodsSku.getErpGoodsId()));
+                oOrderItem.setGoodsSkuId(Long.parseLong(goodsSku.getErpGoodsSkuId()));
+            }else {
+                return ResultVo.error("店铺商品找不到绑定的商品库商品");
+            }
             oOrderItem.setOrderId(order.getId());
             oOrderItem.setOrderNum(douOrder.getOrderId());
             oOrderItem.setSubOrderNum(item.getOrderId());
             oOrderItem.setShopType(EnumShopType.DOU.getIndex());
             oOrderItem.setShopId(douOrder.getSShopId());
             oOrderItem.setSkuId(item.getSkuId().toString());
-            oOrderItem.setGoodsId(StringUtils.hasText(item.getOGoodsId())?Long.parseLong(item.getOGoodsId()):0L);
-            oOrderItem.setGoodsSkuId(StringUtils.hasText(item.getOGoodsSkuId())?Long.parseLong(item.getOGoodsSkuId()):0L);
             oOrderItem.setGoodsTitle(item.getProductName());
             oOrderItem.setGoodsImg(item.getProductPic());
             oOrderItem.setGoodsNum(item.getOutProductId());
             oOrderItem.setGoodsSpec(item.getSpec());
             oOrderItem.setSkuNum(item.getOutSkuId());
+            oOrderItem.setQuantity(item.getItemNum());
+
             oOrderItem.setGoodsPrice(item.getGoodsPrice()!=null?item.getGoodsPrice().doubleValue()/100:0.0);
             oOrderItem.setItemAmount(item.getOrderAmount()!=null?item.getOrderAmount().doubleValue()/100:0.0);
-            oOrderItem.setDiscountAmount(item.getPromotionAmount()!=null?item.getPromotionAmount().doubleValue()/100:0.0);
+            oOrderItem.setSellerDiscount(douOrder.getPromotionShopAmount()!=null?douOrder.getPromotionShopAmount().doubleValue()/100:0.0);
+            oOrderItem.setPlatformDiscount(douOrder.getPromotionPlatformAmount()!=null?douOrder.getPromotionPlatformAmount().doubleValue()/100:0.0);
+            oOrderItem.setChangeAmount(douOrder.getModifyAmount()!=null?douOrder.getModifyAmount().doubleValue()/100:0.0);
+            oOrderItem.setPayDiscount(douOrder.getPromotionPayAmount()!=null?douOrder.getPromotionPayAmount().doubleValue()/100:0.0);
             oOrderItem.setPayment(item.getPayAmount()!=null?item.getPayAmount().doubleValue()/100:0.0);
-            oOrderItem.setQuantity(item.getItemNum());
-            oOrderItem.setRefundCount(0);
-            oOrderItem.setRefundStatus(1);
+
+            //售后状态；6-售后申请；27-拒绝售后申请；12-售后成功；7-售后退货中；11-售后已发货；29-售后退货拒绝；
+            // 13-【换货返回：换货售后换货商家发货】，【补寄返回：补寄待用户收货】； 14-【换货返回：（换货）售后换货用户收货】，【补寄返回：（补寄）用户已收货】 ；
+            // 28-售后失败；51-订单取消成功；53-逆向交易已完成；
+            if(item.getAfterSaleStatus()==null||item.getAfterSaleStatus()==0){
+                oOrderItem.setRefundCount(0);
+                oOrderItem.setRefundStatus(1);
+            }else {
+                oOrderItem.setRefundCount(item.getItemNum());
+                oOrderItem.setRefundStatus(4);
+            }
+
+
             oOrderItem.setShipper(0L);
             oOrderItem.setShipType(order.getShipType());
             oOrderItem.setShipStatus(0);
