@@ -112,7 +112,7 @@
           >删除</el-button>
           </el-row>
           <el-button
-            v-if="scope.row.type===100 || scope.row.type===200 || scope.row.type===280 || scope.row.type===300"
+            v-if="scope.row.type===100 || scope.row.type===200 || scope.row.type===280 || scope.row.type===300|| scope.row.type===400"
             type="success"
             plain
             icon="el-icon-refresh"
@@ -212,6 +212,7 @@ import { listShop,listPlatform, getShop, delShop, addShop, updateShop } from "@/
 import {getJdOAuthUrl, getJdToken} from "@/api/jd/shop";
 import {getTaoOAuthUrl,saveSessionKey} from "@/api/tao/shop_api";
 import {getPddOAuthUrl,getPddToken} from "@/api/pdd/shop";
+import {updateDouToken} from "@/api/dou/shop";
 
 export default {
   name: "Shop",
@@ -352,6 +353,18 @@ export default {
           this.tokenForm.shopId = row.id
           this.tokenForm.shopType = row.type
         })
+      }else if(row.type===400){
+        updateDouToken({shopId:row.id}).then(resp=>{
+          if(resp.code === 200){
+            this.$modal.msgSuccess("Token更新成功")
+            this.getList()
+          }else{
+            this.$modal.msgError(resp.msg)
+          }
+
+        })
+      }else{
+        this.$modal.msgError('暂时不支持')
       }
 
     },
