@@ -177,7 +177,9 @@ public class OfflineOrder implements Serializable {
      * 更新人
      */
     private String updateBy;
-    private Integer omsPushStatus;
+    private Integer auditStatus;
+    private Date auditTime;
+
     @TableField(exist = false)
     private List<OfflineOrderItem> itemList;
     private static final long serialVersionUID = 1L;

@@ -153,7 +153,7 @@ public class OfflineOrderServiceImpl extends ServiceImpl<OfflineOrderMapper, Off
         order.setCreateTime(new Date());
         order.setShipType(0);
         order.setCreateBy(createBy);
-        order.setOmsPushStatus(0);
+        order.setAuditStatus(0);
         orderMapper.insert(order);
 
 //        List<OOrderItem> itemList = new ArrayList<OOrderItem>();

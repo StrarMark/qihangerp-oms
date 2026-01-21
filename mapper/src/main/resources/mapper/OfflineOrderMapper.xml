@@ -37,7 +37,8 @@
             <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
-            <result property="omsPushStatus" column="oms_push_status" jdbcType="INTEGER"/>
+            <result property="auditStatus" column="audit_status" jdbcType="INTEGER"/>
+            <result property="auditTime" column="audit_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -51,6 +52,6 @@
         order_time,ship_type,shipping_time,
         shipping_number,shipping_company,shipping_man,
         shipping_cost,create_time,create_by,
-        update_time,update_by,oms_push_status
+        update_time,update_by,audit_status,audit_time
     </sql>
 </mapper>
