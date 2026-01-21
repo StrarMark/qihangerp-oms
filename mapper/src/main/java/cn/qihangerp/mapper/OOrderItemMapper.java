@@ -18,7 +18,7 @@ import java.util.List;
 */
 public interface OOrderItemMapper extends BaseMapper<OOrderItem> {
     Page<OrderItemListVo> selectPageVo(@Param("page") Page<OrderItemListVo> page, @Param("qw") OrderItemListBo qw);
-    List<OrderItemListVo> selectOrderItemListByOrderId(@Param("orderId") Long orderId);
+//    List<OrderItemListVo> selectOrderItemListByOrderId(@Param("orderId") Long orderId);
     List<SalesTopSkuVo> selectTopSku(@Param("startDate") String startDate, @Param("endDate") String endDate);
 }
 

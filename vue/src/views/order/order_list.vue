@@ -127,7 +127,7 @@
           </table>
         </template>
         <template slot-scope="scope" >
-          <el-table :data="scope.row.itemVoList" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
+          <el-table :data="scope.row.itemList" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
             <el-table-column label="商品图片" width="50px">
               <template slot-scope="scope">
 <!--                <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>-->
@@ -283,7 +283,7 @@
     />
 
     <!-- 订单详情对话框 -->
-    <el-dialog :title="detailTitle" :visible.sync="detailOpen" width="1100px" append-to-body>
+    <el-dialog :title="detailTitle" :visible.sync="detailOpen" width="1200px" append-to-body>
       <el-tabs v-model="activeName" >
         <el-tab-pane label="订单详情" name="orderDetail">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px" inline>
@@ -361,33 +361,33 @@
 
         </el-tab-pane>
         <el-tab-pane label="商品列表" name="orderItems" lazy>
-          <el-table :data="form.itemVoList"  style="margin-bottom: 10px;">
+          <el-table :data="form.itemList"  style="margin-bottom: 10px;">
             <!-- <el-table-column type="selection" width="50" align="center" /> -->
             <el-table-column label="序号" align="center" type="index" width="50"/>
 
-            <el-table-column label="商品图片" prop="goodsImg" width="80">
+            <el-table-column label="图片" prop="goodsImg" width="80">
               <template slot-scope="scope">
-                <el-image style="width: 70px; height: 70px" :src="scope.row.goodsImg"></el-image>
+                <el-image style="width: 40px; height: 40px" :src="scope.row.goodsImg"></el-image>
               </template>
             </el-table-column>
-            <el-table-column label="商品标题" prop="goodsTitle" ></el-table-column>
+            <el-table-column label="商品标题" prop="goodsTitle" width="300"></el-table-column>
             <el-table-column label="规格" prop="goodsSpec" width="150">
               <template slot-scope="scope">
                 {{ getSkuValues(scope.row.goodsSpec)}}
               </template>
             </el-table-column>
-            <el-table-column label="sku编码" prop="skuNum"></el-table-column>
-            <el-table-column label="商品库SKUID" prop="goodsSkuId"></el-table-column>
-            <el-table-column label="单价" prop="goodsPrice"></el-table-column>
-            <el-table-column label="子订单金额" prop="itemAmount"></el-table-column>
-            <el-table-column label="实付金额" prop="payment"></el-table-column>
+<!--            <el-table-column label="sku编码" prop="skuNum"></el-table-column>-->
+            <el-table-column label="平台SkuId" prop="skuId"></el-table-column>
+            <el-table-column label="商品库SkuId" prop="goodsSkuId"></el-table-column>
+<!--            <el-table-column label="单价" prop="goodsPrice"></el-table-column>-->
             <el-table-column label="数量" prop="quantity"></el-table-column>
+            <el-table-column label="金额" prop="itemAmount" :formatter="amountFormatter"></el-table-column>
+<!--            <el-table-column label="实付金额" prop="payment"></el-table-column>-->
+
             <el-table-column label="状态" prop="orderStatus">
               <template slot-scope="scope">
-                <el-tag v-if="scope.row.orderStatus === 1">待发货</el-tag>
-                <el-tag v-if="scope.row.orderStatus === 2">已发货</el-tag>
-                <el-tag v-if="scope.row.orderStatus === 3">已完成</el-tag>
-                <el-tag v-if="scope.row.orderStatus === 11">已取消</el-tag>
+                <el-tag v-if="scope.row.refundStatus === 1">无售后或售后关闭</el-tag>
+                <el-tag v-else>已退款</el-tag>
               </template>
             </el-table-column>
 <!--            <el-table-column label="退款状态" prop="refundStatus">-->
