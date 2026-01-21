@@ -53,8 +53,8 @@ public class PddOrderApiService {
         LocalDateTime  endTime = null;
         OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(shopId, "ORDER");
         if(lasttime == null){
-            endTime = LocalDateTime.now();
-            startTime = endTime.minusDays(1);
+            startTime = LocalDateTime.now().minusDays(90);//从90天前开始
+            endTime = startTime.plusHours(24);
         }else {
             startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
             Duration duration = Duration.between(startTime, LocalDateTime.now());
