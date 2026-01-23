@@ -127,7 +127,7 @@ public class PddOrderApiController {
             logs.setPullTime(currDateTime);
             logs.setDuration(System.currentTimeMillis() - beginTime);
             pullLogsService.save(logs);
-            return AjaxResult.error("接口拉取错误："+upResult.getMsg());
+            return AjaxResult.error(upResult.getMsg());
         }
 
 

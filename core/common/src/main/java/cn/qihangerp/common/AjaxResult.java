@@ -145,6 +145,14 @@ public class AjaxResult extends HashMap<String, Object>
     {
         return AjaxResult.error(msg, null);
     }
+    public static AjaxResult paramError(String msg)
+    {
+        return AjaxResult.error(ResultVoEnum.ParamsError.getIndex(),msg, null);
+    }
+    public static AjaxResult apiError(String msg)
+    {
+        return AjaxResult.error(ResultVoEnum.API_FAIL.getIndex(),msg, null);
+    }
 
     public static AjaxResult error(int code, String msg, Object data)
     {
@@ -169,7 +177,8 @@ public class AjaxResult extends HashMap<String, Object>
      */
     public static AjaxResult error(String msg, Object data)
     {
-        return new AjaxResult(HttpStatus.ERROR, msg, data);
+//        return new AjaxResult(HttpStatus.ERROR, msg, data);
+        return new AjaxResult(ResultVoEnum.API_FAIL.getIndex(), msg, data);
     }
 
     /**

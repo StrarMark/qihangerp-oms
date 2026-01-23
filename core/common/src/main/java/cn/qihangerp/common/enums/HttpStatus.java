@@ -82,6 +82,7 @@ public class HttpStatus
      */
     public static final int ERROR = 500;
 
+
     /**
      * 接口未实现
      */
