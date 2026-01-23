@@ -57,17 +57,21 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
     @Override
     public PageResult<PddOrder> queryPageList(PddOrderBo bo, PageQuery pageQuery) {
         if(StringUtils.hasText(bo.getStartTime())){
-            Matcher matcher = DATE_FORMAT.matcher(bo.getStartTime());
+             Matcher matcher = DATE_FORMAT.matcher(bo.getStartTime());
             boolean b = matcher.find();
-            if(b){
-                bo.setStartTime(bo.getStartTime()+" 00:00:00");
+            if(!b){
+                bo.setStartTime("");
             }
         }
         if(StringUtils.hasText(bo.getEndTime())){
             Matcher matcher = DATE_FORMAT.matcher(bo.getEndTime());
             boolean b = matcher.find();
-            if(b){
-                bo.setEndTime(bo.getEndTime()+" 23:59:59");
+            if(!b){
+                bo.setEndTime("");
+            }
+        }else{
+            if(StringUtils.hasText(bo.getStartTime())) {
+                bo.setEndTime(bo.getStartTime());
             }
         }
 
@@ -75,8 +79,8 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
                 .eq(bo.getShopId()!=null,PddOrder::getShopId,bo.getShopId())
                 .eq(StringUtils.hasText(bo.getOrderSn()),PddOrder::getOrderSn,bo.getOrderSn())
                 .eq(StringUtils.hasText(bo.getOrderStatus()),PddOrder::getOrderStatus,bo.getOrderStatus())
-                .ge(StringUtils.hasText(bo.getStartTime()),PddOrder::getCreateTime,bo.getStartTime())
-                .le(StringUtils.hasText(bo.getEndTime()),PddOrder::getCreateTime,bo.getEndTime())
+                .ge(StringUtils.hasText(bo.getStartTime()),PddOrder::getCreatedTime,bo.getStartTime()+" 00:00:00")
+                .le(StringUtils.hasText(bo.getEndTime()),PddOrder::getCreatedTime,bo.getEndTime()+" 23:59:59")
                 ;
         pageQuery.setOrderByColumn("created_time");
         pageQuery.setIsAsc("desc");

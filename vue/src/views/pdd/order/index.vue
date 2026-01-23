@@ -19,13 +19,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="下单时间" prop="orderTime">
-        <el-date-picker clearable
-                        v-model="orderTime" value-format="yyyy-MM-dd"
-                        type="daterange"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+      <el-form-item label="下单时间" prop="startTime">
+        <el-date-picker clearable @change="handleQuery"
+                        v-model="queryParams.startTime" value-format="yyyy-MM-dd"
+                        type="date" placeholder="下单时间">
         </el-date-picker>
       </el-form-item>
 
@@ -403,8 +400,10 @@ export default {
         this.queryParams.startTime = this.orderTime[0]
         this.queryParams.endTime = this.orderTime[1]
       }else {
-        this.queryParams.startTime = null
-        this.queryParams.endTime = null
+        if(!this.queryParams.startTime){
+          this.queryParams.startTime = null
+          this.queryParams.endTime = null
+        }
       }
       this.loading = true;
       listOrder(this.queryParams).then(response => {
@@ -459,9 +458,16 @@ export default {
       }
     },
     handlePull() {
-      if(this.queryParams.shopId){
+      if(!this.queryParams.shopId) {
+        this.$modal.msgError("请选择店铺");
+        return
+      }
+      if(!this.queryParams.startTime) {
+        this.$modal.msgError("请选择下单时间");
+        return
+      }
         this.pullLoading = true
-        pullOrder({shopId:this.queryParams.shopId,updType:0}).then(response => {
+        pullOrder({shopId:this.queryParams.shopId,updType:0,startTime:this.queryParams.startTime}).then(response => {
           console.log('拉取PDD订单接口返回=====',response)
           if(response.code === 1401) {
               MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', { confirmButtonText: '前往授权', cancelButtonText: '取消', type: 'warning' }).then(() => {
@@ -483,11 +489,6 @@ export default {
           }
           this.pullLoading = false
         })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
-      }
-
-      // this.$modal.msgSuccess("请先配置API");
     },
     handlePullUpdate(row) {
       // 接口拉取订单并更新

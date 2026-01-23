@@ -80,11 +80,12 @@ public class PddOrderApiController {
                 if (!b1) {
                     return AjaxResult.error("结束时间格式错误");
                 }
+                // 判断开始时间，结束时间 是不是一天
+                if(!req.getStartTime().equals(req.getEndTime())){
+                    return AjaxResult.error("开始时间-结束时间不能超过1天");
+                }
             }
-            // 判断开始时间，结束时间 是不是一天
-            if(!req.getStartTime().equals(req.getEndTime())){
-                return AjaxResult.error("开始时间-结束时间不能超过1天");
-            }
+
             orderDate = req.getStartTime();
         }else{
             return AjaxResult.error("请选择订单时间");
