@@ -47,6 +47,7 @@ public class DouGoodsSkuServiceImpl extends ServiceImpl<DouGoodsSkuMapper, DouGo
 //        IPage<DouGoodsSkuListVo> result = mapper.selectSkuPageList(pageQuery.build(), bo.getShopId(),bo.getProductId(),bo.getSkuId(),bo.getCode(),bo.getHasLink());
 //        return PageResult.build(result);
         LambdaQueryWrapper<DouGoodsSku> queryWrapper = new LambdaQueryWrapper<DouGoodsSku>()
+                .eq(bo.getId()!=null, DouGoodsSku::getId, bo.getId())
                 .eq(bo.getShopId()!=null,DouGoodsSku::getShopId,bo.getShopId())
                 .eq(bo.getProductId()!=null,DouGoodsSku::getProductId,bo.getProductId())
                 .eq(StringUtils.hasText(bo.getCode()),DouGoodsSku::getOutSkuId,bo.getCode())

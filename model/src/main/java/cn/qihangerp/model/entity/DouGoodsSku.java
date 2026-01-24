@@ -86,7 +86,7 @@ public class DouGoodsSku implements Serializable {
     /**
      * 商品价格，单位：分
      */
-    private Long price;
+    private Integer price;
 
     /**
      * 创建时间，时间戳：单位秒；
@@ -96,7 +96,7 @@ public class DouGoodsSku implements Serializable {
     /**
      * ku_type=0时，表示普通库存数量 ;sku_type=1时，使用stock_map，表示区域库存数量
      */
-    private Long stockNum;
+    private Integer stockNum;
 
     /**
      * sku_type=0时，表示预占库存数量； sku_type=1时，表示区域库存数量，使用prehold_stock_map

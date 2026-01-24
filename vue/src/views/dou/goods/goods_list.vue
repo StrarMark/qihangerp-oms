@@ -116,19 +116,18 @@
       @pagination="getList"
     />
 
-    <el-dialog title="Sku List" :visible.sync="skuOpen" width="1200px" append-to-body>
+    <el-dialog title="商品Sku列表" :visible.sync="skuOpen" width="1400px" append-to-body>
       <el-table v-loading="loading" :data="skuList" :row-class-name="rowIndex">
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
         <el-table-column label="序号" align="center" prop="index" width="50"/>
-
         <el-table-column label="SkuId" align="center" prop="id" width="200"/>
         <el-table-column label="SKU编码" align="left" prop="code" />
         <el-table-column label="商品名称" align="center" prop="name" />
-        <el-table-column label="图片" align="center" prop="logo" width="100">
-          <template slot-scope="scope">
-            <image-preview :src="scope.row.img" :width="50" :height="50"/>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="图片" align="center" prop="logo" width="100">-->
+<!--          <template slot-scope="scope">-->
+<!--            <image-preview :src="scope.row.img" :width="50" :height="50"/>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
         <el-table-column label="规格" align="center" prop="specDetailName1" >
           <template slot-scope="scope">
@@ -225,7 +224,10 @@ export default {
         outerProductId: null,
       },
       // 表单参数
-      form: {},
+      form: {
+        id: null,
+        erpGoodsSkuId: null,
+      },
       supplierList: [],
       categoryList: [],
       categoryTree: [],
@@ -312,9 +314,14 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           linkErpGoodsSkuId(this.form).then(response => {
-            this.$modal.msgSuccess("关联成功");
-            this.open = false;
-            this.getList();
+            if(response.code === 200) {
+              this.$modal.msgSuccess("关联成功");
+              this.open = false;
+              this.getList();
+            }else{
+              this.$modal.msgError(response.msg)
+            }
+
           });
         }
       });

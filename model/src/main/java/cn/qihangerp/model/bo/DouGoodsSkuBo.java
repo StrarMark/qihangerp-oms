@@ -10,7 +10,7 @@ public class DouGoodsSkuBo implements Serializable {
      * 商品数字id
      */
     private Long productId;
-    private Long skuId;
+    private Long id;
     private String title;
     private String code;
     private Integer shopId;
