@@ -55,7 +55,7 @@
 <!--      </el-col>-->
 <!--      <el-col :span="1.5">-->
 <!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
-<!--        </el-col>-->d
+<!--        </el-col>-->
       <el-col :span="1.5">
         <el-button
           :loading="pullLoading"
