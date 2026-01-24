@@ -198,9 +198,9 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="getTokenSubmit">确 定</el-button>
-        <el-button type="primary" @click="getTokenUrl" size="mini">去授权</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="getTokenSubmit" size="mini">确 定</el-button>
+        <el-button @click="getTokenUrl" size="mini">去授权</el-button>
+        <el-button @click="cancel" size="mini">取 消</el-button>
       </div>
 <!--      <div slot="footer" class="dialog-footer">-->
 <!--        请手动复制上面的URL到浏览器中访问-->
@@ -251,7 +251,8 @@ export default {
       },
       // 表单参数
       form: {
-        type:null
+        type:null,
+        accessToken:null,
       },
       // 获取token表单
       tokenForm:{

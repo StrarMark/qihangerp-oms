@@ -1,30 +1,30 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="108px">
-      <el-form-item label="平台SkuId" prop="skuId">
+      <el-form-item label="平台商品ID" prop="goodsId">
         <el-input
-          v-model="queryParams.skuId"
-          placeholder="请输入平台SkuId"
+          v-model="queryParams.goodsId"
+          placeholder="请输入平台商品ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商家sku编码" prop="outerId">
+      <el-form-item label="商家商品编码" prop="outerGoodsId">
         <el-input
-          v-model="queryParams.outerId"
-          placeholder="请输入商家sku编码"
+          v-model="queryParams.outerGoodsId"
+          placeholder="请输入商家商品编码"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="ERP skuId" prop="erpSkuId">
-        <el-input
-          v-model="queryParams.erpSkuId"
-          placeholder="请输入ERP skuId"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="ERP skuId" prop="erpSkuId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.erpSkuId"-->
+<!--          placeholder="请输入ERP skuId"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
             <el-form-item label="店铺" prop="shopId">
               <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
                <el-option
@@ -36,12 +36,26 @@
               </el-select>
             </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+      <el-form-item label="状态" prop="isOnsale">
+        <el-select v-model="queryParams.isOnsale" placeholder="请选择状态" clearable @change="handleQuery">
+          <el-option label="售卖中" value="1"></el-option>
+          <el-option label="已下架" value="0"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        </el-col>
       <el-col :span="1.5">
         <el-button
           :loading="pullLoading"
@@ -75,7 +89,7 @@
         </template>
       </el-table-column>
       <el-table-column label="商品名" align="left" prop="goodsName" />
-      <el-table-column label="商家编码" align="center" prop="outerGoodsId" />
+      <el-table-column label="商家商品编码" align="center" prop="outerGoodsId" />
       <el-table-column label="价格" align="center" prop="formattedPrice" />
       <el-table-column label="SKU" align="center" >
         <template slot-scope="scope">
@@ -97,8 +111,8 @@
       <el-table-column label="ERP商品ID" align="center" prop="erpGoodsId" />
       <el-table-column label="状态" align="center" prop="isSkuOnsale" >
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.isSkuOnsale === 1">上架中</el-tag>
-          <el-tag size="small" v-if="scope.row.isSkuOnsale === 0">已下架</el-tag>
+          <el-tag size="small" v-if="scope.row.isOnsale === 1">售卖中</el-tag>
+          <el-tag size="small" v-if="scope.row.isOnsale === 0">已下架</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -123,30 +137,31 @@
     />
 
 
-    <el-dialog title="Sku List" :visible.sync="skuOpen" width="1200px" append-to-body>
-      <el-table v-loading="loading" :data="skuList">
+    <el-dialog title="商品SKU列表" :visible.sync="skuOpen" width="1200px" append-to-body>
+      <el-table v-loading="loading" :data="skuList"  :row-class-name="rowIndex">
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
         <el-table-column label="序号" align="center" prop="index" width="50"/>
+
+        <el-table-column label="平台SkuId" align="center" prop="skuId" width="160"/>
         <el-table-column label="SKU编码" align="left" prop="outerId" />
-        <el-table-column label="平台SkuId" align="center" prop="skuId" />
         <!--        <el-table-column label="图片" align="center" prop="colorImage" width="100">-->
         <!--          <template slot-scope="scope">-->
         <!--            <image-preview :src="scope.row.colorImage" :width="50" :height="50"/>-->
         <!--          </template>-->
         <!--        </el-table-column>-->
         <!--        <el-table-column label="商品名称" align="left" prop="goodsName" width="288px"/>-->
-        <el-table-column label="SKU名称" align="left" prop="skuName" width="300">
+        <el-table-column label="SKU名称" align="left" prop="spec" width="300">
           <!--          <template slot-scope="scope">-->
           <!--            {{getSkuProper(scope.row.propertiesName)}}-->
           <!--          </template>-->
         </el-table-column>
-        <el-table-column label="价格" align="center" prop="jdPrice" :formatter="amountFormatter"/>
-        <el-table-column label="库存" align="center" prop="stockNum" />
+        <el-table-column label="价格" align="center" prop="price" :formatter="amountFormatter"/>
+        <el-table-column label="库存" align="center" prop="skuQuantity" />
         <el-table-column label="ERP SKU ID" align="center" prop="erpGoodsSkuId" />
         <el-table-column label="状态" align="center" prop="status" >
           <template slot-scope="scope">
-            <el-tag size="small" v-if="scope.row.status === 1">销售中</el-tag>
-            <el-tag size="small" v-if="scope.row.status === 2">已下架</el-tag>
+            <el-tag size="small" v-if="scope.row.isSkuOnsale === 1">售卖中</el-tag>
+            <el-tag size="small" v-if="scope.row.isSkuOnsale === 0">已下架</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -186,7 +201,7 @@ import {listGoods,pullGoodsList,getGoodsSku,linkErpGoodsSkuId,pushToOms} from "@
 
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
-import { amountFormatter } from '@/utils/zhijian'
+import {amountFormatter, rowIndex} from '@/utils/zhijian'
 
 
 export default {
@@ -219,7 +234,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        name: null
+        name: null,
+        isOnsale: null,
       },
       // 表单参数
       form: {},
@@ -249,6 +265,7 @@ export default {
     this.loading = false;
   },
   methods: {
+    rowIndex,
     amountFormatter,
     // 多选框选中数据
     handleSelectionChange(selection) {

@@ -4,6 +4,7 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
+import cn.qihangerp.model.bo.PddGoodsSkuBo;
 import cn.qihangerp.model.entity.OGoods;
 import cn.qihangerp.model.entity.OGoodsSku;
 import cn.qihangerp.module.service.OGoodsService;
@@ -37,13 +38,14 @@ public class PddGoodsSkuServiceImpl extends ServiceImpl<PddGoodsSkuMapper, PddGo
     private final OGoodsSkuService oGoodsSkuService;
     private final OGoodsService oGoodsService;
     @Override
-    public PageResult<PddGoodsSku> queryPageList(PddGoodsSku bo, PageQuery pageQuery) {
+    public PageResult<PddGoodsSku> queryPageList(PddGoodsSkuBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<PddGoodsSku> ew = new LambdaQueryWrapper<PddGoodsSku>()
                 .eq(bo.getShopId()!=null,PddGoodsSku::getShopId,bo.getShopId())
                 .eq(bo.getGoodsId()!=null,PddGoodsSku::getGoodsId,bo.getGoodsId())
                 .eq(bo.getSkuId()!=null,PddGoodsSku::getSkuId,bo.getSkuId())
-                .eq(StringUtils.hasText(bo.getOuterGoodsId()),PddGoodsSku::getOuterGoodsId,bo.getOuterGoodsId())
+                .eq(bo.getErpSkuId()!=null,PddGoodsSku::getErpGoodsSkuId,bo.getErpSkuId())
                 .eq(StringUtils.hasText(bo.getOuterId()),PddGoodsSku::getOuterId,bo.getOuterId())
+                .eq(bo.getIsSkuOnsale()!=null,PddGoodsSku::getIsSkuOnsale,bo.getIsSkuOnsale())
                 ;
         IPage<PddGoodsSku> result = mapper.selectPage(pageQuery.build(), ew);
         return PageResult.build(result);

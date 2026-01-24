@@ -26,10 +26,11 @@
         </template>
       </el-table-column>
       <el-table-column label="描述" align="center" prop="remark" />
+      <el-table-column label="排序" align="center" prop="sort" width="66" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.id !== 500 && scope.row.id !== 999"
+
             size="mini"
             type="text"
             icon="el-icon-edit"
@@ -65,14 +66,17 @@
         <el-form-item label="编码" prop="code">
           <el-input v-model="form.code" disabled placeholder="请输入平台编码" />
         </el-form-item>
-        <el-form-item label="AppKey" prop="appKey">
+        <el-form-item label="AppKey" prop="appKey" >
           <el-input v-model="form.appKey" placeholder="请输入AppKey" />
         </el-form-item>
-        <el-form-item label="AppSecret" prop="appSecret">
+        <el-form-item label="AppSecret" prop="appSecret" >
           <el-input v-model="form.appSecret" placeholder="请输入AppSecret" />
         </el-form-item>
         <el-form-item label="回调URL" prop="redirectUri">
           <el-input v-model="form.redirectUri" placeholder="请输入回调URL" />
+        </el-form-item>
+        <el-form-item label="排序" prop="sort">
+          <el-input-number v-model="form.sort" :min="1" :max="100" label="排序"></el-input-number>
         </el-form-item>
         <el-form-item label="接口请求URL" prop="serverUrl">
           <el-input v-model="form.serverUrl" disabled placeholder="请输入接口请求URL" />
@@ -154,8 +158,8 @@ export default {
       rules: {
         name: [{ required: true, message: "不能为空", trigger: "blur" }],
         code: [{ required: true, message: "不能为空", trigger: "blur" }],
-        appKey: [{ required: true, message: "不能为空", trigger: "blur" }],
-        appSecret: [{ required: true, message: "不能为空", trigger: "blur" }],
+        // appKey: [{ required: true, message: "不能为空", trigger: "blur" }],
+        // appSecret: [{ required: true, message: "不能为空", trigger: "blur" }],
       }
     };
   },

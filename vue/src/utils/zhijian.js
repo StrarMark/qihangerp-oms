@@ -237,3 +237,7 @@ export function amountFormatter(row, column, cellValue, index) {
   return '￥' + parseFloat(cellValue).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
+// 显示行号
+export function rowIndex({ row, rowIndex }) {
+  row.index = rowIndex + 1;
+}
