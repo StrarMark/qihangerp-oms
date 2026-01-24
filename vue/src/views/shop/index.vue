@@ -10,7 +10,7 @@
         />
       </el-form-item>
        <el-form-item label="平台" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择平台" clearable>
+        <el-select v-model="queryParams.type" placeholder="请选择平台" clearable @change="handleQuery">
          <el-option
             v-for="item in typeList"
             :key="item.id"
@@ -133,7 +133,7 @@
 
     <!-- 添加或修改店铺对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="平台" prop="type">
           <el-select v-model="form.type" placeholder="请选择平台">
             <el-option
@@ -151,15 +151,18 @@
         <el-form-item label="店铺卖家Id" prop="sellerId">
           <el-input v-model="form.sellerId" placeholder="请输入卖家Id名" />
         </el-form-item>
-        <el-form-item label="AppKey" prop="appKey">
+        <el-form-item label="AppKey" prop="appKey" v-if="form.type==500">
           <el-input v-model="form.appKey" placeholder="请输入AppKey" />
         </el-form-item>
-        <el-form-item label="AppSecret" prop="appSecret">
+        <el-form-item label="AppSecret" prop="appSecret" v-if="form.type==500">
           <el-input v-model="form.appSecret" placeholder="请输入AppSecret" />
         </el-form-item>
-        <el-form-item label="回调URL" prop="apiRedirectUrl">
-          <el-input v-model="form.apiRedirectUrl" placeholder="请输入回调URL" />
+        <el-form-item label="AccessToken" prop="accessToken">
+          <el-input type="textarea" v-model="form.accessToken" :rows="5" placeholder="请输入回调URL" />
         </el-form-item>
+<!--        <el-form-item label="回调URL" prop="apiRedirectUrl">-->
+<!--          <el-input v-model="form.apiRedirectUrl" placeholder="请输入回调URL" />-->
+<!--        </el-form-item>-->
         <el-form-item label="描述" prop="remark">
           <el-input type="textarea" v-model="form.remark" placeholder="请输入描述" />
         </el-form-item>
