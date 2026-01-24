@@ -48,7 +48,7 @@ public class DouGoodsServiceImpl extends ServiceImpl<DouGoodsMapper, DouGoods>
     public PageResult<DouGoods> queryPageList(DouGoodsBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<DouGoods> queryWrapper = new LambdaQueryWrapper<DouGoods>()
                 .eq(bo.getShopId()!=null,DouGoods::getShopId,bo.getShopId())
-
+                .eq(bo.getProductId()!=null,DouGoods::getProductId,bo.getProductId())
                 ;
 
         Page<DouGoods> goodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
@@ -97,7 +97,7 @@ public class DouGoodsServiceImpl extends ServiceImpl<DouGoodsMapper, DouGoods>
                         item.setErpGoodsSkuId(oGoodsSkus.get(0).getId().toString());
                     }
                 }
-                List<DouGoodsSku> pddGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<DouGoodsSku>().eq(DouGoodsSku::getSpecId, item.getSpecId()));
+                List<DouGoodsSku> pddGoodsSkus = skuMapper.selectList(new LambdaQueryWrapper<DouGoodsSku>().eq(DouGoodsSku::getId, item.getId()));
                 if(pddGoodsSkus!=null && !pddGoodsSkus.isEmpty()){
                     item.setModifyTime(new Date());
                     skuMapper.updateById(item);

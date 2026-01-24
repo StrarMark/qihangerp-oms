@@ -2,6 +2,7 @@ package cn.qihangerp.oms.dou.controller;
 
 
 import cn.qihangerp.common.*;
+import cn.qihangerp.model.bo.DouGoodsSkuBo;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.module.service.OGoodsSkuService;
 import cn.qihangerp.model.entity.DouGoods;
@@ -32,7 +33,7 @@ public class DouGoodsController extends BaseController {
     }
 
     @RequestMapping(value = "/skuList", method = RequestMethod.GET)
-    public TableDataInfo skuList(DouGoodsBo bo, PageQuery pageQuery) {
+    public TableDataInfo skuList(DouGoodsSkuBo bo, PageQuery pageQuery) {
         PageResult<DouGoodsSku> result = skuService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);

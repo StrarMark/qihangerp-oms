@@ -1,30 +1,30 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="108px">
-      <el-form-item label="平台SkuId" prop="skuId">
+      <el-form-item label="平台商品ID" prop="productId">
         <el-input
-          v-model="queryParams.skuId"
-          placeholder="请输入平台SkuId"
+          v-model="queryParams.productId"
+          placeholder="请输入平台商品ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商家sku编码" prop="outerId">
+      <el-form-item label="商家商品编码" prop="outerProductId">
         <el-input
-          v-model="queryParams.outerId"
-          placeholder="请输入商家sku编码"
+          v-model="queryParams.outerProductId"
+          placeholder="请输入商家商品编码"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="ERP skuId" prop="erpSkuId">
-        <el-input
-          v-model="queryParams.erpSkuId"
-          placeholder="请输入ERP skuId"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="ERP skuId" prop="erpSkuId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.erpSkuId"-->
+<!--          placeholder="请输入ERP skuId"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
             <el-form-item label="店铺" prop="shopId">
               <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
                <el-option
@@ -68,13 +68,13 @@
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="平台商品ID" align="center" prop="productId" />
-      <el-table-column label="图片" align="center" prop="logo" width="100">
+      <el-table-column label="平台商品ID" align="center" prop="productId" width="200"/>
+      <el-table-column label="图片" align="center" prop="img" width="70">
         <template slot-scope="scope">
           <image-preview :src="scope.row.img" :width="50" :height="50"/>
         </template>
       </el-table-column>
-      <el-table-column label="商品名称" align="center" prop="name" />
+      <el-table-column label="商品名称" align="left" prop="name" />
        <el-table-column label="商家编码" align="center" prop="outerProductId" />
       <el-table-column label="价格" align="center" prop="formattedPrice" >
       </el-table-column>
@@ -117,11 +117,12 @@
     />
 
     <el-dialog title="Sku List" :visible.sync="skuOpen" width="1200px" append-to-body>
-      <el-table v-loading="loading" :data="skuList">
+      <el-table v-loading="loading" :data="skuList" :row-class-name="rowIndex">
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
         <el-table-column label="序号" align="center" prop="index" width="50"/>
+
+        <el-table-column label="SkuId" align="center" prop="id" width="200"/>
         <el-table-column label="SKU编码" align="left" prop="code" />
-        <el-table-column label="规格Id" align="center" prop="specId" />
         <el-table-column label="商品名称" align="center" prop="name" />
         <el-table-column label="图片" align="center" prop="logo" width="100">
           <template slot-scope="scope">
@@ -151,16 +152,16 @@
 <!--            <el-tag size="small" v-if="scope.row.status === 2">已下架</el-tag>-->
 <!--          </template>-->
 <!--        </el-table-column>-->
-<!--        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-button-->
-<!--              size="mini"-->
-<!--              type="text"-->
-<!--              icon="el-icon-share"-->
-<!--              @click="handleLink(scope.row)"-->
-<!--            >关联ERP</el-button>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-share"
+              @click="handleLink(scope.row)"
+            >关联ERP</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-dialog>
 
@@ -187,6 +188,7 @@ import {listShop} from "@/api/shop/shop";
 import {pullGoodsList, listGoods, getGoodsSku, linkErpGoodsSkuId,pushToOms} from "@/api/dou/goods";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
+import {rowIndex} from "@/utils/zhijian";
 
 export default {
   name: "GoodsListDou",
@@ -218,7 +220,9 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        name: null
+        name: null,
+        productId: null,
+        outerProductId: null,
       },
       // 表单参数
       form: {},
@@ -248,6 +252,7 @@ export default {
     this.loading = false;
   },
   methods: {
+    rowIndex,
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)

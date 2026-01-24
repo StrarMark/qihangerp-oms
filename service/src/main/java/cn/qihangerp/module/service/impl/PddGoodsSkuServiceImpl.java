@@ -42,7 +42,7 @@ public class PddGoodsSkuServiceImpl extends ServiceImpl<PddGoodsSkuMapper, PddGo
         LambdaQueryWrapper<PddGoodsSku> ew = new LambdaQueryWrapper<PddGoodsSku>()
                 .eq(bo.getShopId()!=null,PddGoodsSku::getShopId,bo.getShopId())
                 .eq(bo.getGoodsId()!=null,PddGoodsSku::getGoodsId,bo.getGoodsId())
-                .eq(bo.getSkuId()!=null,PddGoodsSku::getSkuId,bo.getSkuId())
+                .eq(StringUtils.hasText(bo.getSkuId()),PddGoodsSku::getSkuId,bo.getSkuId())
                 .eq(bo.getErpSkuId()!=null,PddGoodsSku::getErpGoodsSkuId,bo.getErpSkuId())
                 .eq(StringUtils.hasText(bo.getOuterId()),PddGoodsSku::getOuterId,bo.getOuterId())
                 .eq(bo.getIsSkuOnsale()!=null,PddGoodsSku::getIsSkuOnsale,bo.getIsSkuOnsale())

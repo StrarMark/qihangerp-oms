@@ -3,6 +3,7 @@ package cn.qihangerp.module.service.impl;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.model.bo.DouGoodsSkuBo;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.model.entity.OGoods;
 import cn.qihangerp.model.entity.OGoodsSku;
@@ -39,7 +40,7 @@ public class DouGoodsSkuServiceImpl extends ServiceImpl<DouGoodsSkuMapper, DouGo
     private final OGoodsService oGoodsService;
 
     @Override
-    public PageResult<DouGoodsSku> queryPageList(DouGoodsBo bo, PageQuery pageQuery) {
+    public PageResult<DouGoodsSku> queryPageList(DouGoodsSkuBo bo, PageQuery pageQuery) {
         if(StringUtils.hasText(bo.getCode())){
             bo.setCode(bo.getCode().trim());
         }
