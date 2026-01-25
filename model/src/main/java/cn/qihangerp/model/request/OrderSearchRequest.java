@@ -11,7 +11,7 @@ public class OrderSearchRequest {
     private String orderStatus;
     private String startTime;
     private String endTime;
-    private Integer erpPushStatus;
+    private Integer shipStatus;
     private String receiverName;
     private String receiverMobile;
     private String shippingNumber;

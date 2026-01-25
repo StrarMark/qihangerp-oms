@@ -35,30 +35,14 @@
             end-placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="订单状态" prop="orderStatus">
-        <el-select v-model="queryParams.orderStatus" placeholder="请选择状态" clearable @change="handleQuery">
-          <el-option label="待发货" value="1" ></el-option>
-          <el-option label="已发货" value="2"></el-option>
-          <el-option label="已完成" value="3"> </el-option>
+      <el-form-item label="发货状态" prop="shipStatus">
+        <el-select v-model="queryParams.shipStatus" placeholder="请选择状态" clearable @change="handleQuery">
+          <el-option label="待发货" value="0" ></el-option>
+          <el-option label="已分配供应商发货" value="1"></el-option>
+          <el-option label="已发货" value="2"> </el-option>
           <el-option label="已取消" value="11"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="退款状态" prop="refundStatus">
-        <el-select v-model="queryParams.refundStatus" placeholder="请选择状态" clearable @change="handleQuery">
-          <el-option label="无售后或售后关闭" value="1" ></el-option>
-          <el-option label="售后处理中" value="2"></el-option>
-          <el-option label="退款中" value="3"> </el-option>
-          <el-option label="退款成功" value="4"></el-option>
-        </el-select>
-      </el-form-item>
-<!--      <el-form-item label="推送ERP状态" prop="hasLink">-->
-<!--        <el-select v-model="queryParams.erpPushStatus" placeholder="推送ERP状态" clearable @change="handleQuery">-->
-<!--          <el-option label="订单推送成功" value="200"></el-option>-->
-<!--          <el-option label="订单取消成功" value="100"></el-option>-->
-<!--          <el-option label="推送失败" value="500"></el-option>-->
-<!--          <el-option label="未推送" value="0"></el-option>-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -217,31 +201,15 @@
 
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="orderStatus" >
+      <el-table-column label="订单状态" align="center" prop="orderStatusText" ></el-table-column>
+      <el-table-column label="发货状态" align="center" prop="orderStatusText" >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.orderStatus === 0" style="margin-bottom: 6px;">新订单</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 1" style="margin-bottom: 6px;">待发货</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 2" style="margin-bottom: 6px;">已发货</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 3" style="margin-bottom: 6px;">已完成</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 21" style="margin-bottom: 6px;">待付款</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 22" style="margin-bottom: 6px;">锁定</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 29" style="margin-bottom: 6px;">删除</el-tag>
-          <el-tag v-if="scope.row.orderStatus === 11" style="margin-bottom: 6px;">已取消</el-tag>
-          <br />
-<!--          <el-tag style="margin-bottom: 6px;" v-if="scope.row.erpPushStatus === 200">订单推送成功</el-tag>-->
-<!--          <el-tag style="margin-bottom: 6px;" v-if="scope.row.erpPushStatus === 100">订单取消推送成功</el-tag>-->
-<!--          <el-tag type="danger" style="margin-bottom: 6px;" v-if="!scope.row.erpPushStatus || scope.row.erpPushStatus === 0">待推送到ERP</el-tag>-->
-<!--          <el-tag type="danger" style="margin-bottom: 6px;" v-if="scope.row.erpPushStatus > 200">推送错误</el-tag>-->
-<!--          <div style="margin-bottom: 6px;color:red" v-if="scope.row.erpPushStatus > 200">{{scope.row.erpPushResult}}</div>-->
-<!--          <br />-->
-<!--           &lt;!&ndash; 1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功 &ndash;&gt;-->
-<!--           <el-tag v-if="scope.row.refundStatus === 1">无售后或售后关闭</el-tag>-->
-<!--           <el-tag v-if="scope.row.refundStatus === 2">售后处理中</el-tag>-->
-<!--           <el-tag v-if="scope.row.refundStatus === 3">退款中</el-tag>-->
-<!--           <el-tag v-if="scope.row.refundStatus === 4">退款成功</el-tag>-->
+          <el-tag v-if="scope.row.shipStatus === 0" style="margin-bottom: 6px;">待发货</el-tag>
+          <el-tag v-if="scope.row.shipStatus === 1" style="margin-bottom: 6px;">已分配供应商发货</el-tag>
+          <el-tag v-if="scope.row.shipStatus === 2" style="margin-bottom: 6px;">已发货</el-tag>
+          <el-tag v-if="scope.row.shipStatus === 11" style="margin-bottom: 6px;">已取消</el-tag>
         </template>
       </el-table-column>
-
 
 <!--      <el-table-column label="发货信息" align="center" prop="shippingNumber" >-->
 <!--        <template slot-scope="scope">-->
@@ -251,7 +219,7 @@
 <!--      </el-table-column>-->
       <el-table-column label="下单时间" align="center" prop="orderTime" >
         <template slot-scope="scope">
-          {{ parseTime(scope.row.orderTime) }}
+          {{ parseTime(scope.row.orderCreateTime) }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

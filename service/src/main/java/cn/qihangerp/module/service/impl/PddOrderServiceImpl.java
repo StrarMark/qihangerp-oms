@@ -343,6 +343,11 @@ public class PddOrderServiceImpl extends ServiceImpl<PddOrderMapper, PddOrder>
         // 更新自己
         PddOrder douOrderUpdate = new PddOrder();
         douOrderUpdate.setId(pddOrder.getId());
+        douOrderUpdate.setReceiverNameMask(confirmBo.getReceiver());
+        douOrderUpdate.setReceiverAddressMask(confirmBo.getAddress());
+        douOrderUpdate.setProvince(confirmBo.getProvince());
+        douOrderUpdate.setCity(confirmBo.getCity());
+        douOrderUpdate.setTown(confirmBo.getTown());
         douOrderUpdate.setAuditStatus(1);
         douOrderUpdate.setAuditTime(new Date());
         mapper.updateById(douOrderUpdate);

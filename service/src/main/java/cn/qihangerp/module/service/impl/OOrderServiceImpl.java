@@ -121,7 +121,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 .eq(bo.getOrderStatus()!=null,OOrder::getOrderStatus,bo.getOrderStatus())
                 .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),OOrder::getOrderCreateTime,bo.getStartTime()+" 00:00:00")
                 .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),OOrder::getOrderCreateTime,bo.getEndTime()+" 23:59:59")
-
+                .eq(bo.getShipStatus()!=null,OOrder::getShipStatus,bo.getShipStatus())
                 .eq(org.springframework.util.StringUtils.hasText(bo.getReceiverName()),OOrder::getReceiverName,bo.getReceiverName())
                 .like(org.springframework.util.StringUtils.hasText(bo.getReceiverMobile()),OOrder::getReceiverMobile,bo.getReceiverMobile())
                 ;
