@@ -14,7 +14,6 @@ import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.module.service.PddOrderService;
 import cn.qihangerp.oms.pdd.PddApiCommon;
-import cn.qihangerp.oms.pdd.PddPullRequest;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.pdd.PddOrderApiHelper;
 import cn.qihangerp.open.pdd.model.OrderListResultVo;
@@ -25,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
+import cn.qihangerp.model.request.OrderPullRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -61,7 +60,7 @@ public class PddOrderApiController {
      */
     @PostMapping("/pull_order")
     @ResponseBody
-    public AjaxResult pullIncrementOrder(@RequestBody PddPullRequest req) throws Exception {
+    public AjaxResult pullIncrementOrder(@RequestBody OrderPullRequest req) throws Exception {
         log.info("===============主动拉取pdd订单：{}", JSONObject.toJSONString(req));
         if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
@@ -190,7 +189,7 @@ public class PddOrderApiController {
      */
     @RequestMapping("/pull_order_detail")
     @ResponseBody
-    public AjaxResult getOrderPullDetail(@RequestBody PddPullRequest req) throws Exception {
+    public AjaxResult getOrderPullDetail(@RequestBody OrderPullRequest req) throws Exception {
         log.info("/**************主动更新pdd订单by number****************/");
         if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");

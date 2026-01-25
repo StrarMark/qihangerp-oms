@@ -4,8 +4,8 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.WeiRefund;
+import cn.qihangerp.model.request.RefundPullRequest;
 import cn.qihangerp.module.service.WeiRefundService;
-import cn.qihangerp.oms.wei.PullRequest;
 import cn.qihangerp.oms.wei.WeiApiCommon;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.wei.WeiRefundApiHelper;
@@ -29,7 +29,7 @@ public class WeiRefundApiController extends BaseController {
     private final WeiRefundService refundService;
 
     @RequestMapping(value = "/pull_list", method = RequestMethod.POST)
-    public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {
+    public AjaxResult pullList(@RequestBody RefundPullRequest params) throws Exception {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }

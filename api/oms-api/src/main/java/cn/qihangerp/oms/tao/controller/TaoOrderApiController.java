@@ -15,7 +15,6 @@ import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.module.service.TaoOrderService;
 import cn.qihangerp.oms.tao.OrderAssembleHelper;
 import cn.qihangerp.oms.tao.TaoApiCommon;
-import cn.qihangerp.oms.tao.TaoRequest;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.tao.TaoOrderApiHelper;
 import cn.qihangerp.open.tao.response.TaoOrderDetailResponse;
@@ -30,7 +29,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-
+import cn.qihangerp.model.request.OrderPullRequest;
 /**
  * 淘系订单更新
  */
@@ -53,7 +52,7 @@ public class TaoOrderApiController {
      */
     @PostMapping("/pull_order_tao")
     @ResponseBody
-    public AjaxResult pullIncrementOrder(@RequestBody TaoRequest req) throws IOException {
+    public AjaxResult pullIncrementOrder(@RequestBody OrderPullRequest req) throws IOException {
         log.info("/**************增量拉取tao订单****************/");
         if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
@@ -81,7 +80,7 @@ public class TaoOrderApiController {
         LocalDateTime  endTime = null;
         OShopPullLasttime lasttime = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        if(StringUtils.isEmpty(req.getOrderDate())) {
+        if(StringUtils.isEmpty(req.getStartTime())) {
             lasttime = pullLasttimeService.getLasttimeByShop(req.getShopId(), "ORDER");
             if (lasttime == null) {
                 endTime = LocalDateTime.now();
@@ -104,8 +103,8 @@ public class TaoOrderApiController {
         }else {
             // 使用条件传过来的时间
             // 将时间字符串转换为 LocalDateTime
-            startTime = LocalDateTime.parse(req.getOrderDate() + " 00:00:01", formatter);
-            endTime = LocalDateTime.parse(req.getOrderDate() + " 23:59:59", formatter);
+            startTime = LocalDateTime.parse(req.getStartTime() + " 00:00:01", formatter);
+            endTime = LocalDateTime.parse(req.getStartTime() + " 23:59:59", formatter);
         }
 
         //第一次获取
@@ -190,12 +189,12 @@ public class TaoOrderApiController {
      */
     @RequestMapping("/pull_order_detail")
     @ResponseBody
-    public AjaxResult getOrderPullDetail(@RequestBody TaoRequest taoRequest) throws IOException {
+    public AjaxResult getOrderPullDetail(@RequestBody OrderPullRequest taoRequest) throws IOException {
         log.info("/**************主动更新tao订单by number****************/");
         if (taoRequest.getShopId() == null || taoRequest.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
-        if (taoRequest.getOrderId() == null || taoRequest.getOrderId() <= 0) {
+        if (StringUtils.isEmpty(taoRequest.getOrderId())) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，缺少orderId");
         }
 

@@ -5,9 +5,9 @@ import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.EnumShopType;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPlatform;
+import cn.qihangerp.model.request.GoodsPullRequest;
 import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.module.service.OShopService;
-import cn.qihangerp.oms.dou.DouPullRequest;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouTokenApiHelper;
 import cn.qihangerp.open.dou.model.Token;
@@ -24,7 +24,7 @@ public class DouOAuthController {
 
     @PostMapping("/update_token")
     @ResponseBody
-    public AjaxResult getToken(@RequestBody DouPullRequest req)   {
+    public AjaxResult getToken(@RequestBody GoodsPullRequest req)   {
         if(req.getShopId()==null) return AjaxResult.error("缺少参数：shopId");
 
         var shop = shopService.getById(req.getShopId());

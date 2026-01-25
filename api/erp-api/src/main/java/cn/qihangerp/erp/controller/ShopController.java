@@ -48,7 +48,8 @@ public class ShopController extends BaseController {
     @GetMapping("/platformList")
     public TableDataInfo platformList(Integer status) {
         LambdaQueryWrapper<OShopPlatform> qw = new LambdaQueryWrapper<OShopPlatform>()
-                .eq(status!=null,OShopPlatform::getStatus,status);
+                .eq(status!=null,OShopPlatform::getStatus,status)
+                ;
         qw.orderByAsc(OShopPlatform::getSort);
         List<OShopPlatform> list = platformService.list(qw);
         return getDataTable(list);

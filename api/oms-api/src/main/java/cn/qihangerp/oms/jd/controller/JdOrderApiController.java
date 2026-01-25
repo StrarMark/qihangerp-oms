@@ -15,7 +15,6 @@ import cn.qihangerp.module.service.JdOrderService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.oms.jd.JdApiCommon;
-import cn.qihangerp.oms.jd.JdPullRequest;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.jd.JdOrderApiHelper;
 import cn.qihangerp.open.jd.response.JdOrderDetailResponse;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import cn.qihangerp.model.request.OrderPullRequest;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,7 +45,7 @@ public class JdOrderApiController {
     private final OShopPullLogsService pullLogsService;
 
     @RequestMapping(value = "/pull_order_jd", method = RequestMethod.POST)
-    public AjaxResult pullList(@RequestBody JdPullRequest params) throws Exception {
+    public AjaxResult pullList(@RequestBody OrderPullRequest params) throws Exception {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
@@ -173,7 +172,7 @@ public class JdOrderApiController {
      * @throws Exception
      */
     @RequestMapping(value = "/pull_order_detail", method = RequestMethod.POST)
-    public AjaxResult pullDetail(@RequestBody JdPullRequest params) throws Exception {
+    public AjaxResult pullDetail(@RequestBody OrderPullRequest params) throws Exception {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }

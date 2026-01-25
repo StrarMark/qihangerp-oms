@@ -6,7 +6,6 @@ import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.WeiOrder;
 import cn.qihangerp.model.entity.WeiOrderItem;
 import cn.qihangerp.module.service.WeiOrderService;
-import cn.qihangerp.oms.wei.PullRequest;
 import cn.qihangerp.oms.wei.WeiApiCommon;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.wei.WeiOrderApiHelper;
@@ -15,11 +14,12 @@ import cn.qihangerp.open.wei.model.OrderDetailDeliverInfoAddress;
 import cn.qihangerp.security.common.BaseController;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import cn.qihangerp.model.request.OrderPullRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class WeiOrderApiController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/pull_order", method = RequestMethod.POST)
-    public AjaxResult pullList(@RequestBody PullRequest params) {
+    public AjaxResult pullList(@RequestBody OrderPullRequest params) {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
@@ -154,11 +154,11 @@ public class WeiOrderApiController extends BaseController {
      * @throws Exception
      */
     @RequestMapping(value = "/pull_order_detail", method = RequestMethod.POST)
-    public AjaxResult pullDetail(@RequestBody PullRequest params) throws Exception {
+    public AjaxResult pullDetail(@RequestBody OrderPullRequest params) throws Exception {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
-        if (params.getOrderId()==null || params.getOrderId()==0) {
+        if (StringUtils.isEmpty(params.getOrderId())) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有订单编号");
         }
 
@@ -168,7 +168,7 @@ public class WeiOrderApiController extends BaseController {
             return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
         }
         String accessToken = checkResult.getData().getAccessToken();
-        ApiResultVo<Order> apiResultVo = WeiOrderApiHelper.pullOrderDetail(params.getOrderId(), accessToken);
+        ApiResultVo<Order> apiResultVo = WeiOrderApiHelper.pullOrderDetail(Long.parseLong(params.getOrderId()), accessToken);
         if(apiResultVo.getCode() == 0) {
             if (apiResultVo.getData() != null) {
 

@@ -7,11 +7,11 @@ import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.DouGoods;
 import cn.qihangerp.model.entity.DouGoodsSku;
+import cn.qihangerp.model.request.GoodsPullRequest;
 import cn.qihangerp.module.service.DouGoodsService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.oms.dou.DouApiCommon;
-import cn.qihangerp.oms.dou.DouPullRequest;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouGoodsApiHelper;
 import cn.qihangerp.open.dou.model.GoodsListResultVo;
@@ -45,7 +45,7 @@ public class DouGoodsApiController {
      * @throws Exception
      */
     @RequestMapping(value = "/pull_goods", method = RequestMethod.POST)
-    public AjaxResult pullSkuList(@RequestBody DouPullRequest params) throws Exception {
+    public AjaxResult pullSkuList(@RequestBody GoodsPullRequest params) throws Exception {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
@@ -80,7 +80,7 @@ public class DouGoodsApiController {
         if(resultVo.getCode() !=0 ){
             OShopPullLogs logs = new OShopPullLogs();
             logs.setShopId(params.getShopId());
-            logs.setShopType(EnumShopType.JD.getIndex());
+            logs.setShopType(EnumShopType.DOU.getIndex());
             logs.setPullType("GOODS");
             logs.setPullWay("主动拉取商品sku");
             logs.setPullParams(pullParams);
@@ -119,7 +119,7 @@ public class DouGoodsApiController {
         // 添加拉取日志
         OShopPullLogs logs = new OShopPullLogs();
         logs.setShopId(params.getShopId());
-        logs.setShopType(EnumShopType.JD.getIndex());
+        logs.setShopType(EnumShopType.DOU.getIndex());
         logs.setPullType("GOODS");
         logs.setPullWay("主动拉取商品sku");
         logs.setPullParams(pullParams);

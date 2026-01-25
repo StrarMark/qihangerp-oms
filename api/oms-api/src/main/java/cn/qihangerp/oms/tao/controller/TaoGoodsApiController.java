@@ -11,11 +11,11 @@ import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.TaoGoods;
 import cn.qihangerp.model.entity.TaoGoodsSku;
+import cn.qihangerp.model.request.GoodsPullRequest;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.module.service.TaoGoodsService;
 import cn.qihangerp.oms.tao.TaoApiCommon;
-import cn.qihangerp.oms.tao.TaoRequest;
 import cn.qihangerp.open.common.ApiResultVo;
 
 import cn.qihangerp.open.tao.TaoGoodsApiHelper;
@@ -58,7 +58,7 @@ public class TaoGoodsApiController  {
     }
      */
     @RequestMapping(value = "/pull_goods", method = RequestMethod.POST)
-    public AjaxResult pullGoodsList(@RequestBody TaoRequest req) throws Exception {
+    public AjaxResult pullGoodsList(@RequestBody GoodsPullRequest req) throws Exception {
         if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 //            return ApiResult.build(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");

@@ -5,8 +5,8 @@ import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.enums.HttpStatus;
 import cn.qihangerp.model.entity.WeiGoods;
 import cn.qihangerp.model.entity.WeiGoodsSku;
+import cn.qihangerp.model.request.GoodsPullRequest;
 import cn.qihangerp.module.service.WeiGoodsService;
-import cn.qihangerp.oms.wei.PullRequest;
 import cn.qihangerp.oms.wei.WeiApiCommon;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.wei.WeiGoodsApiService;
@@ -33,7 +33,7 @@ public class GoodsApiController {
     private final WeiGoodsService weiGoodsService;
 
     @RequestMapping(value = "/pull_goods_list", method = RequestMethod.POST)
-    public AjaxResult pullList(@RequestBody PullRequest params) throws Exception {
+    public AjaxResult pullList(@RequestBody GoodsPullRequest params) throws Exception {
         if (params.getShopId() == null || params.getShopId() <= 0) {
 //            return ApiResul new ApiResult(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");

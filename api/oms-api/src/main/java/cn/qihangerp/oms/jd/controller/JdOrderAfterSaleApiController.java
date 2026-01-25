@@ -11,11 +11,11 @@ import cn.qihangerp.common.utils.DateUtils;
 import cn.qihangerp.model.entity.OShopPullLasttime;
 import cn.qihangerp.model.entity.OShopPullLogs;
 import cn.qihangerp.model.entity.JdRefund;
+import cn.qihangerp.model.request.RefundPullRequest;
 import cn.qihangerp.module.service.JdRefundService;
 import cn.qihangerp.module.service.OShopPullLasttimeService;
 import cn.qihangerp.module.service.OShopPullLogsService;
 import cn.qihangerp.oms.jd.JdApiCommon;
-import cn.qihangerp.oms.jd.JdPullRequest;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.jd.JdAfterSaleApiHelper;
 import cn.qihangerp.open.jd.model.AfterSale;
@@ -49,7 +49,7 @@ public class JdOrderAfterSaleApiController {
      * @throws Exception
      */
     @RequestMapping(value = "/pull_after_list", method = RequestMethod.POST)
-    public AjaxResult pullList(@RequestBody JdPullRequest params) throws Exception {
+    public AjaxResult pullList(@RequestBody RefundPullRequest params) throws Exception {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
