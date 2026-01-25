@@ -83,7 +83,7 @@ public class OShipment implements Serializable {
     /**
      * 物流单号
      */
-    private String shipCode;
+    private String waybillCode;
 
     /**
      * 物流费用
@@ -158,12 +158,12 @@ public class OShipment implements Serializable {
     /**
      * 打包操作人
      */
-    private String packsgeOperator;
+    private String packageOperator;
 
     /**
      * 打包时间
      */
-    private Date packsgeTime;
+    private Date packageTime;
 
     /**
      * 包裹内容JSON

@@ -11,7 +11,7 @@
  Target Server Version : 80043 (8.0.43)
  File Encoding         : 65001
 
- Date: 25/01/2026 11:33:48
+ Date: 25/01/2026 12:16:39
 */
 
 SET NAMES utf8mb4;
@@ -1318,23 +1318,30 @@ COMMIT;
 DROP TABLE IF EXISTS `o_shipment`;
 CREATE TABLE `o_shipment` (
   `id` bigint NOT NULL,
-  `shop_id` int DEFAULT NULL COMMENT '店铺id',
+  `shop_id` bigint NOT NULL COMMENT '店铺id',
+  `shop_type` int NOT NULL COMMENT '店铺类型',
   `shipping_type` int DEFAULT NULL COMMENT '发货类型（1订单发货2商品补发3商品换货）',
-  `order_nums` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '发货的所有订单号，以逗号隔开',
+  `order_id` bigint NOT NULL COMMENT '订单库id',
+  `order_num` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '订单号',
   `sub_order_nums` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '发货的所有子订单号，以逗号隔开',
+  `order_time` varchar(25) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '下单时间',
   `receiver_name` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '收件人姓名',
   `receiver_mobile` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '收件人手机号',
   `province` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '省',
   `city` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '市',
   `town` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '区',
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '详细地址',
-  `logistics_company` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '物流公司',
-  `logistics_company_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '物流公司编码',
+  `ship_company` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '物流公司',
+  `ship_company_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '物流公司编码',
   `waybill_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '物流单号',
-  `shipping_fee` decimal(6,0) DEFAULT NULL COMMENT '物流费用',
-  `shipping_time` datetime DEFAULT NULL COMMENT '发货时间',
-  `shipping_operator` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '发货操作人',
-  `shipping_status` int DEFAULT NULL COMMENT '物流状态（1运输中2已完成）',
+  `ship_fee` decimal(6,0) DEFAULT NULL COMMENT '物流费用',
+  `ship_time` datetime DEFAULT NULL COMMENT '发货时间',
+  `ship_type` int NOT NULL COMMENT '发货方式',
+  `shipper` bigint NOT NULL COMMENT '发货人',
+  `supplier_id` bigint NOT NULL COMMENT '发货供应商id',
+  `supplier` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '发货供应商',
+  `ship_operator` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '发货操作人',
+  `ship_status` int DEFAULT NULL COMMENT '物流状态（1运输中2已完成）',
   `package_weight` float DEFAULT NULL COMMENT '包裹重量',
   `package_length` float DEFAULT NULL COMMENT '包裹长度',
   `package_width` float DEFAULT NULL COMMENT '包裹宽度',
@@ -1354,12 +1361,12 @@ CREATE TABLE `o_shipment` (
 -- Records of o_shipment
 -- ----------------------------
 BEGIN;
-INSERT INTO `o_shipment` (`id`, `shop_id`, `shipping_type`, `order_nums`, `sub_order_nums`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `logistics_company`, `logistics_company_code`, `waybill_code`, `shipping_fee`, `shipping_time`, `shipping_operator`, `shipping_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1793528218323984386, 1, 1, '3619388556309315725', '3619388556310315725', '操家群', '18413251546-9955', '浙江省', '杭州市', '上城区', '丁兰街道华鹤街3号卓越明熙府1幢1单元802室', 'SF', 'SF', 'SF21502222', NULL, '2024-05-23 14:23:44', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-05-23 14:23:44', NULL, NULL, NULL);
-INSERT INTO `o_shipment` (`id`, `shop_id`, `shipping_type`, `order_nums`, `sub_order_nums`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `logistics_company`, `logistics_company_code`, `waybill_code`, `shipping_fee`, `shipping_time`, `shipping_operator`, `shipping_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1818302160343851010, 1, 1, '1722092947647399', '1722092947647399', '启航', '15818590119', '山西省', '阳泉市', '郊区', 'AAAAAAAAAAAAAAAAAAAA', NULL, NULL, NULL, NULL, '2024-07-30 23:06:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-30 23:06:30', NULL, NULL, NULL);
-INSERT INTO `o_shipment` (`id`, `shop_id`, `shipping_type`, `order_nums`, `sub_order_nums`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `logistics_company`, `logistics_company_code`, `waybill_code`, `shipping_fee`, `shipping_time`, `shipping_operator`, `shipping_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1823987200621006849, 1, 1, '172370314299481', '172370314299481', 'qq', '13852200666', '河北省', '秦皇岛市', '山海关区', 'aaaaa', 'SFTC001', 'SFTC001', 'AAD33343', NULL, '2024-08-15 15:36:51', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-08-15 15:36:51', NULL, NULL, NULL);
-INSERT INTO `o_shipment` (`id`, `shop_id`, `shipping_type`, `order_nums`, `sub_order_nums`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `logistics_company`, `logistics_company_code`, `waybill_code`, `shipping_fee`, `shipping_time`, `shipping_operator`, `shipping_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1825083688862351361, 2, 1, '1723708260966435, 1723708260966435', '17237082609664351, 17237082609664352', 'aaa', '13012345678', '福建省', '三明市', '清流县', 'aa', 'SFTC001', 'SFTC001', 'AAA222222', NULL, '2024-08-18 16:13:54', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-08-18 16:13:54', NULL, NULL, NULL);
-INSERT INTO `o_shipment` (`id`, `shop_id`, `shipping_type`, `order_nums`, `sub_order_nums`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `logistics_company`, `logistics_company_code`, `waybill_code`, `shipping_fee`, `shipping_time`, `shipping_operator`, `shipping_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1825083959646617601, 2, 1, '1723707501431263', '1723707501431263', 'aaaa', '13134567890', '山西省', '晋城市', '陵川县', 'aaaa', 'SFTC001', 'SFTC001', '1111111', NULL, '2024-08-18 16:14:59', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-08-18 16:14:59', NULL, NULL, NULL);
-INSERT INTO `o_shipment` (`id`, `shop_id`, `shipping_type`, `order_nums`, `sub_order_nums`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `logistics_company`, `logistics_company_code`, `waybill_code`, `shipping_fee`, `shipping_time`, `shipping_operator`, `shipping_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1827537919972241410, 1, 1, '1724485556330230', '1724485556330230', 'a', 'aa', '内蒙古自治区', '赤峰市', '松山区', 'aa', 'SFTC001', 'SFTC001', '000000', NULL, '2024-08-25 10:46:09', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-08-25 10:46:09', NULL, NULL, NULL);
+INSERT INTO `o_shipment` (`id`, `shop_id`, `shop_type`, `shipping_type`, `order_id`, `order_num`, `sub_order_nums`, `order_time`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `ship_company`, `ship_company_code`, `waybill_code`, `ship_fee`, `ship_time`, `ship_type`, `shipper`, `supplier_id`, `supplier`, `ship_operator`, `ship_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1793528218323984386, 1, 0, 1, 0, '3619388556309315725', '3619388556310315725', NULL, '操家群', '18413251546-9955', '浙江省', '杭州市', '上城区', '丁兰街道华鹤街3号卓越明熙府1幢1单元802室', 'SF', 'SF', 'SF21502222', NULL, '2024-05-23 14:23:44', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-05-23 14:23:44', NULL, NULL, NULL);
+INSERT INTO `o_shipment` (`id`, `shop_id`, `shop_type`, `shipping_type`, `order_id`, `order_num`, `sub_order_nums`, `order_time`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `ship_company`, `ship_company_code`, `waybill_code`, `ship_fee`, `ship_time`, `ship_type`, `shipper`, `supplier_id`, `supplier`, `ship_operator`, `ship_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1818302160343851010, 1, 0, 1, 0, '1722092947647399', '1722092947647399', NULL, '启航', '15818590119', '山西省', '阳泉市', '郊区', 'AAAAAAAAAAAAAAAAAAAA', NULL, NULL, NULL, NULL, '2024-07-30 23:06:30', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-30 23:06:30', NULL, NULL, NULL);
+INSERT INTO `o_shipment` (`id`, `shop_id`, `shop_type`, `shipping_type`, `order_id`, `order_num`, `sub_order_nums`, `order_time`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `ship_company`, `ship_company_code`, `waybill_code`, `ship_fee`, `ship_time`, `ship_type`, `shipper`, `supplier_id`, `supplier`, `ship_operator`, `ship_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1823987200621006849, 1, 0, 1, 0, '172370314299481', '172370314299481', NULL, 'qq', '13852200666', '河北省', '秦皇岛市', '山海关区', 'aaaaa', 'SFTC001', 'SFTC001', 'AAD33343', NULL, '2024-08-15 15:36:51', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-08-15 15:36:51', NULL, NULL, NULL);
+INSERT INTO `o_shipment` (`id`, `shop_id`, `shop_type`, `shipping_type`, `order_id`, `order_num`, `sub_order_nums`, `order_time`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `ship_company`, `ship_company_code`, `waybill_code`, `ship_fee`, `ship_time`, `ship_type`, `shipper`, `supplier_id`, `supplier`, `ship_operator`, `ship_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1825083688862351361, 2, 0, 1, 0, '1723708260966435, 1723708260966435', '17237082609664351, 17237082609664352', NULL, 'aaa', '13012345678', '福建省', '三明市', '清流县', 'aa', 'SFTC001', 'SFTC001', 'AAA222222', NULL, '2024-08-18 16:13:54', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-08-18 16:13:54', NULL, NULL, NULL);
+INSERT INTO `o_shipment` (`id`, `shop_id`, `shop_type`, `shipping_type`, `order_id`, `order_num`, `sub_order_nums`, `order_time`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `ship_company`, `ship_company_code`, `waybill_code`, `ship_fee`, `ship_time`, `ship_type`, `shipper`, `supplier_id`, `supplier`, `ship_operator`, `ship_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1825083959646617601, 2, 0, 1, 0, '1723707501431263', '1723707501431263', NULL, 'aaaa', '13134567890', '山西省', '晋城市', '陵川县', 'aaaa', 'SFTC001', 'SFTC001', '1111111', NULL, '2024-08-18 16:14:59', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-08-18 16:14:59', NULL, NULL, NULL);
+INSERT INTO `o_shipment` (`id`, `shop_id`, `shop_type`, `shipping_type`, `order_id`, `order_num`, `sub_order_nums`, `order_time`, `receiver_name`, `receiver_mobile`, `province`, `city`, `town`, `address`, `ship_company`, `ship_company_code`, `waybill_code`, `ship_fee`, `ship_time`, `ship_type`, `shipper`, `supplier_id`, `supplier`, `ship_operator`, `ship_status`, `package_weight`, `package_length`, `package_width`, `package_height`, `package_operator`, `package_time`, `packages`, `remark`, `create_time`, `create_by`, `update_time`, `update_by`) VALUES (1827537919972241410, 1, 0, 1, 0, '1724485556330230', '1724485556330230', NULL, 'a', 'aa', '内蒙古自治区', '赤峰市', '松山区', 'aa', 'SFTC001', 'SFTC001', '000000', NULL, '2024-08-25 10:46:09', 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-08-25 10:46:09', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -1367,26 +1374,40 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `o_shipment_item`;
 CREATE TABLE `o_shipment_item` (
-  `id` bigint NOT NULL,
-  `shipping_id` bigint DEFAULT NULL COMMENT '发货表id',
-  `order_id` bigint DEFAULT NULL COMMENT 'o_order表id',
-  `order_item_id` bigint DEFAULT NULL COMMENT 'o_order_item表id',
-  `order_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '订单编号（第三方平台）',
-  `sub_order_num` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '子订单号（第三方平台）',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='发货-发货记录明细表';
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id，自增',
+  `shipment_id` bigint NOT NULL COMMENT '发货id',
+  `shipper` int NOT NULL COMMENT '发货方 0 仓库发货 1 供应商发货',
+  `supplier_id` bigint NOT NULL DEFAULT '0' COMMENT '供应商ID',
+  `supplier` varchar(55) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '供应商',
+  `shop_type` int NOT NULL COMMENT '店铺类型',
+  `shop_id` bigint NOT NULL COMMENT '店铺id',
+  `order_id` bigint NOT NULL COMMENT '订单 id',
+  `order_num` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '订单编号',
+  `order_time` datetime DEFAULT NULL COMMENT '订单时间',
+  `order_item_id` bigint NOT NULL COMMENT '订单itemID（o_order_item外键）',
+  `erp_goods_id` bigint NOT NULL DEFAULT '0' COMMENT 'erp系统商品id',
+  `erp_sku_id` bigint NOT NULL DEFAULT '0' COMMENT 'erp系统商品规格id',
+  `goods_title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商品标题',
+  `goods_img` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商品图片',
+  `goods_num` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商品编码',
+  `goods_spec` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商品规格',
+  `sku_num` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商品规格编码',
+  `quantity` int NOT NULL COMMENT '商品数量',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+  `stock_status` int NOT NULL COMMENT '仓库状态 0 备货中 1 已出库 2 已发走',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `goodId_index` (`erp_goods_id`) USING BTREE,
+  KEY `order_id` (`order_item_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='发货明细表';
 
 -- ----------------------------
 -- Records of o_shipment_item
 -- ----------------------------
 BEGIN;
-INSERT INTO `o_shipment_item` (`id`, `shipping_id`, `order_id`, `order_item_id`, `order_num`, `sub_order_num`) VALUES (1793528218730831874, 1793528218323984386, 1777587002076016642, 1777587002231205891, '3619388556309315725', '3619388556310315725');
-INSERT INTO `o_shipment_item` (`id`, `shipping_id`, `order_id`, `order_item_id`, `order_num`, `sub_order_num`) VALUES (1818302165259575297, 1818302160343851010, 1817230905045843970, 1817230905091981313, '1722092947647399', '1722092947647399');
-INSERT INTO `o_shipment_item` (`id`, `shipping_id`, `order_id`, `order_item_id`, `order_num`, `sub_order_num`) VALUES (1823987200621006850, 1823987200621006849, 1823969793328271361, 1823969793403768833, '172370314299481', '172370314299481');
-INSERT INTO `o_shipment_item` (`id`, `shipping_id`, `order_id`, `order_item_id`, `order_num`, `sub_order_num`) VALUES (1825083688933654529, 1825083688862351361, 1823991184286973954, 1823991184349888514, '1723708260966435', '17237082609664351');
-INSERT INTO `o_shipment_item` (`id`, `shipping_id`, `order_id`, `order_item_id`, `order_num`, `sub_order_num`) VALUES (1825083688933654530, 1825083688862351361, 1823991184286973954, 1823991184349888515, '1723708260966435', '17237082609664352');
-INSERT INTO `o_shipment_item` (`id`, `shipping_id`, `order_id`, `order_item_id`, `order_num`, `sub_order_num`) VALUES (1825083959646617602, 1825083959646617601, 1823988373058998273, 1823988373058998274, '1723707501431263', '1723707501431263');
-INSERT INTO `o_shipment_item` (`id`, `shipping_id`, `order_id`, `order_item_id`, `order_num`, `sub_order_num`) VALUES (1827537919972241411, 1827537919972241410, 1827306479443587074, 1827306487383404546, '1724485556330230', '1724485556330230');
 COMMIT;
 
 -- ----------------------------
@@ -1431,6 +1452,81 @@ INSERT INTO `o_shop` (`id`, `name`, `type`, `url`, `sort`, `status`, `remark`, `
 INSERT INTO `o_shop` (`id`, `name`, `type`, `url`, `sort`, `status`, `remark`, `seller_id`, `app_key`, `app_secret`, `access_token`, `expires_in`, `access_token_begin`, `refresh_token`, `refresh_token_timeout`, `api_request_url`, `api_redirect_url`, `manage_user_id`, `manage_dept_id`, `region_id`, `modify_on`, `create_on`, `api_status`) VALUES (1013, '测试店铺A', 999, NULL, 9, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1769244074, 1769244074, 0);
 COMMIT;
 
+-- ----------------------------
+-- Table structure for o_shop_daily
+-- ----------------------------
+DROP TABLE IF EXISTS `o_shop_daily`;
+CREATE TABLE `o_shop_daily` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL COMMENT '报表日期',
+  `shop_id` bigint NOT NULL COMMENT '店铺id',
+  `platform_id` bigint NOT NULL COMMENT '平台id',
+  `region_id` bigint NOT NULL COMMENT '国家/地区',
+  `order_total` int NOT NULL COMMENT '订单总数',
+  `order_amount` decimal(10,2) NOT NULL COMMENT '订单总金额（当前货币）',
+  `false_order_total` int NOT NULL COMMENT '刷单数量',
+  `false_order_amount` decimal(10,2) NOT NULL COMMENT '刷单金额（当前货币）',
+  `false_order_amount1` decimal(10,2) DEFAULT NULL COMMENT '刷单金额（人民币）',
+  `true_order_total` int NOT NULL COMMENT '真实订单数',
+  `true_order_amount` decimal(10,2) NOT NULL COMMENT '真实订单金额（当前货币）',
+  `ad_fee` decimal(10,2) NOT NULL COMMENT '广告支出',
+  `ad_click` int NOT NULL COMMENT '广告点击',
+  `ad_click_fee` decimal(10,2) NOT NULL COMMENT '广告点击成本',
+  `ad_roi` decimal(10,2) NOT NULL COMMENT 'ROI',
+  `unit_price` decimal(10,2) NOT NULL COMMENT '平均客单价',
+  `withdrawal_amount` decimal(10,2) DEFAULT NULL COMMENT '提现金额（当前货币）',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='店铺日报';
+
+-- ----------------------------
+-- Records of o_shop_daily
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for o_shop_daily_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `o_shop_daily_detail`;
+CREATE TABLE `o_shop_daily_detail` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `daily_id` bigint NOT NULL COMMENT '日报id',
+  `date` date NOT NULL COMMENT '报表日期',
+  `shop_id` bigint NOT NULL COMMENT '店铺id',
+  `platform_id` bigint NOT NULL COMMENT '平台id',
+  `region_id` bigint NOT NULL COMMENT '国家/地区',
+  `sku_id` bigint NOT NULL COMMENT 'sku id',
+  `sku_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'sku编码',
+  `goods_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '产品名称',
+  `sku_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'sku名称',
+  `order_total` int NOT NULL COMMENT '订单总数',
+  `order_amount` decimal(10,2) NOT NULL COMMENT '订单总金额（当前货币）',
+  `false_order_total` int NOT NULL COMMENT '刷单数量',
+  `false_order_amount` decimal(10,2) DEFAULT NULL COMMENT '刷单金额（当前货币）',
+  `false_order_amount1` decimal(10,2) DEFAULT NULL COMMENT '刷单金额（人民币，包含服务费）',
+  `true_order_total` int DEFAULT NULL COMMENT '真实订单数',
+  `true_order_amount` decimal(10,2) DEFAULT NULL COMMENT '真实订单金额（当前货币）',
+  `ad_fee` decimal(10,2) NOT NULL COMMENT '广告支出',
+  `ad_click` int NOT NULL COMMENT '广告点击',
+  `ad_click_fee` decimal(10,2) DEFAULT NULL COMMENT '广告点击成本',
+  `ad_roi` decimal(10,2) DEFAULT NULL COMMENT 'ROI',
+  `unit_price` decimal(10,2) DEFAULT NULL COMMENT '平均客单价',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_by` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '更新人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='店铺日报明细（sku级别）';
+
+-- ----------------------------
+-- Records of o_shop_daily_detail
+-- ----------------------------
+BEGIN;
+COMMIT;
 
 -- ----------------------------
 -- Table structure for o_shop_platform
@@ -4167,7 +4263,7 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-01-25 10:00:24', 'admin', '2023-08-07 19:31:37', '', '2026-01-25 02:00:24', '管理员');
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, NULL, 'admin', '启航老齐A', '00', '280645618@qq.com', '18123879144', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-01-25 11:54:43', 'admin', '2023-08-07 19:31:37', '', '2026-01-25 03:54:42', '管理员');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, NULL, 'openapi', 'openApi接口专用', '00', '2806456181@qq.com', '15818590000', '0', '', '$2a$10$fHkhoqbMiyracAsTzl38H.55bu.M.of1FXk2EK7RQBjfic3tLU0Ue', '0', '0', '127.0.0.1', '2024-06-24 10:23:35', 'admin', '2024-03-17 14:55:22', 'admin', '2024-06-24 10:23:35', NULL);
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, 101, '15818590119', 'aaa123', '00', '', '', '0', '', '$2a$10$pXcT6cHaObMeKuYd9vZb5uEb8PyUdF2AcqqRN1cBqiA9rV4qYQW7G', '0', '2', '', NULL, 'admin', '2024-08-15 13:45:25', '', NULL, NULL);
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, 101, '15818590119', '老齐', '00', '', '', '0', '', '$2a$10$ysk.zgJ8wh25c7vOjKyZ8uarM2hkG0S51j8GYdJSo2kZmc3f8HdKe', '0', '0', '', NULL, 'admin', '2024-08-15 13:49:59', 'admin', '2025-02-10 16:26:20', NULL);

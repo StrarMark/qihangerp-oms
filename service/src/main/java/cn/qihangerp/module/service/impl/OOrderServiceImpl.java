@@ -274,7 +274,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         oShipment.setShipType(1);//发货类型（1订单发货2商品补发3商品换货）
         oShipment.setShipCompany(erpLogisticsCompany.getName());
         oShipment.setShipCompanyCode(erpLogisticsCompany.getCode());
-        oShipment.setShipCode(shipBo.getShippingNumber());
+        oShipment.setWaybillCode(shipBo.getShippingNumber());
         oShipment.setShipFee(shipBo.getShippingCost());
         oShipment.setShipTime(new Date());
         oShipment.setShipOperator(shipBo.getShippingMan());
@@ -289,7 +289,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         oShipment.setPackageWeight(shipBo.getWeight());
         oShipment.setPackageLength(shipBo.getLength());
         oShipment.setPackageWidth(shipBo.getWidth());
-        oShipment.setPacksgeOperator(shipBo.getShippingMan());
+        oShipment.setPackageOperator(shipBo.getShippingMan());
 //        erpShipment.setPackages(JSONObject.toJSONString(oOrderItems));
         oShipment.setRemark(shipBo.getRemark());
         oShipment.setCreateBy(createBy);

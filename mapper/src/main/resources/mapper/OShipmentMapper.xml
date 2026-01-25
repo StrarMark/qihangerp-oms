@@ -17,7 +17,7 @@
             <result property="shipType" column="ship_type" jdbcType="INTEGER"/>
             <result property="shipCompany" column="ship_company" jdbcType="VARCHAR"/>
             <result property="shipCompanyCode" column="ship_company_code" jdbcType="VARCHAR"/>
-            <result property="shipCode" column="ship_code" jdbcType="VARCHAR"/>
+            <result property="waybillCode" column="waybill_code" jdbcType="VARCHAR"/>
             <result property="shipFee" column="ship_fee" jdbcType="DECIMAL"/>
             <result property="shipTime" column="ship_time" jdbcType="TIMESTAMP"/>
             <result property="shipOperator" column="ship_operator" jdbcType="VARCHAR"/>
@@ -26,8 +26,8 @@
             <result property="packageLength" column="package_length" jdbcType="FLOAT"/>
             <result property="packageWidth" column="package_width" jdbcType="FLOAT"/>
             <result property="packageHeight" column="package_height" jdbcType="FLOAT"/>
-            <result property="packsgeOperator" column="packsge_operator" jdbcType="VARCHAR"/>
-            <result property="packsgeTime" column="packsge_time" jdbcType="TIMESTAMP"/>
+            <result property="packageOperator" column="package_operator" jdbcType="VARCHAR"/>
+            <result property="packageTime" column="package_time" jdbcType="TIMESTAMP"/>
             <result property="packages" column="packages" jdbcType="VARCHAR"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -47,7 +47,7 @@
         order_id,order_num,order_time,
         shipper,supplier_id,supplier,
         ship_type,ship_company,ship_company_code,
-        ship_code,ship_fee,ship_time,
+        waybill_code,ship_fee,ship_time,
         ship_operator,ship_status,package_weight,
         package_length,package_width,package_height,
         packsge_operator,packsge_time,packages,

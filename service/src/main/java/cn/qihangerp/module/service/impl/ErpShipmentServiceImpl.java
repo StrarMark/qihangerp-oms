@@ -41,7 +41,7 @@ public class ErpShipmentServiceImpl extends ServiceImpl<OShipmentMapper, OShipme
                 .eq(shipping.getShipper()!=null, OShipment::getShipper,shipping.getShipper())
                 .eq(shipping.getShipType()!=null, OShipment::getShipType,shipping.getShipType())
                 .eq(StringUtils.hasText(shipping.getOrderNum()), OShipment::getOrderNum, shipping.getOrderNum())
-                .eq(StringUtils.hasText(shipping.getShipCode()), OShipment::getShipCode, shipping.getShipCode())
+                .eq(StringUtils.hasText(shipping.getWaybillCode()), OShipment::getWaybillCode, shipping.getWaybillCode())
                 .eq(shipping.getShopId() != null, OShipment::getShopId, shipping.getShopId());
 
         Page<OShipment> pages = this.baseMapper.selectPage(pageQuery.build(), queryWrapper);
@@ -78,7 +78,7 @@ public class ErpShipmentServiceImpl extends ServiceImpl<OShipmentMapper, OShipme
         shipment.setShipType(shipping.getShipType());
         shipment.setShopId(shipping.getShopId());
         shipment.setShopType(shipping.getShipType());
-        shipment.setShipCode(shipping.getShipCode());
+        shipment.setWaybillCode(shipping.getShipCode());
         shipment.setShipCompanyCode(oLogisticsCompany.getCode());
         shipment.setShipCompany(oLogisticsCompany.getName());
         shipment.setReceiverName(shipping.getReceiverName());
