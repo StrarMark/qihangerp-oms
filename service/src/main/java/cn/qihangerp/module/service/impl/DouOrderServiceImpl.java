@@ -58,23 +58,27 @@ public class DouOrderServiceImpl extends ServiceImpl<DouOrderMapper, DouOrder>
         if(StringUtils.hasText(bo.getStartTime())){
             Matcher matcher = DATE_FORMAT.matcher(bo.getStartTime());
             boolean b = matcher.find();
-            if(b){
-                bo.setStartTime(bo.getStartTime()+" 00:00:00");
+            if(!b){
+                bo.setStartTime("");
 //                startTimeStamp = DateUtils.dateTimeStrToTimeStamp(null,bo.getStartTime());
             }
         }
         if(StringUtils.hasText(bo.getEndTime())){
             Matcher matcher = DATE_FORMAT.matcher(bo.getEndTime());
             boolean b = matcher.find();
-            if(b){
-                bo.setEndTime(bo.getEndTime()+" 23:59:59");
+            if(!b){
+                bo.setEndTime("");
 //                endTimeStamp = DateUtils.dateTimeStrToTimeStamp(null,bo.getEndTime());
+            }
+        }else{
+            if(StringUtils.hasText(bo.getStartTime())) {
+                bo.setEndTime(bo.getStartTime());
             }
         }
         if(StringUtils.hasText(bo.getStartTime())) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime startTime = LocalDateTime.parse(bo.getStartTime(), formatter);
-            LocalDateTime endTime = LocalDateTime.parse(bo.getEndTime(), formatter);
+            LocalDateTime startTime = LocalDateTime.parse(bo.getStartTime()+" 00:00:00", formatter);
+            LocalDateTime endTime = LocalDateTime.parse(bo.getEndTime()+" 23:59:59", formatter);
 
             startTimestamp = startTime.toEpochSecond(ZoneOffset.ofHours(8));
             endTimestamp = endTime.toEpochSecond(ZoneOffset.ofHours(8));

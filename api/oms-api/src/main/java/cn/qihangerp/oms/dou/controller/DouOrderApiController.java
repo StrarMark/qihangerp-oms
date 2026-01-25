@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import cn.qihangerp.model.request.OrderPullRequest;
 import java.time.Duration;
@@ -32,6 +33,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 订单更新
@@ -47,6 +50,10 @@ public class DouOrderApiController {
     private final MqUtils mqUtils;
     private final OShopPullLogsService pullLogsService;
     private final OShopPullLasttimeService pullLasttimeService;
+    private final String DATE_PATTERN =
+            "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
+    private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
+
     /**
      * 增量更新订单
      * @param req
@@ -60,6 +67,16 @@ public class DouOrderApiController {
         if (req.getShopId() == null || req.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
+        if(StringUtils.isEmpty(req.getStartTime())) {
+            return AjaxResult.error("缺少参数：下单日期不能为空");
+        }
+        // 判断时间格式
+        Matcher matcher = DATE_FORMAT.matcher(req.getStartTime());
+        boolean b = matcher.find();
+        if (!b) {
+            return AjaxResult.error("下单日期格式错误");
+        }
+
         Date currDateTime = new Date();
         Long currTimeMillis = System.currentTimeMillis();
 
@@ -72,34 +89,38 @@ public class DouOrderApiController {
         String appSecret = checkResult.getData().getAppSecret();
         Long douShopId = checkResult.getData().getSellerId();
         String accessToken = checkResult.getData().getAccessToken();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         // 获取最后更新时间
         LocalDateTime startTime = null;
         LocalDateTime  endTime = null;
-        OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(req.getShopId(), "ORDER");
-        if(lasttime == null){
-            endTime = LocalDateTime.now();
-            startTime = endTime.minusDays(1);
-        }else {
-            startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
-            Duration duration = Duration.between(startTime, LocalDateTime.now());
-            long hours = duration.toHours();
-            if (hours > 24) {
-                // 大于24小时，只取24小时
-                endTime = startTime.plusHours(24);
-            } else {
-                endTime = LocalDateTime.now();
-            }
-//            endTime = startTime.plusDays(1);//取24小时
-//            if(endTime.isAfter(LocalDateTime.now())){
+//        OShopPullLasttime lasttime = pullLasttimeService.getLasttimeByShop(req.getShopId(), "ORDER");
+//        if(lasttime == null){
+//            endTime = LocalDateTime.now();
+//            startTime = endTime.minusDays(1);
+//        }else {
+//            startTime = lasttime.getLasttime().minusHours(1);//取上次结束一个小时前
+//            Duration duration = Duration.between(startTime, LocalDateTime.now());
+//            long hours = duration.toHours();
+//            if (hours > 24) {
+//                // 大于24小时，只取24小时
+//                endTime = startTime.plusHours(24);
+//            } else {
 //                endTime = LocalDateTime.now();
 //            }
-        }
-        String startTimeStr = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String endTimeStr = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+////            endTime = startTime.plusDays(1);//取24小时
+////            if(endTime.isAfter(LocalDateTime.now())){
+////                endTime = LocalDateTime.now();
+////            }
+//        }
+        startTime = LocalDateTime.parse(req.getStartTime() + " 00:00:01", formatter);
+        endTime = LocalDateTime.parse(req.getStartTime() + " 23:59:59", formatter);
+//        String startTimeStr = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//        String endTimeStr = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Long startTimestamp = startTime.toEpochSecond(ZoneOffset.ofHours(8));
         Long endTimestamp = endTime.toEpochSecond(ZoneOffset.ofHours(8));
 
-        String pullParams = "{startTime:"+startTime+",endTime:"+endTime+"}";
+        String pullParams = "{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}";
 //        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret,checkResult.getData().getSellerId());
 //
 //        if(token.getCode()==0) {
@@ -108,7 +129,7 @@ public class DouOrderApiController {
 //            return AjaxResult.error(token.getMsg());
 //        }
         //第一次获取
-        ApiResultVo<Order> resultVo = DouOrderApiHelper.pullOrderList(startTimestamp, endTimestamp, 0, 20, appKey, appSecret, accessToken);
+        ApiResultVo<Order> resultVo = DouOrderApiHelper.pullOrderList(startTimestamp, endTimestamp, 0, 100, appKey, appSecret, accessToken);
         if(resultVo.getCode() !=0 ){
             OShopPullLogs logs = new OShopPullLogs();
             logs.setShopId(req.getShopId());
@@ -182,26 +203,26 @@ public class DouOrderApiController {
             }
         }
 
-        if(totalError==0) {
-            if (lasttime == null) {
-                // 新增
-                OShopPullLasttime insertLasttime = new OShopPullLasttime();
-                insertLasttime.setShopId(req.getShopId());
-                insertLasttime.setCreateTime(new Date());
-                insertLasttime.setLasttime(endTime);
-                insertLasttime.setPullType("ORDER");
-                pullLasttimeService.save(insertLasttime);
+//        if(totalError==0) {
+//            if (lasttime == null) {
+//                // 新增
+//                OShopPullLasttime insertLasttime = new OShopPullLasttime();
+//                insertLasttime.setShopId(req.getShopId());
+//                insertLasttime.setCreateTime(new Date());
+//                insertLasttime.setLasttime(endTime);
+//                insertLasttime.setPullType("ORDER");
+//                pullLasttimeService.save(insertLasttime);
+//
+//            } else {
+//                // 修改
+//                OShopPullLasttime updateLasttime = new OShopPullLasttime();
+//                updateLasttime.setId(lasttime.getId());
+//                updateLasttime.setUpdateTime(new Date());
+//                updateLasttime.setLasttime(endTime);
+//                pullLasttimeService.updateById(updateLasttime);
+//            }
+//        }
 
-            } else {
-                // 修改
-                OShopPullLasttime updateLasttime = new OShopPullLasttime();
-                updateLasttime.setId(lasttime.getId());
-                updateLasttime.setUpdateTime(new Date());
-                updateLasttime.setLasttime(endTime);
-                pullLasttimeService.updateById(updateLasttime);
-            }
-        }
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         OShopPullLogs logs = new OShopPullLogs();
         logs.setShopType(EnumShopType.DOU.getIndex());
         logs.setShopId(req.getShopId());
@@ -213,7 +234,7 @@ public class DouOrderApiController {
         logs.setDuration(System.currentTimeMillis() - currTimeMillis);
         pullLogsService.save(logs);
 
-        String msg = "成功{startTime:"+startTime.format(df)+",endTime:"+endTime.format(df)+"}总共找到：" + resultVo.getTotalRecords() + "条订单，新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
+        String msg = "成功{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"}总共找到：" + resultVo.getTotalRecords() + "条订单，新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
         log.info("/**************主动更新DOU订单：END：" + msg + "****************/");
         return AjaxResult.success(msg);
     }
