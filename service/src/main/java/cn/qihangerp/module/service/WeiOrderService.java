@@ -3,6 +3,7 @@ package cn.qihangerp.module.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.model.bo.WeiOrderBo;
 import cn.qihangerp.model.entity.WeiOrder;
 import cn.qihangerp.model.bo.WeiOrderConfirmBo;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -14,7 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2024-06-03 16:48:31
 */
 public interface WeiOrderService extends IService<WeiOrder> {
-    PageResult<WeiOrder> queryPageList(WeiOrder bo, PageQuery pageQuery);
+    PageResult<WeiOrder> queryPageList(WeiOrderBo bo, PageQuery pageQuery);
     ResultVo<Integer> saveOrder(Long shopId, WeiOrder order);
     WeiOrder queryDetailById(Long id);
     WeiOrder queryDetailByOrderId(String orderId);

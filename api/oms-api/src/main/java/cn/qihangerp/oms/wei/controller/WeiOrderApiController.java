@@ -14,6 +14,7 @@ import cn.qihangerp.open.wei.model.OrderDetailDeliverInfoAddress;
 import cn.qihangerp.security.common.BaseController;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,16 +22,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import cn.qihangerp.model.request.OrderPullRequest;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+@Slf4j
 @RequestMapping("/wei/order")
 @RestController
 @AllArgsConstructor
 public class WeiOrderApiController extends BaseController {
     private final WeiApiCommon apiCommon;
     private final WeiOrderService weiOrderService;
-
+    private final String DATE_PATTERN =
+            "^(?:(?:(?:\\d{4}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|1\\d|2[0-8]))|(?:(?:(?:\\d{2}(?:0[48]|[2468][048]|[13579][26])|(?:(?:0[48]|[2468][048]|[13579][26])00))-0?2-29))$)|(?:(?:(?:\\d{4}-(?:0?[13578]|1[02]))-(?:0?[1-9]|[12]\\d|30))$)|(?:(?:(?:\\d{4}-0?[13-9]|1[0-2])-(?:0?[1-9]|[1-2]\\d|30))$)|(?:(?:(?:\\d{2}(?:0[48]|[13579][26]|[2468][048])|(?:(?:0[48]|[13579][26]|[2468][048])00))-0?2-29))$)$";
+    private final Pattern DATE_FORMAT = Pattern.compile(DATE_PATTERN);
     /**
      * 拉取订单
      * @param params
@@ -41,6 +48,16 @@ public class WeiOrderApiController extends BaseController {
         if (params.getShopId() == null || params.getShopId() <= 0) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
         }
+        if (StringUtils.isEmpty(params.getStartTime())) {
+            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有下单日期");
+        }
+
+        // 判断时间格式
+        Matcher matcher = DATE_FORMAT.matcher(params.getStartTime());
+        boolean b = matcher.find();
+        if (!b) {
+            return AjaxResult.error("下单日期格式错误");
+        }
 
         var checkResult = apiCommon.checkBefore(params.getShopId());
         if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {
@@ -50,8 +67,9 @@ public class WeiOrderApiController extends BaseController {
         String accessToken = checkResult.getData().getAccessToken();
 //        String appKey = checkResult.getData().getAppKey();
 //        String appSecret = checkResult.getData().getAppSecret();
-        LocalDateTime  endTime = LocalDateTime.now();
-        LocalDateTime startTime = endTime.minusHours(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startTime = LocalDateTime.parse(params.getStartTime() + " 00:00:01", formatter);
+        LocalDateTime endTime = LocalDateTime.parse(params.getStartTime() + " 23:59:59", formatter);
         ApiResultVo<Order> orderApiResultVo = WeiOrderApiHelper.pullOrderList(startTime, endTime, accessToken,1,100);
 
 //        ApiResultVo<Order> apiResultVo = OrderApiHelper.pullOrderList(startTime, endTime, accessToken);
@@ -138,13 +156,14 @@ public class WeiOrderApiController extends BaseController {
                     } else if (result.getCode() == ResultVoEnum.SUCCESS.getIndex()) {
                         insertSuccess++;
                     } else {
+                        log.error(result.getMsg());
                         totalError++;
                     }
                 }
             }
         }
-
-        return AjaxResult.success();
+        String msg = "成功{startTime:"+startTime.format(formatter)+",endTime:"+endTime.format(formatter)+"} 新增：" + insertSuccess + "条，添加错误：" + totalError + "条，更新：" + hasExistOrder + "条";
+        return AjaxResult.success(msg);
     }
 
     /**

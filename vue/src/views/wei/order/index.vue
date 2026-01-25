@@ -20,21 +20,26 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="下单日期" prop="orderCreateTime">
-        <el-date-picker clearable
-          v-model="queryParams.orderCreateTime"
+      <el-form-item label="下单日期" prop="startTime">
+        <el-date-picker clearable @change="handleQuery"
+          v-model="queryParams.startTime"
           type="date"
           value-format="yyyy-MM-dd"
           placeholder="请选择订单创建时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="订单状态" prop="statusStr">
-        <el-input
-          v-model="queryParams.statusStr"
-          placeholder="请输入订单状态"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="订单状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择订单状态" clearable @change="handleQuery">
+          <el-option label="待付款" value="10"></el-option>
+          <el-option label="礼物待收下" value="12"></el-option>
+          <el-option label="一起买待成团" value="13"></el-option>
+          <el-option label="待发货" value="20"></el-option>
+          <el-option label="部分发货" value="21"></el-option>
+          <el-option label="待收货" value="30"></el-option>
+          <el-option label="完成" value="100"></el-option>
+          <el-option label="全部商品售后之后，订单取消" value="200"></el-option>
+          <el-option label="未付款用户主动取消或超时未付款订单自动取消" value="250"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -154,7 +159,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="收件人信息" align="center" prop="userName" >
+      <el-table-column label="收件人信息" align="left" prop="userName" >
         <template slot-scope="scope">
           <span>{{scope.row.userName}}</span><br />
           <span> {{scope.row.provinceName}} {{scope.row.cityName}} {{scope.row.countyName}}
@@ -168,9 +173,14 @@
       <el-table-column label="订单状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 10 " size="small">待付款</el-tag>
+          <el-tag v-if="scope.row.status === 12 " size="small">礼物待收下</el-tag>
+          <el-tag v-if="scope.row.status === 13 " size="small">一起买待成团</el-tag>
           <el-tag v-if="scope.row.status === 20 " size="small">待发货</el-tag>
+          <el-tag v-if="scope.row.status === 21 " size="small">部分发货</el-tag>
           <el-tag v-if="scope.row.status === 30 " size="small">待收货</el-tag>
           <el-tag v-if="scope.row.status === 100 " size="small">完成</el-tag>
+          <el-tag v-if="scope.row.status === 200 " size="small">订单取消</el-tag>
+          <el-tag v-if="scope.row.status === 250 " size="small">未付款订单自动取消</el-tag>
           <br/>
           <el-tag style="margin-top: 5px" type="warning" v-if="scope.row.auditStatus === 0 " size="small">待确认</el-tag>
         </template>
@@ -459,17 +469,26 @@ export default {
       this.multiple = !selection.length
     },
     handlePull() {
-      if(this.queryParams.shopId){
-        this.pullLoading = true
-        pullOrder({shopId:this.queryParams.shopId}).then(response => {
-          console.log('拉取订单接口返回=====',response)
-            this.$modal.msgSuccess(JSON.stringify(response));
-            this.pullLoading = false
-            this.getList()
-        })
-      }else{
-        this.$modal.msgSuccess("请先选择店铺");
+      if (!this.queryParams.shopId) {
+        this.$modal.msgError("请选择店铺");
+        return
       }
+      if (!this.queryParams.startTime) {
+        this.$modal.msgError("请选择下单时间");
+        return
+      }
+        this.pullLoading = true
+        pullOrder({shopId:this.queryParams.shopId,startTime:this.queryParams.startTime}).then(response => {
+          console.log('拉取订单接口返回=====',response)
+          if(response.code === 200){
+            this.$modal.msgSuccess(JSON.stringify(response));
+            this.getList()
+          }else{
+            this.$modal.msgError(response.msg)
+          }
+          this.pullLoading = false
+        })
+
 
       // this.$modal.msgSuccess("请先配置API");
     },
