@@ -1,30 +1,23 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="108px">
-      <el-form-item label="平台SkuId" prop="skuId">
+      <el-form-item label="平台商品ID" prop="productId">
         <el-input
-          v-model="queryParams.skuId"
-          placeholder="请输入平台SkuId"
+          v-model="queryParams.productId"
+          placeholder="请输入平台商品ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商家sku编码" prop="outerId">
+      <el-form-item label="商家商品编码" prop="outProductId">
         <el-input
-          v-model="queryParams.outerId"
-          placeholder="请输入商家sku编码"
+          v-model="queryParams.outProductId"
+          placeholder="请输入商家商品编码"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="ERP skuId" prop="erpSkuId">
-        <el-input
-          v-model="queryParams.erpSkuId"
-          placeholder="请输入ERP skuId"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item label="店铺" prop="shopId">
         <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
          <el-option
@@ -57,13 +50,14 @@
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
        <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="ID" align="center" prop="id" />-->
-      <el-table-column label="平台商品ID" align="center" prop="productId" />
-      <el-table-column label="图片" align="center" prop="thumbImg" width="100">
+      <el-table-column label="平台商品ID" align="center" prop="productId" width="180"/>
+      <el-table-column label="图片" align="center" prop="thumbImg" width="70">
         <template slot-scope="scope">
           <image-preview :src="scope.row.headImg" :width="50" :height="50"/>
         </template>
       </el-table-column>
-      <el-table-column label="标题" align="center" prop="title" />
+      <el-table-column label="标题" align="left" prop="title" />
+      <el-table-column label="商家编码" align="center" prop="outProductId" />
       <el-table-column label="SKU" align="center" >
         <template slot-scope="scope">
           <el-button
@@ -74,7 +68,7 @@
           >{{scope.row.skuList.length +' 个SKU'}}</el-button>
         </template>
       </el-table-column>
-       <el-table-column label="商家编码" align="center" prop="outProductId" />
+
       <el-table-column label="销售价" align="center" prop="salePrice" >
         <template slot-scope="scope">{{scope.row.minPrice / 100}}</template>
       </el-table-column>
@@ -107,7 +101,7 @@
     />
 
     <el-dialog title="Sku List" :visible.sync="skuOpen" width="1200px" append-to-body>
-      <el-table v-loading="loading" :data="skuList">
+      <el-table v-loading="loading" :data="skuList" :row-class-name="rowIndex">
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
         <el-table-column label="序号" align="center" prop="index" width="50"/>
         <el-table-column label="SKU编码" align="left" prop="outerId" />
@@ -168,7 +162,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {listShop} from "@/api/shop/shop";
 import {pullGoodsList,listGoods,getGoodsSku,linkErpGoodsSkuId} from "@/api/wei/goods";
 import {MessageBox} from "element-ui";
-import { amountFormatter } from '@/utils/zhijian'
+import {amountFormatter, rowIndex} from '@/utils/zhijian'
 
 export default {
   name: "GoodsListWei",
@@ -199,7 +193,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        name: null
+        name: null,
+        outProductId: null,
       },
       // 表单参数
       form: {},
@@ -229,6 +224,7 @@ export default {
     this.loading = false;
   },
   methods: {
+    rowIndex,
     amountFormatter,
     /** 查看SKU List*/
     handleViewSkuList(row){
@@ -288,9 +284,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           linkErpGoodsSkuId(this.form).then(response => {
-            this.$modal.msgSuccess("关联成功");
-            this.open = false;
-            this.getList();
+            if(response.code === 200) {
+              this.$modal.msgSuccess("关联成功");
+              this.open = false;
+              this.getList();
+            }else{
+              this.$modal.msgError(response.msg)
+            }
           });
         }
       });

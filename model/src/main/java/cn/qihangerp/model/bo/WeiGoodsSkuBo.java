@@ -5,14 +5,13 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class DouGoodsSkuBo implements Serializable {
-    /**
-     * 商品数字id
-     */
-    private Long productId;
-    private Long id;
+public class WeiGoodsSkuBo implements Serializable {
+
+    private String productId;
+    private String skuId;
     private String title;
-    private String code;
+    private String skuCode;
     private Long shopId;
     private Long erpSkuId;
+    private Integer status;
 }

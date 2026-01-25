@@ -5,14 +5,11 @@ import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.utils.StringUtils;
-import cn.qihangerp.model.entity.OGoods;
-import cn.qihangerp.model.entity.OGoodsInventory;
-import cn.qihangerp.model.entity.OGoodsSku;
+import cn.qihangerp.model.bo.WeiGoodsBo;
+import cn.qihangerp.model.entity.*;
 import cn.qihangerp.mapper.OGoodsInventoryMapper;
 import cn.qihangerp.mapper.OGoodsMapper;
 import cn.qihangerp.mapper.OGoodsSkuMapper;
-import cn.qihangerp.model.entity.WeiGoods;
-import cn.qihangerp.model.entity.WeiGoodsSku;
 import cn.qihangerp.mapper.WeiGoodsMapper;
 import cn.qihangerp.mapper.WeiGoodsSkuMapper;
 import cn.qihangerp.module.service.WeiGoodsService;
@@ -45,9 +42,11 @@ public class WeiGoodsServiceImpl extends ServiceImpl<WeiGoodsMapper, WeiGoods>
     private final OGoodsInventoryMapper inventoryMapper;
 
     @Override
-    public PageResult<WeiGoods> queryPageList(WeiGoods bo, PageQuery pageQuery) {
+    public PageResult<WeiGoods> queryPageList(WeiGoodsBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<WeiGoods> queryWrapper = new LambdaQueryWrapper<WeiGoods>()
                 .eq(bo.getShopId()!=null,WeiGoods::getShopId,bo.getShopId())
+                .eq(org.springframework.util.StringUtils.hasText(bo.getProductId()), WeiGoods::getProductId,bo.getProductId())
+                .eq(org.springframework.util.StringUtils.hasText(bo.getOutProductId()),WeiGoods::getOutProductId,bo.getOutProductId())
                 ;
 
         Page<WeiGoods> page = mapper.selectPage(pageQuery.build(), queryWrapper);

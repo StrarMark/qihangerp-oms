@@ -119,7 +119,7 @@
     />
 
     <el-dialog title="Sku List" :visible.sync="skuOpen" width="1200px" append-to-body>
-      <el-table v-loading="loading" :data="skuList">
+      <el-table v-loading="loading" :data="skuList" :row-class-name="rowIndex">
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
         <el-table-column label="序号" align="center" prop="index" width="50"/>
         <el-table-column label="SKU编码" align="left" prop="outerId" />
@@ -180,7 +180,7 @@ import {listGoods,getGoodsSku,linkErpGoodsSkuId,pullGoodsList,pushToOms} from "@
 import {listShop} from "@/api/shop/shop";
 import {MessageBox} from "element-ui";
 import {isRelogin} from "@/utils/request";
-import {amountFormatter} from "@/utils/zhijian";
+import {amountFormatter, rowIndex} from "@/utils/zhijian";
 
 
 export default {
@@ -245,6 +245,7 @@ export default {
     // this.getList();
   },
   methods: {
+    rowIndex,
     amountFormatter,
     // 多选框选中数据
     handleSelectionChange(selection) {

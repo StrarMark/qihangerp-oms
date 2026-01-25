@@ -111,7 +111,7 @@
     />
 
     <el-dialog title="Sku List" :visible.sync="skuOpen" width="1200px" append-to-body>
-      <el-table v-loading="loading" :data="skuList">
+      <el-table v-loading="loading" :data="skuList" :row-class-name="rowIndex">
         <!-- <el-table-column type="selection" width="55" align="center" /> -->
         <el-table-column label="序号" align="center" prop="index" width="50"/>
         <el-table-column label="SKU编码" align="left" prop="outerId" />
@@ -179,7 +179,7 @@ import { listShop } from "@/api/shop/shop";
 import { searchSku } from "@/api/goods/goods";
 import {MessageBox} from "element-ui";
 import {getGoodsSku, linkErpGoodsSkuId, listGoods, pullGoodsList,pushToOms} from "@/api/tao/goods";
-import {amountFormatter, parseTime} from "@/utils/zhijian";
+import {amountFormatter, parseTime, rowIndex} from "@/utils/zhijian";
 
 export default {
   name: "GoodsListTao",
@@ -247,6 +247,7 @@ export default {
     }
   },
   methods: {
+    rowIndex,
     parseTime,
     amountFormatter,
     getSkuProper(proper){

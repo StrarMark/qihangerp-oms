@@ -4,10 +4,8 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
-import cn.qihangerp.model.entity.OGoods;
-import cn.qihangerp.model.entity.OGoodsSku;
-import cn.qihangerp.model.entity.WeiGoods;
-import cn.qihangerp.model.entity.WeiGoodsSku;
+import cn.qihangerp.model.bo.WeiGoodsSkuBo;
+import cn.qihangerp.model.entity.*;
 import cn.qihangerp.mapper.WeiGoodsMapper;
 import cn.qihangerp.mapper.WeiGoodsSkuMapper;
 import cn.qihangerp.module.service.OGoodsService;
@@ -20,6 +18,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -38,9 +37,13 @@ public class WeiGoodsSkuServiceImpl extends ServiceImpl<WeiGoodsSkuMapper, WeiGo
     private final OGoodsService oGoodsService;
 
     @Override
-    public PageResult<WeiGoodsSku> queryPageList(WeiGoodsSku bo, PageQuery pageQuery) {
+    public PageResult<WeiGoodsSku> queryPageList(WeiGoodsSkuBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<WeiGoodsSku> queryWrapper = new LambdaQueryWrapper<WeiGoodsSku>()
                 .eq(bo.getShopId()!=null,WeiGoodsSku::getShopId,bo.getShopId())
+                .eq(StringUtils.hasText(bo.getProductId()), WeiGoodsSku::getProductId,bo.getProductId())
+                .eq(StringUtils.hasText(bo.getSkuId()), WeiGoodsSku::getSkuId,bo.getSkuId())
+                .like(StringUtils.hasText(bo.getSkuCode()), WeiGoodsSku::getSkuCode,bo.getSkuCode())
+                .eq(bo.getErpSkuId()!=null, WeiGoodsSku::getErpGoodsSkuId,bo.getErpSkuId())
                 ;
 
         Page<WeiGoodsSku> page = mapper.selectPage(pageQuery.build(), queryWrapper);

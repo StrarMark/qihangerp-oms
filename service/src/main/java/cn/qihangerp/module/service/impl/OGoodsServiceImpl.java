@@ -50,6 +50,7 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
     public PageResult<OGoodsSku> querySkuPageList(OGoodsSku bo, PageQuery pageQuery) {
         LambdaQueryWrapper<OGoodsSku> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(bo.getStatus()!=null, OGoodsSku::getStatus,bo.getStatus());
+        queryWrapper.eq(bo.getGoodsId()!=null, OGoodsSku::getGoodsId,bo.getGoodsId());
         queryWrapper.eq(bo.getOuterErpSkuId()!=null,OGoodsSku::getOuterErpSkuId,bo.getOuterErpSkuId());
         queryWrapper.eq(bo.getOuterErpGoodsId()!=null,OGoodsSku::getOuterErpGoodsId,bo.getOuterErpGoodsId());
         queryWrapper.eq(StringUtils.hasText(bo.getSkuCode()),OGoodsSku::getSkuCode,bo.getSkuCode());

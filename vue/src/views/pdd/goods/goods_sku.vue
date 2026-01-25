@@ -9,6 +9,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="平台商品ID" prop="goodsId">
+        <el-input
+          v-model="queryParams.goodsId"
+          placeholder="请输入平台商品ID"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="商家sku编码" prop="outerId">
         <el-input
           v-model="queryParams.outerId"
@@ -241,9 +249,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           linkErpGoodsSkuId(this.form).then(response => {
-            this.$modal.msgSuccess("关联成功");
-            this.open = false;
-            this.getList();
+            if(response.code === 200) {
+              this.$modal.msgSuccess("关联成功");
+              this.open = false;
+              this.getList();
+            }else{
+              this.$modal.msgError(response.msg)
+            }
           });
         }
       });

@@ -2,6 +2,8 @@ package cn.qihangerp.oms.wei.controller;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
+import cn.qihangerp.model.bo.WeiGoodsBo;
+import cn.qihangerp.model.bo.WeiGoodsSkuBo;
 import cn.qihangerp.module.service.OGoodsSkuService;
 import cn.qihangerp.model.entity.WeiGoods;
 import cn.qihangerp.model.entity.WeiGoodsSku;
@@ -24,14 +26,14 @@ public class WeiGoodsController extends BaseController {
     private final OGoodsSkuService oGoodsSkuService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public TableDataInfo list(WeiGoods bo, PageQuery pageQuery) {
+    public TableDataInfo list(WeiGoodsBo bo, PageQuery pageQuery) {
         PageResult<WeiGoods> result = goodsService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);
     }
 
     @RequestMapping(value = "/skuList", method = RequestMethod.GET)
-    public TableDataInfo skuList(WeiGoodsSku bo, PageQuery pageQuery) {
+    public TableDataInfo skuList(WeiGoodsSkuBo bo, PageQuery pageQuery) {
         PageResult<WeiGoodsSku> result = skuService.queryPageList(bo, pageQuery);
 
         return getDataTable(result);

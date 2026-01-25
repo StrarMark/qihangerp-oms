@@ -48,7 +48,8 @@ public class DouGoodsServiceImpl extends ServiceImpl<DouGoodsMapper, DouGoods>
     public PageResult<DouGoods> queryPageList(DouGoodsBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<DouGoods> queryWrapper = new LambdaQueryWrapper<DouGoods>()
                 .eq(bo.getShopId()!=null,DouGoods::getShopId,bo.getShopId())
-                .eq(bo.getProductId()!=null,DouGoods::getProductId,bo.getProductId())
+                .eq(org.springframework.util.StringUtils.hasText(bo.getProductId()),DouGoods::getProductId,bo.getProductId())
+                .eq(org.springframework.util.StringUtils.hasText(bo.getOuterProductId()),DouGoods::getOuterProductId,bo.getOuterProductId())
                 ;
 
         Page<DouGoods> goodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);

@@ -2,10 +2,11 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
 
-      <el-form-item label="ERP商品SKUID" prop="outerErpSkuId">
+
+      <el-form-item label="商品ID" prop="goodsId">
         <el-input
-          v-model="queryParams.outerErpSkuId"
-          placeholder="请输入ERP商品SKUID"
+          v-model="queryParams.goodsId"
+          placeholder="请输入商品ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -14,6 +15,14 @@
         <el-input
           v-model="queryParams.skuCode"
           placeholder="请输入SKU编码"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="外部SkuId" prop="outerErpSkuId">
+        <el-input
+          v-model="queryParams.outerErpSkuId"
+          placeholder="请输入外部SkuId"
           clearable
           @keyup.enter.native="handleQuery"
         />

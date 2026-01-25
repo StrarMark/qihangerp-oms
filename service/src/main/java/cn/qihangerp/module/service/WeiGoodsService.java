@@ -3,6 +3,7 @@ package cn.qihangerp.module.service;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
+import cn.qihangerp.model.bo.WeiGoodsBo;
 import cn.qihangerp.model.entity.WeiGoods;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,7 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-05-20 16:31:43
 */
 public interface WeiGoodsService extends IService<WeiGoods> {
-    PageResult<WeiGoods> queryPageList(WeiGoods bo, PageQuery pageQuery);
+    PageResult<WeiGoods> queryPageList(WeiGoodsBo bo, PageQuery pageQuery);
     int saveAndUpdateGoods(Long shopId, WeiGoods goods);
     ResultVo pushToOms(Long taoGoodsId);
 }

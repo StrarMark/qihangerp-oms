@@ -325,9 +325,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           linkErpGoodsSkuId(this.form).then(response => {
-            this.$modal.msgSuccess("关联成功");
-            this.open = false;
-            this.getList();
+            if(response.code === 200) {
+              this.$modal.msgSuccess("关联成功");
+              this.open = false;
+              this.getList();
+            }else{
+              this.$modal.msgError(response.msg)
+            }
           });
         }
       });

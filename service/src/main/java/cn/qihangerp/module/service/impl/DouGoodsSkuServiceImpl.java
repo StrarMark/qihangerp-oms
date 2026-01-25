@@ -50,6 +50,7 @@ public class DouGoodsSkuServiceImpl extends ServiceImpl<DouGoodsSkuMapper, DouGo
                 .eq(bo.getId()!=null, DouGoodsSku::getId, bo.getId())
                 .eq(bo.getShopId()!=null,DouGoodsSku::getShopId,bo.getShopId())
                 .eq(bo.getProductId()!=null,DouGoodsSku::getProductId,bo.getProductId())
+                .eq(bo.getErpSkuId()!=null,DouGoodsSku::getErpGoodsSkuId,bo.getErpSkuId())
                 .eq(StringUtils.hasText(bo.getCode()),DouGoodsSku::getOutSkuId,bo.getCode())
                 ;
         Page<DouGoodsSku> goodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
