@@ -40,6 +40,7 @@ public class TaoGoodsSkuServiceImpl extends ServiceImpl<TaoGoodsSkuMapper, TaoGo
                 .eq(bo.getNumIid()!=null,TaoGoodsSku::getNumIid,bo.getNumIid())
                 .eq(bo.getSkuId()!=null,TaoGoodsSku::getSkuId,bo.getSkuId())
                 .eq(StringUtils.hasText(bo.getOuterId()),TaoGoodsSku::getOuterId,bo.getOuterId())
+                .eq(bo.getErpGoodsSkuId()!=null,TaoGoodsSku::getErpGoodsSkuId,bo.getErpGoodsSkuId())
                 ;
         IPage<TaoGoodsSku> result = mapper.selectPage(pageQuery.build(), ew);
         return PageResult.build(result);

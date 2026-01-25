@@ -10,22 +10,15 @@
         />
       </el-form-item>
 
-      <el-form-item label="商家编码" prop="outerId">
+      <el-form-item label="商家商品编码" prop="outerId">
         <el-input
           v-model="queryParams.outerId"
-          placeholder="请输入商家编码"
+          placeholder="请输入商家商品编码"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="ERP商品ID" prop="erpGoodsId">
-        <el-input
-          v-model="queryParams.erpGoodsId"
-          placeholder="请输入ERP skuId"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
       <el-form-item label="店铺" prop="shopId">
         <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
          <el-option

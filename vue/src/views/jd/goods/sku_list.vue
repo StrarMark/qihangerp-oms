@@ -9,6 +9,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="平台商品ID" prop="wareId">
+        <el-input
+          v-model="queryParams.wareId"
+          placeholder="请输入平台商品ID"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="商家sku编码" prop="outerId">
         <el-input
           v-model="queryParams.outerId"

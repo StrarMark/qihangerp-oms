@@ -1,40 +1,33 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="108px">
-      <el-form-item label="平台SkuId" prop="skuId">
+      <el-form-item label="平台商品ID" prop="wareId">
         <el-input
-          v-model="queryParams.skuId"
-          placeholder="请输入平台SkuId"
+          v-model="queryParams.wareId"
+          placeholder="请输入平台商品ID"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商家sku编码" prop="outerId">
+
+      <el-form-item label="商家商品编码" prop="itemNum">
         <el-input
-          v-model="queryParams.outerId"
-          placeholder="请输入商家sku编码"
+          v-model="queryParams.itemNum"
+          placeholder="请输入商家商品编码"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="ERP skuId" prop="erpSkuId">
-        <el-input
-          v-model="queryParams.erpSkuId"
-          placeholder="请输入ERP skuId"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="店铺" prop="shopId">
+        <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
+         <el-option
+            v-for="item in shopList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </el-form-item>
-            <el-form-item label="店铺" prop="shopId">
-              <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">
-               <el-option
-                  v-for="item in shopList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
-              </el-select>
-            </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>

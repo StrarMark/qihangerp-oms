@@ -50,7 +50,11 @@ public class TaoGoodsServiceImpl extends ServiceImpl<TaoGoodsMapper, TaoGoods>
     @Override
     public PageResult<TaoGoods> queryPageList(TaoGoodsBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<TaoGoods> queryWrapper = new LambdaQueryWrapper<TaoGoods>()
-                .eq(bo.getShopId()!=null,TaoGoods::getShopId,bo.getShopId());
+                .eq(bo.getShopId()!=null,TaoGoods::getShopId,bo.getShopId())
+                .eq(bo.getNumIid()!=null,TaoGoods::getNumIid,bo.getNumIid())
+                .eq(org.springframework.util.StringUtils.hasText(bo.getOuterId()),TaoGoods::getOuterId,bo.getOuterId())
+
+                ;
 
         Page<TaoGoods> taoGoodsPage = mapper.selectPage(pageQuery.build(), queryWrapper);
         if(taoGoodsPage.getRecords()!=null && taoGoodsPage.getRecords().size()>0){
