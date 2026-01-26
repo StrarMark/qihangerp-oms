@@ -49,24 +49,28 @@ public class JdOrderServiceImpl extends ServiceImpl<JdOrderMapper, JdOrder>
         if(org.springframework.util.StringUtils.hasText(bo.getStartTime())){
             Matcher matcher = DATE_FORMAT.matcher(bo.getStartTime());
             boolean b = matcher.find();
-            if(b){
-                bo.setStartTime(bo.getStartTime()+" 00:00:00");
+            if(!b){
+                bo.setEndTime("");
+//                bo.setStartTime(bo.getStartTime()+" 00:00:00");
             }
         }
         if(org.springframework.util.StringUtils.hasText(bo.getEndTime())){
             Matcher matcher = DATE_FORMAT.matcher(bo.getEndTime());
             boolean b = matcher.find();
-            if(b){
-                bo.setEndTime(bo.getEndTime()+" 23:59:59");
+            if(!b){
+//                bo.setEndTime(bo.getEndTime()+" 23:59:59");
+                bo.setStartTime("");
             }
+        }else{
+            bo.setEndTime(bo.getStartTime());
         }
 
         LambdaQueryWrapper<JdOrder> queryWrapper = new LambdaQueryWrapper<JdOrder>()
                 .eq(bo.getShopId()!=null,JdOrder::getShopId,bo.getShopId())
                 .eq(StringUtils.hasText(bo.getOrderId()),JdOrder::getOrderId,bo.getOrderId())
                 .eq(StringUtils.hasText(bo.getOrderState()),JdOrder::getOrderState,bo.getOrderState())
-                .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),JdOrder::getOrderStartTime,bo.getStartTime())
-                .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),JdOrder::getOrderStartTime,bo.getEndTime())
+                .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()),JdOrder::getOrderStartTime,bo.getStartTime()+" 00:00:00")
+                .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()),JdOrder::getOrderStartTime,bo.getEndTime()+" 23:59:59")
                 ;
 
         pageQuery.setOrderByColumn("order_start_time");
