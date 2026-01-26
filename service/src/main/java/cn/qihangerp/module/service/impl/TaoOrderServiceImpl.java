@@ -62,16 +62,20 @@ public class TaoOrderServiceImpl extends ServiceImpl<TaoOrderMapper, TaoOrder>
         if(StringUtils.hasText(bo.getStartTime())){
             Matcher matcher = DATE_FORMAT.matcher(bo.getStartTime());
             boolean b = matcher.find();
-            if(b){
-                bo.setStartTime(bo.getStartTime()+" 00:00:00");
+            if(!b){
+//                bo.setStartTime(bo.getStartTime()+" 00:00:00");
+                bo.setStartTime("");
             }
         }
         if(StringUtils.hasText(bo.getEndTime())){
             Matcher matcher = DATE_FORMAT.matcher(bo.getEndTime());
             boolean b = matcher.find();
-            if(b){
-                bo.setEndTime(bo.getEndTime()+" 23:59:59");
+            if(!b){
+//                bo.setEndTime(bo.getEndTime()+" 23:59:59");
+                bo.setEndTime("");
             }
+        }else{
+            bo.setEndTime(bo.getStartTime());
         }
 
         LambdaQueryWrapper<TaoOrder> queryWrapper = new LambdaQueryWrapper<TaoOrder>()

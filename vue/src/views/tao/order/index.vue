@@ -19,13 +19,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="下单时间" prop="orderTime">
-        <el-date-picker clearable
-                        v-model="orderTime" value-format="yyyy-MM-dd"
-                        type="daterange"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+      <el-form-item label="下单时间" prop="startTime">
+        <el-date-picker clearable @change="handleQuery"
+                        v-model="queryParams.startTime" value-format="yyyy-MM-dd"
+                        type="date" placeholder="下单时间">
         </el-date-picker>
       </el-form-item>
 <!--      <el-form-item label="下单日期" prop="orderCreateTime">-->
@@ -419,8 +416,11 @@ export default {
         this.queryParams.startTime = this.orderTime[0]
         this.queryParams.endTime = this.orderTime[1]
       }else {
-        this.queryParams.startTime = null
-        this.queryParams.endTime = null
+        if(!this.queryParams.startTime){
+          this.queryParams.startTime = null
+          this.queryParams.endTime = null
+        }
+
       }
       this.loading = true;
       listOrder(this.queryParams).then(response => {
@@ -475,17 +475,16 @@ export default {
       }
     },
     handlePull() {
-      if (!this.orderTime) {
-        this.$modal.msgError("请选择订单时间")
+      if (!this.queryParams.startTime) {
+        this.$modal.msgError("请选择订单下单时间")
         return
       }
       if (!this.queryParams.shopId) {
         this.$modal.msgSuccess("请先选择店铺");
         return;
       }
-      const orderDate = this.orderTime[0]
       this.pullLoading = true
-      pullOrder({shopId: this.queryParams.shopId, updType: 0, orderDate: orderDate}).then(response => {
+      pullOrder({shopId: this.queryParams.shopId, updType: 0, startTime: this.queryParams.startTime}).then(response => {
         console.log('拉取淘宝订单接口返回=====', response)
         if (response.code === 1401) {
           MessageBox.confirm('Token已过期，需要重新授权！请前往店铺列表重新获取授权！', '系统提示', {
@@ -503,9 +502,11 @@ export default {
           });
 
           // return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-        } else {
+        } if(response.code === 200){
           this.$modal.msgSuccess(JSON.stringify(response));
           this.getList()
+        }else{
+          this.$modal.msgError(response.msg)
         }
         this.pullLoading = false
       })
