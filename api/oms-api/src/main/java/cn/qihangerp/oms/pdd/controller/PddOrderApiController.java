@@ -106,13 +106,13 @@ public class PddOrderApiController {
         String appKey = checkResult.getData().getAppKey();
         String appSecret = checkResult.getData().getAppSecret();
 
-        String pullParams = "{startTime:"+startTime+",endTime:"+endTime+"}";
-        String startTimeStr = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String endTimeStr = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String pullParams = "{startTime:"+startTime.format(formatter)+",endTime:"+endTime+"}";
+//        String startTimeStr = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//        String endTimeStr = endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Long startTimestamp = startTime.toEpochSecond(ZoneOffset.ofHours(8));
         Long endTimestamp = endTime.toEpochSecond(ZoneOffset.ofHours(8));
 
-        log.info("===============拉取pdd订单：startTime：" + startTimeStr + "endTime：" + endTimeStr);
+        log.info("===============拉取pdd订单：startTime：" + startTime.format(formatter) + "endTime：" + endTime.format(formatter));
 
         //获取
         ApiResultVo<OrderListResultVo> upResult = PddOrderApiHelper.pullOrderList(appKey, appSecret, accessToken, startTimestamp.intValue(), endTimestamp.intValue(), 1, 100);
