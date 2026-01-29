@@ -163,7 +163,7 @@
 <!--            </el-row>-->
 <!--          </template>-->
 <!--      </el-table-column>-->
-      <el-table-column label="实付总金额" align="center" prop="payment" :formatter="amountFormatter" />
+      <el-table-column label="实付金额" align="center" prop="payment" :formatter="amountFormatter" />
       <el-table-column label="订单创建时间" align="center" prop="orderCreateTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.created) }}</span>

@@ -110,7 +110,7 @@ public class TaoOrderApiController {
         //第一次获取
 //        ApiResultVo<TaoOrderResponse> upResult = OrderApiHelper.pullIncrementOrder(startTime,endTime,pageIndex, pageSize, url, appKey, appSecret, sessionKey);
 
-        ApiResultVo<TaoOrderListResponse> upResult = TaoOrderApiHelper.pullTradeList(startTime,endTime,appKey, appSecret, sessionKey);
+        ApiResultVo<TaoOrderListResponse> upResult = TaoOrderApiHelper.pullOrderList(startTime,endTime,appKey, appSecret, sessionKey);
         if (upResult.getCode() !=  ResultVoEnum.SUCCESS.getIndex()) {
             log.info("/**************主动更新tao订单：第一次获取结果失败：" + upResult.getMsg() + "****************/");
             if(upResult.getCode() == HttpStatus.UNAUTHORIZED){
