@@ -78,7 +78,11 @@
             <artifactId>security</artifactId>
             <version>1.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>cn.qihangerp.module</groupId>-->
 <!--            <artifactId>goods</artifactId>-->

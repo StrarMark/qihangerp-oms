@@ -6,6 +6,7 @@ import cn.qihangerp.module.service.OLogisticsCompanyService;
 import cn.qihangerp.module.service.OShopPlatformService;
 import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.erp.request.ShopBo;
+import com.alibaba.fastjson2.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
@@ -14,7 +15,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 店铺Controller
@@ -29,6 +32,7 @@ public class ShopController extends BaseController {
     private final OLogisticsCompanyService logisticsCompanyService;
     private final OShopService shopService;
     private final OShopPlatformService platformService;
+
 
     /**
      * 查询店铺列表logistics

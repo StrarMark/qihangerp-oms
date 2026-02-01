@@ -21,6 +21,7 @@ public class ErpApi {
     {
         System.out.println( "Hello erp-api!" );
         SpringApplication.run(ErpApi.class, args);
+
     }
     @Bean
     @LoadBalanced
