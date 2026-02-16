@@ -93,3 +93,9 @@ mybatis-plus:
   type-aliases-package: cn.qihangerp.oms.domain;cn.qihangerp.module.domain;cn.qihangerp.security.entity;
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 开启sql日志
+
+deepseek:
+  api:
+    key: 
+    endpoint: https://api.deepseek.com/chat/completions
+    model: deepseek-chat
