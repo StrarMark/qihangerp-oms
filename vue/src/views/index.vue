@@ -132,11 +132,13 @@
 <script>
 import { todayDaily } from "@/api/report/report";
 import { getToken } from "@/utils/auth";
+import MarkdownIt from 'markdown-it';
 
 export default {
   name: 'Index',
   data() {
     return {
+      md: new MarkdownIt(),
       inputMessage: '',
       messages: [
         {
@@ -213,8 +215,10 @@ export default {
         let messageContent = event.data;
         // 移除可能的data:前缀
         messageContent = messageContent.replace(/^data:/g, '');
+        // 使用markdown-it将markdown格式转换为HTML
+        const htmlContent = this.md.render(messageContent);
         this.messages.push({
-          content: messageContent,
+          content: htmlContent,
           time: this.formatTime(new Date()),
           isMe: false,
           avatar: ''
