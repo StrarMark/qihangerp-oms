@@ -140,6 +140,8 @@ export default {
     return {
       md: new MarkdownIt(),
       inputMessage: '',
+      messageBuffer: '',
+      messageTimeout: null,
       messages: [
         {
           content: '您好！我是您的工作助手，有什么可以帮助您的吗？',
@@ -205,26 +207,103 @@ export default {
       // 监听消息
       this.sse.addEventListener('message', (event) => {
         console.log('收到SSE消息:', event.data);
-        // 移除正在思考的消息
-        if (this.isLoading) {
-          this.messages = this.messages.filter(msg => !msg.isLoading);
-          this.isLoading = false;
+
+        // 清除之前的超时定时器
+        if (this.messageTimeout) {
+          clearTimeout(this.messageTimeout);
         }
-        // 添加实际回复消息
-        // 确保消息内容是完整的，处理多行消息
-        let messageContent = event.data;
-        // 移除可能的data:前缀
-        messageContent = messageContent.replace(/^data:/g, '');
-        // 使用markdown-it将markdown格式转换为HTML
-        const htmlContent = this.md.render(messageContent);
-        this.messages.push({
-          content: htmlContent,
-          time: this.formatTime(new Date()),
-          isMe: false,
-          avatar: ''
-        });
-        this.scrollToBottom();
+
+        // 将当前消息添加到缓冲区
+        this.messageBuffer += event.data + '\n';
+
+        // 设置超时定时器，如果在1秒内没有收到新的消息，就认为消息已经结束
+        this.messageTimeout = setTimeout(() => {
+          this.processMessageBuffer();
+        }, 1000);
       });
+
+      // 处理消息缓冲区
+    this.processMessageBuffer = function() {
+      // 清除超时定时器
+      if (this.messageTimeout) {
+        clearTimeout(this.messageTimeout);
+        this.messageTimeout = null;
+      }
+      
+      // 移除所有data:前缀
+      let messageContent = this.messageBuffer.replace(/^data:/gm, '');
+      // 移除末尾的空行
+      messageContent = messageContent.trim();
+      
+      // 只有当消息内容不为空时才处理
+      if (messageContent) {
+        try {
+          // 解析JSON数据
+          const jsonData = JSON.parse(messageContent);
+          let textContent = jsonData.text || messageContent;
+          
+          // 检查是否包含订单信息，转换为表格格式
+          if (textContent.includes('订单号:') || textContent.includes('订单详情')) {
+            // 提取订单信息并转换为表格
+            textContent = this.convertOrderToTable(textContent);
+          }
+          
+          // 移除正在思考的消息
+          if (this.isLoading) {
+            this.messages = this.messages.filter(msg => !msg.isLoading);
+            this.isLoading = false;
+          }
+          
+          // 使用markdown-it将markdown格式转换为HTML
+          const htmlContent = this.md.render(textContent);
+          this.messages.push({
+            content: htmlContent,
+            time: this.formatTime(new Date()),
+            isMe: false,
+            avatar: ''
+          });
+          this.scrollToBottom();
+        } catch (e) {
+          console.error('解析SSE消息失败:', e);
+          // 移除正在思考的消息
+          if (this.isLoading) {
+            this.messages = this.messages.filter(msg => !msg.isLoading);
+            this.isLoading = false;
+          }
+          
+          // 使用markdown-it将markdown格式转换为HTML
+          const htmlContent = this.md.render(messageContent);
+          this.messages.push({
+            content: htmlContent,
+            time: this.formatTime(new Date()),
+            isMe: false,
+            avatar: ''
+          });
+          this.scrollToBottom();
+        }
+      }
+      
+      // 清空缓冲区
+      this.messageBuffer = '';
+    };
+    
+    // 将订单信息转换为markdown表格
+    this.convertOrderToTable = function(text) {
+      // 提取订单信息
+      const orderMatches = text.match(/订单号:\s*(\S+)/);
+      const dateMatches = text.match(/日期:\s*(\S+)/);
+      const customerMatches = text.match(/客户:\s*(\S+)/);
+      const amountMatches = text.match(/金额:\s*(\S+)/);
+      const statusMatches = text.match(/状态:\s*(\S+)/);
+      
+      if (orderMatches && dateMatches && customerMatches && amountMatches && statusMatches) {
+        // 构建markdown表格
+        return `| 订单号 | 日期 | 客户 | 金额 | 状态 |
+| --- | --- | --- | --- | --- |
+| ${orderMatches[1]} | ${dateMatches[1]} | ${customerMatches[1]} | ${amountMatches[1]} | ${statusMatches[1]} |`;
+      }
+      return text;
+    };
 
       // 监听心跳
       this.sse.addEventListener('heartbeat', (event) => {
