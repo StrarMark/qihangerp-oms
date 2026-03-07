@@ -143,6 +143,7 @@
 <!--        </dependency>-->
         
         <!-- LangChain4J 依赖 -->
+        <!-- Source: https://mvnrepository.com/artifact/dev.langchain4j/langchain4j -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j</artifactId>

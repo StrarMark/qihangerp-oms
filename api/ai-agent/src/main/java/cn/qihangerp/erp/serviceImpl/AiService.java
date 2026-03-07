@@ -1,8 +1,11 @@
 package cn.qihangerp.erp.serviceImpl;
 
 import dev.langchain4j.model.ollama.OllamaChatModel;
+import dev.langchain4j.service.AiServices;
 import org.springframework.stereotype.Service;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import cn.qihangerp.erp.service.OrderToolService;
 
 /**
@@ -12,6 +15,13 @@ import cn.qihangerp.erp.service.OrderToolService;
 public class AiService {
     
     /**
+     * 定义AI服务接口
+     */
+    interface OrderAiService {
+        String chat(String message);
+    }
+    
+    /**
      * 处理聊天消息
      * @param message 用户消息
      * @param model 模型名称
@@ -19,40 +29,35 @@ public class AiService {
      */
     public String processMessage(String message, String model) {
         try {
-            // 检查是否是订单相关查询
-            if (message.contains("订单")) {
-                // 使用订单服务直接处理
-                OrderToolService orderToolService = new OrderToolService();
-                
-                // 简单的意图识别
-                if (message.contains("待发货") || message.contains("未发货")) {
-                    return orderToolService.getPendingOrders();
-                } else if (message.contains("所有")) {
-                    return orderToolService.getAllOrders();
-                } else if (message.contains("状态")) {
-                    // 提取状态
-                    String status = message.replaceAll(".*状态为([^，。]+).*", "$1");
-                    return orderToolService.getOrdersByStatus(status);
-                } else if (message.contains("订单号") || message.contains("订单ID")) {
-                    // 提取订单号
-                    String orderId = message.replaceAll(".*[订单号|订单ID][：:]([^，。]+).*", "$1");
-                    return orderToolService.getOrderById(orderId);
-                } else {
-                    // 默认返回所有订单
-                    return orderToolService.getAllOrders();
-                }
-            } else {
-                // 根据模型名称创建对应的ChatModel
-                OllamaChatModel modelInstance = OllamaChatModel.builder()
-                        .baseUrl("http://localhost:11434") // Ollama默认端口
-                        .modelName(model) // 使用指定的模型
-                        .temperature(0.7)
-                        .timeout(Duration.ofSeconds(300)) // 超时时间设置为300秒（5分钟）
-                        .build();
-                
-                // 调用Ollama模型获取回复
-                return modelInstance.chat(message);
-            }
+            // 获取当前日期
+            String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            
+            // 替换消息中的"今天"为具体日期
+            message = message.replace("今天", today);
+            
+            // 根据模型名称创建对应的ChatModel
+            OllamaChatModel modelInstance = OllamaChatModel.builder()
+                    .baseUrl("http://localhost:11434") // Ollama默认端口
+                    .modelName(model) // 使用指定的模型
+                    .temperature(0.7)
+                    .timeout(Duration.ofSeconds(300)) // 超时时间设置为300秒（5分钟）
+                    .build();
+            
+            // 创建订单工具服务
+            OrderToolService orderToolService = new OrderToolService();
+            
+            // 使用AiServices创建AI服务，自动处理工具调用
+            OrderAiService aiService = AiServices.builder(OrderAiService.class)
+                    .chatModel(modelInstance)
+                    .tools(orderToolService)
+                    .build();
+            
+            // 执行AI服务，添加今天的日期信息
+            String enhancedMessage = "今天的日期是：" + today + "\n" + message;
+            System.out.println("发送给AI的消息: " + enhancedMessage);
+            String result = aiService.chat(enhancedMessage);
+            System.out.println("AI返回的结果: " + result);
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             return "错误: " + e.getMessage();

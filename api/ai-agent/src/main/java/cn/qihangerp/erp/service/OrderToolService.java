@@ -2,6 +2,8 @@ package cn.qihangerp.erp.service;
 
 import dev.langchain4j.agent.tool.Tool;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 订单工具服务，用于AI查询订单信息
@@ -77,6 +79,34 @@ public class OrderToolService {
         }
         StringBuilder sb = new StringBuilder();
         sb.append("待发货订单：<br>");
+        for (OrderService.Order order : orders) {
+            sb.append(order.toString()).append("<br>");
+        }
+        return sb.toString();
+    }
+    
+    /**
+     * 根据日期查询订单
+     * @param date 订单日期，可以是具体日期或"今天"、"昨天"、"明天"等时间表达式
+     * @return 订单信息
+     */
+    @Tool("根据日期查询订单信息")
+    public String getOrdersByDate(String date) {
+        // 处理时间表达式
+        if ("今天".equals(date)) {
+            date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } else if ("昨天".equals(date)) {
+            date = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } else if ("明天".equals(date)) {
+            date = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }
+        
+        List<OrderService.Order> orders = orderService.getOrdersByDate(date);
+        if (orders.isEmpty()) {
+            return "暂无日期为" + date + "的订单";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("日期为").append(date).append("的订单：<br>");
         for (OrderService.Order order : orders) {
             sb.append(order.toString()).append("<br>");
         }

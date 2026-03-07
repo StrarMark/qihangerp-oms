@@ -71,10 +71,17 @@ public class SseController {
             try {
                 // 使用AiService处理消息，传递模型参数
                 String response = aiService.processMessage(message, model);
+                log.info("==========AI回复：{}",response);
+                // 确保SSE消息格式正确，处理多行消息
+                String[] lines = response.split("\n");
+                StringBuilder formattedResponse = new StringBuilder();
+                for (String line : lines) {
+                    formattedResponse.append("data:").append(line).append("\n");
+                }
+                formattedResponse.append("\n"); // 结束消息
                 
-                emitter.send(SseEmitter.event()
-                        .name("message")
-                        .data(response));
+                emitter.send(formattedResponse.toString());
+                log.info("发送给前端的消息: {}", response);
                 
                 return "消息发送成功";
             } catch (Exception e) {

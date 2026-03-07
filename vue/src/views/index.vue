@@ -209,8 +209,12 @@ export default {
           this.isLoading = false;
         }
         // 添加实际回复消息
+        // 确保消息内容是完整的，处理多行消息
+        let messageContent = event.data;
+        // 移除可能的data:前缀
+        messageContent = messageContent.replace(/^data:/g, '');
         this.messages.push({
-          content: event.data,
+          content: messageContent,
           time: this.formatTime(new Date()),
           isMe: false,
           avatar: ''

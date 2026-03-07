@@ -1,5 +1,7 @@
 package cn.qihangerp.erp.service;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 订单服务类，用于查询订单信息
  */
+@Slf4j
 public class OrderService {
     
     // 模拟订单数据
@@ -20,6 +23,8 @@ public class OrderService {
         orderMap.put("ORDER003", new Order("ORDER003", "2026-03-03", "王五", 599.99, "已完成"));
         orderMap.put("ORDER004", new Order("ORDER004", "2026-03-04", "赵六", 1999.99, "待发货"));
         orderMap.put("ORDER005", new Order("ORDER005", "2026-03-05", "钱七", 399.99, "已发货"));
+        orderMap.put("ORDER006", new Order("ORDER006", "2026-03-06", "齐", 399.99, "已发货"));
+        orderMap.put("ORDER007", new Order("ORDER007", "2026-03-07", "钱", 399.99, "未发货"));
     }
     
     /**
@@ -60,6 +65,22 @@ public class OrderService {
      */
     public List<Order> getPendingOrders() {
         return getOrdersByStatus("待发货");
+    }
+    
+    /**
+     * 根据日期查询订单
+     * @param date 订单日期
+     * @return 订单列表
+     */
+    public List<Order> getOrdersByDate(String date) {
+        log.info("=========根据日期查询订单：{}",date);
+        List<Order> orders = new ArrayList<>();
+        for (Order order : orderMap.values()) {
+            if (order.getOrderDate().equals(date)) {
+                orders.add(order);
+            }
+        }
+        return orders;
     }
     
     /**
