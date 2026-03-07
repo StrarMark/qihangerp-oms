@@ -31,7 +31,7 @@
             </el-avatar>
           </div>
           <div class="message-content">
-            <div class="message-text">{{ message.content }}</div>
+            <div class="message-text" v-html="message.content"></div>
             <div class="message-time">{{ message.time }}</div>
           </div>
         </div>
@@ -443,10 +443,11 @@ export default {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 
     .message-text {
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 4px;
-    }
+          font-size: 14px;
+          line-height: 1.5;
+          margin-bottom: 4px;
+          white-space: pre-line;
+        }
 
     .message-time {
       font-size: 12px;
