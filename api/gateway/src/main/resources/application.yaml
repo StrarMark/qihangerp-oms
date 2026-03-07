@@ -37,10 +37,10 @@ spring:
           filters:
             - StripPrefix=2
 
-        - id: open_api_route
-          uri: lb://open-api
+        - id: ai_agent_route
+          uri: lb://ai-agent
           predicates:
-            - Path=/api/open-api/**
+            - Path=/api/ai-agent/**
           filters:
             - StripPrefix=2
 
