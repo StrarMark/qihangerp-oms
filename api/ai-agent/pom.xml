@@ -142,7 +142,18 @@
 <!--            <scope>provided</scope>-->
 <!--        </dependency>-->
         
-
+        <!-- LangChain4J 依赖 -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j</artifactId>
+            <version>1.11.0</version>
+        </dependency>
+        <!-- Ollama 集成 -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-ollama</artifactId>
+            <version>1.11.0</version>
+        </dependency>
     </dependencies>
 
     <build>

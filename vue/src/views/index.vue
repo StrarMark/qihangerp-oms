@@ -8,6 +8,13 @@
           <span class="title">工作助手</span>
         </div>
         <div class="header-right">
+          <el-select v-model="selectedModel" size="mini" style="width: 120px; margin-right: 10px;">
+            <el-option label="qwen3.5:2b" value="qwen3.5:2b"></el-option>
+            <el-option label="Llama 3" value="llama3"></el-option>
+            <el-option label="Gemini" value="gemini"></el-option>
+            <el-option label="Claude" value="claude"></el-option>
+            <el-option label="Gemma" value="gemma"></el-option>
+          </el-select>
           <el-tag type="success" size="mini">在线</el-tag>
         </div>
       </div>
@@ -166,7 +173,8 @@ export default {
       sse: null,
       clientId: '',
       isSseConnected: false,
-      isLoading: false
+      isLoading: false,
+      selectedModel: 'qwen3.5:2b'
     }
   },
   mounted() {
@@ -259,13 +267,21 @@ export default {
 
       // 通过SSE发送消息到后端
       if (this.isSseConnected) {
+        // 使用AbortController实现超时
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 300000); // 300秒超时
+
         // 使用fetch发送消息
-        fetch(`${process.env.VUE_APP_BASE_API}/api/ai-agent/sse/send?clientId=${this.clientId}&message=${encodeURIComponent(this.inputMessage)}&token=${token}`)
+        fetch(`${process.env.VUE_APP_BASE_API}/api/ai-agent/sse/send?clientId=${this.clientId}&message=${encodeURIComponent(this.inputMessage)}&model=${this.selectedModel}&token=${token}`, {
+          signal: controller.signal
+        })
           .then(response => response.text())
           .then(data => {
+            clearTimeout(timeoutId);
             console.log('消息发送结果:', data);
           })
           .catch(error => {
+            clearTimeout(timeoutId);
             console.error('消息发送失败:', error);
             // 发送失败时使用模拟回复
             this.generateReply(this.inputMessage);

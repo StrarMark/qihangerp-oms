@@ -64,13 +64,13 @@ public class SseController {
     }
 
     @GetMapping("/send")
-    public String sendMessage(@RequestParam String clientId, @RequestParam String message) {
+    public String sendMessage(@RequestParam String clientId, @RequestParam String message, @RequestParam(required = false, defaultValue = "llama3") String model) {
         log.info("=============来新消息了！");
         SseEmitter emitter = emitters.get(clientId);
         if (emitter != null) {
             try {
-                // 使用AiService处理消息
-                String response = aiService.processMessage(message);
+                // 使用AiService处理消息，传递模型参数
+                String response = aiService.processMessage(message, model);
                 
                 emitter.send(SseEmitter.event()
                         .name("message")
