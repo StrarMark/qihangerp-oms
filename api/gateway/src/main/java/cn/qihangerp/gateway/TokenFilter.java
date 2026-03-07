@@ -23,6 +23,9 @@ public class TokenFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst(TOKEN_HEADER);
+        if(StringUtils.isEmpty(token)){
+            token=exchange.getRequest().getQueryParams().getFirst("token");
+        }
         System.out.println("Token:"+token);
         String url = exchange.getRequest().getURI().getPath();
         System.out.println("intercept " + url);

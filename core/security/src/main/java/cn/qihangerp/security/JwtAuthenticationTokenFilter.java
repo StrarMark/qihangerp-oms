@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -43,7 +44,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 //        String token = exchange.getRequest().getHeaders().getFirst(TOKEN_HEADER);
-        String token = request.getHeader("Authorization");
+//        String token = request.getHeader("Authorization");
+//        if(StringUtils.isEmpty(token)){
+//            token = request.getParameter("token");
+//        }
         String url = request.getRequestURI();
 //        log.info("intercept " + url);
 //        log.info("token: " + token); || request.getRequestURI().equals("/getInfo") || request.getRequestURI().equals("/logout")

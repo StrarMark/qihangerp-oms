@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie'
-
+import defaultSettings from '@/settings'
 const state = {
   sidebar: {
-    opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
+    opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') :  defaultSettings.sidebarDefaultOpen,
     withoutAnimation: false,
     hide: false
   },
