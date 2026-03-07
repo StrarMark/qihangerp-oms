@@ -5,7 +5,7 @@
 
 
 # 进入项目目录
-cd zhijian-vue
+cd vue
 
 # 安装依赖
 npm install

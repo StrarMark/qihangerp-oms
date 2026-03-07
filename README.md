@@ -185,14 +185,15 @@ graph TD
 ## 四、项目架构
 ### 1、开发环境级组件
 #### 1.1 开发环境
-+ Jdk：17
-+ Nodejs：v16.20.0
++ Java：17
++ Nodejs：v20.20.0
++ Maven：3.9
 
 #### 1.2、存储及中间件
 
 + MySQL8
 + Redis：7.x
-+ Nacos：2.3.1（注册中心）
++ Nacos：2.3.2（注册中心）
 + Sentinel（分布式流量治理组件）
 
 
@@ -280,7 +281,7 @@ graph TD
 3.  启动微服务网关（`gateway`）
 
 #### 3.4、运行前端
-+ Nodejs版本：v16.20.0
++ Nodejs版本：v20.20.0
 + 进入`vue`文件夹
 + 运行`npm install` 
 + 运行`npm run dev`
@@ -327,8 +328,7 @@ location /prod-api/ {
     proxy_connect_timeout 60s;    # 连接超时时间
     # --- 结束新增 ---
 
-    #proxy_pass http://10.0.2.22:8088/;
-    proxy_pass http://172.17.62.227:8088/;
+    proxy_pass http://127.0.0.1:8088/;
 }
 ```
 + docker运行
@@ -340,7 +340,7 @@ location /prod-api/ {
 ### 5.1 赠人玫瑰手留余香
 💖 如果觉得有用记得点个 Star⭐
 
-<img src="docs/star.jpg" width="300px" />
+
 
 ### 5.2 一起交流
 
