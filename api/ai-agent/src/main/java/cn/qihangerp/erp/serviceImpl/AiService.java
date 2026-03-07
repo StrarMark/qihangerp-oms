@@ -29,6 +29,11 @@ public class AiService {
      */
     public String processMessage(String message, String model) {
         try {
+            // 检查是否包含打开页面的指令
+            if (message.contains("打开店铺管理") || message.contains("进入店铺管理") || message.contains("前往店铺管理")) {
+                return "{\"action\": \"navigate\", \"route\": \"/shop/shop_list\", \"message\": \"正在跳转到店铺管理页面\"}";
+            }
+            
             // 获取当前日期
             String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             

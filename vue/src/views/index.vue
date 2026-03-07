@@ -222,89 +222,6 @@ export default {
         }, 1000);
       });
 
-      // 处理消息缓冲区
-    this.processMessageBuffer = function() {
-      // 清除超时定时器
-      if (this.messageTimeout) {
-        clearTimeout(this.messageTimeout);
-        this.messageTimeout = null;
-      }
-      
-      // 移除所有data:前缀
-      let messageContent = this.messageBuffer.replace(/^data:/gm, '');
-      // 移除末尾的空行
-      messageContent = messageContent.trim();
-      
-      // 只有当消息内容不为空时才处理
-      if (messageContent) {
-        try {
-          // 解析JSON数据
-          const jsonData = JSON.parse(messageContent);
-          let textContent = jsonData.text || messageContent;
-          
-          // 检查是否包含订单信息，转换为表格格式
-          if (textContent.includes('订单号:') || textContent.includes('订单详情')) {
-            // 提取订单信息并转换为表格
-            textContent = this.convertOrderToTable(textContent);
-          }
-          
-          // 移除正在思考的消息
-          if (this.isLoading) {
-            this.messages = this.messages.filter(msg => !msg.isLoading);
-            this.isLoading = false;
-          }
-          
-          // 使用markdown-it将markdown格式转换为HTML
-          const htmlContent = this.md.render(textContent);
-          this.messages.push({
-            content: htmlContent,
-            time: this.formatTime(new Date()),
-            isMe: false,
-            avatar: ''
-          });
-          this.scrollToBottom();
-        } catch (e) {
-          console.error('解析SSE消息失败:', e);
-          // 移除正在思考的消息
-          if (this.isLoading) {
-            this.messages = this.messages.filter(msg => !msg.isLoading);
-            this.isLoading = false;
-          }
-          
-          // 使用markdown-it将markdown格式转换为HTML
-          const htmlContent = this.md.render(messageContent);
-          this.messages.push({
-            content: htmlContent,
-            time: this.formatTime(new Date()),
-            isMe: false,
-            avatar: ''
-          });
-          this.scrollToBottom();
-        }
-      }
-      
-      // 清空缓冲区
-      this.messageBuffer = '';
-    };
-    
-    // 将订单信息转换为markdown表格
-    this.convertOrderToTable = function(text) {
-      // 提取订单信息
-      const orderMatches = text.match(/订单号:\s*(\S+)/);
-      const dateMatches = text.match(/日期:\s*(\S+)/);
-      const customerMatches = text.match(/客户:\s*(\S+)/);
-      const amountMatches = text.match(/金额:\s*(\S+)/);
-      const statusMatches = text.match(/状态:\s*(\S+)/);
-      
-      if (orderMatches && dateMatches && customerMatches && amountMatches && statusMatches) {
-        // 构建markdown表格
-        return `| 订单号 | 日期 | 客户 | 金额 | 状态 |
-| --- | --- | --- | --- | --- |
-| ${orderMatches[1]} | ${dateMatches[1]} | ${customerMatches[1]} | ${amountMatches[1]} | ${statusMatches[1]} |`;
-      }
-      return text;
-    };
-
       // 监听心跳
       this.sse.addEventListener('heartbeat', (event) => {
         console.log('收到心跳:', event.data);
@@ -416,6 +333,122 @@ export default {
 
     navigateTo(path) {
       this.$router.push(path);
+    },
+
+    processMessageBuffer() {
+      // 清除超时定时器
+      if (this.messageTimeout) {
+        clearTimeout(this.messageTimeout);
+        this.messageTimeout = null;
+      }
+      
+      // 移除所有data:前缀
+      let messageContent = this.messageBuffer.replace(/^data:/gm, '');
+      // 移除末尾的空行
+      messageContent = messageContent.trim();
+      
+      // 只有当消息内容不为空时才处理
+      if (messageContent) {
+        try {
+          // 解析JSON数据
+          const jsonData = JSON.parse(messageContent);
+          
+          // 检查是否是包含action的响应
+          if (jsonData.action) {
+            // 处理导航动作
+            if (jsonData.action === 'navigate' && jsonData.route) {
+              // 显示消息
+              if (jsonData.message) {
+                this.messages.push({
+                  content: this.md.render(jsonData.message),
+                  time: this.formatTime(new Date()),
+                  isMe: false,
+                  avatar: ''
+                });
+                this.scrollToBottom();
+              }
+              // 执行路由跳转
+              this.$router.push(jsonData.route);
+            }
+          } else {
+            // 处理普通文本消息
+            let textContent = jsonData.text || messageContent;
+            
+            // 检查是否包含订单信息，转换为表格格式
+            if (textContent.includes('订单号:') || textContent.includes('订单详情')) {
+              // 提取订单信息并转换为表格
+              textContent = this.convertOrderToTable(textContent);
+            }
+            
+            // 检查是否包含打开页面的指令
+            this.checkOpenPageCommand(textContent);
+            
+            // 移除正在思考的消息
+            if (this.isLoading) {
+              this.messages = this.messages.filter(msg => !msg.isLoading);
+              this.isLoading = false;
+            }
+            
+            // 使用markdown-it将markdown格式转换为HTML
+            const htmlContent = this.md.render(textContent);
+            this.messages.push({
+              content: htmlContent,
+              time: this.formatTime(new Date()),
+              isMe: false,
+              avatar: ''
+            });
+            this.scrollToBottom();
+          }
+        } catch (e) {
+          console.error('解析SSE消息失败:', e);
+          // 移除正在思考的消息
+          if (this.isLoading) {
+            this.messages = this.messages.filter(msg => !msg.isLoading);
+            this.isLoading = false;
+          }
+          
+          // 使用markdown-it将markdown格式转换为HTML
+          const htmlContent = this.md.render(messageContent);
+          this.messages.push({
+            content: htmlContent,
+            time: this.formatTime(new Date()),
+            isMe: false,
+            avatar: ''
+          });
+          this.scrollToBottom();
+        }
+      }
+      
+      // 清空缓冲区
+      this.messageBuffer = '';
+    },
+    
+    // 检查并处理打开页面的指令
+    checkOpenPageCommand(text) {
+      // 检查是否包含打开店铺管理页面的指令
+      if (text.includes('打开店铺管理页面') || text.includes('进入店铺管理') || text.includes('前往店铺管理')) {
+        // 跳转到店铺管理页面
+        this.$router.push('/shop/shop_list');
+      }
+      // 可以在这里添加更多页面的打开指令
+    },
+    
+    // 将订单信息转换为markdown表格
+    convertOrderToTable(text) {
+      // 提取订单信息
+      const orderMatches = text.match(/订单号:\s*(\S+)/);
+      const dateMatches = text.match(/日期:\s*(\S+)/);
+      const customerMatches = text.match(/客户:\s*(\S+)/);
+      const amountMatches = text.match(/金额:\s*(\S+)/);
+      const statusMatches = text.match(/状态:\s*(\S+)/);
+      
+      if (orderMatches && dateMatches && customerMatches && amountMatches && statusMatches) {
+        // 构建markdown表格
+        return `| 订单号 | 日期 | 客户 | 金额 | 状态 |
+| --- | --- | --- | --- | --- |
+| ${orderMatches[1]} | ${dateMatches[1]} | ${customerMatches[1]} | ${amountMatches[1]} | ${statusMatches[1]} |`;
+      }
+      return text;
     },
 
     loadSystemStats() {

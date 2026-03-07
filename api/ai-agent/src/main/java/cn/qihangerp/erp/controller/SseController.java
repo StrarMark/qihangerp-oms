@@ -72,8 +72,17 @@ public class SseController {
                 // 使用AiService处理消息，传递模型参数
                 String response = aiService.processMessage(message, model);
                 log.info("==========AI回复：{}",response);
-                // 将响应消息包装成JSON格式
-                String jsonResponse = String.format("{\"text\": \"%s\"}", response.replace("\"", "\\\"").replace("\n", "\\n"));
+                
+                // 检查响应是否已经是JSON格式（以{开头）
+                String jsonResponse;
+                if (response.trim().startsWith("{")) {
+                    // 如果是JSON格式，直接使用
+                    jsonResponse = response;
+                } else {
+                    // 否则包装成JSON格式
+                    jsonResponse = String.format("{\"text\": \"%s\"}", response.replace("\"", "\\\"").replace("\n", "\\n"));
+                }
+                
                 // 发送JSON格式的消息
                 emitter.send(SseEmitter.event()
                         .name("message")
