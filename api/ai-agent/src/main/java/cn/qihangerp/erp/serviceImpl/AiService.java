@@ -1,7 +1,9 @@
 package cn.qihangerp.erp.serviceImpl;
 
 import dev.langchain4j.model.ollama.OllamaChatModel;
+import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.service.AiServices;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,6 +39,16 @@ public class AiService {
 
     // 页面规则列表
     private List<PageRule> pageRules = new ArrayList<>();
+
+    // DeepSeek API 配置
+    @Value("${deepseek.api.key:}")
+    private String deepSeekApiKey;
+
+    @Value("${deepseek.api.endpoint:https://api.deepseek.com/v1/chat/completions}")
+    private String deepSeekApiEndpoint;
+
+    @Value("${deepseek.api.model:deepseek-chat}")
+    private String deepSeekModel;
 
     /**
      * 构造方法，加载页面规则
@@ -134,26 +146,56 @@ public class AiService {
             // 替换消息中的"今天"为具体日期
             message = message.replace("今天", today);
             
-            // 根据模型名称创建对应的ChatModel
-            OllamaChatModel modelInstance = OllamaChatModel.builder()
-                    .baseUrl("http://localhost:11434") // Ollama默认端口
-                    .modelName(model) // 使用指定的模型
-                    .temperature(0.7)
-                    .timeout(Duration.ofSeconds(300)) // 超时时间设置为300秒（5分钟）
-                    .build();
-            
             // 创建订单工具服务
             OrderToolService orderToolService = new OrderToolService();
-            
-            // 使用AiServices创建AI服务，自动处理工具调用
-            OrderAiService aiService = AiServices.builder(OrderAiService.class)
-                    .chatModel(modelInstance)
-                    .tools(orderToolService)
-                    .build();
             
             // 执行AI服务，添加今天的日期信息
             String enhancedMessage = "今天的日期是：" + today + "\n" + message;
             System.out.println("发送给AI的消息: " + enhancedMessage);
+            
+            // 根据模型名称选择使用Ollama还是DeepSeek API
+            OrderAiService aiService;
+            if (model.startsWith("deepseek")) {
+                // 使用DeepSeek API
+                if (deepSeekApiKey == null || deepSeekApiKey.isEmpty()) {
+                    return "错误: DeepSeek API密钥未配置，请在application.yml中设置deepseek.api.key";
+                }
+                
+                try {
+                    // 尝试创建DeepSeek模型实例
+                    OpenAiChatModel deepSeekModelInstance = OpenAiChatModel.builder()
+                            .baseUrl(deepSeekApiEndpoint)
+                            .apiKey(deepSeekApiKey)
+                            .modelName(deepSeekModel)
+                            .temperature(0.7)
+                            .timeout(Duration.ofSeconds(300))
+                            .build();
+                    
+                    aiService = AiServices.builder(OrderAiService.class)
+                            .chatModel(deepSeekModelInstance)
+                            .tools(orderToolService)
+                            .build();
+                    System.out.println("使用DeepSeek API处理消息");
+                } catch (Exception e) {
+                    // 如果DeepSeek依赖不可用，返回错误消息
+                    return "错误: DeepSeek API依赖未配置，请检查Maven依赖是否正确";
+                }
+            } else {
+                // 使用Ollama
+                OllamaChatModel modelInstance = OllamaChatModel.builder()
+                        .baseUrl("http://localhost:11434") // Ollama默认端口
+                        .modelName(model) // 使用指定的模型
+                        .temperature(0.7)
+                        .timeout(Duration.ofSeconds(300)) // 超时时间设置为300秒（5分钟）
+                        .build();
+                
+                aiService = AiServices.builder(OrderAiService.class)
+                        .chatModel(modelInstance)
+                        .tools(orderToolService)
+                        .build();
+                System.out.println("使用Ollama处理消息，模型: " + model);
+            }
+            
             String result = aiService.chat(enhancedMessage);
             System.out.println("AI返回的结果: " + result);
             return result;

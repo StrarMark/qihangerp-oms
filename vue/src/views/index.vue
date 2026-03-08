@@ -11,6 +11,7 @@
           <el-select v-model="selectedModel" size="mini" style="width: 120px; margin-right: 10px;">
             <el-option label="qwen3.5:2b" value="qwen3.5:2b"></el-option>
             <el-option label="Llama 3" value="llama3"></el-option>
+            <el-option label="DeepSeek" value="deepseek"></el-option>
             <el-option label="Gemini" value="gemini"></el-option>
             <el-option label="Claude" value="claude"></el-option>
             <el-option label="Gemma" value="gemma"></el-option>
