@@ -3,9 +3,15 @@ package cn.qihangerp.erp.serviceImpl;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.service.AiServices;
 import org.springframework.stereotype.Service;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import cn.qihangerp.erp.service.OrderToolService;
 
 /**
@@ -14,6 +20,92 @@ import cn.qihangerp.erp.service.OrderToolService;
 @Service
 public class AiService {
     
+    /**
+     * 页面规则类
+     */
+    static class PageRule {
+        String keyword;
+        String route;
+        String message;
+
+        public PageRule(String keyword, String route, String message) {
+            this.keyword = keyword;
+            this.route = route;
+            this.message = message;
+        }
+    }
+
+    // 页面规则列表
+    private List<PageRule> pageRules = new ArrayList<>();
+
+    /**
+     * 构造方法，加载页面规则
+     */
+    public AiService() {
+        loadPageRules();
+    }
+
+    /**
+     * 加载页面规则
+     */
+    private void loadPageRules() {
+        try (InputStream inputStream = getClass().getResourceAsStream("/page-rules.md");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+            String line;
+            boolean inTable = false;
+
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                
+                // 检查是否进入表格部分
+                if (line.equals("| 关键词 | 路由路径 | 提示消息 |")) {
+                    inTable = true;
+                    // 跳过下一行分隔符
+                    reader.readLine();
+                    continue;
+                }
+
+                // 如果在表格中，解析规则
+                if (inTable && line.startsWith("|")) {
+                    String[] parts = line.split("\\|").clone();
+                    if (parts.length >= 4) {
+                        String keyword = parts[1].trim();
+                        String route = parts[2].trim();
+                        String message = parts[3].trim();
+                        if (!keyword.isEmpty() && !route.isEmpty() && !message.isEmpty()) {
+                            pageRules.add(new PageRule(keyword, route, message));
+                        }
+                    }
+                }
+
+                // 检查表格结束
+                if (inTable && line.isEmpty()) {
+                    break;
+                }
+            }
+
+            System.out.println("加载页面规则成功，共加载 " + pageRules.size() + " 条规则");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("加载页面规则失败");
+        }
+    }
+
+    /**
+     * 检查页面跳转规则
+     * @param message 用户消息
+     * @return 页面跳转响应，null表示没有匹配的规则
+     */
+    private String checkPageRules(String message) {
+        for (PageRule rule : pageRules) {
+            if (message.contains(rule.keyword)) {
+                return String.format("{\"action\": \"navigate\", \"route\": \"%s\", \"message\": \"%s\"}", rule.route, rule.message);
+            }
+        }
+        return null;
+    }
+
     /**
      * 定义AI服务接口
      */
@@ -29,9 +121,11 @@ public class AiService {
      */
     public String processMessage(String message, String model) {
         try {
-            // 检查是否包含打开页面的指令
-            if (message.contains("打开店铺管理") || message.contains("进入店铺管理") || message.contains("前往店铺管理")) {
-                return "{\"action\": \"navigate\", \"route\": \"/shop/shop_list\", \"message\": \"正在跳转到店铺管理页面\"}";
+            // 优先检查页面跳转规则
+            String pageRuleResponse = checkPageRules(message);
+            if (pageRuleResponse != null) {
+                System.out.println("匹配到页面跳转规则: " + pageRuleResponse);
+                return pageRuleResponse;
             }
             
             // 获取当前日期
