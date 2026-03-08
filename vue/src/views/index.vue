@@ -9,12 +9,8 @@
         </div>
         <div class="header-right">
           <el-select v-model="selectedModel" size="mini" style="width: 120px; margin-right: 10px;">
-            <el-option label="qwen3.5:2b" value="qwen3.5:2b"></el-option>
-            <el-option label="Llama 3" value="llama3"></el-option>
             <el-option label="DeepSeek" value="deepseek"></el-option>
-            <el-option label="Gemini" value="gemini"></el-option>
-            <el-option label="Claude" value="claude"></el-option>
-            <el-option label="Gemma" value="gemma"></el-option>
+            <el-option v-for="model in models" :key="model.value" :label="model.label" :value="model.value"></el-option>
           </el-select>
           <el-tag type="success" size="mini">在线</el-tag>
         </div>
@@ -132,6 +128,7 @@
 
 <script>
 import { todayDaily } from "@/api/report/report";
+import { getOllamaModels } from "@/api/ai/ollama";
 import { getToken } from "@/utils/auth";
 import MarkdownIt from 'markdown-it';
 
@@ -179,17 +176,34 @@ export default {
       clientId: '',
       isSseConnected: false,
       isLoading: false,
-      selectedModel: 'qwen3.5:2b'
+      selectedModel: 'deepseek',
+      models: []
     }
   },
   mounted() {
     this.loadSystemStats();
     this.initSse();
+    this.loadOllamaModels();
   },
   beforeDestroy() {
     this.closeSse();
   },
   methods: {
+    loadOllamaModels() {
+      getOllamaModels().then(response => {
+        if (response.models) {
+          this.models = response.models.map(model => ({
+            label: model.name,
+            value: model.name
+          }));
+          if(this.models&&this.models.length>0){
+            this.selectedModel = this.models[0].value
+          }
+        }
+      }).catch(error => {
+        console.error('获取模型列表失败:', error);
+      });
+    },
     initSse() {
       // 生成唯一客户端ID
       this.clientId = 'client_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -342,18 +356,18 @@ export default {
         clearTimeout(this.messageTimeout);
         this.messageTimeout = null;
       }
-      
+
       // 移除所有data:前缀
       let messageContent = this.messageBuffer.replace(/^data:/gm, '');
       // 移除末尾的空行
       messageContent = messageContent.trim();
-      
+
       // 只有当消息内容不为空时才处理
       if (messageContent) {
         try {
           // 解析JSON数据
           const jsonData = JSON.parse(messageContent);
-          
+
           // 检查是否是包含action的响应
           if (jsonData.action) {
             // 处理导航动作
@@ -374,22 +388,22 @@ export default {
           } else {
             // 处理普通文本消息
             let textContent = jsonData.text || messageContent;
-            
+
             // 检查是否包含订单信息，转换为表格格式
             if (textContent.includes('订单号:') || textContent.includes('订单详情')) {
               // 提取订单信息并转换为表格
               textContent = this.convertOrderToTable(textContent);
             }
-            
+
             // 检查是否包含打开页面的指令
             this.checkOpenPageCommand(textContent);
-            
+
             // 移除正在思考的消息
             if (this.isLoading) {
               this.messages = this.messages.filter(msg => !msg.isLoading);
               this.isLoading = false;
             }
-            
+
             // 使用markdown-it将markdown格式转换为HTML
             const htmlContent = this.md.render(textContent);
             this.messages.push({
@@ -407,7 +421,7 @@ export default {
             this.messages = this.messages.filter(msg => !msg.isLoading);
             this.isLoading = false;
           }
-          
+
           // 使用markdown-it将markdown格式转换为HTML
           const htmlContent = this.md.render(messageContent);
           this.messages.push({
@@ -419,11 +433,11 @@ export default {
           this.scrollToBottom();
         }
       }
-      
+
       // 清空缓冲区
       this.messageBuffer = '';
     },
-    
+
     // 检查并处理打开页面的指令
     checkOpenPageCommand(text) {
       // 检查是否包含打开店铺管理页面的指令
@@ -433,7 +447,7 @@ export default {
       }
       // 可以在这里添加更多页面的打开指令
     },
-    
+
     // 将订单信息转换为markdown表格
     convertOrderToTable(text) {
       // 提取订单信息
@@ -442,7 +456,7 @@ export default {
       const customerMatches = text.match(/客户:\s*(\S+)/);
       const amountMatches = text.match(/金额:\s*(\S+)/);
       const statusMatches = text.match(/状态:\s*(\S+)/);
-      
+
       if (orderMatches && dateMatches && customerMatches && amountMatches && statusMatches) {
         // 构建markdown表格
         return `| 订单号 | 日期 | 客户 | 金额 | 状态 |

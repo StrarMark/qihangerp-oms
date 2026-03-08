@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 //@EnableDiscoveryClient
 //@MapperScan("cn.qihangerp.oms.mapper")
 @EnableFeignClients(basePackages = "cn.qihangerp.erp")
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 @ComponentScan(basePackages={"cn.qihangerp"})
 @SpringBootApplication
 public class AiAgent {
