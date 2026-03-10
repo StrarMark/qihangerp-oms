@@ -153,17 +153,34 @@ public class AiService {
             StringBuilder promptBuilder = new StringBuilder();
             promptBuilder.append("今天的日期是：").append(today).append("\n");
             
-            // 添加历史对话作为上下文
+            // 添加历史对话作为上下文，但限制总长度
+            final int MAX_CONTEXT_LENGTH = 2000; // 最大上下文长度限制
+            StringBuilder contextBuilder = new StringBuilder();
+            
             if (conversationHistory != null && !conversationHistory.isEmpty()) {
-                promptBuilder.append("以下是之前的对话历史：\n");
-                for (ConversationHistoryManager.Message msg : conversationHistory) {
+                // 倒序遍历对话历史，优先保留最新的对话
+                for (int i = conversationHistory.size() - 1; i >= 0; i--) {
+                    ConversationHistoryManager.Message msg = conversationHistory.get(i);
+                    String msgStr;
                     if (msg.getRole().equals("user")) {
-                        promptBuilder.append("用户: " + msg.getContent()).append("\n");
+                        msgStr = "用户: " + msg.getContent() + "\n";
                     } else {
-                        promptBuilder.append("助手: " + msg.getContent()).append("\n");
+                        msgStr = "助手: " + msg.getContent() + "\n";
+                    }
+                    
+                    // 如果添加当前消息会超过限制，则停止添加更早的消息
+                    if (contextBuilder.length() + msgStr.length() <= MAX_CONTEXT_LENGTH) {
+                        contextBuilder.insert(0, msgStr); // 插入到开头，保持时间顺序
+                    } else {
+                        break;
                     }
                 }
-                promptBuilder.append("\n当前用户消息：\n");
+                
+                if (contextBuilder.length() > 0) {
+                    promptBuilder.append("以下是之前的对话历史：\n");
+                    promptBuilder.append(contextBuilder);
+                    promptBuilder.append("\n当前用户消息：\n");
+                }
             }
             
             // 添加当前消息

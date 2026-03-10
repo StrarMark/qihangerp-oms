@@ -240,8 +240,10 @@ export default {
       }
     },
     initSse() {
-      // 生成唯一客户端ID
-      this.clientId = 'client_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      // 从localStorage获取clientId，如果没有则生成新的
+      this.clientId = localStorage.getItem('aiChatClientId') || ('client_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9));
+      // 保存clientId到localStorage
+      localStorage.setItem('aiChatClientId', this.clientId);
       // 获取token
       const token = getToken();
 
@@ -827,3 +829,5 @@ export default {
   background: #a8a8a8;
 }
 </style>
+
+```
