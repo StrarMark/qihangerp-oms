@@ -3,10 +3,12 @@ package cn.qihangerp.erp.serviceImpl;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.UUID;
+import org.springframework.stereotype.Component;
 
 /**
  * 会话管理服务，用于管理用户的会话ID
  */
+@Component
 public class SessionManager {
     private static final Map<Long, String> userIdSessionMap = new ConcurrentHashMap<>();
     private static final Map<String, Long> sessionUserIdMap = new ConcurrentHashMap<>();

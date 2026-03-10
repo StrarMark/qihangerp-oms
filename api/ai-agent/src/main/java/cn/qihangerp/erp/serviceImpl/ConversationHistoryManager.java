@@ -1,17 +1,22 @@
 package cn.qihangerp.erp.serviceImpl;
 
+import cn.qihangerp.service.IAiConversationHistoryService;
+import cn.qihangerp.model.entity.AiConversationHistory;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 /**
  * 对话历史管理服务，用于保存和管理用户的对话历史
  */
+@Component
+@AllArgsConstructor
 public class ConversationHistoryManager {
-    private static final Map<String, List<Message>> sessionHistoryMap = new ConcurrentHashMap<>();
-    private static final AtomicLong messageIdCounter = new AtomicLong(0);
+
+    private final IAiConversationHistoryService aiConversationHistoryService;
 
     /**
      * 消息实体类
@@ -22,8 +27,15 @@ public class ConversationHistoryManager {
         private String content;
         private long timestamp;
 
+        public Message(long id, String role, String content, long timestamp) {
+            this.id = id;
+            this.role = role;
+            this.content = content;
+            this.timestamp = timestamp;
+        }
+
         public Message(String role, String content) {
-            this.id = messageIdCounter.incrementAndGet();
+            this.id = 0;
             this.role = role;
             this.content = content;
             this.timestamp = System.currentTimeMillis();
@@ -56,8 +68,22 @@ public class ConversationHistoryManager {
         if (sessionId == null) {
             return;
         }
-        sessionHistoryMap.computeIfAbsent(sessionId, k -> new ArrayList<>())
-                .add(new Message(role, content));
+        // 这里简化处理，暂时不传入userId，实际使用时需要从会话中获取
+        aiConversationHistoryService.saveMessage(0L, sessionId, role, content);
+    }
+
+    /**
+     * 添加消息到对话历史（带用户ID）
+     * @param userId 用户ID
+     * @param sessionId 会话ID
+     * @param role 角色
+     * @param content 消息内容
+     */
+    public void addMessage(Long userId, String sessionId, String role, String content) {
+        if (sessionId == null) {
+            return;
+        }
+        aiConversationHistoryService.saveMessage(userId, sessionId, role, content);
     }
 
     /**
@@ -69,7 +95,10 @@ public class ConversationHistoryManager {
         if (sessionId == null) {
             return new ArrayList<>();
         }
-        return sessionHistoryMap.getOrDefault(sessionId, new ArrayList<>());
+        List<AiConversationHistory> historyList = aiConversationHistoryService.getBySessionId(sessionId);
+        return historyList.stream()
+                .map(history -> new Message(history.getId(), history.getRole(), history.getContent(), history.getTimestamp()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -82,9 +111,13 @@ public class ConversationHistoryManager {
         if (sessionId == null) {
             return new ArrayList<>();
         }
-        List<Message> history = sessionHistoryMap.getOrDefault(sessionId, new ArrayList<>());
-        int startIndex = Math.max(0, history.size() - limit);
-        return history.subList(startIndex, history.size());
+        List<AiConversationHistory> historyList = aiConversationHistoryService.getRecentBySessionId(sessionId, limit);
+        // 反转列表，使时间戳从早到晚排序
+        List<Message> messages = historyList.stream()
+                .map(history -> new Message(history.getId(), history.getRole(), history.getContent(), history.getTimestamp()))
+                .collect(Collectors.toList());
+        java.util.Collections.reverse(messages);
+        return messages;
     }
 
     /**
@@ -93,7 +126,7 @@ public class ConversationHistoryManager {
      */
     public void clearConversationHistory(String sessionId) {
         if (sessionId != null) {
-            sessionHistoryMap.remove(sessionId);
+            aiConversationHistoryService.deleteBySessionId(sessionId);
         }
     }
 
@@ -106,7 +139,7 @@ public class ConversationHistoryManager {
         if (sessionId == null) {
             return 0;
         }
-        List<Message> history = sessionHistoryMap.get(sessionId);
-        return history != null ? history.size() : 0;
+        List<AiConversationHistory> historyList = aiConversationHistoryService.getBySessionId(sessionId);
+        return historyList.size();
     }
 }

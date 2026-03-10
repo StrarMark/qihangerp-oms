@@ -269,7 +269,33 @@ export default {
         console.log('收到心跳:', event.data);
       });
 
-      // 监听错误
+      // 监听后端发送的错误信息
+      this.sse.addEventListener('error', (event) => {
+        console.log('收到错误信息:', event.data);
+        try {
+          // 解析错误信息
+          const errorData = JSON.parse(event.data);
+          if (errorData.error) {
+            // 移除正在思考的消息
+            if (this.isLoading) {
+              this.messages = this.messages.filter(msg => !msg.isLoading);
+              this.isLoading = false;
+            }
+            // 显示错误信息
+            this.messages.push({
+              content: `错误: ${errorData.error}`,
+              time: this.formatTime(new Date()),
+              isMe: false,
+              avatar: ''
+            });
+            this.scrollToBottom();
+          }
+        } catch (e) {
+          console.error('解析错误信息失败:', e);
+        }
+      });
+
+      // 监听连接错误
       this.sse.onerror = (error) => {
         console.error('SSE连接错误:', error);
         this.isSseConnected = false;

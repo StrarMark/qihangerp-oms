@@ -123,7 +123,7 @@ public class SseController {
                     log.info("用户 {} 的会话ID: {}", userId, sessionId);
                     
                     // 添加用户消息到对话历史
-                    conversationHistoryManager.addMessage(sessionId, "user", message);
+                    conversationHistoryManager.addMessage(userId, sessionId, "user", message);
                 }
                 
                 // 获取对话历史
@@ -138,7 +138,7 @@ public class SseController {
                 
                 // 如果有会话ID，添加AI回复到对话历史
                 if (sessionId != null) {
-                    conversationHistoryManager.addMessage(sessionId, "assistant", response);
+                    conversationHistoryManager.addMessage(userId, sessionId, "assistant", response);
                 }
                 
                 // 检查响应是否已经是JSON格式（以{开头）
@@ -160,6 +160,16 @@ public class SseController {
                 return "消息发送成功";
             } catch (Exception e) {
                 log.error("消息处理失败: {}", e.getMessage());
+                try {
+                    // 发送错误信息到前端
+                    String errorMessage = e.getMessage();
+                    String jsonError = String.format("{\"error\": \"%s\"}", errorMessage.replace("\"", "\\\"").replace("\n", "\\n"));
+                    emitter.send(SseEmitter.event()
+                            .name("error")
+                            .data(jsonError));
+                } catch (IOException ex) {
+                    log.error("发送错误信息失败: {}", ex.getMessage());
+                }
                 emitters.remove(clientId);
                 clientUserIdMap.remove(clientId);
                 return "消息发送失败: " + e.getMessage();
