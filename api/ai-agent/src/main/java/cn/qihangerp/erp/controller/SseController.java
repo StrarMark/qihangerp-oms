@@ -82,6 +82,28 @@ public class SseController {
             clientUserIdMap.remove(clientId);
         }
 
+        // 为新用户添加默认欢迎消息
+        Long userId = clientUserIdMap.get(clientId);
+        if (userId != null) {
+            String sessionId = sessionManager.getOrCreateSessionId(userId);
+            // 检查是否有对话历史
+            int messageCount = conversationHistoryManager.getMessageCount(sessionId);
+            if (messageCount == 0) {
+                // 添加欢迎消息到对话历史
+                String welcomeMessage = "您好，我是您的智能助手，我能帮你打开页面、查询订单、查询商品、查询库存等等。欢迎提问！";
+                conversationHistoryManager.addMessage(userId, sessionId, "assistant", welcomeMessage);
+                
+                // 发送欢迎消息给客户端
+                try {
+                    emitter.send(SseEmitter.event()
+                            .name("message")
+                            .data(welcomeMessage));
+                } catch (IOException e) {
+                    log.error("发送欢迎消息失败: {}", e.getMessage());
+                }
+            }
+        }
+
         // 定期发送心跳
         executorService.scheduleAtFixedRate(() -> {
             try {
