@@ -187,6 +187,12 @@ public class AiService {
             promptBuilder.append(message);
             
             String enhancedMessage = promptBuilder.toString();
+            // 打印完整的组合提示词，添加明显标记方便定位
+            System.out.println("========================================");
+            System.out.println("============== 组合提示词开始 ============");
+            System.out.println(enhancedMessage);
+            System.out.println("============== 组合提示词结束 ============");
+            System.out.println("========================================");
             System.out.println("发送给AI的消息: " + enhancedMessage);
             
             // 尝试创建订单工具服务
