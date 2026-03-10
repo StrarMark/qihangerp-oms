@@ -12,6 +12,13 @@
             <el-option label="DeepSeek" value="deepseek"></el-option>
             <el-option v-for="model in models" :key="model.value" :label="model.label" :value="model.value"></el-option>
           </el-select>
+          <el-select v-model="selectedRole" size="mini" style="width: 120px; margin-right: 10px;">
+            <el-option label="默认助手" value="">默认助手</el-option>
+            <el-option label="智能客服" value="你是一个专业的电商智能客服，请用友好、专业的语气回答用户问题。"></el-option>
+            <el-option label="数据分析专家" value="你是一个专业的数据分析专家，请详细分析数据并给出专业建议。"></el-option>
+            <el-option label="订单处理员" value="你是一个高效的订单处理员，请专注于订单相关的查询和操作。"></el-option>
+            <el-option label="商品管理员" value="你是一个商品管理专家，请提供商品相关的专业建议和操作指导。"></el-option>
+          </el-select>
           <el-tag type="success" size="mini">在线</el-tag>
         </div>
       </div>
@@ -177,6 +184,7 @@ export default {
       isSseConnected: false,
       isLoading: false,
       selectedModel: 'deepseek',
+      selectedRole: '',
       models: [],
       sessionId: ''
     }
