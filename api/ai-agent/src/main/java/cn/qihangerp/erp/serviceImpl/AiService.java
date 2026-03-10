@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import cn.qihangerp.erp.service.OrderToolService;
+import cn.qihangerp.erp.serviceImpl.ConversationHistoryManager;
 
 /**
  * AI服务类，使用LangChain4J调用Ollama模型处理聊天内容
@@ -129,9 +130,11 @@ public class AiService {
      * 处理聊天消息
      * @param message 用户消息
      * @param model 模型名称
+     * @param sessionId 会话ID
+     * @param conversationHistory 对话历史
      * @return AI回复
      */
-    public String processMessage(String message, String model) {
+    public String processMessage(String message, String model, String sessionId, List<ConversationHistoryManager.Message> conversationHistory) {
         try {
             // 优先检查页面跳转规则
             String pageRuleResponse = checkPageRules(message);
@@ -146,12 +149,38 @@ public class AiService {
             // 替换消息中的"今天"为具体日期
             message = message.replace("今天", today);
             
-            // 创建订单工具服务
-            OrderToolService orderToolService = new OrderToolService();
+            // 构建包含历史对话的提示词
+            StringBuilder promptBuilder = new StringBuilder();
+            promptBuilder.append("今天的日期是：").append(today).append("\n");
             
-            // 执行AI服务，添加今天的日期信息
-            String enhancedMessage = "今天的日期是：" + today + "\n" + message;
+            // 添加历史对话作为上下文
+            if (conversationHistory != null && !conversationHistory.isEmpty()) {
+                promptBuilder.append("以下是之前的对话历史：\n");
+                for (ConversationHistoryManager.Message msg : conversationHistory) {
+                    if (msg.getRole().equals("user")) {
+                        promptBuilder.append("用户: " + msg.getContent()).append("\n");
+                    } else {
+                        promptBuilder.append("助手: " + msg.getContent()).append("\n");
+                    }
+                }
+                promptBuilder.append("\n当前用户消息：\n");
+            }
+            
+            // 添加当前消息
+            promptBuilder.append(message);
+            
+            String enhancedMessage = promptBuilder.toString();
             System.out.println("发送给AI的消息: " + enhancedMessage);
+            
+            // 尝试创建订单工具服务
+            OrderToolService orderToolService = null;
+            try {
+                orderToolService = new OrderToolService();
+                System.out.println("成功创建OrderToolService");
+            } catch (Exception e) {
+                System.out.println("创建OrderToolService失败: " + e.getMessage());
+                // 工具创建失败，仍然继续执行，只是不使用工具
+            }
             
             // 根据模型名称选择使用Ollama还是DeepSeek API
             OrderAiService aiService;
@@ -171,10 +200,16 @@ public class AiService {
                             .timeout(Duration.ofSeconds(300))
                             .build();
                     
-                    aiService = AiServices.builder(OrderAiService.class)
-                            .chatModel(deepSeekModelInstance)
-                            .tools(orderToolService)
-                            .build();
+                    if (orderToolService != null) {
+                        aiService = AiServices.builder(OrderAiService.class)
+                                .chatModel(deepSeekModelInstance)
+                                .tools(orderToolService)
+                                .build();
+                    } else {
+                        aiService = AiServices.builder(OrderAiService.class)
+                                .chatModel(deepSeekModelInstance)
+                                .build();
+                    }
                     System.out.println("使用DeepSeek API处理消息");
                 } catch (Exception e) {
                     // 如果DeepSeek依赖不可用，返回错误消息
@@ -182,27 +217,55 @@ public class AiService {
                 }
             } else {
                 // 使用Ollama
-                OllamaChatModel modelInstance = OllamaChatModel.builder()
-                        .baseUrl("http://localhost:11434") // Ollama默认端口
-                        .modelName(model) // 使用指定的模型
-                        .temperature(0.7)
-                        .timeout(Duration.ofSeconds(300)) // 超时时间设置为300秒（5分钟）
-                        .build();
-                
-                aiService = AiServices.builder(OrderAiService.class)
-                        .chatModel(modelInstance)
-                        .tools(orderToolService)
-                        .build();
-                System.out.println("使用Ollama处理消息，模型: " + model);
+                try {
+                    System.out.println("尝试连接Ollama，模型: " + model);
+                    OllamaChatModel modelInstance = OllamaChatModel.builder()
+                            .baseUrl("http://localhost:11434") // Ollama默认端口
+                            .modelName(model) // 使用指定的模型
+                            .temperature(0.7)
+                            .timeout(Duration.ofSeconds(300)) // 超时时间设置为300秒（5分钟）
+                            .build();
+                    
+                    if (orderToolService != null) {
+                        aiService = AiServices.builder(OrderAiService.class)
+                                .chatModel(modelInstance)
+                                .tools(orderToolService)
+                                .build();
+                    } else {
+                        aiService = AiServices.builder(OrderAiService.class)
+                                .chatModel(modelInstance)
+                                .build();
+                    }
+                    System.out.println("成功创建Ollama模型实例，模型: " + model);
+                } catch (Exception e) {
+                    System.out.println("创建Ollama模型实例失败: " + e.getMessage());
+                    return "错误: 无法连接到Ollama服务，请检查Ollama是否已启动，端口是否正确（默认11434）";
+                }
             }
             
-            String result = aiService.chat(enhancedMessage);
-            System.out.println("AI返回的结果: " + result);
-            return result;
+            try {
+                System.out.println("开始调用AI服务");
+                String result = aiService.chat(enhancedMessage);
+                System.out.println("AI返回的结果: " + result);
+                return result;
+            } catch (Exception e) {
+                System.out.println("调用AI服务失败: " + e.getMessage());
+                return "错误: 调用AI服务失败: " + e.getMessage();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return "错误: " + e.getMessage();
         }
+    }
+    
+    /**
+     * 处理聊天消息
+     * @param message 用户消息
+     * @param model 模型名称
+     * @return AI回复
+     */
+    public String processMessage(String message, String model) {
+        return processMessage(message, model, null, null);
     }
     
     /**
@@ -211,6 +274,6 @@ public class AiService {
      * @return AI回复
      */
     public String processMessage(String message) {
-        return processMessage(message, "llama3");
+        return processMessage(message, "llama3", null, null);
     }
 }

@@ -128,7 +128,7 @@
 
 <script>
 import { todayDaily } from "@/api/report/report";
-import { getOllamaModels } from "@/api/ai/ollama";
+import { getOllamaModels, getConversationHistory } from "@/api/ai/ollama";
 import { getToken } from "@/utils/auth";
 import MarkdownIt from 'markdown-it';
 
@@ -177,11 +177,13 @@ export default {
       isSseConnected: false,
       isLoading: false,
       selectedModel: 'deepseek',
-      models: []
+      models: [],
+      sessionId: ''
     }
   },
   mounted() {
     this.loadSystemStats();
+    this.loadConversationHistory();
     this.initSse();
     this.loadOllamaModels();
   },
@@ -203,6 +205,31 @@ export default {
       }).catch(error => {
         console.error('获取模型列表失败:', error);
       });
+    },
+    loadConversationHistory() {
+      const token = getToken();
+      if (token) {
+        getConversationHistory(token).then(response => {
+          if (response.success && response.data) {
+            // 清空当前消息列表
+            this.messages = [];
+            // 添加历史消息
+            response.data.forEach(msg => {
+              this.messages.push({
+                content: msg.content,
+                time: this.formatTime(new Date(msg.timestamp)),
+                isMe: msg.role === 'user',
+                avatar: ''
+              });
+            });
+            // 保存会话ID
+            this.sessionId = response.sessionId;
+            console.log('加载对话历史成功:', response.data.length, '条消息');
+          }
+        }).catch(error => {
+          console.error('获取对话历史失败:', error);
+        });
+      }
     },
     initSse() {
       // 生成唯一客户端ID

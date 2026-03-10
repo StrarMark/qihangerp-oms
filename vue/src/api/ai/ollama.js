@@ -7,3 +7,12 @@ export function getOllamaModels() {
     method: 'get'
   })
 }
+
+// 获取对话历史
+export function getConversationHistory(token) {
+  return request({
+    url: '/api/ai-agent/sse/history',
+    method: 'get',
+    params: { token }
+  })
+}
