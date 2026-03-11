@@ -1,6 +1,8 @@
 package cn.qihangerp.erp.service;
 
 import dev.langchain4j.agent.tool.Tool;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * 订单工具服务，用于AI查询订单信息
  */
+@Component
 public class OrderToolService {
     
     private final OrderService orderService;

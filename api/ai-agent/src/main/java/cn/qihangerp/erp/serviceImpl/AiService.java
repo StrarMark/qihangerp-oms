@@ -3,6 +3,7 @@ package cn.qihangerp.erp.serviceImpl;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.service.AiServices;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import cn.qihangerp.erp.service.OrderToolService;
+import cn.qihangerp.erp.service.GoodsToolService;
 import cn.qihangerp.erp.serviceImpl.ConversationHistoryManager;
 
 /**
@@ -22,6 +24,12 @@ import cn.qihangerp.erp.serviceImpl.ConversationHistoryManager;
  */
 @Service
 public class AiService {
+    
+    @Autowired
+    private OrderToolService orderToolService;
+    
+    @Autowired
+    private GoodsToolService goodsToolService;
     
     /**
      * 页面规则类
@@ -195,14 +203,20 @@ public class AiService {
             System.out.println("========================================");
             System.out.println("发送给AI的消息: " + enhancedMessage);
             
-            // 尝试创建订单工具服务
-            OrderToolService orderToolService = null;
+            // 使用注入的工具服务（订单工具和商品工具）
+            OrderToolService orderSvc = orderToolService;
+            GoodsToolService goodsSvc = goodsToolService;
+            
             try {
-                orderToolService = new OrderToolService();
-                System.out.println("成功创建OrderToolService");
+                if (orderSvc == null) {
+                    orderSvc = new OrderToolService();
+                }
+                if (goodsSvc == null) {
+                    goodsSvc = new GoodsToolService();
+                }
+                System.out.println("成功创建AI工具服务");
             } catch (Exception e) {
-                System.out.println("创建OrderToolService失败: " + e.getMessage());
-                // 工具创建失败，仍然继续执行，只是不使用工具
+                System.out.println("创建AI工具服务失败: " + e.getMessage());
             }
             
             // 根据模型名称选择使用Ollama还是DeepSeek API
@@ -223,10 +237,20 @@ public class AiService {
                             .timeout(Duration.ofSeconds(300))
                             .build();
                     
-                    if (orderToolService != null) {
+                    if (orderSvc != null && goodsSvc != null) {
                         aiService = AiServices.builder(OrderAiService.class)
                                 .chatModel(deepSeekModelInstance)
-                                .tools(orderToolService)
+                                .tools(orderSvc, goodsSvc)
+                                .build();
+                    } else if (orderSvc != null) {
+                        aiService = AiServices.builder(OrderAiService.class)
+                                .chatModel(deepSeekModelInstance)
+                                .tools(orderSvc)
+                                .build();
+                    } else if (goodsSvc != null) {
+                        aiService = AiServices.builder(OrderAiService.class)
+                                .chatModel(deepSeekModelInstance)
+                                .tools(goodsSvc)
                                 .build();
                     } else {
                         aiService = AiServices.builder(OrderAiService.class)
@@ -249,10 +273,20 @@ public class AiService {
                             .timeout(Duration.ofSeconds(300)) // 超时时间设置为300秒（5分钟）
                             .build();
                     
-                    if (orderToolService != null) {
+                    if (orderSvc != null && goodsSvc != null) {
                         aiService = AiServices.builder(OrderAiService.class)
                                 .chatModel(modelInstance)
-                                .tools(orderToolService)
+                                .tools(orderSvc, goodsSvc)
+                                .build();
+                    } else if (orderSvc != null) {
+                        aiService = AiServices.builder(OrderAiService.class)
+                                .chatModel(modelInstance)
+                                .tools(orderSvc)
+                                .build();
+                    } else if (goodsSvc != null) {
+                        aiService = AiServices.builder(OrderAiService.class)
+                                .chatModel(modelInstance)
+                                .tools(goodsSvc)
                                 .build();
                     } else {
                         aiService = AiServices.builder(OrderAiService.class)
