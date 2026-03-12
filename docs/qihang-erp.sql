@@ -3983,6 +3983,19 @@ INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_s
 INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', 'admin', '2023-08-07 19:31:37', 'admin', '2025-09-08 19:14:34', '普通角色');
 COMMIT;
 
+drop table if exists sys_role_dept;
+create table sys_role_dept (
+                               role_id   bigint(20) not null comment '角色ID',
+                               dept_id   bigint(20) not null comment '部门ID',
+                               primary key(role_id, dept_id)
+) engine=innodb comment = '角色和部门关联表';
+
+-- ----------------------------
+-- 初始化-角色和部门关联表数据
+-- ----------------------------
+insert into sys_role_dept values ('2', '100');
+insert into sys_role_dept values ('2', '101');
+insert into sys_role_dept values ('2', '105');
 -- ----------------------------
 -- Table structure for sys_role1
 -- ----------------------------

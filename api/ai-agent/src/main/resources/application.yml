@@ -96,6 +96,6 @@ mybatis-plus:
 
 deepseek:
   api:
-    key: sk-8318ebe8e9d049d2b2a8bf506ba9b5ff
+    key: sk-8318ebe8e9d049d2b2a8bf506ba9b5fe
     endpoint: https://api.deepseek.com/v1
     model: deepseek-chat
