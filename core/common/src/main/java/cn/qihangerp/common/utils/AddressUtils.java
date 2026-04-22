@@ -1,4 +1,4 @@
-package cn.qihangerp.security.utils;
+package cn.qihangerp.common.utils;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;

@@ -50,7 +50,13 @@ spring:
             - Path=/api/sys-api/**
           filters:
             - StripPrefix=2
+        - id: sys_api_route
 
+          uri: lb://open
+          predicates:
+            - Path=/api/open/**
+          filters:
+            - StripPrefix=2
 #            - TokenFilter
 #      default-filters:
 #        - TokenFilter

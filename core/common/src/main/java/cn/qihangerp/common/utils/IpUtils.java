@@ -1,6 +1,5 @@
-package cn.qihangerp.security.utils;
+package cn.qihangerp.common.utils;
 
-import cn.qihangerp.common.utils.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.net.InetAddress;

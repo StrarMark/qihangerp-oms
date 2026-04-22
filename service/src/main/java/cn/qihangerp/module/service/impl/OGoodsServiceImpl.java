@@ -325,6 +325,22 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
 //        }
 //        return 1;
 //    }
+
+    @Override
+    public List<OGoodsSku> querySkuByIds(List<Long> ids) {
+        LambdaQueryWrapper<OGoodsSku> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(OGoodsSku::getId, ids);
+        return skuMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public List<OGoodsSku> querySkuByGoodsId(Long goodsId) {
+        LambdaQueryWrapper<OGoodsSku> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(OGoodsSku::getGoodsId, goodsId);
+        return skuMapper.selectList(queryWrapper);
+    }
+
+
 }
 
 

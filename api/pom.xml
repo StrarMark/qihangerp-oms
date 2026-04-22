@@ -22,6 +22,7 @@
     <modules>
         <module>gateway</module>
 <!--        <module>ai-agent</module>-->
+        <module>open-api</module>
         <module>erp-api</module>
         <module>sys-api</module>
         <module>oms-api</module>

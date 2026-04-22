@@ -5,9 +5,9 @@ import cn.qihangerp.common.constant.CacheConstants;
 import cn.qihangerp.common.utils.IdUtils;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.security.common.Constants;
-import cn.qihangerp.security.utils.AddressUtils;
-import cn.qihangerp.security.utils.IpUtils;
-import cn.qihangerp.security.utils.ServletUtils;
+import cn.qihangerp.common.utils.AddressUtils;
+import cn.qihangerp.common.utils.IpUtils;
+import cn.qihangerp.common.utils.ServletUtils;
 
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;

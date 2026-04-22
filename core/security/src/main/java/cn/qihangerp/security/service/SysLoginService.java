@@ -14,7 +14,7 @@ import cn.qihangerp.security.AuthenticationContextHolder;
 import cn.qihangerp.security.LoginUser;
 import cn.qihangerp.security.TokenService;
 import cn.qihangerp.security.UserPasswordNotMatchException;
-import cn.qihangerp.security.utils.IpUtils;
+import cn.qihangerp.common.utils.IpUtils;
 import cn.qihangerp.service.ISysUserService;
 import cn.qihangerp.service.SysConfigService;
 import jakarta.annotation.Resource;

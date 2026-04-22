@@ -1,8 +1,7 @@
-package cn.qihangerp.security.utils;
+package cn.qihangerp.common.utils;
 
 import cn.qihangerp.common.constant.Convert;
 import cn.qihangerp.common.constant.Constants;
-import cn.qihangerp.common.utils.StringUtils;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

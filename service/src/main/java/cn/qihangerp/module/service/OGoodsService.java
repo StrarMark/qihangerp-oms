@@ -54,4 +54,7 @@ public interface OGoodsService extends IService<OGoods> {
     int insertGoodsSku(OGoodsSku goodsSku);
 //    int saveGoodsSku(GoodsSkuAddBo addBo);
 //    int batchSaveGoodsSku(List<GoodsSkuAddBo> list);
+
+    List<OGoodsSku> querySkuByIds(List<Long> ids);
+    List<OGoodsSku> querySkuByGoodsId(Long goodsId);
 }

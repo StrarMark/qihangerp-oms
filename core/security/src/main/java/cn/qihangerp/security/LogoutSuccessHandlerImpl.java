@@ -2,7 +2,7 @@ package cn.qihangerp.security;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.utils.StringUtils;
-import cn.qihangerp.security.utils.ServletUtils;
+import cn.qihangerp.common.utils.ServletUtils;
 import com.alibaba.fastjson2.JSON;
 
 
