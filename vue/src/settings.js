@@ -37,7 +37,7 @@ module.exports = {
   /**
    * 侧边栏默认状态 true:展开 false:收起
    */
-  sidebarDefaultOpen: false,
+  sidebarDefaultOpen: true,
   /**
    * @type {string | array} 'production' | ['production', 'development']
    * @description Need show err logs component.

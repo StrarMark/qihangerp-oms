@@ -1,833 +1,164 @@
 <template>
-  <div class="chat-home-container">
-    <!-- 左侧聊天区域 -->
-    <div class="chat-container">
-      <div class="chat-header">
-        <div class="header-left">
-          <i class="el-icon-chat-dot-round"></i>
-          <span class="title">工作助手</span>
-        </div>
-        <div class="header-right">
-          <el-select v-model="selectedModel" size="mini" style="width: 120px; margin-right: 10px;">
-            <el-option label="DeepSeek" value="deepseek"></el-option>
-            <el-option v-for="model in models" :key="model.value" :label="model.label" :value="model.value"></el-option>
-          </el-select>
-          <el-select v-model="selectedRole" size="mini" style="width: 120px; margin-right: 10px;">
-            <el-option label="默认助手" value="">默认助手</el-option>
-            <el-option label="智能客服" value="你是一个专业的电商智能客服，请用友好、专业的语气回答用户问题。"></el-option>
-            <el-option label="数据分析专家" value="你是一个专业的数据分析专家，请详细分析数据并给出专业建议。"></el-option>
-            <el-option label="订单处理员" value="你是一个高效的订单处理员，请专注于订单相关的查询和操作。"></el-option>
-            <el-option label="商品管理员" value="你是一个商品管理专家，请提供商品相关的专业建议和操作指导。"></el-option>
-          </el-select>
-          <el-tag type="success" size="mini">在线</el-tag>
-        </div>
-      </div>
+  <div class="dashboard-editor-container">
 
-      <div class="chat-messages" ref="messageContainer">
-        <div
-          v-for="(message, index) in messages"
-          :key="index"
-          :class="['message-item', message.isMe ? 'message-right' : 'message-left']"
-        >
-          <div class="message-avatar">
-            <el-avatar :size="32" :src="message.avatar">
-              {{ message.isMe ? '我' : '助' }}
-            </el-avatar>
-          </div>
-          <div class="message-content">
-            <div class="message-text" v-html="message.content"></div>
-            <div class="message-time">{{ message.time }}</div>
-          </div>
-        </div>
-      </div>
+    <panel-group :chart-data="report" @handleSetLineChartData="handleSetLineChartData" />
 
-      <div class="chat-input">
-        <el-input
-          type="textarea"
-          :rows="3"
-          placeholder="请输入消息..."
-          v-model="inputMessage"
-          @keyup.enter.native="sendMessage"
-        ></el-input>
-        <div class="input-actions">
-          <el-button type="primary" size="small" @click="sendMessage" :disabled="!inputMessage.trim()">
-            发送
-          </el-button>
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <line-chart :chart-data="lineChartData" />
+    </el-row>
+<!--    <el-row>-->
+<!--      <el-table-->
+<!--        :data="tableData"-->
+<!--        style="width: 100%">-->
+<!--        <el-table-column-->
+<!--          prop="date"-->
+<!--          label="日期"-->
+<!--          width="180">-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="name"-->
+<!--          label="姓名"-->
+<!--          width="180">-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="address"-->
+<!--          label="地址">-->
+<!--        </el-table-column>-->
+<!--      </el-table>-->
+<!--    </el-row>-->
+    <el-row :gutter="32">
+<!--      <el-col :xs="24" :sm="24" :lg="8">-->
+<!--        <div class="chart-wrapper">-->
+<!--          <raddar-chart />-->
+<!--        </div>-->
+<!--      </el-col>-->
+      <el-col :xs="24" :sm="24" :lg="24">
+        <div class="chart-wrapper">
+          <pie-chart :chart-data="skuTopData" />
         </div>
-      </div>
-    </div>
+      </el-col>
+<!--      <el-col :xs="24" :sm="24" :lg="12">-->
+<!--        <div class="chart-wrapper">-->
+<!--          <bar-chart />-->
+<!--        </div>-->
+<!--      </el-col>-->
+    </el-row>
 
-    <!-- 右侧导航面板 -->
-    <div class="nav-panel">
-      <div class="nav-header">
-        <i class="el-icon-menu"></i>
-        <span class="title">快捷导航</span>
-      </div>
 
-      <!-- 快捷功能区 -->
-      <div class="quick-actions">
-        <div class="section-title">
-          <i class="el-icon-lightning"></i>
-          快捷操作
-        </div>
-        <div class="action-grid">
-          <div
-            v-for="action in quickActions"
-            :key="action.id"
-            class="action-item"
-            @click="sendQuickMessage(action)"
-          >
-            <div class="action-icon">
-              <i :class="action.icon"></i>
-            </div>
-            <div class="action-text">{{ action.title }}</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 常用功能区 -->
-      <div class="common-functions">
-        <div class="section-title">
-          <i class="el-icon-star-on"></i>
-          常用功能
-        </div>
-        <div class="function-list">
-          <div
-            v-for="func in commonFunctions"
-            :key="func.id"
-            class="function-item"
-            @click="navigateTo(func.path)"
-          >
-            <i :class="func.icon"></i>
-            <span>{{ func.title }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 系统统计 -->
-      <div class="system-stats">
-        <div class="section-title">
-          <i class="el-icon-data-analysis"></i>
-          系统概览
-        </div>
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-value">{{ stats.waitShip }}</div>
-            <div class="stat-label">待发货</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">{{ stats.orderCount }}</div>
-            <div class="stat-label">今日订单</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">¥{{ stats.salesVolume }}</div>
-            <div class="stat-label">今日销售额</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">{{ stats.shopCount }}</div>
-            <div class="stat-label">店铺数</div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import { todayDaily } from "@/api/report/report";
-import { getOllamaModels, getConversationHistory } from "@/api/ai/ollama";
-import { getToken } from "@/utils/auth";
-import MarkdownIt from 'markdown-it';
+import PanelGroup from './dashboard/PanelGroup'
+import LineChart from './dashboard/LineChart'
+import RaddarChart from './dashboard/RaddarChart'
+import PieChart from './dashboard/PieChart'
+import BarChart from './dashboard/BarChart'
+import { todayDaily,salesDaily,salesTopSku } from "@/api/report/report";
+const lineChartData = {
+  // newVisitis: {
+  //   expectedData: [100, 120, 161, 134, 105, 160, 165],
+  //   actualData: [120, 82, 91, 154, 162, 140, 145]
+  // },
+  // messages: {
+  //   expectedData: [200, 192, 120, 144, 160, 130, 140],
+  //   actualData: [180, 160, 151, 106, 145, 150, 130]
+  // },
+  // purchases: {
+  //   expectedData: [80, 100, 121, 104, 105, 90, 100],
+  //   actualData: [120, 90, 100, 138, 142, 130, 130]
+  // },
+  // shoppings: {
+  //   expectedData: [130, 140, 141, 142, 145, 150, 160],
+  //   actualData: [120, 82, 91, 154, 162, 140, 130]
+  // }
+  salesDaily: {
+    date:['09-15','09-16','09-17','09-18','09-19','09-20','09-21'],
+    salesVolume: [130, 140, 141, 142, 145, 150, 160],
+    salesOrder: [120, 82, 91, 154, 162, 140, 130]
+  }
+}
 
 export default {
   name: 'Index',
+  components: {
+    PanelGroup,
+    LineChart,
+    RaddarChart,
+    PieChart,
+    BarChart
+  },
   data() {
     return {
-      md: new MarkdownIt(),
-      inputMessage: '',
-      messageBuffer: '',
-      messageTimeout: null,
-      messages: [
-        {
-          content: '您好！我是您的工作助手，有什么可以帮助您的吗？',
-          time: this.formatTime(new Date()),
-          isMe: false,
-          avatar: ''
-        }
-      ],
-      quickActions: [
-        { id: 1, title: '查看待发货', icon: 'el-icon-truck', message: '请帮我查看今天有多少待发货订单' },
-        { id: 2, title: '同步订单', icon: 'el-icon-refresh', message: '请同步所有店铺的订单数据' },
-        { id: 3, title: '库存预警', icon: 'el-icon-warning', message: '检查一下哪些商品库存不足' },
-        { id: 4, title: '今日统计', icon: 'el-icon-data-line', message: '请告诉我今天的销售统计数据' },
-        { id: 5, title: '商品管理', icon: 'el-icon-goods', message: '我想管理商品信息' },
-        { id: 6, title: '售后处理', icon: 'el-icon-service', message: '查看需要处理的售后订单' }
-      ],
-      commonFunctions: [
-        { id: 1, title: '订单管理', icon: 'el-icon-s-order', path: '/order' },
-        { id: 2, title: '商品管理', icon: 'el-icon-goods', path: '/goods' },
-        { id: 3, title: '库存管理', icon: 'el-icon-box', path: '/stock' },
-        { id: 4, title: '发货管理', icon: 'el-icon-truck', path: '/shipping' },
-        { id: 5, title: '售后管理', icon: 'el-icon-service', path: '/refund' },
-        { id: 6, title: '店铺管理', icon: 'el-icon-shop', path: '/shop' },
-        { id: 7, title: '采购管理', icon: 'el-icon-shopping-cart-full', path: '/purchase' },
-        { id: 8, title: '系统设置', icon: 'el-icon-setting', path: '/system' }
-      ],
-      stats: {
-        waitShip: 0,
-        salesVolume: 0,
-        orderCount: 0,
-        shopCount: 0
+      lineChartData: {
+        date:[],
+        salesVolume:[],
+        salesOrder:[]
       },
-      sse: null,
-      clientId: '',
-      isSseConnected: false,
-      isLoading: false,
-      selectedModel: 'deepseek',
-      selectedRole: '',
-      models: [],
-      sessionId: ''
+      skuTopData:{
+        data:[
+          // { value: 320, name: 'AAA' },
+          // { value: 240, name: 'BBB' },
+          // { value: 149, name: 'CC' },
+          // { value: 100, name: 'DD' },
+          // { value: 59, name: 'DEEE' }
+        ]
+      },
+      report:{
+        waitShip:0,
+        salesVolume:5989.98,
+        orderCount:302,
+        shopCount:8
+      }
+
     }
   },
   mounted() {
-    this.loadSystemStats();
-    this.loadConversationHistory();
-    this.initSse();
-    this.loadOllamaModels();
-  },
-  beforeDestroy() {
-    this.closeSse();
+    // 加载统计
+    todayDaily().then(resp=>{
+
+      this.report = resp.data
+    })
+    salesDaily().then(resp=>{
+
+      this.lineChartData.date=[]
+      this.lineChartData.salesVolume =[]
+      this.lineChartData.salesOrder =[]
+      resp.data.forEach(x=>{
+        this.lineChartData.date.push(x.date)
+        this.lineChartData.salesVolume.push(x.amount)
+        this.lineChartData.salesOrder.push(x.count)
+      })
+    })
+    salesTopSku().then(resp=>{
+      console.log("=====",resp.data)
+      this.skuTopData.data= resp.data
+    })
   },
   methods: {
-    loadOllamaModels() {
-      getOllamaModels().then(response => {
-        if (response.models) {
-          this.models = response.models.map(model => ({
-            label: model.name,
-            value: model.name
-          }));
-          if(this.models&&this.models.length>0){
-            this.selectedModel = this.models[0].value
-          }
-        }
-      }).catch(error => {
-        console.error('获取模型列表失败:', error);
-      });
-    },
-    loadConversationHistory() {
-      const token = getToken();
-      if (token) {
-        getConversationHistory(token).then(response => {
-          if (response.success && response.data) {
-            // 清空当前消息列表
-            this.messages = [];
-            // 添加历史消息
-            response.data.forEach(msg => {
-              this.messages.push({
-                content: msg.content,
-                time: this.formatTime(new Date(msg.timestamp)),
-                isMe: msg.role === 'user',
-                avatar: ''
-              });
-            });
-            // 保存会话ID
-            this.sessionId = response.sessionId;
-            console.log('加载对话历史成功:', response.data.length, '条消息');
-          }
-        }).catch(error => {
-          console.error('获取对话历史失败:', error);
-        });
-      }
-    },
-    initSse() {
-      // 从localStorage获取clientId，如果没有则生成新的
-      this.clientId = localStorage.getItem('aiChatClientId') || ('client_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9));
-      // 保存clientId到localStorage
-      localStorage.setItem('aiChatClientId', this.clientId);
-      // 获取token
-      const token = getToken();
-
-      // 建立SSE连接，携带token
-      this.sse = new EventSource(`${process.env.VUE_APP_BASE_API}/api/ai-agent/sse/connect?clientId=${this.clientId}&token=${token}`);
-
-      // 监听连接成功
-      this.sse.addEventListener('connected', (event) => {
-        console.log('SSE连接成功:', event.data);
-        this.isSseConnected = true;
-      });
-
-      // 监听消息
-      this.sse.addEventListener('message', (event) => {
-        console.log('收到SSE消息:', event.data);
-
-        // 清除之前的超时定时器
-        if (this.messageTimeout) {
-          clearTimeout(this.messageTimeout);
-        }
-
-        // 将当前消息添加到缓冲区
-        this.messageBuffer += event.data + '\n';
-
-        // 设置超时定时器，如果在1秒内没有收到新的消息，就认为消息已经结束
-        this.messageTimeout = setTimeout(() => {
-          this.processMessageBuffer();
-        }, 1000);
-      });
-
-      // 监听心跳
-      this.sse.addEventListener('heartbeat', (event) => {
-        console.log('收到心跳:', event.data);
-      });
-
-      // 监听后端发送的错误信息
-      this.sse.addEventListener('error', (event) => {
-        console.log('收到错误信息:', event.data);
-        try {
-          // 解析错误信息
-          const errorData = JSON.parse(event.data);
-          if (errorData.error) {
-            // 移除正在思考的消息
-            if (this.isLoading) {
-              this.messages = this.messages.filter(msg => !msg.isLoading);
-              this.isLoading = false;
-            }
-            // 显示错误信息
-            this.messages.push({
-              content: `错误: ${errorData.error}`,
-              time: this.formatTime(new Date()),
-              isMe: false,
-              avatar: ''
-            });
-            this.scrollToBottom();
-          }
-        } catch (e) {
-          console.error('解析错误信息失败:', e);
-        }
-      });
-
-      // 监听连接错误
-      this.sse.onerror = (error) => {
-        console.error('SSE连接错误:', error);
-        this.isSseConnected = false;
-        // 尝试重连
-        setTimeout(() => {
-          this.initSse();
-        }, 5000);
-      };
-    },
-
-    closeSse() {
-      if (this.sse) {
-        this.sse.close();
-        this.sse = null;
-      }
-    },
-
-    sendMessage() {
-      if (!this.inputMessage.trim()) return;
-
-      // 添加用户消息
-      this.messages.push({
-        content: this.inputMessage,
-        time: this.formatTime(new Date()),
-        isMe: true,
-        avatar: ''
-      });
-
-      // 显示正在思考的loading效果
-      this.isLoading = true;
-      this.messages.push({
-        content: '正在思考...',
-        time: this.formatTime(new Date()),
-        isMe: false,
-        avatar: '',
-        isLoading: true
-      });
-
-      // 获取token
-      const token = getToken();
-
-      // 通过SSE发送消息到后端
-      if (this.isSseConnected) {
-        // 使用AbortController实现超时
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 300000); // 300秒超时
-
-        // 使用fetch发送消息
-        fetch(`${process.env.VUE_APP_BASE_API}/api/ai-agent/sse/send?clientId=${this.clientId}&message=${encodeURIComponent(this.inputMessage)}&model=${this.selectedModel}&token=${token}`, {
-          signal: controller.signal
-        })
-          .then(response => response.text())
-          .then(data => {
-            clearTimeout(timeoutId);
-            console.log('消息发送结果:', data);
-          })
-          .catch(error => {
-            clearTimeout(timeoutId);
-            console.error('消息发送失败:', error);
-            // 发送失败时使用模拟回复
-            this.generateReply(this.inputMessage);
-            this.isLoading = false;
-          });
-      } else {
-        // SSE未连接时使用模拟回复
-        this.generateReply(this.inputMessage);
-        this.isLoading = false;
-      }
-
-      this.inputMessage = '';
-      this.scrollToBottom();
-    },
-
-    sendQuickMessage(action) {
-      this.inputMessage = action.message;
-      this.sendMessage();
-    },
-
-    generateReply(userMessage) {
-      let reply = '';
-
-      if (userMessage.includes('待发货')) {
-        reply = `您有 ${this.stats.waitShip} 个待发货订单，建议尽快处理。`;
-      } else if (userMessage.includes('订单')) {
-        reply = `今日订单总数：${this.stats.orderCount} 单，销售额：¥${this.stats.salesVolume}`;
-      } else if (userMessage.includes('库存')) {
-        reply = '正在为您检查库存情况，请稍等...';
-      } else if (userMessage.includes('统计')) {
-        reply = `今日数据：订单${this.stats.orderCount}单，销售额¥${this.stats.salesVolume}，待发货${this.stats.waitShip}单`;
-      } else {
-        reply = '我理解您的需求，正在为您处理...';
-      }
-
-      this.messages.push({
-        content: reply,
-        time: this.formatTime(new Date()),
-        isMe: false,
-        avatar: ''
-      });
-
-      this.scrollToBottom();
-    },
-
-    navigateTo(path) {
-      this.$router.push(path);
-    },
-
-    processMessageBuffer() {
-      // 清除超时定时器
-      if (this.messageTimeout) {
-        clearTimeout(this.messageTimeout);
-        this.messageTimeout = null;
-      }
-
-      // 移除所有data:前缀
-      let messageContent = this.messageBuffer.replace(/^data:/gm, '');
-      // 移除末尾的空行
-      messageContent = messageContent.trim();
-
-      // 只有当消息内容不为空时才处理
-      if (messageContent) {
-        try {
-          // 解析JSON数据
-          const jsonData = JSON.parse(messageContent);
-
-          // 检查是否是包含action的响应
-          if (jsonData.action) {
-            // 处理导航动作
-            if (jsonData.action === 'navigate' && jsonData.route) {
-              // 显示消息
-              if (jsonData.message) {
-                this.messages.push({
-                  content: this.md.render(jsonData.message),
-                  time: this.formatTime(new Date()),
-                  isMe: false,
-                  avatar: ''
-                });
-                this.scrollToBottom();
-              }
-              // 执行路由跳转
-              this.$router.push(jsonData.route);
-            }
-          } else {
-            // 处理普通文本消息
-            let textContent = jsonData.text || messageContent;
-
-            // 检查是否包含订单信息，转换为表格格式
-            if (textContent.includes('订单号:') || textContent.includes('订单详情')) {
-              // 提取订单信息并转换为表格
-              textContent = this.convertOrderToTable(textContent);
-            }
-
-            // 检查是否包含打开页面的指令
-            this.checkOpenPageCommand(textContent);
-
-            // 移除正在思考的消息
-            if (this.isLoading) {
-              this.messages = this.messages.filter(msg => !msg.isLoading);
-              this.isLoading = false;
-            }
-
-            // 使用markdown-it将markdown格式转换为HTML
-            const htmlContent = this.md.render(textContent);
-            this.messages.push({
-              content: htmlContent,
-              time: this.formatTime(new Date()),
-              isMe: false,
-              avatar: ''
-            });
-            this.scrollToBottom();
-          }
-        } catch (e) {
-          console.error('解析SSE消息失败:', e);
-          // 移除正在思考的消息
-          if (this.isLoading) {
-            this.messages = this.messages.filter(msg => !msg.isLoading);
-            this.isLoading = false;
-          }
-
-          // 使用markdown-it将markdown格式转换为HTML
-          const htmlContent = this.md.render(messageContent);
-          this.messages.push({
-            content: htmlContent,
-            time: this.formatTime(new Date()),
-            isMe: false,
-            avatar: ''
-          });
-          this.scrollToBottom();
-        }
-      }
-
-      // 清空缓冲区
-      this.messageBuffer = '';
-    },
-
-    // 检查并处理打开页面的指令
-    checkOpenPageCommand(text) {
-      // 检查是否包含打开店铺管理页面的指令
-      if (text.includes('打开店铺管理页面') || text.includes('进入店铺管理') || text.includes('前往店铺管理')) {
-        // 跳转到店铺管理页面
-        this.$router.push('/shop/shop_list');
-      }
-      // 可以在这里添加更多页面的打开指令
-    },
-
-    // 将订单信息转换为markdown表格
-    convertOrderToTable(text) {
-      // 提取订单信息
-      const orderMatches = text.match(/订单号:\s*(\S+)/);
-      const dateMatches = text.match(/日期:\s*(\S+)/);
-      const customerMatches = text.match(/客户:\s*(\S+)/);
-      const amountMatches = text.match(/金额:\s*(\S+)/);
-      const statusMatches = text.match(/状态:\s*(\S+)/);
-
-      if (orderMatches && dateMatches && customerMatches && amountMatches && statusMatches) {
-        // 构建markdown表格
-        return `| 订单号 | 日期 | 客户 | 金额 | 状态 |
-| --- | --- | --- | --- | --- |
-| ${orderMatches[1]} | ${dateMatches[1]} | ${customerMatches[1]} | ${amountMatches[1]} | ${statusMatches[1]} |`;
-      }
-      return text;
-    },
-
-    loadSystemStats() {
-      todayDaily().then(resp => {
-        this.stats = resp.data;
-      }).catch(error => {
-        console.error('加载统计失败:', error);
-      });
-    },
-
-    formatTime(date) {
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-      return `${hours}:${minutes}`;
-    },
-
-    scrollToBottom() {
-      this.$nextTick(() => {
-        const container = this.$refs.messageContainer;
-        if (container) {
-          container.scrollTop = container.scrollHeight;
-        }
-      });
+    handleSetLineChartData(type) {
+      // this.lineChartData = lineChartData[type]
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.chat-home-container {
-  display: flex;
-  height: calc(100vh - 84px);
-  background-color: #f5f7fa;
-  padding: 20px;
-  gap: 20px;
-}
+.dashboard-editor-container {
+  padding: 32px;
+  background-color: rgb(240, 242, 245);
+  position: relative;
 
-// 左侧聊天区域
-.chat-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.chat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #eee;
-  background: #fafafa;
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    .el-icon-chat-dot-round {
-      font-size: 20px;
-      color: #409eff;
-    }
-
-    .title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #333;
-    }
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
   }
 }
 
-.chat-messages {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-  background: #fafafa;
-
-  .message-item {
-    display: flex;
-    margin-bottom: 20px;
-    max-width: 80%;
-
-    &.message-left {
-      align-self: flex-start;
-    }
-
-    &.message-right {
-      align-self: flex-end;
-      flex-direction: row-reverse;
-
-      .message-content {
-        background: #409eff;
-        color: white;
-        .message-time {
-          color: rgba(255, 255, 255, 0.8);
-        }
-      }
-    }
+@media (max-width:1024px) {
+  .chart-wrapper {
+    padding: 8px;
   }
-
-  .message-avatar {
-    margin: 0 12px;
-  }
-
-  .message-content {
-    background: white;
-    padding: 12px 16px;
-    border-radius: 18px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-
-    .message-text {
-          font-size: 14px;
-          line-height: 1.5;
-          margin-bottom: 4px;
-          white-space: pre-line;
-        }
-
-    .message-time {
-      font-size: 12px;
-      color: #999;
-      text-align: right;
-    }
-  }
-}
-
-.chat-input {
-  padding: 20px;
-  border-top: 1px solid #eee;
-  background: white;
-
-  .input-actions {
-    margin-top: 12px;
-    text-align: right;
-  }
-}
-
-// 右侧导航面板
-.nav-panel {
-  width: 320px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-}
-
-.nav-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 20px;
-  border-bottom: 1px solid #eee;
-  background: #fafafa;
-
-  .el-icon-menu {
-    font-size: 18px;
-    color: #409eff;
-  }
-
-  .title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-  }
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 20px 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #666;
-  border-bottom: 1px solid #f0f0f0;
-  margin-bottom: 16px;
-}
-
-// 快捷操作
-.quick-actions {
-  .action-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 0 20px 20px;
-  }
-
-  .action-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-      border-color: #409eff;
-      background: #f0f8ff;
-      transform: translateY(-2px);
-    }
-
-    .action-icon {
-      font-size: 24px;
-      color: #409eff;
-      margin-bottom: 8px;
-    }
-
-    .action-text {
-      font-size: 13px;
-      color: #666;
-    }
-  }
-}
-
-// 常用功能
-.common-functions {
-  .function-list {
-    padding: 0 20px 20px;
-  }
-
-  .function-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s;
-    margin-bottom: 8px;
-
-    &:hover {
-      background: #f0f8ff;
-      color: #409eff;
-    }
-
-    i {
-      font-size: 16px;
-      width: 20px;
-    }
-
-    span {
-      font-size: 14px;
-    }
-  }
-}
-
-// 系统统计
-.system-stats {
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 0 20px 20px;
-  }
-
-  .stat-item {
-    text-align: center;
-    padding: 16px;
-    background: #f8f9fa;
-    border-radius: 8px;
-
-    .stat-value {
-      font-size: 20px;
-      font-weight: 600;
-      color: #409eff;
-      margin-bottom: 4px;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: #999;
-    }
-  }
-}
-
-// 滚动条样式
-.chat-messages::-webkit-scrollbar,
-.nav-panel::-webkit-scrollbar {
-  width: 6px;
-}
-
-.chat-messages::-webkit-scrollbar-track,
-.nav-panel::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb,
-.nav-panel::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb:hover,
-.nav-panel::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
 }
 </style>
-
-```

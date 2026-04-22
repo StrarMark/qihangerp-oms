@@ -21,7 +21,7 @@
     <url>http://maven.apache.org</url>
     <modules>
         <module>gateway</module>
-        <module>ai-agent</module>
+<!--        <module>ai-agent</module>-->
         <module>erp-api</module>
         <module>sys-api</module>
         <module>oms-api</module>
