@@ -9,9 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  * Hello world!
  *
  */
-@EnableFeignClients(basePackages = "cn.qihangerp.open")
-//@MapperScan("cn.qihangerp.open.mapper")
-@ComponentScan(basePackages={"cn.qihangerp"})
+@ComponentScan(basePackages={"cn.qihangerp.open","cn.qihangerp"})
 @SpringBootApplication
 public class OpenApi
 {

@@ -2,7 +2,7 @@
 
 ```bash
 # 克隆项目
-
+# nodejs v20
 
 # 进入项目目录
 cd vue
