@@ -4,9 +4,7 @@ import lombok.Data;
 
 @Data
 public class OrderShipBo {
-    private Integer shipType;
     private Long shopId;
-    private String orderNum;
     private String shipCompany;
     private String shipCode;
     private String receiverName;
@@ -15,7 +13,6 @@ public class OrderShipBo {
     private String city;
     private String town;
     private String address;
-    private String shipOperator;
     private String[] itemIds;
 
 }

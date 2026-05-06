@@ -2,7 +2,7 @@ package cn.qihangerp.security;
 
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.HttpStatus;
 import com.alibaba.fastjson2.JSON;
 
 import jakarta.servlet.FilterChain;
@@ -18,7 +18,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;

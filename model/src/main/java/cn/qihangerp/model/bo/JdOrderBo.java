@@ -14,4 +14,5 @@ public class JdOrderBo implements Serializable {
     private String orderState;
     private String startTime;
     private String endTime;
+    private Long merchantId;
 }

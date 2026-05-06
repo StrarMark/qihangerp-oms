@@ -1,11 +1,11 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 
@@ -23,6 +23,7 @@ public class OGoodsBrand implements Serializable {
      * 品牌名
      */
     private String name;
+    private String num;
 
     /**
      * 状态

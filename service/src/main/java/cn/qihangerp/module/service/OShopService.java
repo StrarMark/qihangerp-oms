@@ -1,6 +1,6 @@
 package cn.qihangerp.module.service;
 
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.model.entity.OShop;
 import com.baomidou.mybatisplus.extension.service.IService;
 

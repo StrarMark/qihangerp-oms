@@ -10,4 +10,5 @@ public class RefundSearchBo {
     private String refundNum;
     private Integer erpPushStatus;
     private Integer hasProcessing;
+    private Long supplierId;
 }

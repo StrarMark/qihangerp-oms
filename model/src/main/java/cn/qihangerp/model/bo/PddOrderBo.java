@@ -9,8 +9,10 @@ public class PddOrderBo implements Serializable {
     private String orderSn;
     private Long skuId;
     private Long erpGoodsSkuId;
-    private Integer shopId;
-    private String orderStatus;
+    private Long shopId;
+    private Integer orderStatus;
+    private Integer refundStatus;
     private String startTime;
     private String endTime;
+    private Long merchantId;
 }

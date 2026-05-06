@@ -1,11 +1,11 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 出库仓位详情
@@ -42,19 +42,17 @@ public class ErpStockOutItemPosition implements Serializable {
     /**
      * 出库数量
      */
-    private Integer quantity;
+    private Long quantity;
 
     /**
      * 出库仓位ID
      */
-    private Long warehouseId;
-    private Long positionId;
-    private String positionNum;
+    private Integer locationId;
 
     /**
      * 出库操作人userid
      */
-    private Long operatorId;
+    private Integer operatorId;
 
     /**
      * 出库操作人

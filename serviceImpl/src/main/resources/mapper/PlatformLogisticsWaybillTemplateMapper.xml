@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.PlatformLogisticsWaybillTemplateMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.PlatformLogisticsWaybillTemplate">
+            <id property="id" column="id" />
+            <result property="platformId" column="platform_id" />
+            <result property="platformType" column="platform_type" />
+            <result property="templateWaybillType" column="template_waybill_type" />
+            <result property="logisticsId" column="logistics_id" />
+            <result property="cpCode" column="cp_code" />
+            <result property="width" column="width" />
+            <result property="height" column="height" />
+            <result property="templateSource" column="template_source" />
+            <result property="perviewUrl" column="perview_url" />
+            <result property="templateCode" column="template_code" />
+            <result property="templateId" column="template_id" />
+            <result property="templateName" column="template_name" />
+            <result property="templateType" column="template_type" />
+            <result property="templateUrl" column="template_url" />
+            <result property="version" column="version" />
+            <result property="remark" column="remark" />
+            <result property="customerTemplateUrl" column="customer_template_url" />
+            <result property="customerPrintItems" column="customer_print_items" />
+            <result property="templateCustomerType" column="template_customer_type" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,platform_id,platform_type,template_waybill_type,logistics_id,cp_code,
+        width,height,template_source,perview_url,template_code,
+        template_id,template_name,template_type,template_url,version,
+        remark,template_customer_type,customer_print_items,customer_template_url
+    </sql>
+</mapper>

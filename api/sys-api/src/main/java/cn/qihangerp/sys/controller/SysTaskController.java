@@ -5,10 +5,9 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.SysTask;
-import cn.qihangerp.module.service.SysTaskService;
-import cn.qihangerp.module.service.SysTaskLogsService;
 import cn.qihangerp.security.common.BaseController;
-
+import cn.qihangerp.service.SysTaskLogsService;
+import cn.qihangerp.service.SysTaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;

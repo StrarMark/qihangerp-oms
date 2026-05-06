@@ -8,10 +8,14 @@ import cn.qihangerp.model.bo.PurchaseOrderAddBo;
 import cn.qihangerp.model.bo.PurchaseOrderOptionBo;
 import cn.qihangerp.model.entity.ErpPurchaseOrder;
 import cn.qihangerp.model.query.PurchaseOrderSearchBo;
-import cn.qihangerp.module.service.ErpPurchaseOrderService;
+import cn.qihangerp.model.request.PurchaseOrderAddRequest;
+import cn.qihangerp.model.request.PurchaseOrderOptionRequest;
+import cn.qihangerp.model.request.SearchRequest;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.ErpPurchaseOrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -30,7 +34,7 @@ public class PurchaseOrderController extends BaseController
      *
      */
     @GetMapping("/list")
-    public TableDataInfo list(PurchaseOrderSearchBo bo, PageQuery pageQuery)
+    public TableDataInfo list(SearchRequest bo, PageQuery pageQuery)
     {
         PageResult<ErpPurchaseOrder> pageResult = erpPurchaseOrderService.queryPageList(bo, pageQuery);
         return getDataTable(pageResult);
@@ -44,13 +48,15 @@ public class PurchaseOrderController extends BaseController
     }
 
     @PostMapping("/create")
-    public AjaxResult add(@RequestBody PurchaseOrderAddBo addBo, HttpServletRequest request)
+    public AjaxResult add(@RequestBody PurchaseOrderAddRequest addBo, HttpServletRequest request)
     {
         addBo.setCreateBy(getUsername());
-        return toAjax(erpPurchaseOrderService.createPurchaseOrder(addBo));
+        var result = erpPurchaseOrderService.createPurchaseOrder(addBo);
+        if (result.getCode() == 0) return AjaxResult.success();
+        else return AjaxResult.error(result.getMsg());
     }
     @PutMapping("/updateStatus")
-    public AjaxResult updateStatus(@RequestBody PurchaseOrderOptionBo req, HttpServletRequest request)
+    public AjaxResult updateStatus(@RequestBody PurchaseOrderOptionRequest req, HttpServletRequest request)
     {
         req.setUpdateBy(getUsername());
         int result = erpPurchaseOrderService.updateScmPurchaseOrder(req);

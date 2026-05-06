@@ -3,11 +3,11 @@ package cn.qihangerp.oms.pdd;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.api.ShopApiParams;
-import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.EnumShopType;
+import cn.qihangerp.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPlatform;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.service.OShopPlatformService;
+import cn.qihangerp.service.OShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -41,7 +41,7 @@ public class PddApiCommon {
 //        }
         String appKey = shop.getAppKey();
         String appSecret = shop.getAppSecret();
-        String callbackUrl = shop.getApiRedirectUrl();
+        String callbackUrl = shop.getApiCallbackUrl();
         if(StringUtils.isEmpty(appKey) || StringUtils.isEmpty(appSecret)){
             OShopPlatform platform = platformService.getById(EnumShopType.PDD.getIndex());
             if(platform != null){

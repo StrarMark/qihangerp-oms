@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.OShipmentTraceMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.OShipmentTrace">
+            <id property="id" column="id" />
+            <result property="shopId" column="shop_id" />
+            <result property="shopType" column="shop_type" />
+            <result property="shipmentId" column="shipment_id" />
+            <result property="logisticsId" column="logistics_id" />
+            <result property="logisticsCode" column="logistics_code" />
+            <result property="action" column="action" />
+            <result property="statusTime" column="status_time" />
+            <result property="statusDesc" column="status_desc" />
+            <result property="descInfo" column="desc_info" />
+            <result property="time" column="time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shop_id,shop_type,shipment_id,logistics_id,logistics_code,
+        action,status_time,status_desc,desc_info,time
+    </sql>
+</mapper>

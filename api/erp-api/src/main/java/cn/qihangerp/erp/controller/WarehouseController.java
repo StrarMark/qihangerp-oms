@@ -4,9 +4,9 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.ErpWarehouse;
 import cn.qihangerp.model.entity.ErpWarehousePosition;
-import cn.qihangerp.module.service.ErpWarehousePositionService;
-import cn.qihangerp.module.service.ErpWarehouseService;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.ErpWarehousePositionService;
+import cn.qihangerp.service.ErpWarehouseService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -27,8 +27,8 @@ public class WarehouseController extends BaseController {
     {
         LambdaQueryWrapper<ErpWarehouse> qw = new LambdaQueryWrapper<ErpWarehouse>()
                 .eq(bo.getStatus()!=null, ErpWarehouse::getStatus, bo.getStatus())
-                .like(StringUtils.hasText(bo.getNumber()), ErpWarehouse::getNumber,bo.getNumber())
-                .like(StringUtils.hasText(bo.getName()), ErpWarehouse::getName,bo.getName())
+                .like(StringUtils.hasText(bo.getWarehouseNo()), ErpWarehouse::getWarehouseNo,bo.getWarehouseNo())
+                .like(StringUtils.hasText(bo.getWarehouseName()), ErpWarehouse::getWarehouseName,bo.getWarehouseName())
                 ;
         List<ErpWarehouse> erpWarehouses = warehouseService.list(qw);
         return getDataTable(erpWarehouses);
@@ -48,11 +48,11 @@ public class WarehouseController extends BaseController {
         if(save){
             ErpWarehousePosition position = new ErpWarehousePosition();
             position.setWarehouseId(warehouse.getId());
-            position.setParentId(0);
-            position.setParentId1(0);
-            position.setParentId2(0);
-            position.setNumber(warehouse.getNumber());
-            position.setName(warehouse.getName());
+            position.setParentId(0l);
+            position.setParentId1(0l);
+            position.setParentId2(0l);
+            position.setNumber(warehouse.getWarehouseNo());
+            position.setName(warehouse.getWarehouseName());
             position.setIsDelete(0);
             position.setAddress(warehouse.getAddress());
             position.setRemark(warehouse.getRemark());
@@ -100,8 +100,8 @@ public class WarehouseController extends BaseController {
     public AjaxResult positionAdd(@RequestBody ErpWarehousePosition position) {
         position.setCreateBy(getUsername());
         position.setCreateTime(new Date());
-        position.setParentId1(0);
-        position.setParentId2(0);
+        position.setParentId1(0l);
+        position.setParentId2(0l);
         positionService.save(position);
 
         return AjaxResult.success();
@@ -125,6 +125,5 @@ public class WarehouseController extends BaseController {
     {
         return toAjax(positionService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
-
 
 }

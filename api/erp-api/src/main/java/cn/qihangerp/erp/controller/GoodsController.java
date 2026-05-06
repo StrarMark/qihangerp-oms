@@ -4,10 +4,12 @@ import cn.qihangerp.common.*;
 import cn.qihangerp.model.entity.OGoods;
 import cn.qihangerp.model.entity.OGoodsSku;
 import cn.qihangerp.model.bo.GoodsAddBo;
+import cn.qihangerp.model.query.GoodsQuery;
+import cn.qihangerp.model.query.GoodsSkuQuery;
 import cn.qihangerp.model.vo.GoodsSpecListVo;
-import cn.qihangerp.module.service.OGoodsService;
-import cn.qihangerp.module.service.OGoodsSkuService;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.OGoodsService;
+import cn.qihangerp.service.OGoodsSkuService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
@@ -42,7 +44,7 @@ public class GoodsController extends BaseController
     }
 
     @GetMapping("/sku_list")
-    public TableDataInfo skuList(OGoodsSku bo, PageQuery pageQuery)
+    public TableDataInfo skuList(GoodsSkuQuery bo, PageQuery pageQuery)
     {
         var pageList = goodsService.querySkuPageList(bo,pageQuery);
         return getDataTable(pageList);
@@ -53,7 +55,7 @@ public class GoodsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('goods:goods:list')")
     @GetMapping("/list")
-    public TableDataInfo list(OGoods goods, PageQuery pageQuery)
+    public TableDataInfo list(GoodsQuery goods, PageQuery pageQuery)
     {
         PageResult<OGoods> pageList = goodsService.queryPageList(goods, pageQuery);
         return getDataTable(pageList);
@@ -108,9 +110,10 @@ public class GoodsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('goods:goods:edit')")
     @PutMapping
-    public AjaxResult edit(@RequestBody OGoods goods)
-    {
-        return toAjax(goodsService.updateGoods(goods));
+    public AjaxResult edit(@RequestBody OGoods goods) {
+        var result = goodsService.updateGoods(goods);
+        if(result.getCode()!=0) return AjaxResult.error(result.getMsg());
+        else return AjaxResult.success();
     }
 
     /**
@@ -132,7 +135,7 @@ public class GoodsController extends BaseController
             skuName+=" "+sku.getStyleValue();
         }
         sku.setSkuName(skuName);
-        sku.setUpdateTime(new Date());
+
         return toAjax(skuService.updateById(sku));
     }
 

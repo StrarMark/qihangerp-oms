@@ -1,12 +1,11 @@
 package cn.qihangerp.erp.controller;
 
-
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.model.entity.OGoodsSupplier;
-import cn.qihangerp.module.service.OGoodsSupplierService;
+import cn.qihangerp.model.entity.ErpSupplier;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.ErpSupplierService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +16,10 @@ import java.util.Date;
 @RestController
 @RequestMapping("/supplier")
 public class GoodsSupplierController extends BaseController {
-    private final OGoodsSupplierService supplierService;
+    private final ErpSupplierService supplierService;
 
     @GetMapping("/list")
-    public TableDataInfo list(OGoodsSupplier bo, PageQuery pageQuery)
+    public TableDataInfo list(ErpSupplier bo, PageQuery pageQuery)
     {
         var pageList = supplierService.queryPageList(bo,pageQuery);
         return getDataTable(pageList);
@@ -39,10 +38,10 @@ public class GoodsSupplierController extends BaseController {
      * 新增【请填写功能名称】
      */
     @PostMapping
-    public AjaxResult add(@RequestBody OGoodsSupplier scmSupplier)
+    public AjaxResult add(@RequestBody ErpSupplier scmSupplier)
     {
-        scmSupplier.setCreatetime(new Date());
-        scmSupplier.setIsdelete(0);
+//        scmSupplier.setCreatetime(new Date());
+//        scmSupplier.setIsdelete(0);
         return toAjax(supplierService.save(scmSupplier));
     }
 
@@ -50,7 +49,7 @@ public class GoodsSupplierController extends BaseController {
      * 修改【请填写功能名称】
      */
     @PutMapping
-    public AjaxResult edit(@RequestBody OGoodsSupplier scmSupplier)
+    public AjaxResult edit(@RequestBody ErpSupplier scmSupplier)
     {
         return toAjax(supplierService.updateById(scmSupplier));
     }

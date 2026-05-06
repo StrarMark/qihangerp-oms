@@ -3,11 +3,11 @@ package cn.qihangerp.oms.tao;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.api.ShopApiParams;
-import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.EnumShopType;
+import cn.qihangerp.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPlatform;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.service.OShopPlatformService;
+import cn.qihangerp.service.OShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -38,7 +38,7 @@ public class TaoApiCommon {
         }
         String appKey = shop.getAppKey();
         String appSecret = shop.getAppSecret();
-        Long sellId = shop.getSellerId();
+        String sellId = shop.getSellerId();
         if(StringUtils.isEmpty(appKey) || StringUtils.isEmpty(appSecret)){
             OShopPlatform platform = platformService.selectById(EnumShopType.TAO.getIndex());
             if(platform != null){
@@ -67,7 +67,7 @@ public class TaoApiCommon {
         params.setAccessToken(shop.getAccessToken());
         params.setSellerId(sellId);
 //        params.setRedirectUri(serverConfig.getUrl()+"/taoapi2/tao_oauth");
-        params.setRedirectUri(shop.getApiRedirectUrl());
+        params.setRedirectUri(shop.getApiCallbackUrl());
         params.setServerUrl(shop.getApiRequestUrl());
 
         if (!StringUtils.hasText(shop.getAccessToken())) {

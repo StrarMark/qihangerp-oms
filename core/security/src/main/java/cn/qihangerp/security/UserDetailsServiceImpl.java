@@ -1,7 +1,7 @@
 package cn.qihangerp.security;
 
 import cn.qihangerp.common.ServiceException;
-import cn.qihangerp.common.enums.UserStatus;
+import cn.qihangerp.enums.UserStatus;
 import cn.qihangerp.common.utils.MessageUtils;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.model.entity.SysUser;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.qihangerp.mapper.ErpSalesGoodsPackageMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpSalesGoodsPackage">
+        <id column="id" property="id" />
+        <result column="package_no" property="packageNo" />
+        <result column="package_name" property="packageName" />
+        <result column="merchant_id" property="merchantId" />
+        <result column="status" property="status" />
+        <result column="remark" property="remark" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="ItemResultMap" type="cn.qihangerp.model.entity.ErpSalesGoodsPackageItem">
+        <id column="id" property="id" />
+        <result column="package_id" property="packageId" />
+        <result column="goods_id" property="goodsId" />
+        <result column="goods_sku_id" property="goodsSkuId" />
+        <result column="quantity" property="quantity" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <select id="selectItemsByPackageId" resultMap="ItemResultMap">
+        SELECT * FROM erp_sales_goods_package_item WHERE package_id = #{packageId}
+    </select>
+
+</mapper>

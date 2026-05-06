@@ -1,10 +1,10 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 
@@ -16,7 +16,7 @@ public class OGoodsCategoryAttributeValue implements Serializable {
      * 主键，属性值id
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 属性id

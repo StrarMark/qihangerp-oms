@@ -18,6 +18,8 @@ public class TaoGoodsBo implements Serializable {
      */
     private String title;
     private String outerId;
-    private Long shopId;
+    private Integer shopId;
     private Integer hasLink;//是否关联
+
+    private Long merchantId;
 }

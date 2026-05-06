@@ -1,6 +1,6 @@
 package cn.qihangerp.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -10,15 +10,15 @@ import java.util.Date;
 
 /**
  * 拼多多订单退款表
- * @TableName pdd_refund
+ * @TableName oms_pdd_refund
  */
-@TableName("oms_pdd_refund")
+@TableName(value ="oms_pdd_refund")
 @Data
 public class PddRefund implements Serializable {
     /**
      * 售后编号
      */
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Long id;
 
     /**
@@ -32,12 +32,12 @@ public class PddRefund implements Serializable {
     private String orderSn;
 
     /**
-     * 必填，售后类型2：仅退款 3：退货退款 4：换货 5：缺货补寄 9:拦截退货
+     * 售后类型 1：全部 2：仅退款 3：退货退款 4：换货 5：缺货补寄 6：维修
      */
     private Integer afterSalesType;
 
     /**
-     * 必填，售后状态 1：全部 2：买家申请退款，待商家处理 3：退货退款，待商家处理 4：商家同意退款，退款中 5：平台同意退款，退款中 6：驳回退款， 待买家处理 7：已同意退货退款,待用户发货 8：平台处理中 9：平台拒 绝退款，退款关闭 10：退款成功 11：买家撤销 12：买家逾期未处 理，退款失败 13：买家逾期，超过有效期 14 : 换货补寄待商家处理 15:换货补寄待用户处理 16:换货补寄成功 17:换货补寄失败 18:换货补寄待用户确认完成 31：商家同意拒收退款，待用户拒收;32: 待商家补寄发货
+     * 售后状态 0：无售后 2：买家申请退款，待商家处理 3：退货退款，待商家处理 4：商家同意退款，退款中 5：平台同意退款，退款中 6：驳回退款，待买家处理 7：已同意退货退款,待用户发货 8：平台处理中 9：平台拒绝退款，退款关闭 10：退款成功 11：买家撤销 12：买家逾期未处理，退款失败 13：买家逾期，超过有效期 14：换货补寄待商家处理 15：换货补寄待用户处理 16：换货补寄成功 17：换货补寄失败 18：换货补寄待用户确认完成 21：待商家同意维修 22：待用户确认发货 24：维修关闭 25：维修成功 27：待用户确认收货 31：已同意拒收退款，待用户拒收 32：补寄待商家发货 33：待商家召回
      */
     private Integer afterSalesStatus;
 
@@ -59,17 +59,27 @@ public class PddRefund implements Serializable {
     /**
      * 订单折扣金额（元）
      */
-    private String discountAmount;
+    private Double discountAmount;
 
     /**
      * 1纠纷退款 0非纠纷退款
      */
     private Integer disputeRefundStatus;
+    /**
+     * 是否介入 1介入 0未介入
+     */
+    private String joinOrNot;
 
     /**
      * 商品图片
      */
     private String goodsImage;
+    /**
+     * 用户申请售后上传的图片列表
+     */
+    private String images;
+    private String remark;
+    private Integer shippingStatus;//订单发货状态
 
     /**
      * 拼多多商品id
@@ -84,17 +94,17 @@ public class PddRefund implements Serializable {
     /**
      * 商品价格，单位：元
      */
-    private String goodsPrice;
+    private Double goodsPrice;
 
     /**
      * 订单金额（元）
      */
-    private String orderAmount;
+    private Double orderAmount;
 
     /**
      * 退款金额（元）
      */
-    private String refundAmount;
+    private Double refundAmount;
 
     /**
      * 同意退款操作人角色0:"默认",1:"用户",2:"商家",3:"平台",4:"系统",5:"团长",6:"司机",7:"代理人"
@@ -124,7 +134,7 @@ public class PddRefund implements Serializable {
     /**
      * 数量
      */
-    private String goodsNumber;
+    private Integer goodsNumber;
 
     /**
      * 退货物流公司名称
@@ -140,6 +150,7 @@ public class PddRefund implements Serializable {
      * 极速退款状态，"1"：有极速退款资格，"2"：极速退款失败, "3" 表示极速退款成功，其他表示非极速退款
      */
     private Integer speedRefundStatus;
+
     /**
      * 0-未勾选 1-消费者选择的收货状态为未收到货 2-消费者选择的收货状态为已收到货
      */
@@ -165,9 +176,21 @@ public class PddRefund implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 商品id(o_goods外键)
+     */
+    private Long erpGoodsId;
 
-    private String oGoodsId;
-    private String oGoodsSkuId;
+    /**
+     * 商品skuid(o_goods_sku外键)
+     */
+    private Long erpGoodsSkuId;
 
+    /**
+     * 商户id
+     */
+    private Long merchantId;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

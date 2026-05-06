@@ -1,11 +1,11 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 仓库仓位表
@@ -17,12 +17,12 @@ public class ErpWarehousePosition implements Serializable {
      * 
      */
     @TableId(value = "id",type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 仓库id
      */
-    private Integer warehouseId;
+    private Long warehouseId;
 
     /**
      * 仓库/货架编号
@@ -37,7 +37,7 @@ public class ErpWarehousePosition implements Serializable {
     /**
      * 上级id
      */
-    private Integer parentId;
+    private Long parentId;
 
     /**
      * 层级深度1级2级3级
@@ -47,12 +47,12 @@ public class ErpWarehousePosition implements Serializable {
     /**
      * 一级类目id
      */
-    private Integer parentId1;
+    private Long parentId1;
 
     /**
      * 二级类目id
      */
-    private Integer parentId2;
+    private Long parentId2;
 
     /**
      * 地址
@@ -88,6 +88,7 @@ public class ErpWarehousePosition implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+    private Long merchantId;
 
     private static final long serialVersionUID = 1L;
 }

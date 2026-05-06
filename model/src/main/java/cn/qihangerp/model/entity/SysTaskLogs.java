@@ -1,11 +1,12 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 后台任务运行日志表
@@ -32,12 +33,12 @@ public class SysTaskLogs implements Serializable {
     /**
      * 开始运行时间
      */
-    private Date startTime;
+    private LocalDateTime startTime;
 
     /**
      * 结束时间
      */
-    private Date endTime;
+    private LocalDateTime endTime;
 
     /**
      * 状态1运行中，2已结束

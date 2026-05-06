@@ -20,7 +20,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;

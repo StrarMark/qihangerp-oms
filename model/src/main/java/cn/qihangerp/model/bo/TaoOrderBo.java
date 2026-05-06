@@ -13,4 +13,5 @@ public class TaoOrderBo implements Serializable {
     private String status;
     private String startTime;
     private String endTime;
+    private Long merchantId;
 }

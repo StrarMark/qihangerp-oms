@@ -3,7 +3,7 @@ package cn.qihangerp.module.service.impl;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.ResultVo;
-import cn.qihangerp.common.enums.EnumStockOutType;
+import cn.qihangerp.enums.EnumStockOutType;
 import cn.qihangerp.common.utils.DateUtils;
 import cn.qihangerp.mapper.ErpStockOutItemMapper;
 import cn.qihangerp.mapper.ErpStockOutMapper;

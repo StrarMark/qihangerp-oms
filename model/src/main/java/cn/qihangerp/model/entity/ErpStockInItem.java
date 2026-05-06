@@ -1,10 +1,12 @@
 package cn.qihangerp.model.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import com.baomidou.mybatisplus.annotation.TableField;
-import lombok.Data;
 
 /**
  * 入库单明细
@@ -15,7 +17,8 @@ public class ErpStockInItem implements Serializable {
     /**
      * 
      */
-    private String id;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     /**
      * 入库单id
@@ -45,7 +48,7 @@ public class ErpStockInItem implements Serializable {
     /**
      * 商品id
      */
-    private Long goodsId;
+    private String goodsId;
 
     /**
      * 商品编码
@@ -65,7 +68,7 @@ public class ErpStockInItem implements Serializable {
     /**
      * 商品规格id
      */
-    private Long skuId;
+    private String skuId;
 
     /**
      * 商品规格编码
@@ -81,6 +84,15 @@ public class ErpStockInItem implements Serializable {
      * 原始数量
      */
     private Integer quantity;
+    /**
+     * 库存模式：0-传统SKU模式，1-一物一码模式（珠宝）
+     */
+    private Integer inventoryMode;
+
+    /**
+     * 入库价格
+     */
+    private Double purPrice;
 
     /**
      * 入库数量
@@ -93,7 +105,7 @@ public class ErpStockInItem implements Serializable {
     private String remark;
 
     /**
-     * 状态（0待入库1部分入库2全部入库）
+     * 状态（0待入库2已入库）
      */
     private Integer status;
 
@@ -117,12 +129,25 @@ public class ErpStockInItem implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 仓库id
+     */
+    private Long warehouseId;
+
+    /**
+     * 仓位id
+     */
+    private Long positionId;
+
+    /**
+     * 仓位编码
+     */
+    private String positionNum;
+    private Long merchantId;
+    private Long shopId;
+
     @TableField(exist = false)
     private Integer intoQuantity;
     @TableField(exist = false)
-    private Integer positionId;
-    @TableField(exist = false)
-    private String positionNum;
-
     private static final long serialVersionUID = 1L;
 }

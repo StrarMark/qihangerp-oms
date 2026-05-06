@@ -3,7 +3,8 @@ package cn.qihangerp.open.controller;
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.entity.OGoods;
 import cn.qihangerp.model.entity.OGoodsSku;
-import cn.qihangerp.module.service.OGoodsService;
+import cn.qihangerp.model.query.GoodsQuery;
+import cn.qihangerp.model.query.GoodsSkuQuery;
 import cn.qihangerp.open.common.BaseController;
 import cn.qihangerp.open.common.annotation.BusinessType;
 import cn.qihangerp.open.common.annotation.OpenRequestLogger;
@@ -11,6 +12,7 @@ import cn.qihangerp.open.request.GoodsQueryRequest;
 import cn.qihangerp.open.request.GoodsSkuQueryRequest;
 import cn.qihangerp.open.response.GoodsResponse;
 import cn.qihangerp.open.response.GoodsSkuResponse;
+import cn.qihangerp.service.OGoodsService;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +61,11 @@ public class GoodsApiController extends BaseController {
         pageQuery.setPageSize(request.getPageSize());
         pageQuery.setIsAsc(request.getIsAsc());
         pageQuery.setOrderByColumn(request.getOrderByColumn());
-        var pageResult = oGoodsService.querySkuPageList(bo,pageQuery);
+
+        GoodsSkuQuery  boQuery = new GoodsSkuQuery();
+        BeanUtils.copyProperties(bo,boQuery);
+
+        var pageResult = oGoodsService.querySkuPageList(boQuery,pageQuery);
 
         PageResult<GoodsSkuResponse> response = new PageResult<>();
         BeanUtils.copyProperties(pageResult,response);
@@ -92,7 +98,11 @@ public class GoodsApiController extends BaseController {
         pageQuery.setPageSize(request.getPageSize());
         pageQuery.setIsAsc(request.getIsAsc());
         pageQuery.setOrderByColumn(request.getOrderByColumn());
-        PageResult<OGoods> pageResult = oGoodsService.queryPageList(bo, pageQuery);
+
+        GoodsQuery q = new GoodsQuery();
+        BeanUtils.copyProperties(request,q);
+
+        PageResult<OGoods> pageResult = oGoodsService.queryPageList(q, pageQuery);
 
         PageResult<GoodsResponse> response = new PageResult<>();
         BeanUtils.copyProperties(pageQuery,response);

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.SysThirdSystemFeedbackMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.SysThirdSystemFeedback">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="type" column="type" jdbcType="INTEGER"/>
+            <result property="orderNum" column="order_num" jdbcType="VARCHAR"/>
+            <result property="date" column="date" jdbcType="DATE"/>
+            <result property="time" column="time" jdbcType="TIMESTAMP"/>
+            <result property="params" column="params" jdbcType="VARCHAR"/>
+            <result property="result" column="result" jdbcType="VARCHAR"/>
+            <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,type,order_num,
+        date,time,params,
+        result,merchant_id
+    </sql>
+</mapper>

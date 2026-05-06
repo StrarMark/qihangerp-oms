@@ -1,6 +1,6 @@
 package cn.qihangerp.module.service.impl;
 
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.mapper.OShopMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

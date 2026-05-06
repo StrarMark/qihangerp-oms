@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.OShopDailyDetailMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.OShopDailyDetail">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="dailyId" column="daily_id" jdbcType="BIGINT"/>
+            <result property="date" column="date" jdbcType="DATE"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="platformId" column="platform_id" jdbcType="BIGINT"/>
+            <result property="regionId" column="region_id" jdbcType="BIGINT"/>
+            <result property="skuId" column="sku_id" jdbcType="BIGINT"/>
+            <result property="skuCode" column="sku_code" jdbcType="VARCHAR"/>
+            <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
+            <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
+            <result property="orderTotal" column="order_total" jdbcType="INTEGER"/>
+            <result property="orderAmount" column="order_amount" jdbcType="DECIMAL"/>
+            <result property="falseOrderTotal" column="false_order_total" jdbcType="INTEGER"/>
+            <result property="falseOrderAmount" column="false_order_amount" jdbcType="DECIMAL"/>
+            <result property="falseOrderAmount1" column="false_order_amount1" jdbcType="DECIMAL"/>
+            <result property="trueOrderTotal" column="true_order_total" jdbcType="INTEGER"/>
+            <result property="trueOrderAmount" column="true_order_amount" jdbcType="DECIMAL"/>
+            <result property="adFee" column="ad_fee" jdbcType="DECIMAL"/>
+            <result property="adClick" column="ad_click" jdbcType="INTEGER"/>
+            <result property="adClickFee" column="ad_click_fee" jdbcType="DECIMAL"/>
+            <result property="adRoi" column="ad_roi" jdbcType="DECIMAL"/>
+            <result property="unitPrice" column="unit_price" jdbcType="DECIMAL"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,daily_id,date,
+        shop_id,platform_id,region_id,
+        sku_id,sku_code,goods_name,
+        sku_name,order_total,order_amount,
+        false_order_total,false_order_amount,false_order_amount1,
+        true_order_total,true_order_amount,ad_fee,
+        ad_click,ad_click_fee,ad_roi,
+        unit_price,create_time,create_by,
+        update_time,update_by
+    </sql>
+    <select id="goodsSaleReport" resultType="cn.qihangerp.model.vo.GoodsSaleReport">
+        SELECT sdd.sku_code,sdd.goods_name,sdd.sku_name,sdd.shop_id,IFNULL(reg.exchange_rate,1) AS exchange_rate,
+               SUM(sdd.order_total) as order_total,SUM(sdd.order_amount) as order_amount,
+               IFNULL(SUM(sdd.false_order_total),0) as false_order_total,IFNULL(SUM(sdd.false_order_amount),0) as false_order_amount,
+               IFNULL(SUM(sdd.false_order_amount1),0) as false_order_amount1,
+               IFNULL(SUM(sdd.true_order_total),0) as true_order_total,IFNULL(SUM(sdd.true_order_amount),0) as true_order_amount,
+               IFNULL(SUM(sdd.ad_fee),0) AS ad_fee,IFNULL(SUM(sdd.ad_click),0) AS ad_click
+
+        FROM o_shop_daily_detail as sdd
+        left join o_shop as shop on shop.id = sdd.shop_id
+        left join o_shop_region as reg on reg.id = shop.region_id
+
+        <where>
+            <if test="startDate!=null and startDate != ''">
+             and sdd.date &gt;= #{startDate}
+            </if>
+            <if test="endDate!=null and endDate != '' ">
+             and sdd.date &lt;= #{endDate}
+            </if>
+            <if test="regionId!=null">
+                and sdd.region_id = #{regionId}
+            </if>
+            <if test="platformId!=null">
+                and sdd.platform_id = #{platformId}
+            </if>
+            <if test="manageUserId!=null">
+                and shop.manage_user_id = #{manageUserId}
+            </if>
+            <if test="shopGroupId!=null">
+                and shop.shop_group_id = #{shopGroupId}
+            </if>
+            <if test="shopId!=null">
+                and sdd.shop_id = #{shopId}
+            </if>
+            <if test="skuCode!=null and skuCode != ''">
+                and sdd.sku_code = #{skuCode}
+            </if>
+        </where>
+
+        GROUP BY sdd.shop_id, sdd.sku_code,goods_name,sdd.sku_name
+    </select>
+
+    <select id="goodsSaleRegionReport" resultType="cn.qihangerp.model.vo.GoodsSaleReport">
+        SELECT sku.id,sku.goods_name,sku.sku_code,sku.sku_name,sku.color_image,
+        IFNULL((select SUM(order_amount) from o_shop_daily_detail as d where d.sku_id=sku.id and d.region_id=#{regionId} and d.date &gt;= #{startDate} and d.date &lt;= #{endDate}),0) as order_amount,
+        IFNULL((select SUM(order_total) from o_shop_daily_detail as d where d.sku_id=sku.id and d.region_id=#{regionId} and d.date &gt;= #{startDate} and d.date &lt;= #{endDate}),0) as order_total,
+               IFNULL((select SUM(ad_fee) from o_shop_daily_detail as d where d.sku_id=sku.id and d.region_id=#{regionId} and d.date &gt;= #{startDate} and d.date &lt;= #{endDate}),0) as ad_fee,
+               IFNULL((select SUM(false_order_amount) from o_shop_daily_detail as d where d.sku_id=sku.id and d.region_id=#{regionId} and d.date &gt;= #{startDate} and d.date &lt;= #{endDate}),0) as false_order_amount,
+               IFNULL((select SUM(false_order_total) from o_shop_daily_detail as d where d.sku_id=sku.id and d.region_id=#{regionId} and d.date &gt;= #{startDate} and d.date &lt;= #{endDate}),0) as false_order_total,
+               (SELECT exchange_rate FROM o_shop_region WHERE id=#{regionId}) as exchange_rate
+        FROM `o_goods_sku` as sku
+
+    </select>
+</mapper>

@@ -4,57 +4,46 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.model.entity.OLogisticsCompany;
-import cn.qihangerp.module.service.OLogisticsCompanyService;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.model.entity.ErpLogisticsCompany;
+import cn.qihangerp.request.LogisticsCompanyRequest;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.ErpLogisticsCompanyService;
+import cn.qihangerp.service.SysThirdSystemConfigService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * 店铺Controller
- * 
- * @author qihang
- * @date 2023-12-31
- */
+import java.util.Arrays;
+
 @AllArgsConstructor
 @RestController
-@RequestMapping("/shop")
+@RequestMapping("/logistics")
 public class LogisticsController extends BaseController {
-    private final OLogisticsCompanyService logisticsCompanyService;
-    private final OShopService shopService;
-    private final OShopPlatformService platformService;
-
-
-
-    @GetMapping("/logistics_status")
-    public TableDataInfo logisticsStatusList(Integer status, Integer shopType, Integer shopId)
-    {
-        if(status==null) status=1;
-//        if(shopType==null)shopType=0;
-        return getDataTable(logisticsCompanyService.queryListByStatus(status,shopType, shopId));
-    }
+    private final ErpLogisticsCompanyService logisticsCompanyService;
+    private SysThirdSystemConfigService thirdSystemConfigService;
     /**
      * 查询店铺列表logistics
      */
-    @GetMapping("/logistics")
-    public TableDataInfo logisticsList(Integer type, Integer shopId, PageQuery pageQuery)
+    @GetMapping("/list")
+    public TableDataInfo logisticsList(LogisticsCompanyRequest request, PageQuery pageQuery)
     {
-        if(type==null)type=0;
-        PageResult<OLogisticsCompany> result = logisticsCompanyService.queryPageList(type, shopId, pageQuery);
+//        request.setType("PT");
+//        // 查询点三配置
+//        List<SysThirdSystemConfig> configs = thirdSystemConfigService.getConfigListBySystemId(EnumThirdSystemId.DIANSAN.getIndex(),0L);
+//        if(configs!=null || configs.size() > 0) {
+//            request.setType("DIANSAN");
+//        }
+        if(request.getPlatformId()==280) request.setPlatformId(200);
+        PageResult<ErpLogisticsCompany> result = logisticsCompanyService.queryPageList(request, pageQuery);
         return getDataTable(result);
     }
-
-    @PostMapping("/logistics/add")
-    public AjaxResult add(@RequestBody OLogisticsCompany company)
+    @GetMapping("/list_status")
+    public TableDataInfo logisticsStatusList(Integer status, Integer shopType, Integer shopId)
     {
-//        company.setPlatformId(0);
-        return toAjax(logisticsCompanyService.save(company));
+        var result =logisticsCompanyService.queryListByStatus(null,status,shopType, shopId,null);
+        return getDataTable(result);
     }
-
-    @PutMapping("/logistics/updateStatus")
-    public AjaxResult logisticsUpdateStatus(@RequestBody OLogisticsCompany company)
+    @PutMapping("/updateStatus")
+    public AjaxResult logisticsUpdateStatus(@RequestBody ErpLogisticsCompany company)
     {
         Integer newStatus = null;
         if(company.getStatus()==null || company.getStatus().intValue() ==0){
@@ -65,20 +54,39 @@ public class LogisticsController extends BaseController {
         return toAjax(logisticsCompanyService.updateStatus(company.getId(),newStatus));
     }
 
-    @PutMapping("/logistics/update")
-    public AjaxResult edit(@RequestBody OLogisticsCompany shop)
-    {
-        return toAjax(logisticsCompanyService.updateById(shop));
-    }
-
-    @GetMapping(value = "/logistics/{id}")
+    /**
+     * 获取物流公司详细信息
+     */
+    @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return success(logisticsCompanyService.getById(id));
     }
-    @DeleteMapping("/logistics/{id}")
-    public AjaxResult remove(@PathVariable Long id)
+
+    /**
+     * 新增物流公司
+     */
+    @PostMapping("/add")
+    public AjaxResult add(@RequestBody ErpLogisticsCompany bLogisticsCompany)
     {
-        return toAjax(logisticsCompanyService.removeById(id));
+        return toAjax(logisticsCompanyService.save(bLogisticsCompany));
+    }
+
+    /**
+     * 修改物流公司
+     */
+    @PutMapping("/update")
+    public AjaxResult edit(@RequestBody ErpLogisticsCompany bLogisticsCompany)
+    {
+        return toAjax(logisticsCompanyService.updateById(bLogisticsCompany));
+    }
+
+    /**
+     * 删除物流公司
+     */
+    @DeleteMapping("/del/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids)
+    {
+        return toAjax(logisticsCompanyService.removeBatchByIds(Arrays.stream(ids).toList()));
     }
 }

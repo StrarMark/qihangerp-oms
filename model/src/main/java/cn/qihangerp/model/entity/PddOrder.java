@@ -27,6 +27,7 @@ public class PddOrder implements Serializable {
      * 内部店铺ID
      */
     private Long shopId;
+    private Long merchantId;
 
     /**
      * 订单编号
@@ -358,6 +359,10 @@ public class PddOrder implements Serializable {
      * 系统更新时间
      */
     private Date updateTime;
+
+    private String openAddressId;
+    private String openAddressId2;
+    private String promotionDetail;
 
     @TableField(exist = false)
     private List<PddOrderItem> items;

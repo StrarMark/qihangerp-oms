@@ -14,8 +14,8 @@
     <module>core</module>
     <module>serviceImpl</module>
     <module>model</module>
-    <module>mapper</module>
-    <module>service</module>
+<!--    <module>mapper</module>-->
+<!--    <module>service</module>-->
   </modules>
 
 

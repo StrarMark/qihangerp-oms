@@ -3,9 +3,9 @@ package cn.qihangerp.oms.jd;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.api.ShopApiParams;
-import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
-import cn.qihangerp.module.service.OShopService;
+import cn.qihangerp.enums.EnumShopType;
+import cn.qihangerp.enums.HttpStatus;
+import cn.qihangerp.service.OShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -48,7 +48,7 @@ public class JdApiCommon {
 //            return ResultVo.error(HttpStatus.PARAMS_ERROR, "第三方平台配置错误，没有找到ServerUrl");
 //        }
 
-        if(shop.getSellerId() == null || shop.getSellerId() <= 0) {
+        if(StringUtils.isEmpty(shop.getSellerId())) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR,  "第三方平台配置错误，没有找到SellerUserId");
         }
 
@@ -56,7 +56,7 @@ public class JdApiCommon {
         params.setAppKey(shop.getAppKey());
         params.setAppSecret(shop.getAppSecret());
         params.setAccessToken(shop.getAccessToken());
-        params.setRedirectUri(shop.getApiRedirectUrl());
+        params.setRedirectUri(shop.getApiCallbackUrl());
         params.setServerUrl(shop.getApiRequestUrl());
         params.setSellerId(shop.getSellerId());
         if (!StringUtils.hasText(shop.getAccessToken())) {

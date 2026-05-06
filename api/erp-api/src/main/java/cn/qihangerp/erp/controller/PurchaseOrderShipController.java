@@ -5,8 +5,10 @@ import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.ErpPurchaseOrderShip;
 import cn.qihangerp.model.query.PurchaseOrderSearchBo;
-import cn.qihangerp.module.service.ErpPurchaseOrderShipService;
+
+import cn.qihangerp.model.request.SearchRequest;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.ErpPurchaseOrderShipService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,7 @@ public class PurchaseOrderShipController extends BaseController
      *
      */
     @GetMapping("/shipList")
-    public TableDataInfo shipList(PurchaseOrderSearchBo bo, PageQuery pageQuery)
+    public TableDataInfo shipList(SearchRequest bo, PageQuery pageQuery)
     {
         return getDataTable(shipService.queryPageList(bo, pageQuery));
     }

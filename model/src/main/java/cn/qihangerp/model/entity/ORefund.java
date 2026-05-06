@@ -1,6 +1,7 @@
 package cn.qihangerp.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -55,7 +56,7 @@ public class ORefund implements Serializable {
     /**
      * 源skuId
      */
-    private Long skuId;
+    private String skuId;
 
     /**
      * erp商品id
@@ -65,7 +66,7 @@ public class ORefund implements Serializable {
     /**
      * erp sku id
      */
-    private String goodsSkuId;
+    private Long goodsSkuId;
 
     private Integer hasGoodReturn;
 
@@ -92,17 +93,19 @@ public class ORefund implements Serializable {
     /**
      * 退货数量
      */
-    private Long quantity;
+    private Integer quantity;
 
     /**
      * 退货物流公司
      */
     private String returnLogisticsCompany;
+    private String sendLogisticsCompany;
 
     /**
      * 退货物流单号
      */
     private String returnLogisticsCode;
+    private String sendLogisticsCode;
 
     /**
      * 收货时间
@@ -117,7 +120,9 @@ public class ORefund implements Serializable {
 
 
     /**
-     * 状态（0待发货1待收货2已收货3已完成）
+     * 状态（10001待审核 10002等待买家退货 10003等待平台审核 10004待买家处理 10005等待卖家处理 10006等待卖家发货 14000拒绝退款 10011退款关闭 10010退款完成 10020售后成功 10021售后失败 10090退款中 10091换货成功 10092换货失败 10093维修关闭 10094维修成功 ）
+     *
+     * 新状态：售后状态 0：售后申请 1：售后关闭，2：售后处理中，3：退款中，4： 售后成功
      */
     private Integer status;
 
@@ -144,9 +149,60 @@ public class ORefund implements Serializable {
     private Integer erpPushStatus;
     private String erpPushResult;
     private Date erpPushTime;
+    /**
+     * 是否处理0未处理1已处理9无需处理
+     */
     private Integer hasProcessing;
+    private Integer processType;
     private String afterSaleId;
+    //商户id
+    private Long merchantId;
+    //平台状态
+    private String platformStatus;
+    //平台状态文本
+    private String platformStatusText;
+    //ERP状态0待处理10已退款21退货中22已退货退款31换货中32换货完成41补发中42补发完成
+    private Integer erpStatus;
 
+
+    /**
+     * 订单发货状态 0:未发货， 1:已发货（包含：已发货，已揽收）
+     */
+    private Integer shippingStatus;
+
+
+    /**
+     * 换货商品规格ID（平台）
+     */
+    private String exchangeSkuId;
+
+    /**
+     * 换货商品名称
+     */
+    private String exchangeGoodsName;
+
+    /**
+     * 换货商品价格
+     */
+    private Integer exchangeGoodsPrice;
+
+    /**
+     * 申请换货的数量
+     */
+    private Integer exchangeGoodsNum;
+
+
+    /**
+     * 换货商品库SkuId
+     */
+    private Long exchangeErpGoodsSkuId;
+
+    /**
+     * 申请换货的ERP订单id
+     */
+    private Long exchangeErpOrderId;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
 }

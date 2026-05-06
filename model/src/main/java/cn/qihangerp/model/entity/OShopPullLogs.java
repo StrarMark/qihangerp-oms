@@ -1,11 +1,11 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 店铺更新日志表
@@ -23,6 +23,7 @@ public class OShopPullLogs implements Serializable {
      * 店铺id
      */
     private Long shopId;
+    private Long merchantId;
 
     /**
      * 平台id
@@ -59,7 +60,7 @@ public class OShopPullLogs implements Serializable {
      */
     private Long duration;
 
-    public OShopPullLogs(Long shopId, Integer shopType, String pullType, String pullWay, String pullParams, String pullResult, Date pullTime, Long duration) {
+    public OShopPullLogs(Long shopId, Integer shopType, String pullType, String pullWay, String pullParams, String pullResult, Date pullTime, Long duration,Long merchantId) {
         this.shopId = shopId;
         this.shopType = shopType;
         this.pullType = pullType;
@@ -68,6 +69,7 @@ public class OShopPullLogs implements Serializable {
         this.pullResult = pullResult;
         this.pullTime = pullTime;
         this.duration = duration;
+        this.merchantId = merchantId;
     }
 
     public OShopPullLogs(){}

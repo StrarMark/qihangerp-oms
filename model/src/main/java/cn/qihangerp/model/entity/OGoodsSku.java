@@ -1,15 +1,14 @@
 package cn.qihangerp.model.entity;
 
+import cn.qihangerp.utils.poi.Excel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 
 /**
  * OMS商品SKU表
@@ -21,13 +20,20 @@ public class OGoodsSku implements Serializable {
     /**
      * 主键id
      */
+    @Excel(name = "SkuId",sort = 1)
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private String id;
+
+    /**
+     * 计价方式：0一口价；1金包银+工费；
+     */
+    private Integer priceType;
 
     /**
      * 外键（o_goods）
      */
-    private Long goodsId;
+    @Excel(name = "商品Id",sort = 2)
+    private String goodsId;
 
     /**
      * 外部erp系统商品id
@@ -48,6 +54,11 @@ public class OGoodsSku implements Serializable {
      * 商品编码
      */
     private String goodsNum;
+    private String unit;
+    /**
+     * 库存模式：0-传统SKU模式，1-一物一码模式（珠宝）
+     */
+    private Integer inventoryMode;
 
     /**
      * 规格名
@@ -58,11 +69,6 @@ public class OGoodsSku implements Serializable {
      * 规格编码
      */
     private String skuCode;
-
-    /**
-     * 颜色label
-     */
-    private String colorLabel;
 
     /**
      * 颜色id
@@ -80,11 +86,6 @@ public class OGoodsSku implements Serializable {
     private String colorImage;
 
     /**
-     * 尺码label
-     */
-    private String sizeLabel;
-
-    /**
      * 尺码id
      */
     private Long sizeId;
@@ -93,11 +94,6 @@ public class OGoodsSku implements Serializable {
      * 尺码值(材质)
      */
     private String sizeValue;
-
-    /**
-     * 款式label
-     */
-    private String styleLabel;
 
     /**
      * 款式id
@@ -117,13 +113,11 @@ public class OGoodsSku implements Serializable {
     /**
      * 预计采购价格
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
     private BigDecimal purPrice;
 
     /**
      * 建议零售价
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
     private BigDecimal retailPrice;
 
     /**
@@ -152,20 +146,59 @@ public class OGoodsSku implements Serializable {
     private Integer highQty;
 
     /**
-     * erp商品体积
+     * 发货类型10自营发货20供应商发货
+     */
+    private Integer shipType;
+
+    /**
+     * 商品体积
      */
     private String volume;
 
     /**
-     * 创建时间
+     * 衣长
      */
-    private Date createTime;
+    private Double length;
 
     /**
-     * 更新时间
+     * 高度
      */
-    private Date updateTime;
+    private Double height;
 
+    /**
+     * 宽度
+     */
+    private Double width;
+
+    /**
+     * 重量
+     */
+    private Double weight;
+    /**
+     * price_type=1启用，金重（g)
+     */
+    private Double weight1;
+    /**
+     * price_type=1启用，银重（g)
+     */
+    private Double weight2;
+    /**
+     * price_type=1启用，工时
+     */
+    private Double weight3;
+
+    /**
+     * 商户ID
+     */
+    private Long merchantId;
+    private Long shopId;
+    private String sellerId;//卖家ID(外部系统使用)
+    private String sellerBrandId;//卖家品牌ID(外部系统使用)
+
+    @TableField(exist=false)
+    private Integer quantity=1;
+    @TableField(exist=false)
+    private Integer isGift=0;
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

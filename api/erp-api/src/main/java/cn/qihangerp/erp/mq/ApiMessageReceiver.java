@@ -1,9 +1,8 @@
 package cn.qihangerp.erp.mq;
 
-import cn.qihangerp.module.service.ApiMessageService;
+import cn.qihangerp.utils.SpringUtils;
 import com.alibaba.fastjson2.JSON;
 import cn.qihangerp.common.mq.MqMessage;
-import cn.qihangerp.common.utils.SpringUtils;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +37,7 @@ public class ApiMessageReceiver implements MessageListener {
         MqMessage vo = JSON.parseObject(messageContent, MqMessage.class);
 
         log.info("收到通知消息：{}", JSONObject.toJSONString(vo));
-        cn.qihangerp.module.service.ApiMessageService apiMessageService = SpringUtils.getBean(ApiMessageService.class);
+        ApiMessageService apiMessageService = SpringUtils.getBean(ApiMessageService.class);
         apiMessageService.messageHandle(vo);
 //        System.out.println(vo.getMqType());
 

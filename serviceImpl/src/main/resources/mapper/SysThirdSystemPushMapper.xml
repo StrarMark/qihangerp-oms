@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.SysThirdSystemPushMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.SysThirdSystemPush">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="pushType" column="push_type" jdbcType="INTEGER"/>
+            <result property="orderId" column="order_id" jdbcType="BIGINT"/>
+            <result property="pushCount" column="push_count" jdbcType="INTEGER"/>
+            <result property="pushDate" column="push_date" jdbcType="DATE"/>
+            <result property="pushTime" column="push_time" jdbcType="TIMESTAMP"/>
+            <result property="pushParams" column="push_params" jdbcType="VARCHAR"/>
+            <result property="pushResult" column="push_result" jdbcType="VARCHAR"/>
+            <result property="targetId" column="target_id" jdbcType="BIGINT"/>
+            <result property="targetName" column="target_name" jdbcType="VARCHAR"/>
+            <result property="targetType" column="target_type" jdbcType="INTEGER"/>
+            <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,push_type,order_id,
+        push_count,push_date,push_time,
+        push_params,push_result,target_id,
+        target_name,target_type,merchant_id
+    </sql>
+</mapper>

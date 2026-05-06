@@ -1,30 +1,34 @@
 package cn.qihangerp.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 采购订单明细
- * @TableName erp_purchase_order_item
+ * @TableName scm_purchase_order_item
  */
 @TableName(value ="erp_purchase_order_item")
 @Data
-public class ErpPurchaseOrderItem {
+public class ErpPurchaseOrderItem implements Serializable {
     /**
      * 
      */
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     /**
      * 订单id
      */
     private Long orderId;
+
+    private Long merchantId;
+    private Long shopId;
 
     /**
      * 订单编号
@@ -44,7 +48,7 @@ public class ErpPurchaseOrderItem {
     /**
      * 订单日期
      */
-    private Date orderDate;
+    private String orderDate;
 
     /**
      * 备注
@@ -135,4 +139,11 @@ public class ErpPurchaseOrderItem {
      * 状态（同billStatus）0待审核1正常2已作废3已入库
      */
     private Integer status;
+    /**
+     * 库存模式：0-传统SKU模式，1-一物一码模式（珠宝）
+     */
+    private Integer inventoryMode;
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

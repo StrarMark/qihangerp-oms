@@ -21,7 +21,8 @@ public class ResultVo<T> {
 
     public ResultVo() {
     }
-//
+
+
 //    public ResultVo(ResultVoEnum result) {
 //        this.code = result.getIndex();
 //        this.msg = result.getName();
@@ -75,7 +76,13 @@ public class ResultVo<T> {
         result.setMsg("SUCCESS");
         return result;
     }
-
+    public static <T> ResultVo<T> error(String msg )
+    {
+        ResultVo<T> result = new ResultVo<>();
+        result.setCode(ResultVoEnum.SystemException.getIndex());
+        result.setMsg(msg);
+        return result;
+    }
     public static <T> ResultVo<T> error(ResultVoEnum resultVoEnum )
     {
         ResultVo<T> result = new ResultVo<>();
@@ -91,13 +98,15 @@ public class ResultVo<T> {
         result.setMsg(msg);
         return result;
     }
-    public static <T> ResultVo<T> error( String msg)
+    public static <T> ResultVo<T> error(ResultVoEnum resultVoEnum , String msg,T data)
     {
         ResultVo<T> result = new ResultVo<>();
-        result.setCode(ResultVoEnum.Fail.getIndex());
+        result.setCode(resultVoEnum.getIndex());
         result.setMsg(msg);
+        result.setData(data);
         return result;
     }
+
     public static <T> ResultVo<T> error(int code, String msg)
     {
         ResultVo<T> result = new ResultVo<>();

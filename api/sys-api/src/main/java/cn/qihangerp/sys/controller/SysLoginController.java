@@ -3,12 +3,13 @@ package cn.qihangerp.sys.controller;
 import cn.qihangerp.model.entity.SysUser;
 import cn.qihangerp.model.LoginBody;
 import cn.qihangerp.model.SysMenu;
-import cn.qihangerp.module.service.ISysMenuService;
-import cn.qihangerp.module.service.SysPermissionService;
+
 import cn.qihangerp.security.common.Constants;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.security.common.SecurityUtils;
 import cn.qihangerp.security.service.SysLoginService;
+import cn.qihangerp.service.ISysMenuService;
+import cn.qihangerp.service.SysPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

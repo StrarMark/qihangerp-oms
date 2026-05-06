@@ -2,13 +2,13 @@ package cn.qihangerp.oms.wei;
 
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.api.ShopApiParams;
-import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.EnumShopType;
+import cn.qihangerp.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShop;
-import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.wei.WeiTokenApiHelper;
 import cn.qihangerp.open.wei.response.WeiTokenResponse;
+import cn.qihangerp.service.OShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

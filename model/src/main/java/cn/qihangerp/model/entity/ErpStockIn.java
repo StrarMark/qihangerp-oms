@@ -1,13 +1,13 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 入库单
@@ -27,7 +27,7 @@ public class ErpStockIn implements Serializable {
     private String stockInNum;
 
     /**
-     * 来源类型（1采购订单2退货订单）
+     * 入库类型（1采购入库2退货入库）
      */
     private Integer stockInType;
 
@@ -100,6 +100,19 @@ public class ErpStockIn implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+    private Long merchantId;
+    private Long shopId;
+    private Long warehouseId;
+    private String warehouseType;
+    private String warehouseName;
+    private String warehouseNo;
+    private String senderName;
+    private String senderMobile;
+    private String senderAddress;
+    private String entryOrderCode;//jd采购入库编码
+    private String pushResult;//推送结果
+    private Date pushTime;
+    private Integer pushStatus;
 
     @TableField(exist = false)
     private List<ErpStockInItem> itemList;

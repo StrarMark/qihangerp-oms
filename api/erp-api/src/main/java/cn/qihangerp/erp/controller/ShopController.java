@@ -2,11 +2,9 @@ package cn.qihangerp.erp.controller;
 
 import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.model.entity.OShopPlatform;
-import cn.qihangerp.module.service.OLogisticsCompanyService;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.erp.request.ShopBo;
-import com.alibaba.fastjson2.JSONArray;
+import cn.qihangerp.service.OShopPlatformService;
+import cn.qihangerp.service.OShopService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
@@ -29,7 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/shop")
 public class ShopController extends BaseController {
-    private final OLogisticsCompanyService logisticsCompanyService;
+
     private final OShopService shopService;
     private final OShopPlatformService platformService;
 
@@ -83,8 +81,8 @@ public class ShopController extends BaseController {
     public AjaxResult add(@RequestBody OShop shop)
     {
         if(shop.getType()==null) return AjaxResult.error("请选择店铺平台");
-        shop.setModifyOn(System.currentTimeMillis()/1000);
-        shop.setCreateOn(System.currentTimeMillis()/1000);
+//        shop.setModifyOn(System.currentTimeMillis()/1000);
+//        shop.setCreateOn(System.currentTimeMillis()/1000);
 //        shop.setCreateTime(new Date());
         return toAjax(shopService.save(shop));
     }

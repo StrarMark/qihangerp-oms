@@ -16,4 +16,5 @@ public class JdGoodsBo implements Serializable {
     private Integer shopId;
     private Integer hasLink;//是否关联
     private Integer saleState;//状态（京东自营用）
+    private Long merchantId;
 }

@@ -4,20 +4,19 @@ import cn.qihangerp.model.vo.OrderDiscountVo;
 import cn.qihangerp.model.vo.OrderItemListVo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Data;
-
 /**
- * OMS订单表
+ * 订单表
  * @TableName o_order
  */
-@TableName(value ="o_order")
 @Data
 public class OOrder implements Serializable {
     /**
@@ -30,6 +29,7 @@ public class OOrder implements Serializable {
      * 订单编号（第三方平台订单号）
      */
     private String orderNum;
+    private int orderMode;
 
     /**
      * 店铺类型
@@ -40,6 +40,7 @@ public class OOrder implements Serializable {
      * 店铺ID
      */
     private Long shopId;
+    private Long merchantId;
 
     /**
      * 订单备注
@@ -61,39 +62,48 @@ public class OOrder implements Serializable {
      */
     private String tag;
 
+    /**
+     * 售后状态 1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功 
+     */
+//    private Integer refundStatus;
+
+    /**
+     * 订单状态0：新订单，1：待发货，2：已发货，3：已完成，11已取消；12退款中；13已关闭；21待付款；22锁定，29删除，31售后中，101部分发货
+     */
+    private Integer orderStatus;
+
+    /**
+     * 平台状态编码
+     */
+    private String platformStatusCode;
+
+    /**
+     * 平台状态描述
+     */
+    private String platformStatusDesc;
 
     /**
      * 订单商品金额
      */
     private Double goodsAmount;
-
-    /**
-     * 订单运费
-     */
     private Double postFee;
-
-    /**
-     * 商家优惠金额，单位：元
-     */
-    private Double sellerDiscount;
-
-    /**
-     * 平台优惠金额，单位：元
-     */
-    private Double platformDiscount;
-    private Double payDiscount;
-    private Double changeAmount;
 
     /**
      * 订单实际金额
      */
     private Double amount;
-
-    /**
-     * 实付金额
-     */
     private Double payment;
+    /**
+     * 订单改价折扣金额，单位元
+     */
+    private Double changeAmount;
+    //平台优惠金额，单位：元
+    private Double platformDiscount;
+    //商家优惠金额，单位：元
+    private Double sellerDiscount;
+    private Double merchantAmount;//商家实收
 
+    private String openAddressId;
     /**
      * 收件人姓名
      */
@@ -127,41 +137,73 @@ public class OOrder implements Serializable {
     /**
      * 订单时间
      */
-    private LocalDateTime orderCreateTime;
-    private LocalDateTime orderUpdateTime;
-    private LocalDateTime orderFinishTime;
-    private String orderStatus;
-    private String orderStatusText;
+    private LocalDateTime orderTime;
 
     /**
-     * 发货方 0 自己发货1联合发货2供应商发货
+     * 订单完成时间（时间戳毫秒）
      */
-    private Long shipper;
+    private Long orderFinishTime;
 
     /**
-     * 发货方式2供应商代发0仓库发货1联合发货
+     * 订单更新时间
      */
-    private Integer shipType;
+    private String orderModifiedTime;
+
 
     /**
-     * 发货状态 0 待发货 1 已分配供应商发货 2全部发货 11已取消无需发货
+     * 发货类型（0仓库发货；1供应商代发）
      */
+//    private Integer shipType;
     private Integer shipStatus;
-
-    /**
-     * 发货快递公司
-     */
-    private String shipCompany;
-
-    /**
-     * 发货物流公司
-     */
-    private String shipCode;
+    private Integer distStatus;
 
     /**
      * 发货时间
      */
-    private Date shipTime;
+//    private Date shippingTime;
+
+    /**
+     * 快递单号
+     */
+//    private String shippingNumber;
+
+    /**
+     * 物流公司
+     */
+//    private String shippingCompany;
+
+    /**
+     * 发货人
+     */
+//    private String shippingMan;
+
+    /**
+     * 发货费用
+     */
+//    private BigDecimal shippingCost;
+    private Integer erpPushStatus;
+    private String erpPushResult;
+    private Date erpPushTime;
+
+    /**
+     * 长
+     */
+//    private Double length;
+
+    /**
+     * 宽
+     */
+//    private Double width;
+
+    /**
+     * 高
+     */
+//    private Double height;
+
+    /**
+     * 重量
+     */
+//    private Double weight;
 
     /**
      * 创建时间
@@ -174,25 +216,63 @@ public class OOrder implements Serializable {
     private String createBy;
 
     /**
+     * 销售员ID
+     */
+    private String salesmanId;
+
+    /**
+     * 销售员名称
+     */
+    private String salesmanName;
+
+    /**
      * 更新时间
      */
     private Date updateTime;
-
-    private String cancelReason;
 
     /**
      * 更新人
      */
     private String updateBy;
+    private String waybillCode;
+    private String waybillCompany;
+
+    private Integer hasGift;//是否有礼品0没有，大于0表示有，-1表示全是礼品
+
+    private String cancelReason;
+    /**
+     * 取号状态：0未取号 1已取号 2已打印 3已发货 10手动发货
+     */
+    private Integer waybillStatus;
+    private Integer shareStatus; // 分账状态：0未分账，1已分账
+    private Date shareTime; // 分账时间
+
+    private Integer settlementStatus; // 结算状态：0-未结算，1-已结算
+    private Long settlementId; // 结算单ID
+    private Date settlementTime; // 结算时间
+
     @TableField(exist = false)
     private List<OOrderItem> itemList;
-
+    /**
+     * 订单items（详情）
+     */
     @TableField(exist = false)
     private List<OrderItemListVo> itemVoList;
 
+    /**
+     * 订单优惠（详情）
+     */
     @TableField(exist = false)
     private List<OrderDiscountVo> discounts;
 
+    /**
+     * 订单发货记录（详情）
+     */
     @TableField(exist = false)
+    private List<OOrderStocking> logistics;
+//    private List<OShipment> logistics;
+
+
     private static final long serialVersionUID = 1L;
+
 }

@@ -1,13 +1,13 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 出库单
@@ -24,7 +24,7 @@ public class ErpStockOut implements Serializable {
     /**
      * 出库单编号
      */
-    private String stockOutNum;
+    private String outNum;
 
     /**
      * 来源单据号
@@ -37,9 +37,11 @@ public class ErpStockOut implements Serializable {
     private Long sourceId;
 
     /**
-     * 出库类型1订单拣货出库2采购退货出库3盘点出库4报损出库
+     * 出库类型1订单发货出库2采购退货出库3盘点出库4报损出库
      */
-    private Integer stockOutType;
+    private Integer type;
+    private Long shopId;
+    private Long shopGroupId;
 
     /**
      * 商品数
@@ -94,7 +96,7 @@ public class ErpStockOut implements Serializable {
     /**
      * 出库操作人userid
      */
-    private Long operatorId;
+    private String operatorId;
 
     /**
      * 出库操作人
@@ -120,7 +122,15 @@ public class ErpStockOut implements Serializable {
      * 更新人
      */
     private String updateBy;
+    private Long merchantId;
+    private Long warehouseId;
+    private String warehouseName;
+
+
+
     @TableField(exist = false)
     private List<ErpStockOutItem> itemList;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

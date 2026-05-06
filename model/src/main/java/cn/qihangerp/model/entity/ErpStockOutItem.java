@@ -1,13 +1,12 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 出库单明细
@@ -24,7 +23,7 @@ public class ErpStockOutItem implements Serializable {
     /**
      * 出库类型1订单拣货出库2采购退货出库3盘点出库4报损出库
      */
-    private Integer stockOutType;
+    private Integer type;
 
     /**
      * 出库单id（外键）
@@ -37,6 +36,11 @@ public class ErpStockOutItem implements Serializable {
     private Long sourceOrderId;
 
     /**
+     * 库存模式：0-传统SKU模式，1-一物一码模式（珠宝）
+     */
+    private Integer inventoryMode;
+
+    /**
      * 来源订单itemId出库对应的itemId，如：order_item表id、invoice_info表id
      */
     private Long sourceOrderItemId;
@@ -45,21 +49,6 @@ public class ErpStockOutItem implements Serializable {
      * 来源订单号
      */
     private String sourceOrderNum;
-
-    /**
-     * 商品id
-     */
-    private Long goodsId;
-
-    /**
-     * 商品规格id
-     */
-    private Long specId;
-
-    /**
-     * 规格编码
-     */
-    private String specNum;
 
     /**
      * 总数量
@@ -87,19 +76,87 @@ public class ErpStockOutItem implements Serializable {
     private Integer status;
 
     /**
-     * 
+     * 库存批次id
+     */
+    private Long batchId;
+
+    /**
+     * 仓库id
+     */
+    private Long warehouseId;
+
+    /**
+     * 仓位id
+     */
+    private Long positionId;
+
+    /**
+     * 仓位
+     */
+    private String positionNum;
+
+    /**
+     * 商品id
+     */
+    private Long goodsId;
+
+    /**
+     * 商品编码
+     */
+    private String goodsNum;
+
+    /**
+     * 商品名称
+     */
+    private String goodsName;
+
+    /**
+     * 商品图片
+     */
+    private String goodsImage;
+
+    /**
+     * 商品规格id
+     */
+    private Long skuId;
+
+    /**
+     * 商品规格编码
+     */
+    private String skuCode;
+
+    /**
+     * 颜色
+     */
+    private String skuName;
+
+    /**
+     * 创建时间
      */
     private Date createTime;
 
     /**
-     * 
+     * 创建人
+     */
+    private String createBy;
+
+    /**
+     * 更新时间
      */
     private Date updateTime;
 
     /**
-     * 库存详情
+     * 更新人
      */
+    private String updateBy;
+
+    /**
+     * 入库价格
+     */
+    private Double purPrice;
+    private Long shopId;
+    private Long shopGroupId;
+    private Long merchantId;
     @TableField(exist = false)
-    List<OGoodsInventoryBatch> inventoryBatchList;
     private static final long serialVersionUID = 1L;
 }

@@ -4,9 +4,10 @@ package cn.qihangerp.erp.controller;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.model.entity.OAfterSale;
-import cn.qihangerp.module.service.OAfterSaleService;
+
+import cn.qihangerp.model.entity.ORefundAfterSale;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.ORefundAfterSaleService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/afterSale")
 public class AfterSaleProcessingController extends BaseController {
-    private final OAfterSaleService afterSaleService;
+    private final ORefundAfterSaleService afterSaleService;
     /**
      * 查询列表
      */
     @GetMapping("/list")
-    public TableDataInfo ship_again_list(OAfterSale bo, PageQuery pageQuery)
+    public TableDataInfo ship_again_list(ORefundAfterSale bo, PageQuery pageQuery)
     {
         //private final OAfterSaleMapper mapper;
         //    @Override
@@ -34,7 +35,7 @@ public class AfterSaleProcessingController extends BaseController {
         //        return PageResult.build(pages);
         //    }
 //        bo.setType(80);
-        PageResult<OAfterSale> result = afterSaleService.queryPageList(bo, pageQuery);
+        PageResult<ORefundAfterSale> result = afterSaleService.queryPageList(bo, pageQuery);
         return getDataTable(result);
     }
 

@@ -1,20 +1,22 @@
 package cn.qihangerp.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * 采购订单物流表
- * @TableName erp_purchase_order_ship
+ * @TableName scm_purchase_order_ship
  */
 @TableName(value ="erp_purchase_order_ship")
 @Data
-public class ErpPurchaseOrderShip {
+public class ErpPurchaseOrderShip implements Serializable {
     /**
      * 采购单ID（主键）
      */
@@ -104,7 +106,7 @@ public class ErpPurchaseOrderShip {
     /**
      * 采购订单日期
      */
-    private Date orderDate;
+    private String orderDate;
 
     /**
      * 采购订单编号
@@ -125,4 +127,14 @@ public class ErpPurchaseOrderShip {
      * 采购订单总件数
      */
     private Integer orderSpecUnitTotal;
+    private Long merchantId;
+    private Long shopId;
+
+    private Long warehouseId;
+    private String warehouseName;
+    private String warehouseType;
+
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

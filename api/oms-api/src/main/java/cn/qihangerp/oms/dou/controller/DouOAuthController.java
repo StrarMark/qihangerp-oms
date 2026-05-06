@@ -2,15 +2,15 @@ package cn.qihangerp.oms.dou.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.ResultVoEnum;
-import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.EnumShopType;
+import cn.qihangerp.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPlatform;
 import cn.qihangerp.model.request.GoodsPullRequest;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouTokenApiHelper;
 import cn.qihangerp.open.dou.model.Token;
+import cn.qihangerp.service.OShopPlatformService;
+import cn.qihangerp.service.OShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ public class DouOAuthController {
         if (shop.getType() != EnumShopType.DOU.getIndex()) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "店铺不是抖店店铺");
         }
-        if (shop.getSellerId() == null || shop.getSellerId()<=0) {
+        if (StringUtils.isEmpty(shop.getSellerId())) {
             return AjaxResult.error("请设置抖店平台店铺ID（shopId）");
         }
         String appKey = shop.getAppKey();
@@ -52,7 +52,7 @@ public class DouOAuthController {
         if (!StringUtils.hasText(appSecret)) {
             return AjaxResult.error(HttpStatus.PARAMS_ERROR, "店铺配置错误，没有找到AppSecret");
         }
-        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret, shop.getSellerId());
+        ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret, shop.getId());
         if(token.getCode()!=0) {
             return AjaxResult.error(ResultVoEnum.API_FAIL.getIndex(), token.getMsg());
         }else{

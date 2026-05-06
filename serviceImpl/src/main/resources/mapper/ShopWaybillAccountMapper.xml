@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ShopWaybillAccountMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ShopWaybillAccount">
+            <id property="id" column="id" />
+            <result property="type" column="type" />
+            <result property="key1" column="key1" />
+            <result property="code" column="code" />
+            <result property="name" column="name" />
+            <result property="waybillPlatformType" column="waybill_platform_type" />
+            <result property="brandCode" column="brand_code" />
+            <result property="refLogisticsCode" column="ref_logistics_code" />
+            <result property="refLogisticsId" column="ref_logistics_id" />
+            <result property="refLogisticsName" column="ref_logistics_name" />
+            <result property="refLogisticsType" column="ref_logistics_type" />
+            <result property="settleAccount" column="settle_account" />
+            <result property="sourceKey" column="source_key" />
+            <result property="province" column="province" />
+            <result property="city" column="city" />
+            <result property="detail" column="detail" />
+            <result property="district" column="district" />
+            <result property="num" column="num" />
+            <result property="addressAddress" column="address_address" />
+            <result property="cityId" column="city_id" />
+            <result property="cityName" column="city_name" />
+            <result property="countryId" column="country_id" />
+            <result property="countryName" column="country_name" />
+            <result property="countrysideId" column="countryside_id" />
+            <result property="countrysideName" column="countryside_name" />
+            <result property="provinceId" column="province_id" />
+            <result property="provinceName" column="province_name" />
+            <result property="amount" column="amount" />
+            <result property="branchCode" column="branch_code" />
+            <result property="branchName" column="branch_name" />
+            <result property="operationType" column="operation_type" />
+            <result property="providerCode" column="provider_code" />
+            <result property="providerId" column="provider_id" />
+            <result property="providerName" column="provider_name" />
+            <result property="providerType" column="provider_type" />
+            <result property="supportCod" column="support_cod" />
+            <result property="town" column="town" />
+            <result property="deliverName" column="deliver_name" />
+            <result property="deliverMobile" column="deliver_mobile" />
+            <result property="deliverPhone" column="deliver_phone" />
+            <result property="templateId" column="template_id" />
+            <result property="templateUrl" column="template_url" />
+            <result property="shopId" column="shop_id" />
+            <result property="shopType" column="shop_type" />
+            <result property="merchantId" column="merchant_id" />
+            <result property="outerLogisticsId" column="outer_logistics_id" />
+            <result property="supportOffline" column="support_offline" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,type,key1,code,name,waybill_platform_type,brand_code,outer_logistics_id,
+        ref_logistics_code,ref_logistics_id,ref_logistics_name,ref_logistics_type,settle_account,
+        source_key,province,city,detail,district,support_offline,
+        num,address_address,city_id,city_name,country_id,
+        country_name,countryside_id,countryside_name,province_id,province_name,
+        amount,branch_code,branch_name,operation_type,provider_code,
+        provider_id,provider_name,provider_type,support_cod,town,deliver_name,deliver_mobile,deliver_phone,merchant_id,shop_type,shop_id,template_url,template_id
+    </sql>
+</mapper>

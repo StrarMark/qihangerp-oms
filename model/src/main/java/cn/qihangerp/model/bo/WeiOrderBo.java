@@ -7,8 +7,9 @@ import java.io.Serializable;
 @Data
 public class WeiOrderBo implements Serializable {
     private String orderId;
-    private Long shopId;
+    private Integer shopId;
+    private Integer status;
     private String startTime;
     private String endTime;
-    private Integer status;
+    private Long merchantId;
 }

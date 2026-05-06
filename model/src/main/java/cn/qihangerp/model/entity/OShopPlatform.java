@@ -1,10 +1,10 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 店铺平台配置表
@@ -49,7 +49,7 @@ public class OShopPlatform implements Serializable {
     private String serverUrl;
 
     private Integer sort;
-
+    private Long regionId;
     /**
      * 状态（0启用1关闭）
      */

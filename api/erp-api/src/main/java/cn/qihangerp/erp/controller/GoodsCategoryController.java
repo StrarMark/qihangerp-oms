@@ -1,16 +1,14 @@
 package cn.qihangerp.erp.controller;
 
-
-
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.OGoodsCategory;
 import cn.qihangerp.model.entity.OGoodsCategoryAttribute;
 import cn.qihangerp.model.entity.OGoodsCategoryAttributeValue;
-import cn.qihangerp.module.service.OGoodsCategoryAttributeService;
-import cn.qihangerp.module.service.OGoodsCategoryAttributeValueService;
-import cn.qihangerp.module.service.OGoodsCategoryService;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.OGoodsCategoryAttributeService;
+import cn.qihangerp.service.OGoodsCategoryAttributeValueService;
+import cn.qihangerp.service.OGoodsCategoryService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

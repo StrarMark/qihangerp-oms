@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.OShopDailyMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.OShopDaily">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="date" column="date" jdbcType="DATE"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="platformId" column="platform_id" jdbcType="BIGINT"/>
+            <result property="regionId" column="region_id" jdbcType="BIGINT"/>
+            <result property="orderTotal" column="order_total" jdbcType="INTEGER"/>
+            <result property="orderAmount" column="order_amount" jdbcType="DECIMAL"/>
+            <result property="falseOrderTotal" column="false_order_total" jdbcType="INTEGER"/>
+            <result property="falseOrderAmount" column="false_order_amount" jdbcType="DECIMAL"/>
+            <result property="falseOrderAmount1" column="false_order_amount1" jdbcType="DECIMAL"/>
+            <result property="trueOrderTotal" column="true_order_total" jdbcType="INTEGER"/>
+            <result property="trueOrderAmount" column="true_order_amount" jdbcType="DECIMAL"/>
+            <result property="adFee" column="ad_fee" jdbcType="DECIMAL"/>
+            <result property="adClick" column="ad_click" jdbcType="INTEGER"/>
+            <result property="adClickFee" column="ad_click_fee" jdbcType="DECIMAL"/>
+            <result property="adRoi" column="ad_roi" jdbcType="DECIMAL"/>
+            <result property="unitPrice" column="unit_price" jdbcType="DECIMAL"/>
+            <result property="withdrawalAmount" column="withdrawal_amount" jdbcType="DECIMAL"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,date,shop_id,
+        platform_id,region_id,order_total,
+        order_amount,false_order_total,false_order_amount,
+        false_order_amount1,true_order_total,true_order_amount,
+        ad_fee,ad_click,ad_click_fee,
+        ad_roi,unit_price,withdrawal_amount,
+        remark,create_time,create_by,
+        update_time,update_by
+    </sql>
+
+    <select id="shopDailyReport" resultType="cn.qihangerp.model.entity.OShopDaily">
+        SELECT IFNULL(reg.exchange_rate,1) AS exchange_rate,sdd.*
+        FROM o_shop_daily as sdd
+        left join o_shop as shop on shop.id = sdd.shop_id
+        left join o_shop_region as reg on reg.id = shop.region_id
+
+        <where>
+            <if test="startDate!=null and startDate != ''">
+                and sdd.date &gt;= #{startDate}
+            </if>
+            <if test="endDate!=null and endDate != '' ">
+                and sdd.date &lt;= #{endDate}
+            </if>
+            <if test="platformId!=null">
+                and sdd.platform_id = #{platformId}
+            </if>
+            <if test="regionId!=null">
+                and sdd.region_id = #{regionId}
+            </if>
+            <if test="shopId!=null">
+                and sdd.shop_id = #{shopId}
+            </if>
+            <if test="manageUserId!=null">
+                and shop.manage_user_id = #{manageUserId}
+            </if>
+            <if test="shopGroupId!=null">
+                and shop.shop_group_id = #{shopGroupId}
+            </if>
+
+        </where>
+
+    </select>
+    <select id="shopRegionReport" resultType="cn.qihangerp.model.entity.OShopDaily">
+        SELECT sdd.region_id,IFNULL(reg.exchange_rate,1) AS exchange_rate,shop.manage_user_id,shop.shop_group_id,
+
+               sum(order_total) as order_total,sum(order_amount) as order_amount,
+               sum(false_order_total) as false_order_total,sum(false_order_amount) as false_order_amount,
+               sum(true_order_total) as true_order_total,sum(true_order_amount) as true_order_amount,
+               sum(ad_fee) as ad_fee,sum(ad_click) as ad_click,sum(ad_click_fee) as ad_click_fee,sum(ad_roi) as ad_roi,
+               sum(unit_price) as unit_price,sum(withdrawal_amount) as withdrawal_amount
+
+        FROM o_shop_daily as sdd
+                 left join o_shop as shop on shop.id = sdd.shop_id
+                 left join o_shop_region as reg on reg.id = shop.region_id
+
+        <where>
+            <if test="startDate!=null and startDate != ''">
+                and sdd.date &gt;= #{startDate}
+            </if>
+            <if test="endDate!=null and endDate != '' ">
+                and sdd.date &lt;= #{endDate}
+            </if>
+            <if test="regionId!=null">
+                and sdd.region_id = #{regionId}
+            </if>
+            <if test="shopGroupId!=null">
+                and shop.shop_group_id = #{shopGroupId}
+            </if>
+
+        </where>
+        GROUP BY sdd.region_id,reg.exchange_rate,shop.manage_user_id,shop.shop_group_id
+    </select>
+</mapper>

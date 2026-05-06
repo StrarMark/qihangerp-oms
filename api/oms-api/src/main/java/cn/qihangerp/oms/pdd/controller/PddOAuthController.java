@@ -1,16 +1,16 @@
 package cn.qihangerp.oms.pdd.controller;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.common.enums.EnumShopType;
+import cn.qihangerp.enums.EnumShopType;
 import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.model.entity.OShopPlatform;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.oms.pdd.PddTokenCreateBo;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.pdd.PddTokenApiHelper;
 
 import cn.qihangerp.open.pdd.model.Token;
+import cn.qihangerp.service.OShopPlatformService;
+import cn.qihangerp.service.OShopService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

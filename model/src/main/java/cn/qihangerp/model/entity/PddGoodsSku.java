@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * pdd商品SKU表
@@ -42,7 +43,7 @@ public class PddGoodsSku implements Serializable {
     private String thumbUrl;
 
     /**
-     * 商家外部编码（goods）
+     * 商家外部编码
      */
     private String outerGoodsId;
 
@@ -54,7 +55,7 @@ public class PddGoodsSku implements Serializable {
     /**
      * sku库存
      */
-    private Long skuQuantity;
+    private Integer skuQuantity;
 
     /**
      * 规格名称
@@ -62,9 +63,9 @@ public class PddGoodsSku implements Serializable {
     private String spec;
 
     /**
-     * 价格，单位分
+     * 
      */
-    private Long price;
+    private String specDetails;
 
     /**
      * sku是否在架上，0-下架中，1-架上
@@ -82,19 +83,32 @@ public class PddGoodsSku implements Serializable {
     private Long erpGoodsSkuId;
 
     /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 修改时间
+     */
+    private LocalDateTime updateTime;
+
+    /**
      * 店铺id
      */
     private Long shopId;
 
     /**
-     * 创建时间
+     * 商户ID
      */
-    private Date createTime;
-
+    private Long merchantId;
     /**
-     * 修改时间
+     * 拼团价格（元）
      */
-    private Date updateTime;
+    private Double groupPrice;
+    /**
+     * 单买价格（元）
+     */
+    private Double singlePrice;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -4,12 +4,12 @@ package cn.qihangerp.model.vo;
 import lombok.Data;
 
 import java.math.BigDecimal;
-
 @Data
 public class GoodsSpecListVo {
 
-    private Long skuId;
-//    private Long goodsId;
+    private String skuId;
+    private Integer priceType;
+    private Long goodsId;
 
     /** 商品名称 */
     private String goodsName;

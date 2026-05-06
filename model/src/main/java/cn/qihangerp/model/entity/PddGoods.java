@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 
 /**
  * pdd商品表
@@ -37,12 +36,7 @@ public class PddGoods implements Serializable {
     /**
      * 商品总数量
      */
-    private Long goodsQuantity;
-
-    /**
-     * 商家外部编码（goods）
-     */
-    private String outerGoodsId;
+    private Integer goodsQuantity;
 
     /**
      * 是否多sku，0-单sku，1-多sku
@@ -54,32 +48,21 @@ public class PddGoods implements Serializable {
      */
     private Integer isOnsale;
 
+
     /**
      * 商品缩略图
      */
     private String thumbUrl;
 
     /**
-     * 市场价，单位分
+     * 商品图片
      */
-    private Long marketPrice;
+    private String imageUrl;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
-    public double getFormattedPrice() {
-        if(marketPrice == null){
-            return 0;
-        }
-        return marketPrice / 100;
-    }
     /**
      * 商品创建时间的时间戳
      */
     private Long createdAt;
-
-    /**
-     * 店铺id
-     */
-    private Long shopId;
 
     /**
      * erp商品id
@@ -95,8 +78,25 @@ public class PddGoods implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+    /**
+     * 店铺id
+     */
+    private Long shopId;
+
+    /**
+     * 商户ID
+     */
+    private Long merchantId;
+
+    /**
+     * 商家外部编码
+     */
+    private String outerGoodsId;
+
     @TableField(exist = false)
     private List<PddGoodsSku> skuList;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

@@ -4,9 +4,10 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.common.utils.StringUtils;
 import cn.qihangerp.model.entity.SysDictData;
-import cn.qihangerp.module.service.ISysDictDataService;
-import cn.qihangerp.module.service.ISysDictTypeService;
+
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.ISysDictDataService;
+import cn.qihangerp.service.ISysDictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;

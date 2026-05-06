@@ -1,7 +1,6 @@
 package cn.qihangerp.oms.dou.controller;
 
 import cn.qihangerp.common.AjaxResult;
-import cn.qihangerp.module.service.DouOrderService;
 import cn.qihangerp.oms.dou.DouApiCommon;
 import cn.qihangerp.open.dou.DouRequest;
 import cn.qihangerp.security.common.BaseController;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/dou/ewaybill")
 public class DouWaybillController extends BaseController {
     private final DouApiCommon apiCommon;
-    private final DouOrderService orderService;
+
 
     @GetMapping(value = "/get_waybill_account_list")
     public AjaxResult getWaybillAccountList(Long shopId) throws Exception {

@@ -1,10 +1,8 @@
 package cn.qihangerp.model.entity;
 
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,8 +19,17 @@ public class OGoods implements Serializable {
     /**
      * 主键id
      */
-    @TableId(value = "id", type= IdType.AUTO)
-    private Long id;
+    @TableId(type= IdType.AUTO)
+    private String id;
+    /**
+     * 计价方式：0一口价；1金包银+工费；
+     */
+    private Integer priceType;
+
+    /**
+     * 库存模式：0-传统SKU模式，1-一物一码模式（珠宝）
+     */
+    private Integer inventoryMode;
 
     /**
      * 商品名称
@@ -38,7 +45,8 @@ public class OGoods implements Serializable {
      * 商品唯一ID
      */
     private String outerErpGoodsId;
-
+    private String sellerId;//卖家ID(外部系统使用)
+    private String sellerBrandId;//卖家品牌ID(外部系统使用)
     /**
      * 商品编号
      */
@@ -121,7 +129,6 @@ public class OGoods implements Serializable {
     /**
      * 预计采购价格
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
     private BigDecimal purPrice;
 
     /**
@@ -132,7 +139,6 @@ public class OGoods implements Serializable {
     /**
      * 建议零售价
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "#.##")
     private BigDecimal retailPrice;
 
     /**
@@ -143,7 +149,7 @@ public class OGoods implements Serializable {
     /**
      * 供应商id
      */
-    private String supplierId;
+    private Long supplierId;
 
     /**
      * 品牌id
@@ -210,6 +216,9 @@ public class OGoods implements Serializable {
      */
     private Date updateTime;
 
+    private Integer shipType;
+    private Long merchantId;
+    private Long shopId;
     @TableField(exist = false)
     private List<OGoodsSku> skuList;
 

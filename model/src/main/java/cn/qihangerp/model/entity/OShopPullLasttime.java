@@ -1,12 +1,12 @@
 package cn.qihangerp.model.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 店铺更新最后时间记录
@@ -18,7 +18,7 @@ public class OShopPullLasttime implements Serializable {
      * 
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private String id;
 
     /**
      * 店铺id

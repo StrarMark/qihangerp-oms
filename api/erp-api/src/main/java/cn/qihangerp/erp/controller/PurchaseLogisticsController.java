@@ -2,13 +2,19 @@ package cn.qihangerp.erp.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.model.entity.ErpLogistics;
-import cn.qihangerp.module.service.ErpLogisticsService;
+import cn.qihangerp.enums.EnumUserType;
+import cn.qihangerp.model.entity.ErpPurchaseLogistics;
+import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.security.common.SecurityUtils;
+
+import cn.qihangerp.service.ErpPurchaseLogisticsService;
+import cn.qihangerp.service.OShopService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,15 +29,17 @@ import java.util.List;
 @RequestMapping("/erp/logistics")
 public class PurchaseLogisticsController extends BaseController
 {
-    private final ErpLogisticsService logisticsService;
+    private final ErpPurchaseLogisticsService logisticsService;
+    private final OShopService shopService;
     /**
      *
      */
     @GetMapping("/list")
     public TableDataInfo list(Integer status)
     {
-        List<ErpLogistics> list = logisticsService.list(new LambdaQueryWrapper<ErpLogistics>()
-                .eq(status!=null,ErpLogistics::getStatus, status)
+
+        List<ErpPurchaseLogistics> list = logisticsService.list(new LambdaQueryWrapper<ErpPurchaseLogistics>()
+                .eq(status!=null,ErpPurchaseLogistics::getStatus, status)
                 .last(" ORDER BY id desc")
         );
         return getDataTable(list);
@@ -49,14 +57,14 @@ public class PurchaseLogisticsController extends BaseController
      * 修改物流公司
      */
     @PutMapping("/update")
-    public AjaxResult edit(@RequestBody ErpLogistics bLogisticsCompany)
+    public AjaxResult edit(@RequestBody ErpPurchaseLogistics bLogisticsCompany)
     {
         return toAjax(logisticsService.updateById(bLogisticsCompany));
     }
 
 
     @PutMapping("/updateStatus")
-    public AjaxResult logisticsUpdateStatus(@RequestBody ErpLogistics company)
+    public AjaxResult logisticsUpdateStatus(@RequestBody ErpPurchaseLogistics company)
     {
         Integer newStatus = null;
         if(company.getStatus()==null || company.getStatus().intValue() ==0){
@@ -70,9 +78,11 @@ public class PurchaseLogisticsController extends BaseController
      * 新增物流公司
      */
     @PostMapping("/add")
-    public AjaxResult add(@RequestBody ErpLogistics bLogisticsCompany)
+    public AjaxResult add(@RequestBody ErpPurchaseLogistics bLogisticsCompany)
     {
 
+        bLogisticsCompany.setShopId(0L);
+        bLogisticsCompany.setMerchantId(0L);
         return toAjax(logisticsService.save(bLogisticsCompany));
     }
     /**

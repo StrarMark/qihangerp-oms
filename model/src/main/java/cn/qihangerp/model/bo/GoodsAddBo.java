@@ -19,6 +19,10 @@ public class GoodsAddBo
 
     /** 主键id */
     private Long id;
+    /**
+     * 计价方式：0一口价；1金包银+工费；
+     */
+    private Integer priceType;
 
     /** 商品名称 */
     private String name;
@@ -46,6 +50,11 @@ public class GoodsAddBo
 
     /** 状态1销售中2已下架 */
     private Integer status;
+    private Integer shipType;
+    /**
+     * 库存模式：0-传统SKU模式，1-一物一码模式（珠宝）
+     */
+    private Integer inventoryMode;
 
 //    /** 衣长/裙长/裤长 */
 //    private Long length;
@@ -115,12 +124,14 @@ public class GoodsAddBo
 //
 //    /** 最高库存（预警） */
 //    private Long highQty;
-
-    private Long[] colorValues;
-    private Map<Long,String> colorImages;
+    private String sellerId;//卖家ID(外部系统使用)
+    private String sellerBrandId;//卖家品牌ID(外部系统使用)
+    private Long merchantId;
+    private String[] colorValues;
+    private Map<String,String> colorImages;
 //    private Map<Long,String> colorNames;
-    private Long[] sizeValues;
-    private Long[] styleValues;
+    private String[] sizeValues;
+    private String[] styleValues;
     private List<GoodsAddSkuBo> specList;
 
 }

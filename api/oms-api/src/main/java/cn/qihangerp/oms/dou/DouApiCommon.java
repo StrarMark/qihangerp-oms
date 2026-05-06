@@ -3,14 +3,14 @@ package cn.qihangerp.oms.dou;
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;
 import cn.qihangerp.common.api.ShopApiParams;
-import cn.qihangerp.common.enums.EnumShopType;
-import cn.qihangerp.common.enums.HttpStatus;
+import cn.qihangerp.enums.EnumShopType;
+import cn.qihangerp.enums.HttpStatus;
 import cn.qihangerp.model.entity.OShopPlatform;
-import cn.qihangerp.module.service.OShopPlatformService;
-import cn.qihangerp.module.service.OShopService;
 import cn.qihangerp.open.common.ApiResultVo;
 import cn.qihangerp.open.dou.DouTokenApiHelper;
 import cn.qihangerp.open.dou.model.Token;
+import cn.qihangerp.service.OShopPlatformService;
+import cn.qihangerp.service.OShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -36,7 +36,7 @@ public class DouApiCommon {
         if (shop.getType() != EnumShopType.DOU.getIndex()) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "参数错误，店铺不是抖店店铺");
         }
-        if (shop.getSellerId() == null || shop.getSellerId()<=0) {
+        if (StringUtils.isEmpty(shop.getSellerId() )) {
             return ResultVo.error(HttpStatus.PARAMS_ERROR, "参数错误，请设置抖店平台店铺ID（shopId）");
         }
         String appKey = shop.getAppKey();
@@ -68,13 +68,13 @@ public class DouApiCommon {
         ShopApiParams params = new ShopApiParams();
         params.setAppKey(appKey);
         params.setAppSecret(appSecret);
-        params.setRedirectUri(shop.getApiRedirectUrl());
+        params.setRedirectUri(shop.getApiCallbackUrl());
         params.setServerUrl(shop.getApiRequestUrl());
         params.setSellerId(shop.getSellerId());
         String accessToken = shop.getAccessToken();
 
         if (!StringUtils.hasText(shop.getAccessToken())) {
-            ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret, shop.getSellerId());
+            ApiResultVo<Token> token = DouTokenApiHelper.getToken(appKey, appSecret, shop.getId());
             if(token.getCode()!=0) {
                 return ResultVo.error(ResultVoEnum.API_FAIL.getIndex(), token.getMsg(), params);
             }else{
@@ -84,7 +84,7 @@ public class DouApiCommon {
             }
         }else{
             if(StringUtils.hasText(shop.getRefreshToken())) {
-                ApiResultVo<Token> token1 = DouTokenApiHelper.getToken(appKey, appSecret, shop.getSellerId());
+                ApiResultVo<Token> token1 = DouTokenApiHelper.getToken(appKey, appSecret, shop.getId());
 //                ApiResultVo<Token> token1 = DouTokenApiHelper.refreshToken(appKey, appSecret, accessToken, shop.getRefreshToken());
                 if (token1.getCode() == 0) {
                     shopService.updateSessionKey(shopId, token1.getData().getAccessToken(), token1.getData().getRefreshToken());

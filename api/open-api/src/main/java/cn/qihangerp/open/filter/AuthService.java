@@ -1,6 +1,5 @@
 package cn.qihangerp.open.filter;
 
-
 import cn.qihangerp.model.entity.SysOpenAuth;
 import cn.qihangerp.service.SysOpenAuthService;
 import lombok.AllArgsConstructor;

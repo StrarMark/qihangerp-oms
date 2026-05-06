@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ErpWarehouseShopMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ErpWarehouseShop">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="ownerNo" column="owner_no" jdbcType="VARCHAR"/>
+            <result property="ownerType" column="owner_type" jdbcType="INTEGER"/>
+            <result property="shopType" column="shop_type" jdbcType="INTEGER"/>
+            <result property="shopNo" column="shop_no" jdbcType="VARCHAR"/>
+            <result property="shopId" column="shop_id" jdbcType="BIGINT"/>
+            <result property="warehouseId" column="warehouse_id" jdbcType="BIGINT"/>
+            <result property="shopName" column="shop_name" jdbcType="VARCHAR"/>
+            <result property="erpShopNo" column="erp_shop_no" jdbcType="VARCHAR"/>
+            <result property="salesPlatformSourceNo" column="sales_platform_source_no" jdbcType="VARCHAR"/>
+            <result property="salesPlatformSourceName" column="sales_platform_source_name" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="salesPlatformShopNo" column="sales_platform_shop_no" jdbcType="VARCHAR"/>
+            <result property="customerCode" column="customer_code" jdbcType="VARCHAR"/>
+            <result property="shopContacts" column="shop_contacts" jdbcType="VARCHAR"/>
+            <result property="shopPhone" column="shop_phone" jdbcType="VARCHAR"/>
+            <result property="shopAddress" column="shop_address" jdbcType="VARCHAR"/>
+            <result property="shopEmail" column="shop_email" jdbcType="VARCHAR"/>
+            <result property="shopFax" column="shop_fax" jdbcType="VARCHAR"/>
+            <result property="afterSaleContacts" column="after_sale_contacts" jdbcType="VARCHAR"/>
+            <result property="afterSaleAddress" column="after_sale_address" jdbcType="VARCHAR"/>
+            <result property="afterSalePhone" column="after_sale_phone" jdbcType="VARCHAR"/>
+            <result property="outBoundRules" column="out_bound_rules" jdbcType="VARCHAR"/>
+            <result property="bizType" column="biz_type" jdbcType="VARCHAR"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="merchantId" column="merchant_id" jdbcType="BIGINT"/>
+            <result property="merchantName" column="merchant_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,warehouse_id,owner_no,owner_type,shop_type,shop_no,shop_id,
+        shop_name,erp_shop_no,sales_platform_source_no,
+        sales_platform_source_name,type,status,
+        sales_platform_shop_no,customer_code,shop_contacts,
+        shop_phone,shop_address,shop_email,
+        shop_fax,after_sale_contacts,after_sale_address,
+        after_sale_phone,out_bound_rules,biz_type,
+        create_by,create_time,update_by,
+        update_time,merchant_id,merchant_name
+    </sql>
+</mapper>

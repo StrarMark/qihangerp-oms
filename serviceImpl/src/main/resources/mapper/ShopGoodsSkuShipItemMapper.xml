@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.qihangerp.mapper.ShopGoodsSkuShipItemMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.ShopGoodsSkuShipItem">
+            <id property="id" column="id" />
+            <result property="shopGoodsId" column="shop_goods_id" />
+            <result property="shopGoodsSkuId" column="shop_goods_sku_id" />
+            <result property="productId" column="product_id" />
+            <result property="productSkuId" column="product_sku_id" />
+            <result property="goodsName" column="goods_name" />
+            <result property="goodsNum" column="goods_num" />
+            <result property="skuCode" column="sku_code" />
+            <result property="img" column="img" />
+            <result property="skuName" column="sku_name" />
+            <result property="erpGoodsId" column="erp_goods_id" />
+            <result property="erpGoodsSkuId" column="erp_goods_sku_id" />
+            <result property="createOn" column="create_on" />
+            <result property="quantity" column="quantity" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,shop_goods_id,shop_goods_sku_id,product_id,product_sku_id,goods_name,
+        goods_num,sku_code,img,sku_name,erp_goods_id,
+        erp_goods_sku_id,create_on,quantity
+    </sql>
+</mapper>

@@ -18,6 +18,7 @@ public class Constants
      * GBK 字符集
      */
     public static final String GBK = "GBK";
+    public static final String RESOURCE_PREFIX = "/profile";
 
     /**
      * www主域
@@ -48,5 +49,8 @@ public class Constants
      * 验证码有效期（分钟）
      */
     public static final Integer CAPTCHA_EXPIRATION = 1;
-
+    /**
+     * 令牌
+     */
+    public static final String TOKEN = "token";
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.qihangerp.mapper.FmsFinanceLedgerMapper">
+
+    <resultMap id="BaseResultMap" type="cn.qihangerp.model.entity.FmsFinanceLedger">
+        <id column="id" property="id" />
+        <result column="voucher_no" property="voucherNo" />
+        <result column="account_type" property="accountType" />
+        <result column="income_amount" property="incomeAmount" />
+        <result column="expense_amount" property="expenseAmount" />
+        <result column="source_type" property="sourceType" />
+        <result column="source_id" property="sourceId" />
+        <result column="source_no" property="sourceNo" />
+        <result column="merchant_id" property="merchantId" />
+        <result column="shop_id" property="shopId" />
+        <result column="order_id" property="orderId" />
+        <result column="order_no" property="orderNo" />
+        <result column="expense_date" property="expenseDate" />
+        <result column="remark" property="remark" />
+        <result column="created_by" property="createdBy" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+    </resultMap>
+
+</mapper>

@@ -2,18 +2,20 @@ package cn.qihangerp.erp.controller;
 
 import cn.qihangerp.erp.request.OrderCancelRequest;
 import cn.qihangerp.common.*;
-import cn.qihangerp.model.request.OrderSearchRequest;
 import cn.qihangerp.model.bo.OrderAllocateShipRequest;
 import cn.qihangerp.model.bo.OrderShipRequest;
-import cn.qihangerp.module.service.OOrderItemService;
-import cn.qihangerp.module.service.OOrderService;
+import cn.qihangerp.request.OrderSearchRequest;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.OOrderItemService;
+import cn.qihangerp.service.OOrderService;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 /**
  * 店铺订单Controller
@@ -61,8 +63,9 @@ public class OrderController extends BaseController
     @GetMapping("/waitShipmentList")
     public TableDataInfo waitShipmentList(OrderSearchRequest order, PageQuery pageQuery)
     {
-        var pageList = orderService.queryWaitShipmentPageList(order,pageQuery);
-        return getDataTable(pageList);
+//        var pageList = orderService.queryWaitShipmentPageList(order,pageQuery);
+//        return getDataTable(pageList);
+        return getDataTable(new ArrayList<>());
     }
 
 
@@ -103,10 +106,10 @@ public class OrderController extends BaseController
     @PostMapping("/manualShipment")
     public AjaxResult manualShipment(@RequestBody OrderShipRequest shipBo)
     {
-        var result = orderService.manualShipmentOrder(shipBo,getUsername());
-        if(result.getCode() == 0) return AjaxResult.success();
-        else return AjaxResult.error(result.getMsg());
-//        return AjaxResult.error("未实现AAA");
+//        var result = orderService.manualShipmentOrder(shipBo,getUsername());
+//        if(result.getCode() == 0) return AjaxResult.success();
+//        else return AjaxResult.error(result.getMsg());
+        return AjaxResult.error("升级中");
     }
 
     /**
@@ -121,9 +124,10 @@ public class OrderController extends BaseController
             return AjaxResult.error("缺少参数：id");
         if(shipBo.getSupplierId() == null || shipBo.getSupplierId()<=0)
             return AjaxResult.error("缺少参数：supplierId");
-        var result = orderService.allocateShipmentOrder(shipBo,getUsername());
-        if(result.getCode() == 0) return AjaxResult.success();
-        else return AjaxResult.error(result.getMsg());
+//        var result = orderService.allocateShipmentOrder(shipBo,getUsername());
+//        if(result.getCode() == 0) return AjaxResult.success();
+//        else return AjaxResult.error(result.getMsg());
+        return AjaxResult.error("升级中");
     }
     /**
      * 取消订单（如果有itemId就是取消子订单）
@@ -134,20 +138,21 @@ public class OrderController extends BaseController
     public AjaxResult cancelOrder(@RequestBody OrderCancelRequest request) {
         if (request.getId() == null) return AjaxResult.error("确实参数：Id");
         if (StringUtils.isEmpty(request.getCancelReason())) return AjaxResult.error("请填写取消原因");
-        if (request.getOrderItemId() != null && request.getOrderItemId() > 0) {
-            log.info("=====取消子订单====={}", JSONObject.toJSONString(request));
-            var result = orderService.cancelOrderItem(request.getOrderItemId(), request.getCancelReason(), getUsername());
-            if (result.getCode() == 0) {
-                log.info("==============子订单取消成功=========");
-                return AjaxResult.success();
-            } else return AjaxResult.error(result.getMsg());
-        } else {
-            log.info("======取消订单======{}", JSONObject.toJSONString(request));
-            var result = orderService.cancelOrder(request.getId(), request.getCancelReason(), getUsername());
-            if (result.getCode() == 0) {
-                log.info("==============订单取消成功=========");
-                return AjaxResult.success();
-            } else return AjaxResult.error(result.getMsg());
-        }
+//        if (request.getOrderItemId() != null && request.getOrderItemId() > 0) {
+//            log.info("=====取消子订单====={}", JSONObject.toJSONString(request));
+//            var result = orderService.cancelOrderItem(request.getOrderItemId(), request.getCancelReason(), getUsername());
+//            if (result.getCode() == 0) {
+//                log.info("==============子订单取消成功=========");
+//                return AjaxResult.success();
+//            } else return AjaxResult.error(result.getMsg());
+//        } else {
+//            log.info("======取消订单======{}", JSONObject.toJSONString(request));
+//            var result = orderService.cancelOrder(request.getId(), request.getCancelReason(), getUsername());
+//            if (result.getCode() == 0) {
+//                log.info("==============订单取消成功=========");
+//                return AjaxResult.success();
+//            } else return AjaxResult.error(result.getMsg());
+//        }
+        return AjaxResult.error("升级中");
     }
 }

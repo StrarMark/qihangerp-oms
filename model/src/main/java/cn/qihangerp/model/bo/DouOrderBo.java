@@ -13,4 +13,5 @@ public class DouOrderBo implements Serializable {
     private String orderStatus;
     private String startTime;
     private String endTime;
+    private Long merchantId;
 }

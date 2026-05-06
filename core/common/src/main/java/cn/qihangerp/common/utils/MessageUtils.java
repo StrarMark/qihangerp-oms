@@ -1,5 +1,6 @@
 package cn.qihangerp.common.utils;
 
+import cn.qihangerp.utils.SpringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 

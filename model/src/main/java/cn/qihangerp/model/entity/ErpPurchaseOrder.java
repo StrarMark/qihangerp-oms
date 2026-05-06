@@ -6,17 +6,18 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 采购订单
- * @TableName erp_purchase_order
+ * @TableName scm_purchase_order
  */
 @TableName(value ="erp_purchase_order")
 @Data
-public class ErpPurchaseOrder {
+public class ErpPurchaseOrder implements Serializable {
     /**
      * 
      */
@@ -36,7 +37,7 @@ public class ErpPurchaseOrder {
     /**
      * 订单日期
      */
-    private Date orderDate;
+    private String orderDate;
 
     /**
      * 订单创建时间
@@ -112,7 +113,16 @@ public class ErpPurchaseOrder {
      * 更新时间
      */
     private Date updateTime;
+    private Long merchantId;
+    private Long shopId;
+
+    private Long warehouseId;
+    private String warehouseName;
+    private String warehouseType;
 
     @TableField(exist = false)
     private List<ErpPurchaseOrderItem> itemList;
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

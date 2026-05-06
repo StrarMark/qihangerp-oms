@@ -1,10 +1,11 @@
 package cn.qihangerp.model;
 
 import cn.qihangerp.model.entity.SysDictData;
+import cn.qihangerp.utils.SpringUtils;
 import com.alibaba.fastjson2.JSONArray;
 import cn.qihangerp.common.config.RedisCache;
 import cn.qihangerp.common.constant.CacheConstants;
-import cn.qihangerp.common.utils.SpringUtils;
+
 import cn.qihangerp.common.utils.StringUtils;
 
 import java.util.Collection;

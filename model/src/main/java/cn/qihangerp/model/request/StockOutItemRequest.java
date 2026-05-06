@@ -6,10 +6,11 @@ import lombok.Data;
 public class StockOutItemRequest {
     private Long entryItemId;
     private Long entryId;
-    private Long skuId;
-    private Long inventoryBatchId;
+    private String skuId;
+    private Long positionId;
+    private Long batchId;
     private Integer outQty;
-//    private Integer originalQuantity;
-//    private Integer outQuantity;
+    private Integer originalQuantity;
+    private Integer outQuantity;
 
 }
