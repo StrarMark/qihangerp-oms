@@ -1,6 +1,6 @@
 package cn.qihangerp.service;
 
-import cn.qihangerp.model.entity.SysDictData;
+import cn.qihangerp.domain.SysDictData;
 import cn.qihangerp.model.SysDictType;
 
 

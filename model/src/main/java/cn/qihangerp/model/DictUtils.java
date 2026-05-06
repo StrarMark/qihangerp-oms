@@ -1,6 +1,6 @@
 package cn.qihangerp.model;
 
-import cn.qihangerp.model.entity.SysDictData;
+import cn.qihangerp.domain.SysDictData;
 import cn.qihangerp.utils.SpringUtils;
 import com.alibaba.fastjson2.JSONArray;
 import cn.qihangerp.common.config.RedisCache;

@@ -1,6 +1,6 @@
 package cn.qihangerp.mapper;
 
-import cn.qihangerp.model.entity.SysDictData;
+import cn.qihangerp.domain.SysDictData;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
