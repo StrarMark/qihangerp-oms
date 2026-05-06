@@ -20,7 +20,7 @@
           <el-option label="无" value="0"></el-option>
           <el-option v-for="item in brandList" :key="item.id" :label="item.name" :value="item.id">
           </el-option>
-        </el-select> 
+        </el-select>
       </el-form-item>
         <el-form-item label="供应商" prop="supplierId">
           <!-- <el-input v-model="form.supplierId" placeholder="请输入供应商id" /> -->
