@@ -1,5 +1,156 @@
 # AGENTS.md - 智能编码指南
 
+## 🎉 4.0版本升级说明
+
+> **开源版正在全面升级到4.0版，功能架构与启航电商ERP商业版对齐！**
+
+### 4.0核心升级要点
+
+| 升级方向 | 说明 |
+|---------|------|
+| **统一数据模型** | 所有平台店铺数据采用统一的表保存（`ShopOrder`、`ShopOrderItem`等） |
+| **多商户架构** | 支持总部-商户-店铺三级销售架构体系 |
+| **serviceImpl对齐** | 服务实现层与商业版接口保持一致 |
+| **model层重构** | 实体模型全面升级，支持多租户隔离 |
+
+### 统一数据表设计（核心变化）
+
+4.0版本最重大的架构变更：**所有平台店铺数据采用统一表保存**
+
+**旧架构（按平台分表）：**
+```
+oms_tao_order      -- 淘宝订单
+oms_jd_order       -- 京东订单  
+oms_pdd_order      -- 拼多多订单
+oms_dou_order      -- 抖店订单
+...
+```
+
+**新架构（统一表）：**
+```
+oms_shop_order     -- 所有平台店铺订单统一表
+oms_shop_order_item -- 所有平台店铺订单子项统一表
+oms_shop_refund    -- 所有平台店铺售后统一表
+```
+
+**统一表设计优势：**
+1. **简化开发**：一套代码处理所有平台订单
+2. **统一查询**：跨平台订单聚合查询更高效
+3. **易于扩展**：新增平台无需新增表结构
+4. **数据一致性**：统一的数据模型和处理逻辑
+
+### 三层销售架构体系
+
+```mermaid
+graph TD
+    A[总部] -->|管理| B[商户1]
+    A -->|管理| C[商户2]
+    A -->|管理| D[商户N]
+    
+    B -->|拥有| E[淘宝店铺]
+    B -->|拥有| F[京东店铺]
+    B -->|拥有| G[拼多多店铺]
+    
+    C -->|拥有| H[抖店店铺]
+    C -->|拥有| I[视频号店铺]
+```
+
+**层级说明：**
+| 层级 | 说明 | 职责 |
+|------|------|------|
+| **总部** | 系统管理员 | 管理所有商户、配置全局参数 |
+| **商户** | 租户/商家 | 独立管理店铺、商品、订单 |
+| **店铺** | 平台店铺 | 对接淘宝、京东、拼多多等平台 |
+
+### Model层设计
+
+**统一实体设计：**
+
+| 实体 | 表名 | 说明 |
+|------|------|------|
+| `ShopOrder` | `oms_shop_order` | 统一店铺订单表 |
+| `ShopOrderItem` | `oms_shop_order_item` | 统一订单子项表 |
+| `ShopRefund` | `oms_shop_refund` | 统一售后表 |
+| `ShopGoods` | `oms_shop_goods` | 统一店铺商品表 |
+| `ShopGoodsSku` | `oms_shop_goods_sku` | 统一店铺商品SKU表 |
+| `ErpMerchant` | `o_merchant` | 商户表（租户信息） |
+| `OShop` | `o_shop` | 店铺表（平台店铺配置） |
+
+**核心字段说明：**
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `merchantId` | Long | 商户ID（租户隔离） |
+| `shopId` | Long | 店铺ID |
+| `shopType` | Integer | 店铺类型（淘宝/京东/拼多多等） |
+| `orderId` | String | 平台订单号 |
+
+### 多租户隔离机制
+
+**4.0版本实现商户级数据隔离：**
+
+```mermaid
+flowchart LR
+    A[请求进入] --> B{是否商户用户?}
+    B -->|是| C[获取当前商户ID]
+    B -->|否| D[系统管理员-无限制]
+    C --> E[SQL查询自动添加merchantId条件]
+    E --> F[返回商户数据]
+```
+
+**隔离策略：**
+1. **数据库层**: 所有业务表包含 `merchantId` 字段
+2. **Service层**: 查询时自动注入商户ID过滤条件
+3. **Controller层**: 通过上下文获取当前商户
+
+### AI原生ERP设计
+
+**4.0版本通过OpenApi+CLI构建供AI调用的系统：**
+
+| 模块 | 说明 |
+|------|------|
+| `open-api` | AI可调用的开放API接口（供AI/外部系统调用） |
+| `CLI工具` | AI使用的命令行范例 |
+
+**AI能力应用：**
+- AI通过标准OpenApi调用实现业务自动化
+- CLI工具作为AI使用的参考实现
+- 开放接口供AI大模型集成调用
+- 实现智能化订单、库存、报表等业务处理
+
+### 统一订单处理流程
+
+```mermaid
+sequenceDiagram
+    participant Platform as 电商平台
+    participant OMS as oms-api
+    participant ERP as erp-api
+    participant DB as 数据库
+
+    Platform->>OMS: 订单推送/拉取
+    OMS->>OMS: 平台订单标准化
+    OMS->>DB: 保存到 ShopOrder
+    DB-->>OMS: 返回订单ID
+    OMS->>ERP: 订单消息通知
+    ERP->>ERP: 订单审核/分配
+```
+
+### 平台类型枚举
+
+| 枚举值 | 平台 | 索引值 |
+|--------|------|--------|
+| `TAO` | 淘宝/天猫 | 1 |
+| `JD` | 京东 | 2 |
+| `PDD` | 拼多多 | 3 |
+| `DOU` | 抖店 | 4 |
+| `WEI` | 微信小店 | 5 |
+| `KWAI` | 快手 | 6 |
+| `XHS` | 小红书 | 7 |
+| `OFFLINE` | 线下订单 | 100 |
+| `ERP_ORDER` | ERP订单 | 101 |
+
+---
+
 ## 项目概述
 
 启航电商ERP系统 (qihang-ecom-erp-open) 技术栈：
@@ -117,9 +268,7 @@ export default {
 ```
 cn.qihangerp
 ├── api/              # Controller
-├── module/service    # Service 接口
-├── serviceImpl/      # Service 实现
-├── mapper/           # MyBatis Mapper
+├── serviceImpl/      # Service接口与实现统一层（包含Mapper、业务接口及实现）
 ├── model/            # Entity, DTO, VO, BO
 │   ├── entity/       # 数据库实体
 │   ├── dto/          # 数据传输对象
@@ -197,13 +346,19 @@ vue/src/
 ```
 
 ### 后端模块
+
 ```
-api/          # API 模块 (gateway, erp-api, open-api, ai-agent)
-core/         # 公共库
-mapper/       # MyBatis Mapper
-model/        # 实体类
-service/      # Service 接口
-serviceImpl/  # Service 实现
+api/              # 微服务接口层
+├── gateway/      # 网关 (8088)
+├── sys-api/      # 系统管理 (8082)
+├── erp-api/      # ERP主功能 (8083)
+├── oms-api/      # 订单消息 (8081)
+└── open-api/     # 开放API (8090) - 供AI/外部系统调用
+core/             # 公共库
+├── common/       # 通用工具
+└── security/     # 权限认证
+model/            # 领域模型 (entity, bo, vo, dto, query)
+serviceImpl/      # Service接口与实现统一层（包含Mapper、业务接口及实现）
 ```
 
 ---
