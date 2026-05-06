@@ -222,7 +222,7 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { listCategory } from "@/api/goods/category";
 import {getToken} from "@/utils/auth";
-import { listBrand } from '@/api/goods/brand' 
+import { listBrand } from '@/api/goods/brand'
 import {getUserProfile} from "@/api/system/user";
 import {listSupplier} from "@/api/goods/supplier";
 
