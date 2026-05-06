@@ -32,11 +32,11 @@
 <!--          <raddar-chart />-->
 <!--        </div>-->
 <!--      </el-col>-->
-      <el-col :xs="24" :sm="24" :lg="24">
-        <div class="chart-wrapper">
-          <pie-chart :chart-data="skuTopData" />
-        </div>
-      </el-col>
+<!--      <el-col :xs="24" :sm="24" :lg="24">-->
+<!--        <div class="chart-wrapper">-->
+<!--          <pie-chart :chart-data="skuTopData" />-->
+<!--        </div>-->
+<!--      </el-col>-->
 <!--      <el-col :xs="24" :sm="24" :lg="12">-->
 <!--        <div class="chart-wrapper">-->
 <!--          <bar-chart />-->
@@ -110,17 +110,14 @@ export default {
         orderCount:302,
         shopCount:8
       }
-
     }
   },
   mounted() {
     // 加载统计
     todayDaily().then(resp=>{
-
       this.report = resp.data
     })
     salesDaily().then(resp=>{
-
       this.lineChartData.date=[]
       this.lineChartData.salesVolume =[]
       this.lineChartData.salesOrder =[]
@@ -130,10 +127,7 @@ export default {
         this.lineChartData.salesOrder.push(x.count)
       })
     })
-    salesTopSku().then(resp=>{
-      console.log("=====",resp.data)
-      this.skuTopData.data= resp.data
-    })
+
   },
   methods: {
     handleSetLineChartData(type) {

@@ -17,12 +17,3 @@ export function salesDaily(query) {
     params: query
   })
 }
-
-
-export function salesTopSku(query) {
-  return request({
-    url: '/api/erp-api/report/salesTopSku',
-    method: 'get',
-    params: query
-  })
-}
