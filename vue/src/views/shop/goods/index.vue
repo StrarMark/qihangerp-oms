@@ -8,7 +8,6 @@
         <goods-sku :shopType="shopType"></goods-sku>
       </el-tab-pane>
     </el-tabs>
-<!--    <goods-sku-offline :shopType="shopType"></goods-sku-offline>-->
   </div>
 </template>
 

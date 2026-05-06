@@ -241,3 +241,25 @@ export function amountFormatter(row, column, cellValue, index) {
 export function rowIndex({ row, rowIndex }) {
   row.index = rowIndex + 1;
 }
+
+
+export function rowDataItemIndex({ row, rowIndex }) {
+  row.index = rowIndex + 1;
+}
+
+//复制
+export function copyActiveCode(event,queryParams) {
+  console.log(queryParams)
+  const clipboard = new Clipboard(".tag-copy")
+  clipboard.on('success', e => {
+    this.$message({ type: 'success', message: '复制成功' })
+    // 释放内存
+    clipboard.destroy()
+  })
+  clipboard.on('error', e => {
+    // 不支持复制
+    this.$message({ type: 'waning', message: '该浏览器不支持自动复制' })
+    // 释放内存
+    clipboard.destroy()
+  })
+}
