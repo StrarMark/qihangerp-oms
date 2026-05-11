@@ -23,6 +23,10 @@ public class MerchantController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(MerchantQuery bo, PageQuery pageQuery) {
         var list = merchantService.list(new LambdaQueryWrapper<ErpMerchant>().eq(ErpMerchant::getStatus, 0));
+        ErpMerchant self = new ErpMerchant();
+        self.setId(0L);
+        self.setName("总部自营");
+        list.add(0,self);
         return getDataTable(list);
     }
 
