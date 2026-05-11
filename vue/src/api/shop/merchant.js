@@ -54,39 +54,3 @@ export function delMerchant(id) {
     method: 'delete'
   })
 }
-
-export function setMerchantLoginName(data) {
-  return request({
-    url: '/api/oms-api/merchant/setLoginName',
-    method: 'post',
-    data: data
-  })
-}
-
-
-export function shareCloudWarehouse(data) {
-  return request({
-    url: '/api/oms-api/merchant/shareCloudWarehouse',
-    method: 'post',
-    data: data
-  })
-}
-
-// 分配给供应商发货
-export function pushGoodsToMerchant(data) {
-  return request({
-    url: '/api/erp-api/goods/push_goods_to_merchant',
-    method: 'post',
-    data: data
-  })
-}
-
-
-
-// 获取登录账号
-export function getLoginAccount(id) {
-  return request({
-    url: '/api/oms-api/merchant/getLoginAccount/' + id,
-    method: 'get'
-  })
-}
