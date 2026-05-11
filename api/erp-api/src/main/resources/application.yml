@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: erp-api
+  profiles:
+    active: dev
   cloud:
     loadbalancer:
       nacos:
