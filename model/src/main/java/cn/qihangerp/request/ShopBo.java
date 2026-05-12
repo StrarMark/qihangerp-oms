@@ -1,4 +1,4 @@
-package cn.qihangerp.erp.request;
+package cn.qihangerp.request;
 
 import lombok.Data;
 
