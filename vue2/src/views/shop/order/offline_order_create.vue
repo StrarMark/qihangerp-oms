@@ -12,8 +12,8 @@
               v-model="barcode"
               placeholder="请扫描或输入商品条码（本店库存）"
               size="large"
-              @keyup.enter.native="handleBarcodeEnter"
               clearable
+              @keyup.enter.native="handleBarcodeEnter"
             >
               <el-button slot="append" icon="el-icon-search" @click="handleBarcodeEnter">查询</el-button>
             </el-input>
@@ -32,7 +32,7 @@
               <div>本店库存：{{ currentProduct.localStock || 0 }}件</div>
             </div>
             <div v-if="currentProduct.localStock > 0" class="add-to-cart">
-              <el-input-number v-model="addQuantity" :min="1" :max="currentProduct.localStock" controls-position="right" size="small"></el-input-number>
+              <el-input-number v-model="addQuantity" :min="1" :max="currentProduct.localStock" controls-position="right" size="small" />
               <el-button type="primary" size="small" @click="addToCart">加入订单</el-button>
             </div>
             <div v-else class="out-of-stock">
@@ -49,15 +49,15 @@
             <el-button type="danger" size="small" style="float: right;" @click="clearCart">清空</el-button>
           </div>
           <el-table :data="cartItems" border stripe>
-            <el-table-column prop="goodsName" label="商品名称" min-width="150"></el-table-column>
-            <el-table-column prop="skuName" label="规格" min-width="100"></el-table-column>
-            <el-table-column prop="barcode" label="条码" width="100"></el-table-column>
-            <el-table-column prop="goldWeight" label="金重(g)" width="100"></el-table-column>
-            <el-table-column prop="silverWeight" label="银重(g)" width="100"></el-table-column>
-            <el-table-column prop="laborCost" label="工费" width="100"></el-table-column>
-            <el-table-column prop="quantity" label="数量" width="80" align="center"></el-table-column>
-            <el-table-column prop="unitPrice" label="单价(元)" width="100" align="right"></el-table-column>
-            <el-table-column prop="subtotal" label="小计(元)" width="100" align="right"></el-table-column>
+            <el-table-column prop="goodsName" label="商品名称" min-width="150" />
+            <el-table-column prop="skuName" label="规格" min-width="100" />
+            <el-table-column prop="barcode" label="条码" width="100" />
+            <el-table-column prop="goldWeight" label="金重(g)" width="100" />
+            <el-table-column prop="silverWeight" label="银重(g)" width="100" />
+            <el-table-column prop="laborCost" label="工费" width="100" />
+            <el-table-column prop="quantity" label="数量" width="80" align="center" />
+            <el-table-column prop="unitPrice" label="单价(元)" width="100" align="right" />
+            <el-table-column prop="subtotal" label="小计(元)" width="100" align="right" />
             <el-table-column label="操作" width="80" align="center">
               <template slot-scope="scope">
                 <el-button type="text" size="small" @click="removeFromCart(scope.$index)">删除</el-button>
@@ -122,7 +122,7 @@
             <div>回收单号：{{ selectedRecovery.recoveryNo }}</div>
             <div>回收金额：{{ selectedRecovery.totalAmount }} 元</div>
             <div>剩余可抵扣：{{ selectedRecovery.remainingAmount }} 元</div>
-            <div>本次抵扣：<el-input-number v-model="recoveryDeductionAmount" :min="0" :max="maxRecoveryDeduction" size="small" controls-position="right" @input="handleRecoveryDeductionInput"></el-input-number> 元</div>
+            <div>本次抵扣：<el-input-number v-model="recoveryDeductionAmount" :min="0" :max="maxRecoveryDeduction" size="small" controls-position="right" @input="handleRecoveryDeductionInput" /> 元</div>
 
           </div>
           <div v-else class="empty-info">未使用回收抵扣</div>
@@ -134,11 +134,11 @@
             <span>商品总额：</span>
             <span class="total-value">{{ cartTotal }} 元</span>
           </div>
-          <div class="total-line" >
+          <div class="total-line">
             <span>折扣优惠：</span>
             <span class="total-value">- {{ discountAmount }} 元</span>
           </div>
-          <div class="total-line" >
+          <div class="total-line">
             <span>回收抵扣：</span>
             <span class="total-value">- {{ recoveryDeductionAmount }} 元</span>
           </div>
@@ -153,11 +153,11 @@
                 v-for="item in paymentOptions"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value">
-              </el-option>
+                :value="item.value"
+              />
             </el-select>
           </div>
-          <el-button type="success" size="large" style="width: 100%; margin-top: 15px;" @click="submitOrder" :disabled="cartItems.length === 0">结算</el-button>
+          <el-button type="success" size="large" style="width: 100%; margin-top: 15px;" :disabled="cartItems.length === 0" @click="submitOrder">结算</el-button>
         </el-card>
       </el-col>
     </el-row>
@@ -170,12 +170,12 @@
       :close-on-click-modal="false"
     >
       <el-table :data="selectableProducts" border stripe>
-        <el-table-column prop="skuCode" label="SKU编码" width="140"></el-table-column>
-        <el-table-column prop="skuName" label="商品名称" min-width="180"></el-table-column>
-        <el-table-column prop="barcode" label="条码/批次号" width="160"></el-table-column>
-        <el-table-column prop="goldWeight" label="金重(g)" width="80" align="right"></el-table-column>
-        <el-table-column prop="silverWeight" label="银重(g)" width="80" align="right"></el-table-column>
-        <el-table-column prop="laborCost" label="工费(元)" width="80" align="right"></el-table-column>
+        <el-table-column prop="skuCode" label="SKU编码" width="140" />
+        <el-table-column prop="skuName" label="商品名称" min-width="180" />
+        <el-table-column prop="barcode" label="条码/批次号" width="160" />
+        <el-table-column prop="goldWeight" label="金重(g)" width="80" align="right" />
+        <el-table-column prop="silverWeight" label="银重(g)" width="80" align="right" />
+        <el-table-column prop="laborCost" label="工费(元)" width="80" align="right" />
         <el-table-column label="操作" width="80" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="selectAndAddToCart(scope.row)">选择</el-button>
@@ -187,31 +187,26 @@
       </span>
     </el-dialog>
 
-
-
     <!-- 选择会员 -->
-    <PopupShopMemberList @data-from-select="handleDataFromPopupMember" ref="popupMember"></PopupShopMemberList>
+    <PopupShopMemberList ref="popupMember" @data-from-select="handleDataFromPopupMember" />
     <!-- 选择优惠 -->
-    <PopupDiscountList @data-from-select="handleDataFromPopupDiscount" ref="popupDiscount"></PopupDiscountList>
-    <!-- 选择销售员 -->
-    <PopupSalesPeopleList @data-from-select="handleDataFromPopupSalesperson" ref="popupSalesPeople"></PopupSalesPeopleList>
+    <PopupDiscountList ref="popupDiscount" @data-from-select="handleDataFromPopupDiscount" />
     <!-- 回收单选择弹窗 -->
-    <PopupRecycleList @data-from-select="handleDataFromPopupRecycle" ref="popupRecycle"></PopupRecycleList>
+    <PopupRecycleList ref="popupRecycle" @data-from-select="handleDataFromPopupRecycle" />
   </div>
 </template>
 
 <script>
-import { queryShopGoodsSkuAndStock } from "@/api/shop/goodsStock";
-import { offlineOrderCreate } from "@/api/shop/order";
-import PopupDiscountList from "@/views/marketing/discount/PopupDiscountList.vue";
-import PopupShopMemberList from "@/views/member/PopupShopMemberList.vue";
-import PopupSalesPeopleList from "@/views/order/salesPeople/PopupSalesPeopleList.vue";
-import PopupRecycleList from "@/views/afterSale/PopupRecycleList.vue";
-import { limitDecimalLength, stringToNumber } from "@/utils/numberInput";
+import { queryShopGoodsSkuAndStock } from '@/api/shop/goodsStock'
+import { offlineOrderCreate } from '@/api/shop/order'
+import PopupDiscountList from '@/views/marketing/discount/PopupDiscountList.vue'
+import PopupShopMemberList from '@/views/member/PopupShopMemberList.vue'
+import PopupRecycleList from '@/views/afterSale/PopupRecycleList.vue'
+import { limitDecimalLength, stringToNumber } from '@/utils/numberInput'
 
 export default {
   name: 'PosOrderCreation',
-  components: {PopupShopMemberList, PopupDiscountList,PopupSalesPeopleList,PopupRecycleList},
+  components: { PopupShopMemberList, PopupDiscountList, PopupRecycleList },
   data() {
     return {
       // 扫码相关
@@ -223,7 +218,7 @@ export default {
       // 会员相关
       selectedMember: {
         shopMemberId: null,
-        receiverName: null,
+        receiverName: null
       },
       memberDialogVisible: false,
       memberSearchForm: { mobile: '', name: '' },
@@ -234,10 +229,10 @@ export default {
       memberTotal: 0,
       // 销售员相关
       selectedSalesperson: {
-        id:null,
+        id: null,
         name: null,
         employeeNo: null,
-        commissionRate: null,
+        commissionRate: null
       },
       salespersonDialogVisible: false,
       salespersonKeyword: '',
@@ -248,7 +243,7 @@ export default {
         id: null,
         type: null,
         value: null,
-        amount: 0.0,
+        amount: 0.0
       },
       discountDialogVisible: false,
       discountForm: { type: 'percentage', value: 0, reason: '' },
@@ -259,7 +254,7 @@ export default {
       discountSubmitting: false,
       // 回收抵扣相关
       selectedRecovery: {
-        id: null,
+        id: null
       },
       recoveryDeductionAmount: 0,
       recoveryDialogVisible: false,
@@ -308,7 +303,7 @@ export default {
         amount -= this.recoveryDeductionAmount
       }
       return amount.toFixed(2)
-    },
+    }
   },
   methods: {
     // ========== 商品扫码与购物车 ==========
@@ -322,7 +317,7 @@ export default {
           const rows = res.rows || []
           // 情况1：只有一条SKU且只有一个批次 -> 直接加入购物车
           if (rows.length === 1 && rows[0].batchList && rows[0].batchList.length === 1) {
-            console.log("=====查到了商品1条，直接添加")
+            console.log('=====查到了商品1条，直接添加')
             const sku = rows[0]
             const batch = sku.batchList[0]
             this.addItemToCart({
@@ -337,7 +332,7 @@ export default {
               silverPrice: batch.silverPrice,
               laborCost: batch.laborCost,
               laborPrice: batch.laborPrice,
-              price: sku.inventoryMode===1?batch.price:sku.price,
+              price: sku.inventoryMode === 1 ? batch.price : sku.price,
               quantity: 1,
               inventoryMode: sku.inventoryMode
             })
@@ -398,40 +393,40 @@ export default {
       })
     },
     addItemToCart(item) {
-      console.log('添加到购物车',item)
+      console.log('添加到购物车', item)
       // 一物一码：校验条码是否已存在
       if (item.inventoryMode === 1) {
         const exists = this.cartItems.find(cartItem =>
           cartItem.inventoryMode === 1 && cartItem.barcode === item.barcode
-        );
+        )
         if (exists) {
-          this.$message.warning(`条码 ${item.barcode} 已添加，不可重复`);
-          return;
+          this.$message.warning(`条码 ${item.barcode} 已添加，不可重复`)
+          return
         }
       }
       // 普通商品：校验同一SKU是否已存在，若存在则合并数量
       else if (item.inventoryMode === 0) {
         const exists = this.cartItems.find(cartItem =>
           cartItem.inventoryMode === 0 && cartItem.skuCode === item.skuCode
-        );
+        )
         if (exists) {
           // 合并数量
-          const newQuantity = exists.quantity + item.quantity;
-          exists.quantity = newQuantity;
-          exists.subtotal = exists.unitPrice * newQuantity;
-          this.$message.success(`已增加 ${item.skuName} 数量至 ${newQuantity}`);
-          return;
+          const newQuantity = exists.quantity + item.quantity
+          exists.quantity = newQuantity
+          exists.subtotal = exists.unitPrice * newQuantity
+          this.$message.success(`已增加 ${item.skuName} 数量至 ${newQuantity}`)
+          return
         }
       }
-      console.log('计算价格',item);
+      console.log('计算价格', item)
       // 获取单价：优先使用后端返回的 price，否则降级使用前端计算（兼容旧数据）
-      let unitPrice = item.price;
+      let unitPrice = item.price
       if (item.inventoryMode === 1) {
         // 一物一码：价格
         unitPrice = item.price
       }
       if (!unitPrice && unitPrice !== 0) {
-        unitPrice = this.calculatePriceByItem(item);
+        unitPrice = this.calculatePriceByItem(item)
       }
 
       const cartItem = {
@@ -450,9 +445,9 @@ export default {
         unitPrice: unitPrice,
         subtotal: unitPrice * item.quantity,
         inventoryMode: item.inventoryMode
-      };
-      this.cartItems.push(cartItem);
-      this.$message.success(`已添加 ${item.skuName} ${item.barcode ? `条码:${item.barcode}` : `x${item.quantity}`}`);
+      }
+      this.cartItems.push(cartItem)
+      this.$message.success(`已添加 ${item.skuName} ${item.barcode ? `条码:${item.barcode}` : `x${item.quantity}`}`)
     },
     selectAndAddToCart(row) {
       this.addItemToCart(row)
@@ -484,35 +479,35 @@ export default {
 
     // ========== 会员管理 ==========
     openMemberSearch() {
-      this.$refs.popupMember.openDialog();
+      this.$refs.popupMember.openDialog()
     },
-    //接收会员信息
-    handleDataFromPopupMember(data){
-      console.log('========选择的会员：',data);
-      if(data){
+    // 接收会员信息
+    handleDataFromPopupMember(data) {
+      console.log('========选择的会员：', data)
+      if (data) {
         console.log('=====接收到会员')
-        this.selectedMember.shopMemberId=data.id;
-        this.selectedMember.receiverName=data.name;
-        this.selectedMember.receiverPhone=data.phone;
-        this.selectedMember.address=data.address;
-        this.selectedMember.province=data.province;
-        this.selectedMember.city=data.city;
-        this.selectedMember.town=data.county;
+        this.selectedMember.shopMemberId = data.id
+        this.selectedMember.receiverName = data.name
+        this.selectedMember.receiverPhone = data.phone
+        this.selectedMember.address = data.address
+        this.selectedMember.province = data.province
+        this.selectedMember.city = data.city
+        this.selectedMember.town = data.county
       }
     },
 
     // ========== 销售员管理 ==========
     openSalespersonSelect() {
-      this.$refs.popupSalesPeople.openDialog();
+      this.$refs.popupSalesPeople.openDialog()
     },
-    //接收会员信息
-    handleDataFromPopupSalesperson(data){
-      console.log('========选择的销售员：',data);
-      if(data){
-        this.selectedSalesperson.id=data.id;
-        this.selectedSalesperson.name=data.name;
-        this.selectedSalesperson.employeeNo=data.employeeNo;
-        this.selectedSalesperson.commissionRate=data.commissionRate;
+    // 接收会员信息
+    handleDataFromPopupSalesperson(data) {
+      console.log('========选择的销售员：', data)
+      if (data) {
+        this.selectedSalesperson.id = data.id
+        this.selectedSalesperson.name = data.name
+        this.selectedSalesperson.employeeNo = data.employeeNo
+        this.selectedSalesperson.commissionRate = data.commissionRate
       }
     },
 
@@ -522,15 +517,15 @@ export default {
         this.$message.warning('请先添加商品')
         return
       }
-      this.$refs.popupDiscount.openDialog();
+      this.$refs.popupDiscount.openDialog()
     },
     // 接收优惠折扣
-    handleDataFromPopupDiscount(data){
-      console.log('========选择的折扣：',data);
-      if(data) {
+    handleDataFromPopupDiscount(data) {
+      console.log('========选择的折扣：', data)
+      if (data) {
         // 判断订单金额是否满足
-        if(data.minOrderAmount>0){
-          if( this.cartTotal < data.minOrderAmount){
+        if (data.minOrderAmount > 0) {
+          if (this.cartTotal < data.minOrderAmount) {
             this.$modal.msgError('订单金额不满足折扣要求')
             return
           }
@@ -540,12 +535,12 @@ export default {
         this.discountInfo.id = data.id
         this.discountInfo.value = data.discountValue
         // 计算折扣后的金额
-        if(data.discountType==1){
+        if (data.discountType == 1) {
           // 百分比
-          this.discountInfo.amount = this.cartTotal * data.discountValue /100;
-        }else{
+          this.discountInfo.amount = this.cartTotal * data.discountValue / 100
+        } else {
           // 固定金额
-          this.discountInfo.amount = data.discountValue;
+          this.discountInfo.amount = data.discountValue
         }
       }
     },
@@ -555,11 +550,11 @@ export default {
         this.$message.warning('请先选择会员')
         return
       }
-      this.$refs.popupRecycle.openDialog(this.selectedMember.shopMemberId);
+      this.$refs.popupRecycle.openDialog(this.selectedMember.shopMemberId)
     },
-    handleDataFromPopupRecycle(data){
-      console.log('========选择的回收抵扣：',data);
-      if(data) {
+    handleDataFromPopupRecycle(data) {
+      console.log('========选择的回收抵扣：', data)
+      if (data) {
         this.selectedRecovery = data
         this.recoveryDeductionAmount = 0
         this.recoveryDialogVisible = false
@@ -571,7 +566,7 @@ export default {
     submitOrder() {
       if (this.cartItems.length === 0) return
       // 将价格字段从字符串转换回数字类型
-      this.recoveryDeductionAmount = stringToNumber(this.recoveryDeductionAmount);
+      this.recoveryDeductionAmount = stringToNumber(this.recoveryDeductionAmount)
       const orderData = {
         memberId: this.selectedMember ? this.selectedMember.shopMemberId : null,
         salespersonId: this.selectedSalesperson ? this.selectedSalesperson.id : null,
@@ -625,7 +620,7 @@ export default {
       }).catch(() => {})
     },
     handleRecoveryDeductionInput() {
-      this.recoveryDeductionAmount = limitDecimalLength(this.recoveryDeductionAmount);
+      this.recoveryDeductionAmount = limitDecimalLength(this.recoveryDeductionAmount)
     }
   }
 }
