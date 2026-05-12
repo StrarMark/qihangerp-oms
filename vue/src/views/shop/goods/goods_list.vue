@@ -26,7 +26,7 @@
         />
       </el-form-item>
       <el-form-item label="商户" prop="merchantId" v-if="!isMerchant">
-        <el-select v-model="queryParams.merchantId"  placeholder="请选择商户"  @change="merchantChange">
+        <el-select v-model="queryParams.merchantId"  placeholder="请选择商户" clearable @change="merchantChange">
           <el-option
             v-for="item in merchantList"
             :key="item.id"
@@ -448,20 +448,25 @@ export default {
   mounted() {
     console.log('===店铺商品，店铺类型：'+this.shopType)
     console.log('===refresh:', this.refresh, 'targetShopId:', this.targetShopId)
-    listPlatform({status:0}).then(res => {
-      this.platformList = res.rows;
-    })
+    // listPlatform({status:0}).then(res => {
+    //   this.platformList = res.rows;
+    // })
     if (this.shopType!==0) {
       this.queryParams.shopType = this.shopType
     }
     // 检查是否需要刷新
-    if (this.refresh === '1' && this.targetShopId) {
-      this.refreshWithTargetShop();
-      return;
-    }
-    getUserProfile().then(res => {
+    // if (this.refresh === '1' && this.targetShopId) {
+    //   this.refreshWithTargetShop();
+    //   return;
+    // }
+
+  },
+  created() {
+    // listMerchant({ pageNum: 1, pageSize: 100 }).then(resp => {
+    //   this.merchantList = resp.rows
+    // })
       this.loading = false;
-      if (res.data.userType == 0) {
+
         // 总部
         console.log('===总部');
         this.isMerchant = false
@@ -469,50 +474,22 @@ export default {
 
         listMerchant({}).then(resp => {
           this.merchantList = resp.rows
-          if (this.merchantList.length > 0) {
-            this.queryParams.merchantId = this.merchantList[0].id
-          }
-          listShop({merchantId: this.queryParams.merchantId, type: this.queryParams.shopType}).then(response => {
-            this.shopList = response.rows;
-            if (this.shopList.length > 0) {
-              this.queryParams.shopId = this.shopList[0].id
-            }
-            this.shopLoading = false
+          // if (this.merchantList.length > 0) {
+          //   this.queryParams.merchantId = this.merchantList[0].id
+          // }
+
+          // listShop({merchantId: this.queryParams.merchantId, type: this.queryParams.shopType}).then(response => {
+          //   this.shopList = response.rows;
+          //   if (this.shopList.length > 0) {
+          //     this.queryParams.shopId = this.shopList[0].id
+          //   }
+          //   console.log('===dfasd')
+          //   this.shopLoading = false
             this.getList()
-          });
+          // });
 
         })
-      } else if (res.data.userType == 20) {
-        // 商户
-        this.isMerchant = true;
-        this.isShop = false
-        this.queryParams.merchantId = res.data.deptId;
-        this.merchantList = []
-        this.merchantList.push({id:res.data.deptId,name:res.data.nickName})
-        this.shopList = []
-        listShop({merchantId: this.queryParams.merchantId, type: this.queryParams.shopType}).then(response => {
-          this.shopList = response.rows;
-          if (this.shopList.length > 0) {
-            this.queryParams.shopId = this.shopList[0].id
-          }
-          this.shopLoading = false
-          this.getList()
-        });
-      } else if (res.data.userType == 40) {
-        this.isMerchant = true;
-        this.isShop = true
-        this.queryParams.shopId = res.data.deptId;
-        this.merchantList = []
-        this.shopList = []
-        this.shopList.push({id:res.data.deptId,name:res.data.nickName})
-        this.getList()
-      }
-    })
-  },
-  created() {
-    listMerchant({ pageNum: 1, pageSize: 100 }).then(resp => {
-      this.merchantList = resp.rows
-    })
+
     // this.shopLoading=true
     // listShop({type:this.shopType}).then(response => {
     //   this.shopList = response.rows;
@@ -595,9 +572,9 @@ export default {
       this.queryParams.shopId = null
       listShop({merchantId:nv,type:this.queryParams.shopType }).then(response => {
         this.shopList = response.rows;
-        if (this.shopList.length > 0) {
-          this.queryParams.shopId = this.shopList[0].id
-        }
+        // if (this.shopList.length > 0) {
+        //   this.queryParams.shopId = this.shopList[0].id
+        // }
         this.shopLoading = false
         this.handleQuery()
       });
@@ -624,14 +601,14 @@ export default {
     /** 查询商品管理列表 */
     getList() {
       this.loading = true;
-      if(this.shopType>0){
+      if(this.shopType&&this.shopType>0){
         this.queryParams.shopType = this.shopType
       }else {
         if(!this.queryParams.shopType){
           this.queryParams.shopType = null
         }
       }
-
+      console.log('===dddd')
       listGoods(this.queryParams).then(response => {
         this.goodsList = response.rows;
         this.total = response.total;
