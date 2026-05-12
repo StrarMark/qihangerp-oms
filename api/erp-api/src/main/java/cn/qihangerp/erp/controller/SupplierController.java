@@ -3,21 +3,38 @@ package cn.qihangerp.erp.controller;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
+import cn.qihangerp.enums.EnumUserType;
 import cn.qihangerp.model.entity.ErpSupplier;
+import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.security.common.BaseController;
 import cn.qihangerp.service.ErpSupplierService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/supplier")
-public class GoodsSupplierController extends BaseController {
+public class SupplierController extends BaseController {
     private final ErpSupplierService supplierService;
 
+    /**
+     * 所有供应商list
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping("/list_all")
+    public TableDataInfo list_all(ErpSupplier bo, PageQuery pageQuery) {
+        var pageList = supplierService.list(new LambdaQueryWrapper<ErpSupplier>()
+                .eq(ErpSupplier::getIsDelete,0)
+                .eq(bo.getIsShipper()!=null,ErpSupplier::getIsShipper,bo.getIsShipper())
+        );
+        return getDataTable(pageList);
+    }
     @GetMapping("/list")
     public TableDataInfo list(ErpSupplier bo, PageQuery pageQuery)
     {
