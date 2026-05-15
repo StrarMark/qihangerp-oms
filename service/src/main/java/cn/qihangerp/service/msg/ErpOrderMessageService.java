@@ -1,4 +1,4 @@
-package cn.qihangerp.msg;
+package cn.qihangerp.service.msg;
 
 import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.common.ResultVoEnum;

@@ -10,7 +10,7 @@ import cn.qihangerp.model.bo.PushToCloudWarehouseOrderBo;
 import cn.qihangerp.model.vo.OrderDiscountVo;
 import cn.qihangerp.model.vo.SalesDailyVo;
 import cn.qihangerp.model.vo.WaitShipReportVo;
-import cn.qihangerp.msg.ErpOrderMessageService;
+import cn.qihangerp.service.msg.ErpOrderMessageService;
 import cn.qihangerp.service.OOrderService;
 import cn.qihangerp.service.ShopGoodsSkuService;
 import cn.qihangerp.service.ShopOrderService;
