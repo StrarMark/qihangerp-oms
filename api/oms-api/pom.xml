@@ -106,17 +106,18 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version> <!-- jd-sdk依赖 -->
         </dependency>
+
         <dependency>
-            <groupId>cn.qihangerp.module</groupId>
-            <artifactId>serviceImpl</artifactId>
-            <version>1.0</version>
+            <groupId>cn.qihangerp.service</groupId>
+            <artifactId>service</artifactId>
+            <version>4.0.1</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok</artifactId>-->
-<!--            <version>1.18.30</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>cn.qihangerp.service</groupId>-->
 <!--            <artifactId>dou</artifactId>-->

@@ -2,11 +2,8 @@ package cn.qihangerp.erp.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.enums.EnumUserType;
 import cn.qihangerp.model.entity.ErpPurchaseLogistics;
-import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.security.common.BaseController;
-import cn.qihangerp.security.common.SecurityUtils;
 
 import cn.qihangerp.service.ErpPurchaseLogisticsService;
 import cn.qihangerp.service.OShopService;
@@ -14,7 +11,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

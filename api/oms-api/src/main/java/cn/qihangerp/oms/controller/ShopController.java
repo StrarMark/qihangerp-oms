@@ -4,7 +4,6 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.PageResult;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.enums.EnumUserType;
 import cn.qihangerp.model.entity.OShop;
 import cn.qihangerp.model.entity.OShopPlatform;
 import cn.qihangerp.request.ShopBo;
@@ -16,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

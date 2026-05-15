@@ -5,7 +5,7 @@ import cn.qihangerp.model.bo.MerchantAddBo;
 import cn.qihangerp.model.entity.ErpMerchant;
 import cn.qihangerp.model.query.MerchantQuery;
 import cn.qihangerp.security.common.BaseController;
-import cn.qihangerp.service.*;
+import cn.qihangerp.service.ErpMerchantService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

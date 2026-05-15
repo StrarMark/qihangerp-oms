@@ -2,7 +2,6 @@ package cn.qihangerp.oms.controller;
 
 import cn.qihangerp.common.*;
 import cn.qihangerp.enums.EnumShopType;
-import cn.qihangerp.enums.EnumUserType;
 import cn.qihangerp.model.bo.LinkErpGoodsSkuBo;
 import cn.qihangerp.model.entity.OGoodsSku;
 import cn.qihangerp.model.entity.OShop;
@@ -13,7 +12,6 @@ import cn.qihangerp.model.request.ShopGoodsAddRequest;
 import cn.qihangerp.model.request.ShopGoodsSkuAddRequest;
 import cn.qihangerp.model.request.ShopGoodsSkuInsertRequest;
 import cn.qihangerp.model.request.ShopGoodsSkuUpdateRequest;
-import cn.qihangerp.model.response.ShopGoodsSkuStock;
 import cn.qihangerp.security.common.BaseController;
 import cn.qihangerp.service.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

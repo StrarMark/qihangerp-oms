@@ -12,10 +12,10 @@
   <modules>
     <module>api</module>
     <module>core</module>
-    <module>serviceImpl</module>
+    <module>mapper</module>
     <module>model</module>
 <!--    <module>mapper</module>-->
-<!--    <module>service</module>-->
+    <module>service</module>
   </modules>
 
 

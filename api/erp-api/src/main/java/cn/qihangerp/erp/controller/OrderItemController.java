@@ -4,7 +4,6 @@ import cn.qihangerp.erp.request.OrderItemSpecIdUpdateBo;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
-import cn.qihangerp.model.bo.OrderItemListBo;
 import cn.qihangerp.model.query.OrderItemQuery;
 import cn.qihangerp.security.common.BaseController;
 import cn.qihangerp.service.OOrderItemService;

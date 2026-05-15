@@ -4,7 +4,6 @@ import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.model.entity.ErpPurchaseOrderShip;
-import cn.qihangerp.model.query.PurchaseOrderSearchBo;
 
 import cn.qihangerp.model.request.SearchRequest;
 import cn.qihangerp.security.common.BaseController;

@@ -2,13 +2,14 @@ package cn.qihangerp.oms.task;
 
 import cn.qihangerp.common.task.SchedulingConfiguration;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-@Log
+@Slf4j
 @Component
 public class CronTaskLoader implements ApplicationRunner {
 //    private static final Logger log = LoggerFactory.getLogger(CronTaskLoader.class);

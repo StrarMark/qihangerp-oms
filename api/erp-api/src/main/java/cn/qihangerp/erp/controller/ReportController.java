@@ -2,7 +2,6 @@ package cn.qihangerp.erp.controller;
 
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.model.vo.SalesDailyVo;
-import cn.qihangerp.model.vo.SalesTopSkuVo;
 import cn.qihangerp.security.common.BaseController;
 import cn.qihangerp.service.OOrderItemService;
 import cn.qihangerp.service.OOrderService;
