@@ -342,8 +342,8 @@ graph TD
 
 
 #### 3.2、导入数据库
-+ 创建数据库`qihang-erp`
-+ 导入数据库结构：sql脚本`docs\qihang-erp.sql`
++ 创建数据库`qihangerp`
++ 导入数据库结构：sql脚本`docs\qihangerp.sql`
 
 
 #### 3.3、启动服务(项目)
