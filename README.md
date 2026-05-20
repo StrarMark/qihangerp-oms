@@ -198,7 +198,7 @@ graph TD
 
 本项目后端采用`SpringCloudAlibaba`微服务架构开发。
 
-前端采用`Vue2`+`ElementUI`开发
+前端采用`Vue2`+`ElementUI`开发（`vue2/` 为升级版前端，`vue/` 目录已过时）
 
 + 后端技术及组件
   + Nacos 注册中心
@@ -353,7 +353,7 @@ graph TD
 
 #### 3.4、运行前端
 + Nodejs版本：v20.20.0
-+ 进入`vue`文件夹
++ 进入`vue2`文件夹（`vue/` 为旧版前端已过时）
 + 运行`npm install`
 + 运行`npm run dev`
 + 浏览网页`http://localhost:88`
@@ -373,7 +373,10 @@ graph TD
   `mvn clean package`
 
 ##### 前端打包
-`npm run build:prod`
+```bash
+cd vue2     # vue/ 为旧版前端已过时，请使用 vue2/
+npm run build:prod
+```
 
 #### 4.2 部署
 ##### 后端部署
@@ -412,7 +415,7 @@ location /prod-api/ {
 
 | 项目 | 定位                            | Gitee | GitHub |
 |:----|:------------------------------|:-----|:-------|
-| **启航电商ERP ⬅** | **电商业务AI底座（微服务）**             | [Gitee](https://gitee.com/qiliping/qihang-ecom-erp-open) | [GitHub](https://github.com/zeasin/qihang-ecom-erp-open) |
+| **启航电商ERP ⬅** | **电商业务AI底座（微服务）**             | [Gitee](https://gitee.com/qiliping/qihang-erp-open) | [GitHub](https://github.com/zeasin/qihang-erp-open) |
 | [OMS 订单中台](https://gitee.com/qiliping/qihang-oms) | 轻量级订单管理                       | [Gitee](https://gitee.com/qiliping/qihang-oms) | [GitHub](https://github.com/zeasin/qihang-ecom-oms) |
 | [跨境云仓WMS](https://gitee.com/qiliping/qihang-cloud-wms)     | 专为跨境云仓服务商打造 > 智能仓配，高效管理，一键无忧。 | [Gitee](https://gitee.com/qiliping/qihang-cloud-wms) | [GitHub](https://github.com/zeasin/qihang-cloud-wms) |
 | [跨境ERP](https://gitee.com/qiliping/qihang-cb-erp) | 跨境电商                          | [Gitee](https://gitee.com/qiliping/qihang-cb-erp) | [GitHub](https://github.com/zeasin/qihang-cb-erp) |

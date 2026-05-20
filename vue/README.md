@@ -1,3 +1,5 @@
+> **注意：此目录（`vue/`）为旧版前端（Vue CLI 4 + Webpack 4 + Vue 2.6.12），已过时。请使用 `vue2/` 目录的升级版前端（Vue CLI 5 + Webpack 5 + Vue 2.7.16）。**
+
 ## 开发
 
 ```bash

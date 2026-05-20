@@ -153,8 +153,8 @@ sequenceDiagram
 
 ## 项目概述
 
-启航电商ERP系统 (qihang-ecom-erp-open) 技术栈：
-- **前端**: Vue 2 + ElementUI + Vuex + Vue Router
+启航电商ERP系统 (qihang-erp-open) 技术栈：
+- **前端**: Vue 2 + ElementUI + Vuex + Vue Router（`vue2/` 目录为升级版，`vue/` 目录为旧版）
 - **后端**: SpringCloud 微服务 (Java 17) + Maven
 - **数据库**: MySQL 8 + Redis 7
 
@@ -164,8 +164,10 @@ sequenceDiagram
 
 ### 前端 (Vue)
 
+> `vue2/` 为升级版前端（Vue CLI 5 + Webpack 5 + Vue 2.7.16），`vue/` 为旧版前端（Vue CLI 4 + Webpack 4 + Vue 2.6.12）已过时。
+
 ```bash
-cd vue
+cd vue2
 npm install
 npm run dev              # 开发服务器 (端口 88)
 npm run build:prod      # 生产构建
@@ -331,9 +333,9 @@ public ResultVo<String> handleException(Exception e) {
 
 ## 项目目录结构
 
-### 前端 (vue/src/)
+### 前端 (vue2/src/ 升级版)
 ```
-vue/src/
+vue2/src/
 ├── api/           # API 接口定义
 ├── assets/        # 静态资源
 ├── components/    # 公共组件
@@ -344,6 +346,8 @@ vue/src/
 ├── utils/         # 工具函数
 └── views/         # 页面组件
 ```
+
+> **注意：** `vue/` 目录为旧版前端（Vue CLI 4 + Webpack 4），已过时，新功能开发请使用 `vue2/`。
 
 ### 后端模块
 
@@ -378,10 +382,9 @@ import foo from '../../../utils/foo'
 通过 `utils/request.js`，自动处理 token 和 401
 
 ### 环境变量
-在 vue/ 下创建 `.env.development`
+在 vue2/ 下创建 `.env.development`
 ```
 VUE_APP_BASE_API=/prod-api
-NODE_OPTIONS=--openssl-legacy-provider
 ```
 
 ---
@@ -389,7 +392,7 @@ NODE_OPTIONS=--openssl-legacy-provider
 ## 技术栈版本
 
 - Node.js >= 20.0.0 | Java 17 | Maven 3.9
-- Vue 2.6.12 | ElementUI 2.15.13
+- Vue 2.7.16 | ElementUI 2.15.13
 - Spring Boot 3.0.2 | Spring Cloud 2022.0.0
 
 ---
@@ -411,12 +414,12 @@ NODE_OPTIONS=--openssl-legacy-provider
 
 | 文件 | 用途 |
 |------|------|
-| `vue/src/utils/request.js` | Axios 拦截器 |
-| `vue/src/utils/auth.js` | Token 管理 |
-| `vue/src/api/` | API 端点定义 |
-| `vue/src/store/` | Vuex 模块 |
-| `vue/.eslintrc.js` | ESLint 配置 |
-| `vue/vue.config.js` | Vue CLI 配置 |
+| `vue2/src/utils/request.js` | Axios 拦截器 |
+| `vue2/src/utils/auth.js` | Token 管理 |
+| `vue2/src/api/` | API 端点定义 |
+| `vue2/src/store/` | Vuex 模块 |
+| `vue2/.eslintrc.js` | ESLint 配置 |
+| `vue2/vue.config.js` | Vue CLI 配置 |
 | `pom.xml` | Maven 父 POM |
 
 ---
