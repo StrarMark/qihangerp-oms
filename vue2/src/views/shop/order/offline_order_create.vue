@@ -191,8 +191,7 @@
     <PopupShopMemberList ref="popupMember" @data-from-select="handleDataFromPopupMember" />
     <!-- 选择优惠 -->
     <PopupDiscountList ref="popupDiscount" @data-from-select="handleDataFromPopupDiscount" />
-    <!-- 回收单选择弹窗 -->
-    <PopupRecycleList ref="popupRecycle" @data-from-select="handleDataFromPopupRecycle" />
+
   </div>
 </template>
 
@@ -201,12 +200,12 @@ import { queryShopGoodsSkuAndStock } from '@/api/shop/goodsStock'
 import { offlineOrderCreate } from '@/api/shop/order'
 import PopupDiscountList from '@/views/marketing/discount/PopupDiscountList.vue'
 import PopupShopMemberList from '@/views/member/PopupShopMemberList.vue'
-import PopupRecycleList from '@/views/afterSale/PopupRecycleList.vue'
+
 import { limitDecimalLength, stringToNumber } from '@/utils/numberInput'
 
 export default {
   name: 'PosOrderCreation',
-  components: { PopupShopMemberList, PopupDiscountList, PopupRecycleList },
+  components: { PopupShopMemberList, PopupDiscountList },
   data() {
     return {
       // 扫码相关

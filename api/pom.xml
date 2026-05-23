@@ -20,12 +20,11 @@
     <name>api</name>
     <url>http://maven.apache.org</url>
     <modules>
-        <module>gateway</module>
+<!--        <module>gateway</module>-->
 <!--        <module>ai-agent</module>-->
-        <module>open-api</module>
-        <module>erp-api</module>
-        <module>sys-api</module>
-        <module>oms-api</module>
+<!--        <module>open-api</module>-->
+<!--        <module>sys-api</module>-->
+<!--        <module>oms-api</module>-->
     </modules>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

@@ -67,6 +67,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/images/preview/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/system/config/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/captchaImage").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/sys-api/captchaImage").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/sys-api/system/config/**").permitAll()
                         .requestMatchers("/pdd/oauth_callback").permitAll()
                         // 允许直接访问授权登录接口
@@ -74,7 +75,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/sys-api/login").permitAll()
                         // 允许 SpringMVC 的默认错误地址匿名访问
                         .requestMatchers("/error").permitAll()
-                        // 其他所有接口必须有Authority信息，Authority在登录成功后的UserDetailsImpl对象中默认设置“ROLE_USER”
+                        // 其他所有接口必须有Authority信息，Authority在登录成功后的UserDetailsImpl对象中默认设置"ROLE_USER"
                         //.requestMatchers("/**").hasAnyAuthority("ROLE_USER")
                         // 允许任意请求被已登录用户访问，不检查Authority
                         .anyRequest().authenticated())
@@ -84,8 +85,8 @@ public class SecurityConfig {
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         // 添加Logout filter
                 // 微服务退出
-                http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
-                // 单体服务退出
+        http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
+        // 单体服务退出
 //                http.logout().logoutUrl("/api/sys-api/logout").logoutSuccessHandler(logoutSuccessHandler);
         return http.build();
     }
