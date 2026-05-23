@@ -2,11 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>cn.qihangerp.core</groupId>
-        <artifactId>core</artifactId>
-        <version>1.0</version>
+        <groupId>cn.qihangerp</groupId>
+        <artifactId>qihang-erp-open</artifactId>
+        <version>4.0.0</version>
     </parent>
 
+    <groupId>cn.qihangerp.core</groupId>
     <artifactId>security</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
@@ -25,11 +26,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.baomidou</groupId>-->
-<!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
-<!--            <version>3.5.5</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
@@ -71,23 +67,11 @@
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
             <version>9.1.0</version>
-<!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>cn.qihangerp.service</groupId>
             <artifactId>interfaces</artifactId>
             <version>2.0.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.core</groupId>-->
-<!--            <artifactId>common</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>cn.qihangerp.module</groupId>-->
-<!--            <artifactId>sys</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
     </dependencies>
 </project>

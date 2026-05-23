@@ -10,21 +10,21 @@
   <name>qihang-erp-open</name>
   <url>http://maven.apache.org</url>
   <modules>
-<!--    <module>api</module>-->
     <module>erp-api</module>
-    <module>core</module>
+    <module>security</module>
+    <module>common</module>
     <module>mapper</module>
     <module>model</module>
-<!--    <module>mapper</module>-->
     <module>service</module>
   </modules>
 
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <spring-boot.version>3.0.2</spring-boot.version>
-    <spring-cloud.version>2022.0.0</spring-cloud.version>
-    <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
     <jwt.version>0.11.5</jwt.version>
   </properties>
 
