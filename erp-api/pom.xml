@@ -73,7 +73,7 @@
         <dependency>
             <groupId>cn.qihangerp.service</groupId>
             <artifactId>service</artifactId>
-            <version>4.0.1</version>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
             <groupId>cn.qihangerp.open</groupId>

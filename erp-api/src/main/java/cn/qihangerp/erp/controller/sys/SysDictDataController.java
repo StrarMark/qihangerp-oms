@@ -3,7 +3,7 @@ package cn.qihangerp.erp.controller.sys;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.common.utils.StringUtils;
-import cn.qihangerp.domain.SysDictData;
+import cn.qihangerp.model.entity.SysDictData;
 import cn.qihangerp.security.common.BaseController;
 import cn.qihangerp.service.ISysDictDataService;
 import cn.qihangerp.service.ISysDictTypeService;

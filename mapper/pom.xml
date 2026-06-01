@@ -5,7 +5,7 @@
 
     <groupId>cn.qihangerp.mapper</groupId>
     <artifactId>mapper</artifactId>
-    <version>4.0.1</version>
+    <version>4.0.0</version>
     <packaging>jar</packaging>
 
     <name>mapper</name>
@@ -21,12 +21,12 @@
         <dependency>
             <groupId>cn.qihangerp.core</groupId>
             <artifactId>common</artifactId>
-            <version>1.0</version>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
             <groupId>cn.qihangerp.model</groupId>
             <artifactId>model</artifactId>
-            <version>4.0.1</version>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>

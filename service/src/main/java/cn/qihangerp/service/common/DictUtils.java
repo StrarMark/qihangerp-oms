@@ -1,9 +1,9 @@
-package cn.qihangerp.common;
+package cn.qihangerp.service.common;
 
 
 import cn.qihangerp.common.config.RedisCache;
 import cn.qihangerp.common.constant.CacheConstants;
-import cn.qihangerp.domain.SysDictData;
+import cn.qihangerp.model.entity.SysDictData;
 import cn.qihangerp.utils.SpringUtils;
 import cn.qihangerp.utils.StringUtils;
 import com.alibaba.fastjson2.JSONArray;
