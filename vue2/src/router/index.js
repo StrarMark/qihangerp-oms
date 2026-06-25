@@ -135,35 +135,7 @@ export const constantRoutes = [
         meta: { title: '报告详情' }
       }
     ]
-  },
-
-  // H5内销订单路由（隐藏，不显示在侧边栏）
-  {
-    path: '/h5',
-    component: () => import('@/views/common/H5Layout'),
-    hidden: true,
-    children: [
-      {
-        path: 'sales/create',
-        component: () => import('@/views/order/sales/h5/create'),
-        name: 'H5SalesCreate',
-        meta: { title: 'H5下单' }
-      },
-      {
-        path: 'sales/list',
-        component: () => import('@/views/order/sales/h5/list'),
-        name: 'H5SalesList',
-        meta: { title: 'H5订单' }
-      },
-      {
-        path: 'sales/detail/:id',
-        component: () => import('@/views/order/sales/h5/detail'),
-        name: 'H5SalesDetail',
-        meta: { title: 'H5订单详情' }
-      }
-    ]
   }
-
 ]
 
 // 动态路由，基于用户权限动态去加载

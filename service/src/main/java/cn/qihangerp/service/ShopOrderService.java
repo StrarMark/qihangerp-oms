@@ -20,7 +20,7 @@ import java.util.List;
 * @createDate 2025-07-15 11:36:42
 */
 public interface ShopOrderService extends IService<ShopOrder> {
-    PageResult<ShopOrder> queryTanglangOrderPageList(ShopOrderQueryBo bo, PageQuery pageQuery);
+
     PageResult<ShopOrder> queryOrderPageList(ShopOrderQueryBo bo, PageQuery pageQuery);
     ShopOrder queryDetailById(Long orderId);
     ShopOrder queryDetailByOrderNo(String orderNo);
