@@ -10,7 +10,8 @@ import cn.qihangerp.model.entity.*;
 import cn.qihangerp.model.request.PurchaseOrderStockInBo;
 import cn.qihangerp.model.request.SearchRequest;
 import cn.qihangerp.service.ErpPurchaseOrderShipService;
-import cn.qihangerp.service.ErpStockInItemService;
+import cn.qihangerp.service.ErpWarehouseGoodsService;
+import cn.qihangerp.service.ErpWarehouseStockInItemService;
 import cn.qihangerp.utils.DateUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -36,9 +37,10 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
     private final ErpPurchaseOrderShipMapper shipMapper;
     private final ErpPurchaseOrderMapper orderMapper;
     private final ErpPurchaseOrderItemMapper orderItemMapper;
-    private final ErpStockInMapper stockInMapper;
-    private final ErpStockInItemService stockInItemService;
     private final ErpWarehouseMapper warehouseMapper;
+    private final ErpWarehouseGoodsService warehouseGoodsService;
+    private final ErpWarehouseStockInItemService warehouseStockInItemService;
+    private final ErpWarehouseStockInMapper warehouseStockInMapper;
 
     private final MqUtils mqUtils;
     
@@ -114,102 +116,92 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
 
     @Transactional
     @Override
-    public ResultVo<Long> createStockInEntry(PurchaseOrderStockInBo bo) {
-        //if(result == -1) return new AjaxResult(404,"采购物流不存在");
-        //        else if (result == -2) return new AjaxResult(501,"未确认收货不允许操作");
-        //        else if (result == -3) {
-        //            return new AjaxResult(502,"已处理过了请勿重复操作");
-        //        } else if (result == -4) {
-        //            return new AjaxResult(503,"状态不正确不能操作");
-        //        } else if (result == -5) {
-        //            return new AjaxResult(504,"仓库不存在");
-        //        } else if (result == 1) {
-        //            return toAjax(1);
-        //        }else return toAjax(result);
-//        if(bo.getGoodsList()==null || bo.getGoodsList().size()==0) return ResultVo.error("缺少参数：goodsList");
+    public ResultVo<Long> createStockInEntry(PurchaseOrderStockInBo bo,Long userId,String userName) {
         if(bo.getId()==null) return ResultVo.error("缺少参数：ID");
         if(bo.getWarehouseId()==null) return ResultVo.error("缺少参数：warehouseId");
         ErpPurchaseOrderShip ship = shipMapper.selectById(bo.getId());
-        if (ship == null) return ResultVo.error("采购物流不存在");//数据不存在
-//        else if(ship.getStatus().intValue() == 0) return -2;//未确认收货不允许操作
-        else if (ship.getStatus().intValue() == 2) return ResultVo.error("已处理过了请勿重复操作");//已入库请勿重复操作
+        if (ship == null) return ResultVo.error("采购物流不存在");
+        else if (ship.getStatus().intValue() == 2) return ResultVo.error("已处理过了请勿重复操作");
         ErpWarehouse warehouse = warehouseMapper.selectById(bo.getWarehouseId());
-        if (warehouse == null) return ResultVo.error("仓库不存在");//仓库不存在
-
-//            mqUtils.sendApiMessage(MqMessage.build(null, MqType.PURCHASE_STOCK_IN,"0"));
-        ErpStockIn entry = new ErpStockIn();
-        entry.setWarehouseId(bo.getWarehouseId());
-        entry.setWarehouseType(warehouse.getWarehouseType());
-        entry.setWarehouseName(warehouse.getWarehouseName());
-        entry.setWarehouseNo(warehouse.getWarehouseNo());
-        entry.setMerchantId(ship.getMerchantId());
-        entry.setShopId(ship.getShopId());
+        if (warehouse == null) return ResultVo.error("仓库不存在");
+        // 子表（使用采购单item数据）
+        List<ErpPurchaseOrderItem> purchaseOrderItems = orderItemMapper.selectList(
+                new LambdaQueryWrapper<ErpPurchaseOrderItem>().eq(ErpPurchaseOrderItem::getOrderId, ship.getOrderId()));
+        if(purchaseOrderItems.isEmpty()){
+            return ResultVo.error("没有找打采购明细");
+        }
+        // 创建仓库入库单（使用 ErpWarehouseStockIn 替换旧的 ErpStockIn）
+        ErpWarehouseStockIn entry = new ErpWarehouseStockIn();
+        entry.setVendorId(bo.getWarehouseId());
         entry.setStockInNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", LocalDateTime.now()));
-        entry.setSourceId(ship.getId());
+        entry.setStockInType(1);//入库类型（1采购入库2退货入库）
+        entry.setSourceType(0);//来源（0自己入库1商户申请入库）
+        entry.setMerchantId(ship.getMerchantId());
+        entry.setMerchantName("");
+        entry.setApplyId(userId);
+        entry.setApplyMan(userName);
         entry.setSourceNo(ship.getOrderNum());
-        entry.setSourceSpecUnit(ship.getOrderSpecUnit());
-        entry.setSourceGoodsUnit(ship.getOrderGoodsUnit());
-        entry.setSourceSpecUnitTotal(ship.getOrderSpecUnitTotal());
-        entry.setStockInType(1);//来源类型（1采购订单2退货订单）
-        entry.setStatus(0);
         entry.setRemark(bo.getRemark());
+        entry.setStockInOperator(bo.getCreateBy());
         entry.setCreateBy(bo.getCreateBy());
         entry.setCreateTime(LocalDateTime.now());
-        stockInMapper.insert(entry);
+        entry.setStatus(0);//状态（0待入库1部分入库2全部入库）
+        warehouseStockInMapper.insert(entry);
 
-        // 子表 (使用采购单item数据作为子表数据)
-        List<ErpPurchaseOrderItem> purchaseOrderItems = orderItemMapper.selectList(new LambdaQueryWrapper<ErpPurchaseOrderItem>().eq(ErpPurchaseOrderItem::getOrderId, ship.getOrderId()));
 
-//        if (bo.getGoodsList() != null && bo.getGoodsList().size() > 0) {
-            List<ErpStockInItem> items = new ArrayList<>();
-//            for (var item : bo.getGoodsList()) {
-            for (var item : purchaseOrderItems) {
-                ErpPurchaseOrderItem erpPurchaseOrderItem = orderItemMapper.selectById(bo.getId());
-                if (erpPurchaseOrderItem != null) {
-                    ErpStockInItem entryItem = new ErpStockInItem();
-                    entryItem.setWarehouseId(bo.getWarehouseId());
-                    entryItem.setStockInId(entry.getId());
-                    entryItem.setStockInType(1);
-                    entryItem.setSourceId(erpPurchaseOrderItem.getOrderId());
-                    entryItem.setSourceItemId(Long.parseLong(erpPurchaseOrderItem.getId()));
-                    entryItem.setGoodsId(item.getGoodsId().toString());
-                    entryItem.setGoodsNum(item.getGoodsNum());
-                    entryItem.setGoodsName(item.getGoodsName());
-                    entryItem.setGoodsImage(item.getColorImage());
-                    entryItem.setSkuId(item.getSpecId().toString());
-                    entryItem.setSkuCode(item.getSpecNum());
-                    String skuName = "";
-                    if (StringUtils.hasText(item.getColorValue())) {
-                        skuName += item.getColorValue();
-                    }
-                    if (StringUtils.hasText(item.getSizeValue())) {
-                        skuName += " " + item.getSizeValue();
-                    }
-                    if (StringUtils.hasText(item.getStyleValue())) {
-                        skuName += " " + item.getStyleValue();
-                    }
 
-                    entryItem.setSkuName(skuName);
-                    entryItem.setQuantity(item.getQuantity().intValue());
-                    entryItem.setInventoryMode(erpPurchaseOrderItem.getInventoryMode());
-                    entryItem.setInQuantity(0);
-                    entryItem.setMerchantId(ship.getMerchantId());
-                    entryItem.setShopId(ship.getShopId());
-                    entryItem.setCreateBy(bo.getCreateBy());
-                    entryItem.setCreateTime(LocalDateTime.now());
-                    entryItem.setRemark("");
-                    entryItem.setPurPrice(item.getPrice().doubleValue());
-
-//                    entryItem.setLocationId(0L);
-                    entryItem.setStatus(0);
-                    items.add(entryItem);
-                }
+        List<ErpWarehouseStockInItem> items = new ArrayList<>();
+        for (var item : purchaseOrderItems) {
+            // 查询仓库商品表是否存在
+            List<ErpWarehouseGoods> existGoodsList = warehouseGoodsService.list(
+                    new LambdaQueryWrapper<ErpWarehouseGoods>()
+                            .eq(ErpWarehouseGoods::getWarehouseId, bo.getWarehouseId())
+                            .eq(ErpWarehouseGoods::getErpGoodsSkuId, item.getSpecId()));
+            Long warehouseGoodsId;
+            if (existGoodsList.isEmpty()) {
+                // 仓库商品表中不存在，新增
+                ErpWarehouseGoods newGoods = new ErpWarehouseGoods();
+                newGoods.setWarehouseId(bo.getWarehouseId());
+                newGoods.setWarehouseNo(warehouse.getWarehouseNo());
+                newGoods.setWarehouseType(warehouse.getWarehouseType());
+                newGoods.setGoodsNo(item.getSpecNum());
+                newGoods.setErpGoodsNo(item.getGoodsNum());
+                newGoods.setErpGoodsSign(item.getSpecNum());
+                newGoods.setGoodsName(item.getGoodsName());
+                newGoods.setImageUrl(item.getColorImage());
+                newGoods.setErpGoodsId(item.getGoodsId());
+                newGoods.setErpGoodsSkuId(item.getSpecId());
+                newGoods.setStandard(buildSkuName(item));
+                newGoods.setMerchantId(ship.getMerchantId());
+                newGoods.setCreateBy(bo.getCreateBy());
+                newGoods.setCreateTime(LocalDateTime.now());
+                warehouseGoodsService.save(newGoods);
+                warehouseGoodsId = newGoods.getId();
+            } else {
+                warehouseGoodsId = existGoodsList.get(0).getId();
             }
-//                stockInEntryMapper.batchWmsStockInEntryItem(items);
-            stockInItemService.saveBatch(items);
-//        }
 
-        // 更新表状态
+            ErpWarehouseStockInItem entryItem = new ErpWarehouseStockInItem();
+            entryItem.setWarehouseId(bo.getWarehouseId());
+            entryItem.setVendorId(bo.getWarehouseId());
+            entryItem.setStockInId(entry.getId());
+            entryItem.setGoodsId(warehouseGoodsId);
+            entryItem.setGoodsNo(item.getSpecNum());
+            entryItem.setGoodsName(item.getGoodsName());
+            entryItem.setGoodsImage(item.getColorImage());
+            entryItem.setSkuName(buildSkuName(item));
+            entryItem.setQuantity(item.getQuantity().intValue());
+            entryItem.setInQuantity(0);
+            entryItem.setStatus(0);
+            entryItem.setRemark("");
+            entryItem.setCreateBy(bo.getCreateBy());
+            entryItem.setCreateTime(LocalDateTime.now());
+            entryItem.setMerchantId(entry.getMerchantId());
+            items.add(entryItem);
+        }
+        warehouseStockInItemService.saveBatch(items);
+
+        // 更新采购物流表状态
         ErpPurchaseOrderShip update = new ErpPurchaseOrderShip();
         update.setUpdateTime(DateUtils.getNowDate());
         update.setStockInTime(DateUtils.getNowDate());
@@ -223,8 +215,7 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
         update.setId(ship.getId());
         shipMapper.updateById(update);
 
-        //更新 采购订单
-        // 更新采购单状态
+        // 更新采购订单状态
         ErpPurchaseOrder order = new ErpPurchaseOrder();
         order.setId(ship.getOrderId());
         order.setStatus(3);
@@ -238,7 +229,20 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
         orderMapper.updateById(order);
 
         return ResultVo.success(entry.getId());
+    }
 
+    private String buildSkuName(ErpPurchaseOrderItem item) {
+        String skuName = "";
+        if (StringUtils.hasText(item.getColorValue())) {
+            skuName += item.getColorValue();
+        }
+        if (StringUtils.hasText(item.getSizeValue())) {
+            skuName += " " + item.getSizeValue();
+        }
+        if (StringUtils.hasText(item.getStyleValue())) {
+            skuName += " " + item.getStyleValue();
+        }
+        return skuName;
     }
 }
 

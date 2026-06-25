@@ -18,5 +18,5 @@ public interface ErpPurchaseOrderShipService extends IService<ErpPurchaseOrderSh
 
     int updateScmPurchaseOrderShip(ErpPurchaseOrderShip erpPurchaseOrderShip);
 
-    ResultVo<Long> createStockInEntry(PurchaseOrderStockInBo bo);
+    ResultVo<Long> createStockInEntry(PurchaseOrderStockInBo bo,Long userId,String userName);
 }

@@ -3,10 +3,12 @@ package cn.qihangerp.erp.controller.erp;
 import cn.qihangerp.common.AjaxResult;
 import cn.qihangerp.common.PageQuery;
 import cn.qihangerp.common.TableDataInfo;
+import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.entity.ErpPurchaseOrderShip;
-
+import cn.qihangerp.model.request.PurchaseOrderStockInBo;
 import cn.qihangerp.model.request.SearchRequest;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.security.common.SecurityUtils;
 import cn.qihangerp.service.ErpPurchaseOrderShipService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -45,26 +47,18 @@ public class PurchaseOrderShipController extends BaseController
         return toAjax(shipService.updateScmPurchaseOrderShip(erpPurchaseOrderShip));
     }
 
-    //createStockInEntry
-//    @PostMapping("/ship/createStockInEntry")
-//    public AjaxResult createStockInEntry(@RequestBody PurchaseOrderStockInBo bo, HttpServletRequest request)
-//    {
-//        if(bo.getId() == null) return AjaxResult.error("缺少参数id");
-//        if(bo.getWarehouseId()==null) return AjaxResult.error("请选择仓库");
-//
-//        bo.setCreateBy(getUsername());
-//        int result =shipService.createStockInEntry(bo);
-//        if(result == -1) return new AjaxResult(404,"采购物流不存在");
-//        else if (result == -2) return new AjaxResult(501,"未确认收货不允许操作");
-//        else if (result == -3) {
-//            return new AjaxResult(502,"已处理过了请勿重复操作");
-//        } else if (result == -4) {
-//            return new AjaxResult(503,"状态不正确不能操作");
-//        } else if (result == -5) {
-//            return new AjaxResult(504,"仓库不存在");
-//        } else if (result == 1) {
-//            return toAjax(1);
-//        }else return toAjax(result);
-//    }
+    @PostMapping("/ship/createStockInEntry")
+    public AjaxResult createStockInEntry(@RequestBody PurchaseOrderStockInBo bo)
+    {
+        if(bo.getId() == null) return AjaxResult.error("缺少参数id");
+        if(bo.getWarehouseId()==null) return AjaxResult.error("请选择仓库");
+
+        bo.setCreateBy(getUsername());
+        ResultVo<Long> result = shipService.createStockInEntry(bo, SecurityUtils.getUserId(),SecurityUtils.getUsername());
+        if(result.getCode()==0)
+            return AjaxResult.success();
+        else
+            return AjaxResult.error(result.getMsg());
+    }
 
 }
