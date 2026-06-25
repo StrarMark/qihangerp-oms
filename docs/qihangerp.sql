@@ -11542,8 +11542,6 @@ INSERT INTO `sys_menu` VALUES (478, '添加ERP商品', 4, 99, 'create', 'goods/c
 INSERT INTO `sys_menu` VALUES (516, '用户管理', 5, 0, 'user', 'system/user/index', '', 1, 0, 'C', '0', '0', '', 'user', 'admin', '2023-12-27 15:00:27', 'admin', '2025-02-17 22:03:15', '用户管理菜单');
 INSERT INTO `sys_menu` VALUES (517, '菜单管理', 5, 1, 'menu', 'system/menu/index', '', 1, 0, 'C', '0', '0', '', 'list', 'admin', '2023-12-27 15:00:27', 'admin', '2025-07-05 09:25:01', '用户管理菜单');
 INSERT INTO `sys_menu` VALUES (579, '字典管理', 5, 9, 'dict', 'system/dict/index', NULL, 1, 0, 'C', '0', '0', '', 'dict', 'admin', '2024-03-18 08:43:55', 'admin', '2024-03-18 08:44:08', '');
-INSERT INTO `sys_menu` VALUES (604, '折扣管理', 1, 80, 'discount', 'marketing/discount/index', NULL, 1, 0, 'C', '0', '0', '', 'merchant_price', 'admin', '2026-03-26 09:02:25', 'admin', '2026-04-11 12:15:33', '');
-INSERT INTO `sys_menu` VALUES (648, '会员管理', 1, 90, 'member', 'member/index', NULL, 1, 0, 'C', '0', '0', '', 'user', 'admin', '2025-08-07 19:05:58', 'admin', '2026-04-11 12:16:06', '');
 INSERT INTO `sys_menu` VALUES (840, '供应商发货', 8, 13, 'vendor_ship', 'shipping/vendor_ship/index.vue', NULL, 1, 0, 'C', '0', '0', '', 'vendorWaitShip', 'admin', '2025-07-09 11:02:29', 'admin', '2026-03-29 16:24:16', '');
 INSERT INTO `sys_menu` VALUES (841, '云仓发货', 8, 14, 'cloud_warehouse_ship', 'shipping/cloud_warehouse/index', NULL, 1, 0, 'C', '0', '0', '', 'cloudWarehouse', 'admin', '2025-07-09 23:11:42', 'admin', '2025-10-22 18:07:08', '');
 INSERT INTO `sys_menu` VALUES (857, '手动发货', 8, 0, 'manual_ship', 'shipping/index', NULL, 1, 0, 'C', '0', '0', '', 'manual', 'admin', '2025-09-19 19:23:49', 'admin', '2026-04-24 09:27:41', '');
