@@ -70,12 +70,24 @@ public class WarehouseController extends BaseController {
         return toAjax(warehouseService.updateById(warehouse));
     }
 	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
-        return toAjax(warehouseService.removeBatchByIds(Arrays.stream(ids).toList()));
-    }
+	public AjaxResult remove(@PathVariable Long[] ids)
+	{
+	    return toAjax(warehouseService.removeBatchByIds(Arrays.stream(ids).toList()));
+	}
 
-    @GetMapping("/position/list")
+	/**
+	 * 查询所有可用仓库（仅总部查询）
+	 */
+	@GetMapping("/my_available_list")
+	public AjaxResult myAvailableList()
+	{
+	    LambdaQueryWrapper<ErpWarehouse> qw = new LambdaQueryWrapper<ErpWarehouse>()
+	            .eq(ErpWarehouse::getStatus, 1);
+	    List<ErpWarehouse> list = warehouseService.list(qw);
+	    return success(list);
+	}
+
+	@GetMapping("/position/list")
     public TableDataInfo positionList(Long warehouseId)
     {
         LambdaQueryWrapper<ErpWarehousePosition> qw = new LambdaQueryWrapper<ErpWarehousePosition>()

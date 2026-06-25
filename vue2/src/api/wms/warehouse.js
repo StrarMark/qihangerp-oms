@@ -69,26 +69,3 @@ export function delLocation(id) {
     method: 'delete'
   })
 }
-
-// 仓库分配供应商
-export function shareMerchant(data) {
-  return request({
-    url: '/api/erp-api/warehouse/shareMerchant',
-    method: 'post',
-    data: data
-  })
-}
-export function setWarehouseLoginName(data) {
-  return request({
-    url: '/api/erp-api/warehouse/setLoginName',
-    method: 'post',
-    data: data
-  })
-}
-// 获取登录账号
-export function getLoginAccount(id) {
-  return request({
-    url: '/api/erp-api/warehouse/getLoginAccount/' + id,
-    method: 'get'
-  })
-}
