@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 供应商商品表(SPU维度)
@@ -121,4 +122,10 @@ public class ErpSupplierProduct {
      */
     @TableField(exist = false)
     private Integer skuCount;
+
+    /**
+     * SKU列表（非数据库字段，用于详情展示）
+     */
+    @TableField(exist = false)
+    private List<ErpSupplierProductItem> skuList;
 }
