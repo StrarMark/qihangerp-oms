@@ -10,7 +10,7 @@
 
     <groupId>cn.qihangerp</groupId>
     <artifactId>erp-api</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
     <packaging>jar</packaging>
 
     <name>erp-api</name>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>cn.qihangerp.core</groupId>
             <artifactId>security</artifactId>
-            <version>4.0.0</version>
+            <version>4.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
@@ -71,10 +71,10 @@
         <dependency>
             <groupId>cn.qihangerp.service</groupId>
             <artifactId>service</artifactId>
-            <version>4.0.0</version>
+            <version>4.1.0</version>
         </dependency>
         <dependency>
-            <groupId>cn.qihangerp.open</groupId>
+            <groupId>cn.qihangerp.sdk</groupId>
             <artifactId>open-sdk</artifactId>
             <version>2.1.12</version>
         </dependency>

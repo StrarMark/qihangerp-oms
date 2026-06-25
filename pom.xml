@@ -4,7 +4,7 @@
 
   <groupId>cn.qihangerp</groupId>
   <artifactId>qihang-erp-open</artifactId>
-  <version>4.0.0</version>
+  <version>4.1.0</version>
   <packaging>pom</packaging>
 
   <name>qihang-erp-open</name>
@@ -16,6 +16,7 @@
     <module>mapper</module>
     <module>model</module>
     <module>service</module>
+    <module>open-sdk</module>
   </modules>
 
 

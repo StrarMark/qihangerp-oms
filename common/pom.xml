@@ -4,13 +4,13 @@
     <parent>
         <groupId>cn.qihangerp</groupId>
         <artifactId>qihang-erp-open</artifactId>
-        <version>4.0.0</version>
+        <version>4.1.0</version>
     </parent>
 
     <groupId>cn.qihangerp.core</groupId>
     <artifactId>common</artifactId>
     <packaging>jar</packaging>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
     <name>common</name>
     <url>http://maven.apache.org</url>
 
