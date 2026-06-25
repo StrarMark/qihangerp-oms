@@ -20,6 +20,19 @@ public class SysUser
     /** 部门ID */
     private Long deptId;
 
+    /** 用户类型（00系统用户 10云仓库 20商户 30供应商 40店铺） */
+    private String userType;
+
+    public String getUserType()
+    {
+        return userType;
+    }
+
+    public void setUserType(String userType)
+    {
+        this.userType = userType;
+    }
+
     /** 用户账号 */
 
     private String userName;

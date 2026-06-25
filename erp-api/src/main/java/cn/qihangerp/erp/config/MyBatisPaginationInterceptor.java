@@ -7,7 +7,6 @@ import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
@@ -16,8 +15,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 /**
  * MyBatis-Plus 3.5.16 分页拦截器
@@ -35,22 +34,26 @@ public class MyBatisPaginationInterceptor implements InnerInterceptor {
         long size = page.getSize();
         if (size <= 0) return;
 
-        // 1. COUNT 查询
-        String countSql = "SELECT COUNT(*) FROM (" + boundSql.getSql() + ") tmp_count";
-        Connection connection = executor.getTransaction().getConnection();
-        try (PreparedStatement ps = connection.prepareStatement(countSql)) {
-            List<ParameterMapping> mappings = boundSql.getParameterMappings();
-            Object paramObj = boundSql.getParameterObject();
-            for (int i = 0; i < mappings.size(); i++) {
-                String propName = mappings.get(i).getProperty();
-                Object value = resolveParamValue(propName, paramObj);
-                ps.setObject(i + 1, value);
-            }
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    page.setTotal(rs.getLong(1));
+        String originalSql = boundSql.getSql();
+
+        // 1. COUNT 查询（使用原始SQL替换SELECT和去除ORDER BY/LIMIT）
+        try {
+            String countSql = buildCountSql(originalSql);
+            Connection connection = executor.getTransaction().getConnection();
+            try (PreparedStatement ps = connection.prepareStatement(countSql)) {
+                // 复用原始SQL的参数设置方式
+                org.apache.ibatis.executor.parameter.ParameterHandler ph = ms.getConfiguration()
+                        .newParameterHandler(ms, parameter, boundSql);
+                ph.setParameters(ps);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        page.setTotal(rs.getLong(1));
+                    }
                 }
             }
+        } catch (Exception e) {
+            // COUNT失败时不影响主查询
+            System.err.println("COUNT查询失败: " + e.getMessage());
         }
 
         // 2. LIMIT
@@ -58,38 +61,24 @@ public class MyBatisPaginationInterceptor implements InnerInterceptor {
         try {
             java.lang.reflect.Field sqlField = BoundSql.class.getDeclaredField("sql");
             sqlField.setAccessible(true);
-            sqlField.set(boundSql, boundSql.getSql() + " LIMIT " + offset + ", " + size);
+            sqlField.set(boundSql, originalSql + " LIMIT " + offset + ", " + size);
         } catch (Exception e) {
             throw new RuntimeException("SQL分页改写失败", e);
         }
     }
 
-    private Object resolveParamValue(String property, Object paramObj) {
-        if (paramObj == null) return null;
-        // 简单类型直接返回
-        if (property.contains(".")) {
-            String[] parts = property.split("\\.");
-            Object obj = resolveParamValue(parts[0], paramObj);
-            return resolveParamValue(parts[1], obj);
+    private String buildCountSql(String sql) {
+        // 去除末尾的 LIMIT 子句
+        sql = sql.replaceAll("(?i)\\s+LIMIT\\s+\\d+(?:\\s*,\\s*\\d+)?\\s*$", "");
+        // 去除 ORDER BY 子句（在子查询中 ORDER BY 无意义）
+        sql = sql.replaceAll("(?i)\\s+ORDER\\s+BY\\s+[^)]+?(?=\\s*(?:LIMIT|$))", "");
+        // 替换 SELECT ... FROM 为 SELECT COUNT(*) FROM
+        // 处理 SELECT DISTINCT / SELECT 等
+        int fromIdx = sql.toUpperCase().indexOf(" FROM ");
+        if (fromIdx > 0) {
+            return "SELECT COUNT(*) " + sql.substring(fromIdx);
         }
-        // MyBatis 封装的 ParamMap 或直接参数
-        if (paramObj instanceof java.util.Map) {
-            return ((java.util.Map<String, ?>) paramObj).get(property);
-        }
-        // 简单属性通过反射获取
-        try {
-            java.lang.reflect.Field field = paramObj.getClass().getDeclaredField(property);
-            field.setAccessible(true);
-            return field.get(paramObj);
-        } catch (Exception e) {
-            // 尝试 getter
-            try {
-                String getter = "get" + property.substring(0, 1).toUpperCase() + property.substring(1);
-                return paramObj.getClass().getMethod(getter).invoke(paramObj);
-            } catch (Exception ex) {
-                return null;
-            }
-        }
+        return "SELECT COUNT(*) FROM (" + sql + ") tmp_count";
     }
 
     @Override public void beforePrepare(StatementHandler sh, Connection connection, Integer transactionTimeout) {}

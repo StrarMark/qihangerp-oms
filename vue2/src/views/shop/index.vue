@@ -514,7 +514,6 @@ import { listGroup } from '@/api/shop/group'
 import { listMerchant } from '@/api/shop/merchant'
 import { getXhsOAuthUrl, getXhsToken } from '@/api/xhs/shop_api'
 import { getDiansanAuthUrl } from '@/api/shop/oauth'
-import { getInternalSystemConfig } from '@/api/third_system'
 import { pcaTextArr } from 'element-china-area-data'
 import { getKsOAuthUrl, getKsToken } from '@/api/kwai/shop_api'
 export default {
