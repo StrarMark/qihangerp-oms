@@ -11,6 +11,6 @@ public class UserNotExistsException extends UserException
 
     public UserNotExistsException()
     {
-        super("user.not.exists", null);
+        super("user.not.exists", null, "用户不存在");
     }
 }

@@ -88,6 +88,11 @@ mybatis-plus:
 
 deepseek:
   api:
-    key: 
+    key:
     endpoint: https://api.deepseek.com/chat/completions
     model: deepseek-chat
+
+# Token 配置
+token:
+  expireTime: 6       # Token 过期时间（分钟），默认30
+  secret: abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijkrstuvwxyzabcdefghijklmnopqrstuvwxyz

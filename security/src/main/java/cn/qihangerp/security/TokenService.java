@@ -12,7 +12,9 @@ import cn.qihangerp.common.utils.ServletUtils;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,6 +75,9 @@ public class TokenService
             }
             catch (Exception e)
             {
+                // Token验证失败
+                System.err.println("Token验证失败: " + e.getMessage());
+                e.printStackTrace();
             }
         }
         return null;
@@ -172,23 +177,26 @@ public class TokenService
      */
     private String createToken(Map<String, Object> claims)
     {
+        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         String token = Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+                .claims(claims)
+                .signWith(key).compact();
         return token;
     }
 
-    /**
+/**
      * 从令牌中获取数据声明
      *
      * @param token 令牌
-     * @return 数据声明
+     * @return 令牌
      */
     private Claims parseToken(String token)
     {
+        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         return Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
                 .getBody();
     }
 

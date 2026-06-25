@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>9.0.0.Final</version>
+            <version>9.1.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.20</version>
+            <version>2.21</version>
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
@@ -69,8 +69,8 @@
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-            <version>3.5.5</version>
+            <artifactId>mybatis-plus-spring-boot4-starter</artifactId>
+            <version>3.5.16</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

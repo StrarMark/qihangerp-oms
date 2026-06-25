@@ -12,6 +12,5 @@ import java.util.List;
 @Mapper
 public interface ErpSalesGoodsPackageMapper extends BaseMapper<ErpSalesGoodsPackage> {
 
-    @Select("SELECT * FROM erp_sales_goods_package_item WHERE package_id = #{packageId}")
     List<ErpSalesGoodsPackageItem> selectItemsByPackageId(@Param("packageId") Long packageId);
 }

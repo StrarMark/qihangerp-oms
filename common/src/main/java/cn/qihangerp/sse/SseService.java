@@ -2,6 +2,7 @@ package cn.qihangerp.sse;
 
 import cn.qihangerp.enums.EnumShopType;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
@@ -189,7 +190,7 @@ public class SseService {
      * 定时向所有客户端发送心跳消息
      * 每 30 秒执行一次
      */
-//    @Scheduled(fixedRate = 30000) // 30 seconds
+    @Scheduled(fixedRate = 30000) // 30秒发送一次心跳
     public void sendHeartbeats() {
         List<String> clientIdsSnapshot = new ArrayList<>(clientEmitters.keySet());
 //        log.info("发送心跳： {} clients", clientIdsSnapshot.size());

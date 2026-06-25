@@ -16,6 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -45,12 +50,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                // CORS跨域配置
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // 禁用basic明文验证
-                .httpBasic().disable()
+                .httpBasic(AbstractHttpConfigurer::disable)
                 // 前后端分离架构不需要csrf保护
-                .csrf().disable()
+                .csrf(AbstractHttpConfigurer::disable)
                 // 禁用默认登录页
-                .formLogin().disable()
+                .formLogin(AbstractHttpConfigurer::disable)
                 // 禁用默认登出页
 //                .logout().disable()
                 // 设置异常的EntryPoint，如果不设置，默认使用Http403ForbiddenEntryPoint
@@ -73,6 +80,8 @@ public class SecurityConfig {
                         // 允许直接访问授权登录接口
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/sys-api/login").permitAll()
+                        // SSE 推送通知放行
+                        .requestMatchers("/api/erp-api/sse/notify_msg").permitAll()
                         // 允许 SpringMVC 的默认错误地址匿名访问
                         .requestMatchers("/error").permitAll()
                         // 其他所有接口必须有Authority信息，Authority在登录成功后的UserDetailsImpl对象中默认设置"ROLE_USER"
@@ -84,10 +93,7 @@ public class SecurityConfig {
                 // 加我们自定义的过滤器，替代UsernamePasswordAuthenticationFilter
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         // 添加Logout filter
-                // 微服务退出
-        http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
-        // 单体服务退出
-//                http.logout().logoutUrl("/api/sys-api/logout").logoutSuccessHandler(logoutSuccessHandler);
+        http.logout(logout -> logout.logoutUrl("/api/sys-api/logout").logoutSuccessHandler(logoutSuccessHandler));
         return http.build();
     }
 
@@ -104,9 +110,9 @@ public class SecurityConfig {
      */
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         // DaoAuthenticationProvider 从自定义的 userDetailsService.loadUserByUsername 方法获取UserDetails
-        authProvider.setUserDetailsService(userDetailsService());
+        // Spring Security 7.x: 构造器直接传入 UserDetailsService
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService());
         // 设置密码编辑器
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
@@ -122,6 +128,22 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    /**
+     * CORS配置 - Spring Boot 4.1 / Spring Security 7.x 需要显式配置
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 

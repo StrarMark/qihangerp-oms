@@ -67,13 +67,11 @@ public class BaseException extends RuntimeException
         String message = null;
         if (!StringUtils.isEmpty(code))
         {
-//            try {
+            try {
                 message = MessageUtils.message(code, args);
-//            }catch (Exception  e){
-//                if(code.equals("user.password.not.match")){
-//                    message = "登录密码不匹配";
-//                }
-//            }
+            } catch (Exception ignored) {
+                // 消息文件不存在时使用默认消息
+            }
         }
         if (message == null)
         {
