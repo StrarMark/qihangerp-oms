@@ -7,11 +7,38 @@
 > **启航电商ERP系统正在重构AI原生ERP系统。**
 
 
-## 🎉 4.0版本重大升级（与商业版功能架构对齐）
+## 🎉 4.1版本重大升级
 
-> **🔥 开源版正在全面升级到4.0版，功能架构与启航电商ERP商业版对齐！**
->
-> **📖 商业版最新功能文档：[https://gitee.com/qiliping/qihangerp-docs](https://gitee.com/qiliping/qihangerp-docs)**
+### 🚀 核心技术栈升级
+
+| 组件 | 版本 | 说明 |
+|------|------|------|
+| **Spring Boot** | **4.1.0** | 从 3.0.2 升级，基于 Spring Framework 7.x |
+| **Spring Security** | 7.1.0 | 安全框架升级，API 变更适配 |
+| **Spring Data Redis** | 4.1.0 | Redis 数据层升级 |
+| **Tomcat** | 11.0.22 | Servlet 6.x 支持 |
+| **Java** | 17 | 保持兼容，无需升级 JDK |
+| **MyBatis-Plus** | 3.5.16 | spring-boot4-starter 适配 |
+| **jjwt** | 0.12.6 | JWT 库升级，API 变更 |
+| **Jackson** | 2.21.4 | 兼容 com.fasterxml 包路径 |
+| **MySQL Connector** | 9.2.0 | 迁移至 mysql-connector-j |
+
+### 🤖 AI原生ERP——Spring AI 2.0 集成
+
+> **🔥 开源版已集成 Spring AI 2.0，为AI原生ERP奠定基础！**
+
+| 特性 | 描述 | 状态 |
+|------|------|------|
+| **Spring AI 2.0** | 官方 AI 框架，统一大模型接入 | ✅ 基础依赖已集成 |
+| **DeepSeek 大模型** | 通过 OpenAI 兼容 API 接入 DeepSeek | 🔧 需配置 API Key 启用 |
+| **RAG 知识库** | PGVector 向量存储 + 检索增强生成 | 🔧 需部署 pgvector 启用 |
+| **ChatClient** | Spring AI 统一聊天客户端 | ✅ 已集成 |
+| **文档读取器** | PDF/HTML/JSoup/Tika 文档解析 | 🔧 按需启用 |
+| **SSE 实时推送** | 服务端事件推送，新订单实时通知 | ✅ 已实现 |
+| **AI 分析助手** | 库存分析、补货建议（DeepSeek驱动） | 🔧 基础框架已搭建 |
+
+**启用 AI 功能：** 配置 `application.yml` 中的 `spring.ai.deepseek.api-key`，取消注释 `pom.xml` 中的 Spring AI starter 依赖。
+
 
 ### 4.0核心特性
 
@@ -20,13 +47,9 @@
 | **多商户架构** | 商户独立管理店铺、商品、采购、订单、出入库 | 开发中 |
 | **多仓库支持** | 本地仓、系统云仓、京东云仓 | 开发中 |
 | **多供应商支持** | 供应商发货处理、备货单管理 | 开发中 |
-| **AI原生ERP** | 通过OpenApi+CLI构建供AI调用的系统 | 开发中 |
+| **AI原生ERP** | 通过 Spring AI 2.0 + OpenAPI 构建 AI 调用能力 | 开发中 |
 | **完整进销存** | 采购、销售、出入库全流程管理 | 开发中 |
 | **三级销售架构** | 总部-商户-店铺三级体系 | 开发中 |
-
----
-
-**升级预告（2026-04-28）：开源版本即将实现商业版中的总部-商户-店铺三级销售架构体系，敬请期待！**
 
 
 ## 一、系统介绍
@@ -196,13 +219,20 @@ graph TD
 
 #### 系统架构
 
-本项目后端采用`SpringCloudAlibaba`微服务架构开发。
+本项目后端采用`Spring Boot 4.1` + `Spring AI 2.0` 架构开发。
 
-前端采用`Vue2`+`ElementUI`开发（`vue2/` 为升级版前端，`vue/` 目录已过时）
+前端采用`Vue2`+`ElementUI`开发（`vue2/` 为升级版前端）
 
-+ 后端技术及组件
-  + Nacos 注册中心
-  + Redis
++ 后端核心技术栈
+  + **Spring Boot 4.1.0** — 最新稳定版，基于 Spring Framework 7.x
+  + **Spring Security 7.1** — 安全认证与授权
+  + **Spring AI 2.0** — AI 大模型统一接入框架
+  + **MyBatis-Plus 3.5.16** — 持久层框架
+  + **MySQL 8** — 数据库
+  + **Redis** — 缓存、消息队列、SSE 会话管理
+  + **Nacos** — 注册中心
+  + **Sentinel** — 流量治理
+  + **SSE** — 服务端实时消息推送
 
 
 ## 三、功能模块
@@ -266,6 +296,8 @@ graph TD
 + Java：17
 + Nodejs：v20.20.0
 + Maven：3.9
++ Spring Boot：4.1.0
++ Spring AI：2.0.0
 
 #### 1.2、存储及中间件
 
@@ -347,18 +379,32 @@ graph TD
 
 
 #### 3.3、启动服务(项目)
-1.  启动开放平台微服务（`oms-api`）
-2.  启动`sys-api`、`erp-api`微服务
-3.  启动微服务网关（`gateway`）
+1.  启动MySQL、Redis
+2.  启动`erp-api`微服务（默认端口 8088）
 
 #### 3.4、运行前端
 + Nodejs版本：v20.20.0
-+ 进入`vue2`文件夹（`vue/` 为旧版前端已过时）
++ 进入`vue2`文件夹
 + 运行`npm install`
 + 运行`npm run dev`
-+ 浏览网页`http://localhost:88`
++ 浏览网页（默认端口 88，也可通过环境变量 `port=1024` 指定）
 + 登录账号：`admin`
 + 登录密码：`admin123`
+
+#### 3.5、SSE 实时消息推送
+系统支持 SSE（Server-Sent Events）实时推送新订单等通知。
+
+**开发环境**：前端 devServer proxy 已默认支持 SSE 长连接代理。
+
+**生产环境（Nginx）**：需要配置以下关键参数：
+```nginx
+location /prod-api/ {
+    proxy_http_version 1.1;    # 必须 HTTP/1.1
+    proxy_buffering off;       # 关闭缓冲
+    proxy_read_timeout 1800s;  # 长连接超时
+    proxy_pass http://127.0.0.1:8088/;
+}
+```
 
 ### 4、项目部署
 

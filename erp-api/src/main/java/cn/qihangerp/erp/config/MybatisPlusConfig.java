@@ -13,7 +13,8 @@ public class MybatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        // MyBatis-Plus 3.5.16: 分页通过 Page 类自动处理，无需额外配置拦截器
+        // MyBatis-Plus 3.5.16 移除了 PaginationInnerInterceptor，使用自定义拦截器
+        interceptor.addInnerInterceptor(new MyBatisPaginationInterceptor());
         return interceptor;
     }
 }
