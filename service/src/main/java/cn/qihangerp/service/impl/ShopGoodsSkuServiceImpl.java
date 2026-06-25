@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -138,14 +138,14 @@ public class ShopGoodsSkuServiceImpl extends ServiceImpl<ShopGoodsSkuMapper, Sho
 //            shopGoodsSkuMapping.setPlatformSkuId(shopGoodsSku.getSkuId());
 //            shopGoodsSkuMapping.setShopGoodsId(shopGoods.getId());
 //            shopGoodsSkuMapping.setShopGoodsSkuId(shopGoodsSku.getId());
-//            shopGoodsSkuMapping.setModifyOn(new Date());
+//            shopGoodsSkuMapping.setModifyOn(LocalDateTime.now());
 //            shopGoodsSkuMappingService.updateById(shopGoodsSkuMapping);
 //        } else {
 //            // 新增
 //            shopGoodsSkuMapping = new ShopGoodsSkuMapping();
 //            shopGoodsSkuMapping.setErpGoodsId(erpGoodsId);
 //            shopGoodsSkuMapping.setErpGoodsSkuId(erpGoodsSkuId);
-//            shopGoodsSkuMapping.setCreateOn(new Date());
+//            shopGoodsSkuMapping.setCreateOn(LocalDateTime.now());
 //            shopGoodsSkuMapping.setShopId(shopGoodsSku.getShopId());
 //            shopGoodsSkuMapping.setShopType(shopGoodsSku.getShopType());
 //            shopGoodsSkuMapping.setPlatformProductId(shopGoodsSku.getProductId());
@@ -196,7 +196,7 @@ public class ShopGoodsSkuServiceImpl extends ServiceImpl<ShopGoodsSkuMapper, Sho
                 shipItem.setImg(sku.getColorImage());
                 shipItem.setErpGoodsId(Long.parseLong(sku.getGoodsId()));
                 shipItem.setErpGoodsSkuId(Long.parseLong(sku.getId()));
-                shipItem.setCreateOn(new Date());
+                shipItem.setCreateOn(LocalDateTime.now());
                 shipItem.setQuantity(sku.getQuantity());
                 shopGoodsSkuShipItemMapper.insert(shipItem);
             }
@@ -204,7 +204,7 @@ public class ShopGoodsSkuServiceImpl extends ServiceImpl<ShopGoodsSkuMapper, Sho
             ShopGoodsSku update = new ShopGoodsSku();
             update.setId(shopGoodsSku.getId());
             update.setBindShipSku(1);
-            update.setUpdateOn(new Date());
+            update.setUpdateOn(LocalDateTime.now());
             this.baseMapper.updateById(update);
         }else{
             // 绑定goods（螳螂系统专用）
@@ -226,7 +226,7 @@ public class ShopGoodsSkuServiceImpl extends ServiceImpl<ShopGoodsSkuMapper, Sho
                     shipItem.setImg(sku.getColorImage());
                     shipItem.setErpGoodsId(Long.parseLong(sku.getGoodsId()));
                     shipItem.setErpGoodsSkuId(Long.parseLong(sku.getId()));
-                    shipItem.setCreateOn(new Date());
+                    shipItem.setCreateOn(LocalDateTime.now());
                     shipItem.setQuantity(sku.getQuantity());
                     shopGoodsSkuShipItemMapper.insert(shipItem);
                 }
@@ -234,7 +234,7 @@ public class ShopGoodsSkuServiceImpl extends ServiceImpl<ShopGoodsSkuMapper, Sho
                 ShopGoods update = new ShopGoods();
                 update.setId(Long.parseLong(bo.getId()));
                 update.setBindShipSku(1);
-                update.setUpdateOn(new Date());
+                update.setUpdateOn(LocalDateTime.now());
                 shopGoodsMapper.updateById(update);
             }
         }

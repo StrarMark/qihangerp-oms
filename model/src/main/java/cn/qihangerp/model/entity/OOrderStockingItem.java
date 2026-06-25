@@ -8,7 +8,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 
@@ -123,7 +122,7 @@ public class OOrderStockingItem implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 创建人
@@ -133,7 +132,7 @@ public class OOrderStockingItem implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
     private LocalDateTime orderTime;
 
     /**

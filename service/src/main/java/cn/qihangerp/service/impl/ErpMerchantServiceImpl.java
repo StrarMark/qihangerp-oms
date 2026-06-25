@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -79,9 +79,9 @@ public class ErpMerchantServiceImpl extends ServiceImpl<ErpMerchantMapper, ErpMe
         merchant.setStatus("0");
         merchant.setDelFlag("0");
 //        merchant.setLoginIp(IpUtils.getIpAddr());
-//        merchant.setLoginDate(new Date());
+//        merchant.setLoginDate(LocalDateTime.now());
         merchant.setCreateBy(createBy);
-        merchant.setCreateTime(new Date());
+        merchant.setCreateTime(LocalDateTime.now());
         mapper.insert(merchant);
         return ResultVo.success(merchant);
     }
@@ -101,7 +101,7 @@ public class ErpMerchantServiceImpl extends ServiceImpl<ErpMerchantMapper, ErpMe
          up.setLoginName(bo.getLoginName());
          up.setPassword(bo.getLoginPwd());
          up.setUpdateBy(updateBy);
-         up.setUpdateTime(new Date());
+         up.setUpdateTime(LocalDateTime.now());
          mapper.updateById(up);
 
 
@@ -178,7 +178,7 @@ public class ErpMerchantServiceImpl extends ServiceImpl<ErpMerchantMapper, ErpMe
                     vendorMerchant.setStatus(0);
                     vendorMerchant.setDelFlag(0);
                     vendorMerchant.setCreateBy("后台分配");
-                    vendorMerchant.setCreateTime(new Date());
+                    vendorMerchant.setCreateTime(LocalDateTime.now());
                     vendorMerchant.setUsci(erpMerchant.getUsci());
                     vendorMerchant.setFaren(erpMerchant.getFaren());
                     vendorMerchant.setBank(erpMerchant.getBank());
@@ -210,7 +210,7 @@ public class ErpMerchantServiceImpl extends ServiceImpl<ErpMerchantMapper, ErpMe
                     updateMerchant.setLinkMan(erpMerchant.getLinkMan());
                     updateMerchant.setAddress(erpMerchant.getAddress());
                     updateMerchant.setUpdateBy("后台分配");
-                    updateMerchant.setUpdateTime(new Date());
+                    updateMerchant.setUpdateTime(LocalDateTime.now());
                     updateMerchant.setId(erpWarehouseMerchants.get(0).getId());
                     warehouseMerchantMapper.updateById(updateMerchant);
                 }
@@ -241,7 +241,7 @@ public class ErpMerchantServiceImpl extends ServiceImpl<ErpMerchantMapper, ErpMe
 ////                        supplier.setAddress(erpVendor.getAddress());
 ////                        supplier.setDisable(0);
 ////                        supplier.setIsDelete(0);
-////                        supplier.setCreateTime(new Date());
+////                        supplier.setCreateTime(LocalDateTime.now());
 ////                        supplier.setCreateBy("管理员分配");
 ////                        supplier.setOriginVendorId(erpVendor.getId());
 ////                        supplier.setMerchantId(erpMerchant.getId());

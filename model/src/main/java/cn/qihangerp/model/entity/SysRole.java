@@ -1,6 +1,6 @@
 package cn.qihangerp.model.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -53,10 +53,10 @@ public class SysRole
     private Set<String> permissions;
 
     private String createBy;
-    private Date createTime;
+    private LocalDateTime createTime;
     private String updateBy;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
     private String remark;
 
     public String getRemark() {
@@ -77,19 +77,19 @@ public class SysRole
         this.roleId = roleId;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public LocalDateTime getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
 

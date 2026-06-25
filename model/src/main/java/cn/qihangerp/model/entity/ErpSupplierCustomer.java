@@ -7,7 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 供应商客户表（自动创建）
@@ -64,22 +64,22 @@ public class ErpSupplierCustomer implements Serializable {
     /**
      * 首次下单时间
      */
-    private Date firstOrderTime;
+    private LocalDateTime firstOrderTime;
 
     /**
      * 最近下单时间
      */
-    private Date lastOrderTime;
+    private LocalDateTime lastOrderTime;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

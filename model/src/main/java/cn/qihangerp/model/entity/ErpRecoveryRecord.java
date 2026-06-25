@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 回收记录表
@@ -49,7 +49,7 @@ public class ErpRecoveryRecord {
     /**
      * 
      */
-    private Date recoveryDate;
+    private LocalDateTime recoveryDate;
 
     /**
      * 
@@ -125,10 +125,10 @@ public class ErpRecoveryRecord {
     /**
      * 
      */
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
     /**
      * 
      */
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 }

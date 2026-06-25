@@ -11,6 +11,7 @@ import cn.qihangerp.service.ORefundService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
 
 /**
  * 退换货Controller
@@ -66,9 +67,9 @@ public class RefundController extends BaseController
 //                ORefund pushUpdate = new ORefund();
 //                pushUpdate.setErpPushStatus(resultVo.getCode()== 0 ? 200:resultVo.getCode());
 //                pushUpdate.setErpPushResult(resultVo.getMsg());
-//                pushUpdate.setErpPushTime(new Date());
+//                pushUpdate.setErpPushTime(LocalDateTime.now());
 //                pushUpdate.setUpdateBy("手动推送到ERP");
-//                pushUpdate.setUpdateTime(new Date());
+//                pushUpdate.setUpdateTime(LocalDateTime.now());
 //                pushUpdate.setId(id.toString());
 //                refundService.updateById(pushUpdate);
 //            }

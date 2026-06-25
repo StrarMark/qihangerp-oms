@@ -2,7 +2,7 @@ package cn.qihangerp.model.query;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 费用管理查询对象
@@ -39,12 +39,12 @@ public class ExpenseApplicationQuery {
     /**
      * 费用发生日期开始
      */
-    private Date expenseDateStart;
+    private LocalDateTime expenseDateStart;
     
     /**
      * 费用发生日期结束
      */
-    private Date expenseDateEnd;
+    private LocalDateTime expenseDateEnd;
     
     /**
      * 商户ID

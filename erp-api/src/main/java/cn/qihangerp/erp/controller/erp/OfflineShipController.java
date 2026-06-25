@@ -16,7 +16,7 @@
 //import org.springframework.util.StringUtils;
 //import org.springframework.web.bind.annotation.*;
 //
-//import java.util.Date;
+//import java.time.LocalDateTime;
 //import java.util.List;
 //
 //@AllArgsConstructor
@@ -60,9 +60,9 @@
 //                        OfflineOrder update = new OfflineOrder();
 //                        update.setId(orders.get(0).getId());
 //                        update.setOrderStatus(2);
-//                        update.setUpdateTime(new Date());
+//                        update.setUpdateTime(LocalDateTime.now());
 //                        update.setUpdateBy("批量发货");
-//                        update.setShippingTime(new Date());
+//                        update.setShippingTime(LocalDateTime.now());
 //                        update.setShippingMan(getUsername());
 //                        orderService.updateById(update);
 //                        // 通知已发货

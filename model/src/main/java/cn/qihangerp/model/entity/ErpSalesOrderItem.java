@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 渠道订单明细表
@@ -125,7 +125,7 @@ public class ErpSalesOrderItem implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 创建人
@@ -135,7 +135,7 @@ public class ErpSalesOrderItem implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 更新人

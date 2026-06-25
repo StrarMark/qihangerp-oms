@@ -3,10 +3,10 @@ package cn.qihangerp.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 店铺虚拟商品发货实物商品表
@@ -18,7 +18,7 @@ public class ShopGoodsSkuShipItem {
     /**
      * 
      */
-    @JsonProperty("keyId")
+    @Schema(description = "keyId")
     @TableId(type = IdType.AUTO)
     private Long id;
 
@@ -60,7 +60,7 @@ public class ShopGoodsSkuShipItem {
     /**
      * sku小图
      */
-    @JsonProperty("colorImage")
+    @Schema(description = "colorImage")
     private String img;
 
     /**
@@ -73,19 +73,19 @@ public class ShopGoodsSkuShipItem {
     /**
      * erp系统商品id
      */
-    @JsonProperty("goodsId")
+    @Schema(description = "goodsId")
     private Long erpGoodsId;
 
     /**
      * erp系统商品skuid
      */
-    @JsonProperty("id")
+    @Schema(description = "id")
     private Long erpGoodsSkuId;
 
     /**
      * 创建时间
      */
-    private Date createOn;
+    private LocalDateTime createOn;
 
 
 }

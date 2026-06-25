@@ -7,7 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 分账规则表
@@ -49,11 +49,11 @@ public class ErpSalesShareRule implements Serializable {
 
     private String createBy;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private String updateBy;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;
 }

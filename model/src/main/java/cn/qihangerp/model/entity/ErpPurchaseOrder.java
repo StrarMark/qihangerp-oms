@@ -8,7 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -77,22 +77,22 @@ public class ErpPurchaseOrder implements Serializable {
     /**
      * 供应商确认时间
      */
-    private Date supplierConfirmTime;
+    private LocalDateTime supplierConfirmTime;
 
     /**
      * 供应商发货时间
      */
-    private Date supplierDeliveryTime;
+    private LocalDateTime supplierDeliveryTime;
 
     /**
      * 收货时间
      */
-    private Date receivedTime;
+    private LocalDateTime receivedTime;
 
     /**
      * 入库时间
      */
-    private Date stockInTime;
+    private LocalDateTime stockInTime;
 
     /**
      * 创建人
@@ -102,7 +102,7 @@ public class ErpPurchaseOrder implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新人
@@ -112,7 +112,7 @@ public class ErpPurchaseOrder implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
     private Long merchantId;
     private Long shopId;
 

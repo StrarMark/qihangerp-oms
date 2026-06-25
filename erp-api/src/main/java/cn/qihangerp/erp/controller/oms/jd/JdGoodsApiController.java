@@ -22,8 +22,7 @@
 //import org.springframework.web.bind.annotation.RestController;
 //
 //import java.time.LocalDateTime;
-//import java.util.Date;
-//
+////
 //@RequestMapping("/api/oms-api/jd/goods")
 //@RestController
 //@AllArgsConstructor
@@ -47,7 +46,7 @@
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 //        }
 //        Long currTimeMillis = System.currentTimeMillis();
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        var checkResult = jdApiCommon.checkBefore(params.getShopId());
 //        if (checkResult.getCode() != HttpStatus.SUCCESS) {
 //            return AjaxResult.error(checkResult.getCode(), checkResult.getMsg(), checkResult.getData());
@@ -110,7 +109,7 @@
 //            // 新增
 //            OShopPullLasttime insertLasttime = new OShopPullLasttime();
 //            insertLasttime.setShopId(params.getShopId());
-//            insertLasttime.setCreateTime(new Date());
+//            insertLasttime.setCreateTime(LocalDateTime.now());
 //            insertLasttime.setLasttime(endTime==null?LocalDateTime.now():endTime);
 //            insertLasttime.setPullType("GOODS");
 //            pullLasttimeService.save(insertLasttime);
@@ -119,7 +118,7 @@
 //            // 修改
 //            OShopPullLasttime updateLasttime = new OShopPullLasttime();
 //            updateLasttime.setId(lasttime.getId());
-//            updateLasttime.setUpdateTime(new Date());
+//            updateLasttime.setUpdateTime(LocalDateTime.now());
 //            updateLasttime.setLasttime(endTime==null?LocalDateTime.now():endTime);
 //            pullLasttimeService.updateById(updateLasttime);
 //        }

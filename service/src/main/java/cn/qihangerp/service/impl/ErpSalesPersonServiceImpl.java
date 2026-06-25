@@ -11,7 +11,7 @@ import cn.qihangerp.service.ErpSalesPersonService;
 import cn.qihangerp.mapper.ErpSalesPersonMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -42,7 +42,7 @@ public class ErpSalesPersonServiceImpl extends ServiceImpl<ErpSalesPersonMapper,
         if(!erpSalesPeople.isEmpty()) return ResultVo.error("工号存在");
 
         erpSalesPerson.setStatus(1);
-        erpSalesPerson.setCreatedTime(new Date());
+        erpSalesPerson.setCreatedTime(LocalDateTime.now());
         this.baseMapper.insert(erpSalesPerson);
         return ResultVo.success(erpSalesPerson.getId());
     }
@@ -50,7 +50,7 @@ public class ErpSalesPersonServiceImpl extends ServiceImpl<ErpSalesPersonMapper,
     @Override
     public ResultVo<Long> update(ErpSalesPerson bo) {
         if(bo.getId()==null) return ResultVo.error("ID不能为空");
-        bo.setUpdatedTime(new Date());
+        bo.setUpdatedTime(LocalDateTime.now());
         this.baseMapper.updateById(bo);
         return ResultVo.success(bo.getId());
     }

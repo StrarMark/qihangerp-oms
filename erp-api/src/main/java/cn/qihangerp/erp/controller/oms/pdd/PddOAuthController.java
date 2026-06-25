@@ -11,7 +11,7 @@ import cn.qihangerp.open.pdd.PddTokenApiHelper;
 import cn.qihangerp.open.pdd.model.Token;
 import cn.qihangerp.service.OShopPlatformService;
 import cn.qihangerp.service.OShopService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

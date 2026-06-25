@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.time.LocalDateTime;
 
 @Service
 public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlementMapper, FmsOrderSettlement> implements FmsOrderSettlementService {
@@ -119,7 +120,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
                 FmsOrderSettlement settlement = calculateOrderSettlement(orderId);
                 if (settlement != null) {
                     settlement.setCreateBy(operator);
-                    settlement.setCreateTime(new Date());
+                    settlement.setCreateTime(LocalDateTime.now());
                     settlement.setVersion(1);
                     settlement.setStatus(1);
                     baseMapper.insert(settlement);
@@ -154,7 +155,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
             FmsOrderSettlement settlement = calculateOrderSettlement(orderId);
             if (settlement != null) {
                 settlement.setCreateBy(operator);
-                settlement.setCreateTime(new Date());
+                settlement.setCreateTime(LocalDateTime.now());
                 settlement.setVersion(1);
                 settlement.setStatus(1);
                 baseMapper.insert(settlement);
@@ -337,7 +338,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
             item.setItemType(1);
             item.setItemName("商品采购成本");
             item.setAmount(settlement.getPurchaseCost());
-            item.setCreateTime(new Date());
+            item.setCreateTime(LocalDateTime.now());
             items.add(item);
         }
 
@@ -347,7 +348,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
             item.setItemType(2);
             item.setItemName("发货费用");
             item.setAmount(settlement.getShippingFee());
-            item.setCreateTime(new Date());
+            item.setCreateTime(LocalDateTime.now());
             items.add(item);
         }
 
@@ -357,7 +358,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
             item.setItemType(4);
             item.setItemName("平台扣点");
             item.setAmount(settlement.getPlatformFee());
-            item.setCreateTime(new Date());
+            item.setCreateTime(LocalDateTime.now());
             items.add(item);
         }
 
@@ -367,7 +368,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
             item.setItemType(5);
             item.setItemName("营销费用");
             item.setAmount(settlement.getMarketingFee());
-            item.setCreateTime(new Date());
+            item.setCreateTime(LocalDateTime.now());
             items.add(item);
         }
 
@@ -377,7 +378,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
             item.setItemType(99);
             item.setItemName("其他费用");
             item.setAmount(settlement.getOtherFee());
-            item.setCreateTime(new Date());
+            item.setCreateTime(LocalDateTime.now());
             items.add(item);
         }
 
@@ -391,7 +392,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
         if (order != null) {
             order.setSettlementStatus(1);
             order.setSettlementId(settlementId);
-            order.setSettlementTime(new Date());
+            order.setSettlementTime(LocalDateTime.now());
             orderMapper.updateById(order);
         }
     }
@@ -405,7 +406,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
         for (FmsExpenseItem item : items) {
             item.setSettlementStatus(1);
             item.setSettlementId(settlementId);
-            item.setSettlementTime(new Date());
+            item.setSettlementTime(LocalDateTime.now());
             expenseItemMapper.updateById(item);
         }
 
@@ -424,7 +425,7 @@ public class FmsOrderSettlementServiceImpl extends ServiceImpl<FmsOrderSettlemen
                     if (unsettledCount == 0) {
                         expense.setSettlementStatus(1);
                         expense.setSettlementId(settlementId);
-                        expense.setSettlementTime(new Date());
+                        expense.setSettlementTime(LocalDateTime.now());
                         expenseMapper.updateById(expense);
                     }
                 }

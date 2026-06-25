@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 视频号小店退款
@@ -143,7 +143,7 @@ public class ShopRefund {
     /**
      * 确认时间
      */
-    private Date confirmTime;
+    private LocalDateTime confirmTime;
 
     /**
      * 订单发货状态 0:未发货， 1:已发货（包含：已发货，已揽收）
@@ -167,12 +167,12 @@ public class ShopRefund {
     /**
      * 系统创建时间
      */
-    private Date createOn;
+    private LocalDateTime createOn;
 
     /**
      * 系统更新时间
      */
-    private Date updateOn;
+    private LocalDateTime updateOn;
 
     /**
      * 订单状态：CLOSE已关闭、CANCEL已取消、DELETED已删除、UNPAID未付款、PART_PAID部分付款、NOT_SHIPPED未发货、PART_SHIPPED部分发货、SHIPPED已发货、REJECTED已拒收、BILL_SHIPPED、已寄票、BILL_COMPLETE已收票、PAUSE暂停、LOCKED锁定、COMPLETE已完成

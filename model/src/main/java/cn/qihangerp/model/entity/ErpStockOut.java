@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -81,17 +81,17 @@ public class ErpStockOut implements Serializable {
     /**
      * 打印时间
      */
-    private Date printTime;
+    private LocalDateTime printTime;
 
     /**
      * 出库时间
      */
-    private Date outTime;
+    private LocalDateTime outTime;
 
     /**
      * 完成出库时间
      */
-    private Date completeTime;
+    private LocalDateTime completeTime;
 
     /**
      * 出库操作人userid
@@ -106,7 +106,7 @@ public class ErpStockOut implements Serializable {
     /**
      * 创建日期
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 创建人
@@ -116,7 +116,7 @@ public class ErpStockOut implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 更新人

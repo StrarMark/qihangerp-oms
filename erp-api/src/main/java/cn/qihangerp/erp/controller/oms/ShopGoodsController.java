@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -56,7 +56,7 @@ public class ShopGoodsController extends BaseController {
         if(request.getId()==null) return AjaxResult.error("缺少参数：Id");
         if(org.springframework.util.StringUtils.isEmpty(request.getTitle())) return AjaxResult.error("缺少参数：title");
         if(org.springframework.util.StringUtils.isEmpty(request.getProductId())) return AjaxResult.error("缺少参数：平台商品ID");
-        request.setUpdateOn(new Date());
+        request.setUpdateOn(LocalDateTime.now());
         Boolean result = goodsService.updateById(request);
         if(!result) return AjaxResult.error("系统异常");
         else return AjaxResult.success();

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -99,7 +99,7 @@ public class ErpWarehouseSalesAfterServiceImpl extends ServiceImpl<ErpWarehouseS
         afterSale.setReissueLogisticsCode(processingBo.getReissueLogisticsCode());
         afterSale.setRemark(processingBo.getRemark());
         afterSale.setStatus(processingBo.getType() == 0?10:0);
-        afterSale.setCreateTime(new Date());
+        afterSale.setCreateTime(LocalDateTime.now());
         afterSale.setCreateBy(createBy);
 
         afterSaleMapper.insert(afterSale);
@@ -108,7 +108,7 @@ public class ErpWarehouseSalesAfterServiceImpl extends ServiceImpl<ErpWarehouseS
         ErpWarehouseSalesAfter updates = new ErpWarehouseSalesAfter();
         updates.setId(supplierRefund.getId());
         updates.setUpdateBy(createBy+"操作售后处理");
-        updates.setUpdateTime(new Date());
+        updates.setUpdateTime(LocalDateTime.now());
         updates.setHasProcessing(1);
         updates.setAfterSaleId(afterSale.getId());
         mapper.updateById(updates);
@@ -117,7 +117,7 @@ public class ErpWarehouseSalesAfterServiceImpl extends ServiceImpl<ErpWarehouseS
         ORefund update = new ORefund();
         update.setId(refund.getId());
         update.setUpdateBy(createBy+"操作售后处理");
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         update.setHasProcessing(1);
         update.setAfterSaleId(afterSale.getId());
         refundMapper.updateById(update);

@@ -1,6 +1,6 @@
 //package cn.qihangerp.erp.serviceImpl;
 //
-//import com.fasterxml.jackson.databind.ObjectMapper;
+//import tools.jackson.databind.ObjectMapper;
 //import jakarta.annotation.PostConstruct;
 //import okhttp3.*;
 //import org.slf4j.Logger;
@@ -343,7 +343,7 @@
 //                "message", "AI分析服务暂时不可用",
 //                "basic_analysis", Map.of(
 //                        "suggestion", "建议检查库存水平，重点关注缺货商品",
-//                        "generated_at", new Date()
+//                        "generated_at", LocalDateTime.now()
 //                ),
 //                "recommendations", List.of(
 //                        "1. 优先处理库存为0的商品",

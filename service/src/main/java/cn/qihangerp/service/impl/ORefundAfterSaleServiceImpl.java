@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
 * @author qilip
@@ -91,7 +90,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             update.setReissueWarehouseId(-1L);
             update.setUpdateBy("确认退供应商："+userId);
             update.setResult("退供应商");
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setStatus(10);
             mapper.updateById(update);
             return ResultVo.success();
@@ -115,15 +114,15 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             //添加入库主表信息
             ErpStockIn stockIn = new ErpStockIn();
             stockIn.setMerchantId(oRefundAfterSale.getMerchantId());
-            stockIn.setStockInNum("THRK-" + DateUtils.parseDateToStr("yyyyMMdd", new Date()) + "-" + System.currentTimeMillis() / 1000);
+            stockIn.setStockInNum("THRK-" + DateUtils.parseDateToStr("yyyyMMdd", LocalDateTime.now()) + "-" + System.currentTimeMillis() / 1000);
             stockIn.setStockInType(EnumStockInType.RET_STOCK_IN.getIndex());
             stockIn.setStockInOperator("");
             stockIn.setStockInOperatorId("0");
-//        insert.setStockInTime(new Date());
+//        insert.setStockInTime(LocalDateTime.now());
             stockIn.setSourceNo(oRefundAfterSale.getRefundNum());
             stockIn.setRemark(request.getRemark());
             stockIn.setCreateBy("退货确认" + userId);
-            stockIn.setCreateTime(new Date());
+            stockIn.setCreateTime(LocalDateTime.now());
             stockIn.setSourceGoodsUnit(1);
             stockIn.setSourceSpecUnit(1);
             stockIn.setSourceSpecUnitTotal(oRefundAfterSale.getQuantity());
@@ -162,7 +161,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
                 inItem.setPurPrice(goodsSku.getPurPrice().doubleValue());
                 inItem.setStatus(0);
                 inItem.setCreateBy(stockIn.getCreateBy());
-                inItem.setCreateTime(new Date());
+                inItem.setCreateTime(LocalDateTime.now());
                 erpStockInItemService.save(inItem);
             } else {
                 log.error("=====退货生成入库单=======没有找到商品Sku信息======");
@@ -180,7 +179,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             update.setReissueType(-1);
             update.setReissueWarehouseId(-1L);
             update.setUpdateBy("生成退货入库单：" + userId);
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setResult("生成退货入库单："+stockIn.getStockInNum());
             update.setStatus(10);
             mapper.updateById(update);
@@ -232,7 +231,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             shipOrder.setBuyerMemo("");
             shipOrder.setSellerMemo("");
             shipOrder.setSendStatus(1);
-            shipOrder.setCreateTime(new Date());
+            shipOrder.setCreateTime(LocalDateTime.now());
             shipOrder.setProvince(oOrder1 != null ? oOrder1.getProvince() : "");
             shipOrder.setCity(oOrder1 != null ? oOrder1.getCity() : "");
             shipOrder.setTown(oOrder1 != null ? oOrder1.getTown() : "");
@@ -263,7 +262,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             shipOrderItem.setSkuName(oRefundAfterSale.getSkuInfo());
             shipOrderItem.setSkuCode(oRefundAfterSale.getSkuCode());
             shipOrderItem.setSendStatus(EnumShipStatus.NOT.getIndex());
-            shipOrderItem.setCreateTime(new Date());
+            shipOrderItem.setCreateTime(LocalDateTime.now());
             shipOrderItem.setQuantity(oRefundAfterSale.getQuantity());
             shipOrderItem.setUnshippedQuantity(oRefundAfterSale.getQuantity());
             shipOrderItemService.save(shipOrderItem);
@@ -278,7 +277,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             update.setReissueWarehouseName(oRefundAfterSale.getSendWarehouseName());
             update.setUpdateBy("确认供应商补发：" + userId);
             update.setResult("供应商补发");
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setStatus(10);
             mapper.updateById(update);
 //            return ResultVo.success();
@@ -315,7 +314,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             shipOrder.setBuyerMemo("");
             shipOrder.setSellerMemo("");
             shipOrder.setSendStatus(1);
-            shipOrder.setCreateTime(new Date());
+            shipOrder.setCreateTime(LocalDateTime.now());
             shipOrder.setProvince(oOrder1 != null ? oOrder1.getProvince() : "");
             shipOrder.setCity(oOrder1 != null ? oOrder1.getCity() : "");
             shipOrder.setTown(oOrder1 != null ? oOrder1.getTown() : "");
@@ -346,7 +345,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             shipOrderItem.setSkuName(oRefundAfterSale.getSkuInfo());
             shipOrderItem.setSkuCode(oRefundAfterSale.getSkuCode());
             shipOrderItem.setSendStatus(EnumShipStatus.NOT.getIndex());
-            shipOrderItem.setCreateTime(new Date());
+            shipOrderItem.setCreateTime(LocalDateTime.now());
             shipOrderItem.setQuantity(oRefundAfterSale.getQuantity());
             shipOrderItem.setUnshippedQuantity(oRefundAfterSale.getQuantity());
             shipOrderItemService.save(shipOrderItem);
@@ -360,7 +359,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             update.setReissueWarehouseName(warehouse.getWarehouseName());
             update.setReissueWarehouseType(warehouse.getWarehouseType());
             update.setUpdateBy("确认仓库补发：" + userId);
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setResult("仓库补发：" + oRefundAfterSale.getOrderNum());
             update.setStatus(10);
             mapper.updateById(update);
@@ -409,7 +408,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             shipOrder.setBuyerMemo("");
             shipOrder.setSellerMemo("");
             shipOrder.setSendStatus(1);
-            shipOrder.setCreateTime(new Date());
+            shipOrder.setCreateTime(LocalDateTime.now());
             shipOrder.setProvince(oOrder1 != null ? oOrder1.getProvince() : "");
             shipOrder.setCity(oOrder1 != null ? oOrder1.getCity() : "");
             shipOrder.setTown(oOrder1 != null ? oOrder1.getTown() : "");
@@ -449,7 +448,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
 //            shipOrderItem.setSkuName(oRefundAfterSale.getSkuInfo());
 //            shipOrderItem.setSkuCode(oRefundAfterSale.getSkuCode());
             shipOrderItem.setSendStatus(EnumShipStatus.NOT.getIndex());
-            shipOrderItem.setCreateTime(new Date());
+            shipOrderItem.setCreateTime(LocalDateTime.now());
 //            shipOrderItem.setQuantity(oRefundAfterSale.getQuantity());
             shipOrderItem.setUnshippedQuantity(shipOrderItem.getQuantity());
             shipOrderItemService.save(shipOrderItem);
@@ -464,7 +463,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             update.setReissueWarehouseName(oRefundAfterSale.getSendWarehouseName());
             update.setUpdateBy("确认供应商换货："+userId);
             update.setResult("供应商换货");
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setStatus(10);
             update.setExchangeErpOrderId(shipOrder.getId());
             mapper.updateById(update);
@@ -503,7 +502,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             shipOrder.setBuyerMemo("");
             shipOrder.setSellerMemo("");
             shipOrder.setSendStatus(1);
-            shipOrder.setCreateTime(new Date());
+            shipOrder.setCreateTime(LocalDateTime.now());
             shipOrder.setProvince(oOrder1 != null ? oOrder1.getProvince() : "");
             shipOrder.setCity(oOrder1 != null ? oOrder1.getCity() : "");
             shipOrder.setTown(oOrder1 != null ? oOrder1.getTown() : "");
@@ -543,7 +542,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
 //            shipOrderItem.setSkuName(oRefundAfterSale.getSkuInfo());
 //            shipOrderItem.setSkuCode(oRefundAfterSale.getSkuCode());
             shipOrderItem.setSendStatus(EnumShipStatus.NOT.getIndex());
-            shipOrderItem.setCreateTime(new Date());
+            shipOrderItem.setCreateTime(LocalDateTime.now());
 //            shipOrderItem.setQuantity(oRefundAfterSale.getQuantity());
             shipOrderItem.setUnshippedQuantity(shipOrderItem.getQuantity());
             shipOrderItemService.save(shipOrderItem);
@@ -552,15 +551,15 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             //添加入库主表信息
             ErpStockIn stockIn = new ErpStockIn();
             stockIn.setMerchantId(oRefundAfterSale.getMerchantId());
-            stockIn.setStockInNum("THRK-" + DateUtils.parseDateToStr("yyyyMMdd", new Date()) + "-" + System.currentTimeMillis() / 1000);
+            stockIn.setStockInNum("THRK-" + DateUtils.parseDateToStr("yyyyMMdd", LocalDateTime.now()) + "-" + System.currentTimeMillis() / 1000);
             stockIn.setStockInType(EnumStockInType.RET_STOCK_IN.getIndex());
             stockIn.setStockInOperator("");
             stockIn.setStockInOperatorId("0");
-//        insert.setStockInTime(new Date());
+//        insert.setStockInTime(LocalDateTime.now());
             stockIn.setSourceNo(oRefundAfterSale.getRefundNum());
             stockIn.setRemark(request.getRemark());
             stockIn.setCreateBy("退货确认" + userId);
-            stockIn.setCreateTime(new Date());
+            stockIn.setCreateTime(LocalDateTime.now());
             stockIn.setSourceGoodsUnit(1);
             stockIn.setSourceSpecUnit(1);
             stockIn.setSourceSpecUnitTotal(oRefundAfterSale.getQuantity());
@@ -599,7 +598,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
                 inItem.setPurPrice(goodsSku.getPurPrice().doubleValue());
                 inItem.setStatus(0);
                 inItem.setCreateBy(stockIn.getCreateBy());
-                inItem.setCreateTime(new Date());
+                inItem.setCreateTime(LocalDateTime.now());
                 erpStockInItemService.save(inItem);
             } else {
                 log.error("=====退货生成入库单=======没有找到商品Sku信息======");
@@ -619,7 +618,7 @@ public class ORefundAfterSaleServiceImpl extends ServiceImpl<ORefundAfterSaleMap
             update.setReissueWarehouseName(warehouse.getWarehouseName());
             update.setReissueWarehouseType(warehouse.getWarehouseType());
             update.setUpdateBy("确认仓库换货：" + userId);
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setResult("仓库换货：" + oRefundAfterSale.getOrderNum());
             update.setStatus(10);
             update.setExchangeErpOrderId(shipOrder.getId());

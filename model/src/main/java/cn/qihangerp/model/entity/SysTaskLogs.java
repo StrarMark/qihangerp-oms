@@ -6,7 +6,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 后台任务运行日志表
@@ -48,7 +47,7 @@ public class SysTaskLogs implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private static final long serialVersionUID = 1L;
 }

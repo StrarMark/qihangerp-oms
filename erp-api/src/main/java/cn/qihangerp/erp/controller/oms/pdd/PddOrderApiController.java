@@ -29,8 +29,7 @@
 //import java.time.ZoneOffset;
 //import java.time.format.DateTimeFormatter;
 //import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.List;
+////import java.util.List;
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
 //
@@ -95,7 +94,7 @@
 //        LocalDateTime startTime = LocalDateTime.parse(orderDate + " 00:00:01", formatter);
 //        LocalDateTime endTime = LocalDateTime.parse(orderDate + " 23:59:59", formatter);
 //
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long beginTime = System.currentTimeMillis();
 //
 //        var checkResult = pddApiCommon.checkBefore(req.getShopId());

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 分账方表
@@ -42,11 +42,11 @@ public class ErpSalesShareParty implements Serializable {
 
     private String createBy;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private String updateBy;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;
 }

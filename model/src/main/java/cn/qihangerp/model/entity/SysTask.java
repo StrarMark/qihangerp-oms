@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 后台任务配置表
@@ -42,7 +42,7 @@ public class SysTask implements Serializable {
     /**
      * 
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private Integer status;
 

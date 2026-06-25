@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @RestController
@@ -43,7 +44,7 @@ public class AfterSaleProcessingController extends BaseController {
 //    public AjaxResult shipAgainAdd(@RequestBody ErpAfterSale addBo)
 //    {
 //        addBo.setType(80);
-//        addBo.setCreateTime(new Date());
+//        addBo.setCreateTime(LocalDateTime.now());
 //        addBo.setCreateBy("手动添加");
 //        addBo.setStatus(1);
 //        var result = afterSaleService.save(addBo);
@@ -56,7 +57,7 @@ public class AfterSaleProcessingController extends BaseController {
 //        ErpAfterSale complete = new ErpAfterSale();
 //        complete.setId(id.toString());
 //        complete.setStatus(2);
-//        complete.setUpdateTime(new Date());
+//        complete.setUpdateTime(LocalDateTime.now());
 //        complete.setUpdateBy("手动完成");
 //        afterSaleService.updateById(complete);
 //        return toAjax(1);
@@ -83,7 +84,7 @@ public class AfterSaleProcessingController extends BaseController {
 //    public AjaxResult exchangeAdd(@RequestBody ErpAfterSale addBo)
 //    {
 //        addBo.setType(20);
-//        addBo.setCreateTime(new Date());
+//        addBo.setCreateTime(LocalDateTime.now());
 //        addBo.setCreateBy("手动添加");
 //        addBo.setStatus(1);
 //        var result = afterSaleService.save(addBo);

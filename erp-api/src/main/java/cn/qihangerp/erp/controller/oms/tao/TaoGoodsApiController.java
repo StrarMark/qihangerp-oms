@@ -31,8 +31,7 @@
 //
 //import java.time.LocalDateTime;
 //import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.List;
+////import java.util.List;
 //
 //@Slf4j
 //@RequestMapping("/api/oms-api/tao/goods")
@@ -63,7 +62,7 @@
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 ////            return ApiResult.build(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 //        }
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long startTimeMillis = System.currentTimeMillis();
 //        var checkResult = taoApiCommon.checkBefore(req.getShopId());
 //        if (checkResult.getCode() != HttpStatus.SUCCESS) {
@@ -142,7 +141,7 @@
 //                        taoGoodsSku.setCreated(StringUtils.isEmpty(s.getCreated()) ? null : s.getCreated());
 //                        taoGoodsSku.setModified(StringUtils.isEmpty(s.getModified()) ? null : s.getModified());
 //                        taoGoodsSku.setStatus(s.getStatus());
-//                        taoGoodsSku.setCreateTime(new Date());
+//                        taoGoodsSku.setCreateTime(LocalDateTime.now());
 //                        skuList.add(taoGoodsSku);
 //                    }
 //                }
@@ -173,7 +172,7 @@
 //                    // 新增
 //                    OShopPullLasttime insertLasttime = new OShopPullLasttime();
 //                    insertLasttime.setShopId(req.getShopId());
-//                    insertLasttime.setCreateTime(new Date());
+//                    insertLasttime.setCreateTime(LocalDateTime.now());
 //                    insertLasttime.setLasttime(endTime == null ? LocalDateTime.now() : endTime);
 //                    insertLasttime.setPullType("GOODS");
 //                    pullLasttimeService.save(insertLasttime);
@@ -182,7 +181,7 @@
 //                    // 修改
 //                    OShopPullLasttime updateLasttime = new OShopPullLasttime();
 //                    updateLasttime.setId(lasttime.getId());
-//                    updateLasttime.setUpdateTime(new Date());
+//                    updateLasttime.setUpdateTime(LocalDateTime.now());
 //                    updateLasttime.setLasttime(endTime == null ? LocalDateTime.now() : endTime);
 //                    pullLasttimeService.updateById(updateLasttime);
 //                }

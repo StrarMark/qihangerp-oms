@@ -83,7 +83,7 @@
 //        if(shop.getType()==null) return AjaxResult.error("请选择店铺平台");
 ////        shop.setModifyOn(System.currentTimeMillis()/1000);
 ////        shop.setCreateOn(System.currentTimeMillis()/1000);
-////        shop.setCreateTime(new Date());
+////        shop.setCreateTime(LocalDateTime.now());
 //        return toAjax(shopService.save(shop));
 //    }
 //
@@ -94,7 +94,7 @@
 //    @PutMapping("/shop")
 //    public AjaxResult edit(@RequestBody OShop shop)
 //    {
-////        shop.setUpdateTime(new Date());
+////        shop.setUpdateTime(LocalDateTime.now());
 //        return toAjax(shopService.updateById(shop));
 //    }
 //

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -75,7 +75,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
         ErpWarehouse erpWarehouse = erpWarehouseService.getById(request.getWarehouseId());
         if(erpWarehouse==null) return ResultVo.error("仓库信息不存在");
         if(StringUtils.isBlank(request.getOutNum())){
-            request.setOutNum(DateUtils.parseDateToStr("yyyyMMddHHmmss",new Date()));
+            request.setOutNum(DateUtils.parseDateToStr("yyyyMMddHHmmss",LocalDateTime.now()));
         }
         if(StringUtils.isBlank(request.getOperator())){
             request.setOperator(userName);
@@ -96,7 +96,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
         stockOut.setWarehouseId(0L);
         stockOut.setRemark(request.getRemark());
         stockOut.setCreateBy(userName);
-        stockOut.setCreateTime(new Date());
+        stockOut.setCreateTime(LocalDateTime.now());
         stockOut.setGoodsUnit(goodsGroup.size());
         stockOut.setSpecUnit(request.getItemList().size());
         stockOut.setSpecUnitTotal(total.intValue());
@@ -137,7 +137,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
                     outItem.setOutQuantity(0);
                     outItem.setStatus(0);
                     outItem.setCreateBy(userName);
-                    outItem.setCreateTime(new Date());
+                    outItem.setCreateTime(LocalDateTime.now());
                     outItem.setWarehouseId(batch.getWarehouseId());
                     outItem.setPositionId(batch.getPositionId());
 
@@ -181,7 +181,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
             ErpWarehouseGoodsStockBatch updateBatch = new ErpWarehouseGoodsStockBatch();
             updateBatch.setCurrentQty(batch.getCurrentQty() - request.getOutQty());
             updateBatch.setUpdateBy(userName);
-            updateBatch.setUpdateTime(new Date());
+            updateBatch.setUpdateTime(LocalDateTime.now());
             updateBatch.setRemark(batch.getRemark()+"出库扣减库存；");
             updateBatch.setId(batch.getId());
             goodsStockBatchService.updateById(updateBatch);
@@ -195,7 +195,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
                 updateInventory.setUsableNum(goodsInventory.getUsableNum() - request.getOutQty());
 
                 updateInventory.setUpdateBy(userName);
-                updateInventory.setUpdateTime(new Date());
+                updateInventory.setUpdateTime(LocalDateTime.now());
                 goodsStockService.updateById(updateInventory);
             }
 
@@ -230,7 +230,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
                     batchRecord.setLaborCost(batch.getLaborCost() != null ? new java.math.BigDecimal(batch.getLaborCost()) : null);
                     batchRecord.setCertificateNo(batch.getCertificateNo());
                     batchRecord.setPurPrice(batch.getPurPrice() != null ? new java.math.BigDecimal(batch.getPurPrice()) : null);
-                    batchRecord.setCreateTime(new Date());
+                    batchRecord.setCreateTime(LocalDateTime.now());
                     batchRecord.setCreateBy(userName);
                     orderStockingItemBatchService.save(batchRecord);
                 }
@@ -265,7 +265,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
                     ErpWarehouseGoodsStockBatch updateBatch = new ErpWarehouseGoodsStockBatch();
                     updateBatch.setCurrentQty(batchQty - shengyu);
                     updateBatch.setUpdateBy(userName);
-                    updateBatch.setUpdateTime(new Date());
+                    updateBatch.setUpdateTime(LocalDateTime.now());
                     updateBatch.setRemark((batch.getRemark()==null?"":batch.getRemark())+"出库扣减库存；");
                     updateBatch.setId(batch.getId());
                     goodsStockBatchService.updateById(updateBatch);
@@ -274,7 +274,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
                     ErpWarehouseGoodsStockBatch updateBatch = new ErpWarehouseGoodsStockBatch();
                     updateBatch.setCurrentQty(0);
                     updateBatch.setUpdateBy(userName);
-                    updateBatch.setUpdateTime(new Date());
+                    updateBatch.setUpdateTime(LocalDateTime.now());
                     updateBatch.setRemark((batch.getRemark()==null?"":batch.getRemark())+"出库扣减库存；");
                     updateBatch.setId(batch.getId());
                     goodsStockBatchService.updateById(updateBatch);
@@ -313,7 +313,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
                         batchRecord.setLaborCost(batch.getLaborCost() != null ? new java.math.BigDecimal(batch.getLaborCost()) : null);
                         batchRecord.setCertificateNo(batch.getCertificateNo());
                         batchRecord.setPurPrice(batch.getPurPrice() != null ? new java.math.BigDecimal(batch.getPurPrice()) : null);
-                        batchRecord.setCreateTime(new Date());
+                        batchRecord.setCreateTime(LocalDateTime.now());
                         batchRecord.setCreateBy(userName);
                         orderStockingItemBatchService.save(batchRecord);
                     }
@@ -328,7 +328,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
             updateInventory.setTotalNum(inventoryList.get(0).getTotalNum() - request.getOutQty());
             updateInventory.setUsableNum(inventoryList.get(0).getUsableNum() - request.getOutQty());
             updateInventory.setUpdateBy(userName);
-            updateInventory.setUpdateTime(new Date());
+            updateInventory.setUpdateTime(LocalDateTime.now());
             goodsStockService.updateById(updateInventory);
         }
 
@@ -338,10 +338,10 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
         ErpStockOutItem outItemUpdate = new ErpStockOutItem();
         outItemUpdate.setId(outItem.getId());
         outItemUpdate.setStatus(2);
-        outItemUpdate.setCompleteTime(new Date());
+        outItemUpdate.setCompleteTime(LocalDateTime.now());
         outItemUpdate.setOutQuantity(outItem.getOutQuantity()+ request.getOutQty());
         outItemUpdate.setUpdateBy(userName);
-        outItemUpdate.setUpdateTime(new Date());
+        outItemUpdate.setUpdateTime(LocalDateTime.now());
         outItemService.updateById(outItemUpdate);
 
         // 更新主表单数据
@@ -353,7 +353,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
         if (itemList.isEmpty()) {
             // 全部入库完成了
             sUpdate.setStatus(2);
-            sUpdate.setCompleteTime(new Date());
+            sUpdate.setCompleteTime(LocalDateTime.now());
         } else {
             // 部分入库
             sUpdate.setStatus(1);
@@ -362,10 +362,10 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
         sUpdate.setId(outItem.getEntryId());
         sUpdate.setOperatorId(userId.toString());
         sUpdate.setOperatorName(userName);
-        sUpdate.setOutTime(new Date());
+        sUpdate.setOutTime(LocalDateTime.now());
         sUpdate.setOutTotal(erpStockOut.getOutTotal()+request.getOutQty().intValue());
         sUpdate.setUpdateBy(userName);
-        sUpdate.setUpdateTime(new Date());
+        sUpdate.setUpdateTime(LocalDateTime.now());
         outMapper.updateById(sUpdate);
 
         return ResultVo.success(outItem.getEntryId());

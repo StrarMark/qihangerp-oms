@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -43,8 +43,8 @@ public class ErpShipLogisticsServiceImpl extends ServiceImpl<ErpShipLogisticsMap
         if (entity.getSort() == null) {
             entity.setSort(0);
         }
-        entity.setCreateTime(new Date());
-        entity.setUpdateTime(new Date());
+        entity.setCreateTime(LocalDateTime.now());
+        entity.setUpdateTime(LocalDateTime.now());
 
         if (entity.getIsDefault() == 1) {
             shipLogisticsMapper.cancelDefault(entity.getEntityType(), entity.getEntityId());
@@ -87,7 +87,7 @@ public class ErpShipLogisticsServiceImpl extends ServiceImpl<ErpShipLogisticsMap
         ErpShipLogistics update = new ErpShipLogistics();
         update.setId(id);
         update.setIsDefault(1);
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         int result = shipLogisticsMapper.updateById(update);
 
         if (result > 0) {

@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -251,8 +251,8 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
         order.setCity(bo.getCity());
         order.setTown(bo.getTown());
         order.setAddress(bo.getAddress());
-        order.setOrderTime(new Date());
-        order.setCreateTime(new Date());
+        order.setOrderTime(LocalDateTime.now());
+        order.setCreateTime(LocalDateTime.now());
         order.setShipType(0);
         order.setCreateBy(createBy);
         // 设置销售员（后台下单指定）
@@ -298,7 +298,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
             orderItem.setRefundStatus(1);
             orderItem.setOrderStatus(order.getOrderStatus());
             orderItem.setHasPushErp(0);
-            orderItem.setCreateTime(new Date());
+            orderItem.setCreateTime(LocalDateTime.now());
             orderItem.setCreateBy(createBy);
             orderItem.setShopId(order.getShopId());
             orderItem.setMerchantId(order.getMerchantId());
@@ -324,7 +324,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
         update.setId(id.toString());
         update.setCancelReason(cancelReason);
         update.setUpdateBy(man+" 操作取消订单");
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         update.setOrderStatus(11);
         this.baseMapper.updateById(update);
         log.info("====取消销售订单成功=====");
@@ -333,7 +333,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
         itemUpdate.setOrderStatus(11);
         itemUpdate.setRefundStatus(4);
         itemUpdate.setUpdateBy(update.getUpdateBy());
-        itemUpdate.setUpdateTime(new Date());
+        itemUpdate.setUpdateTime(LocalDateTime.now());
         orderItemMapper.update(itemUpdate, new LambdaQueryWrapper<ErpSalesOrderItem>().eq(ErpSalesOrderItem::getOrderId, id));
         log.info("====取消销售订单item成功=====");
         // 取消相关订单
@@ -351,7 +351,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
                 oOrderUpdate.setCancelReason(cancelReason);
                 oOrderUpdate.setOrderStatus(11);
                 oOrderUpdate.setUpdateBy(update.getUpdateBy());
-                oOrderUpdate.setUpdateTime(new Date());
+                oOrderUpdate.setUpdateTime(LocalDateTime.now());
                 oOrderMapper.updateById(oOrderUpdate);
 
                 // 取消发货订单
@@ -362,7 +362,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
                         oOrderStockingUpdate.setId(oOrderStocking.getId());
                         oOrderStockingUpdate.setOrderStatus(11);
                         oOrderStockingUpdate.setUpdateBy("取消订单");
-                        oOrderStockingUpdate.setUpdateTime(new Date());
+                        oOrderStockingUpdate.setUpdateTime(LocalDateTime.now());
                         oOrderStockingMapper.updateById(oOrderStockingUpdate);
                     }
                 }
@@ -393,7 +393,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
         orderItemUpdate.setRefundStatus(4);//售后完成
         orderItemUpdate.setOrderStatus(11);
         orderItemUpdate.setUpdateBy("主动取消");
-        orderItemUpdate.setUpdateTime(new Date());
+        orderItemUpdate.setUpdateTime(LocalDateTime.now());
         orderItemMapper.updateById(orderItemUpdate);
 
         // 查询订单库子订单
@@ -415,7 +415,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
                 oOrderItemUpdate.setId(oOrderItem.getId());
                 oOrderItemUpdate.setRefundStatus(4);
                 orderItemUpdate.setUpdateBy("主动取消");
-                orderItemUpdate.setUpdateTime(new Date());
+                orderItemUpdate.setUpdateTime(LocalDateTime.now());
                 oOrderItemMapper.updateById(oOrderItemUpdate);
                 // 取消发货子订单
                 List<OOrderStockingItem> oOrderStockingItems = oOrderStockingItemMapper.selectList(new LambdaQueryWrapper<OOrderStockingItem>().eq(OOrderStockingItem::getOOrderItemId, oOrderItem.getId()));
@@ -425,7 +425,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
                         oOrderStockingItemUpdate.setId(oOrderStockingItem.getId());
                         oOrderStockingItemUpdate.setRefundStatus(4);
                         oOrderStockingItemUpdate.setUpdateBy("主动取消");
-                        oOrderStockingItemUpdate.setUpdateTime(new Date());
+                        oOrderStockingItemUpdate.setUpdateTime(LocalDateTime.now());
                         oOrderStockingItemMapper.updateById(oOrderStockingItemUpdate);
                     }
                 }
@@ -440,7 +440,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
             update.setId(shopOrderItem.getOrderId());
             update.setCancelReason(cancelReason);
             update.setUpdateBy(man+" 操作取消子订单");
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setOrderStatus(11);
             this.baseMapper.updateById(update);
 
@@ -448,7 +448,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
 //            OfflineOrderItem itemUpdate = new OfflineOrderItem();
 //            itemUpdate.setOrderStatus(11);
 //            itemUpdate.setUpdateBy(update.getUpdateBy());
-//            itemUpdate.setUpdateTime(new Date());
+//            itemUpdate.setUpdateTime(LocalDateTime.now());
 //            orderItemMapper.update(itemUpdate, new LambdaQueryWrapper<OfflineOrderItem>().eq(OfflineOrderItem::getOrderId, id));
 
             // 2、取消订单库订单
@@ -458,7 +458,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
                 oOrderUpdate.setCancelReason(update.getCancelReason());
                 oOrderUpdate.setOrderStatus(11);
                 oOrderUpdate.setUpdateBy("取消子订单");
-                oOrderUpdate.setUpdateTime(new Date());
+                oOrderUpdate.setUpdateTime(LocalDateTime.now());
                 oOrderMapper.updateById(oOrderUpdate);
 
                 // 取消发货订单
@@ -469,7 +469,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
                         oOrderStockingUpdate.setId(oOrderStocking.getId());
                         oOrderStockingUpdate.setOrderStatus(11);
                         oOrderStockingUpdate.setUpdateBy("取消子订单");
-                        oOrderStockingUpdate.setUpdateTime(new Date());
+                        oOrderStockingUpdate.setUpdateTime(LocalDateTime.now());
                         oOrderStockingMapper.updateById(oOrderStockingUpdate);
                     }
                 }
@@ -617,8 +617,8 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
         order.setCity(bo.getCity());
         order.setTown(bo.getTown());
         order.setAddress(bo.getAddress());
-        order.setOrderTime(new Date());
-        order.setCreateTime(new Date());
+        order.setOrderTime(LocalDateTime.now());
+        order.setCreateTime(LocalDateTime.now());
         order.setShipType(0);
         order.setCreateBy(createBy);
         order.setSalesmanId(userId);
@@ -653,7 +653,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
             orderItem.setRefundStatus(1);
             orderItem.setOrderStatus(order.getOrderStatus());
             orderItem.setHasPushErp(0);
-            orderItem.setCreateTime(new Date());
+            orderItem.setCreateTime(LocalDateTime.now());
             orderItem.setCreateBy(createBy);
             orderItem.setShopId(order.getShopId());
             orderItem.setMerchantId(order.getMerchantId());
@@ -671,7 +671,7 @@ public class ErpSalesOrderServiceImpl extends ServiceImpl<ErpSalesOrderMapper, E
      * @return 订单号
      */
     private String generateOrderNum() {
-        String date = DateUtils.format(new Date(), "yyyyMMdd");
+        String date = DateUtils.format(LocalDateTime.now(), "yyyyMMdd");
         String random = String.format("%06d", (int) (Math.random() * 1000000));
         return "H5" + date + random;
     }

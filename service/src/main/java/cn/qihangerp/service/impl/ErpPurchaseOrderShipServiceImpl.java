@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -144,7 +144,7 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
         entry.setWarehouseNo(warehouse.getWarehouseNo());
         entry.setMerchantId(ship.getMerchantId());
         entry.setShopId(ship.getShopId());
-        entry.setStockInNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", new Date()));
+        entry.setStockInNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", LocalDateTime.now()));
         entry.setSourceId(ship.getId());
         entry.setSourceNo(ship.getOrderNum());
         entry.setSourceSpecUnit(ship.getOrderSpecUnit());
@@ -154,7 +154,7 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
         entry.setStatus(0);
         entry.setRemark(bo.getRemark());
         entry.setCreateBy(bo.getCreateBy());
-        entry.setCreateTime(new Date());
+        entry.setCreateTime(LocalDateTime.now());
         stockInMapper.insert(entry);
 
         // 子表 (使用采购单item数据作为子表数据)
@@ -196,7 +196,7 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
                     entryItem.setMerchantId(ship.getMerchantId());
                     entryItem.setShopId(ship.getShopId());
                     entryItem.setCreateBy(bo.getCreateBy());
-                    entryItem.setCreateTime(new Date());
+                    entryItem.setCreateTime(LocalDateTime.now());
                     entryItem.setRemark("");
                     entryItem.setPurPrice(item.getPrice().doubleValue());
 

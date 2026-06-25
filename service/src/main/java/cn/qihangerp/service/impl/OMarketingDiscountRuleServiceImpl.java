@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 /**
 * @author 1
@@ -96,7 +95,7 @@ public class OMarketingDiscountRuleServiceImpl extends ServiceImpl<OMarketingDis
         }catch (Exception e){
             return ResultVo.error("开始时间-结束时间格式不正确");
         }
-        rule.setCreatedTime(new Date());
+        rule.setCreatedTime(LocalDateTime.now());
         rule.setUsedQuota(0);
         if(rule.getStatus()==null){
             rule.setStatus(1);

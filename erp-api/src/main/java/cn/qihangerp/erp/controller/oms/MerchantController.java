@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @RestController
@@ -80,7 +80,7 @@ public class MerchantController extends BaseController {
     {
         if(bo.getId()==null) return AjaxResult.error("缺少参数：id");
         bo.setUpdateBy(getUsername());
-        bo.setUpdateTime(new Date());
+        bo.setUpdateTime(LocalDateTime.now());
         merchantService.updateById(bo);
         return toAjax(1);
     }

@@ -3,8 +3,7 @@ package cn.qihangerp.model.bo;//package cn.qihangerp.oms.domain.bo;
 //import lombok.Data;
 //
 //import java.time.LocalDateTime;
-//import java.util.Date;
-//import java.util.List;
+////import java.util.List;
 //
 //@Data
 //public class OrderSearchBo {

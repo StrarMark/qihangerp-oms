@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 租户用户表
@@ -63,7 +63,7 @@ public class ErpMerchant implements Serializable {
     /**
      * 最后登录时间
      */
-    private Date loginDate;
+    private LocalDateTime loginDate;
 
     /**
      * 创建者
@@ -73,7 +73,7 @@ public class ErpMerchant implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新者
@@ -83,7 +83,7 @@ public class ErpMerchant implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 备注

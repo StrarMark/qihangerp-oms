@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * AI分析记录实体类
@@ -75,10 +75,10 @@ public class AiAnalysisRecord implements Serializable {
     /**
      * 创建时间
      */
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 }

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 销售人员表
@@ -65,10 +65,10 @@ public class ErpSalesPerson {
     /**
      * 创建时间
      */
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 }

@@ -24,7 +24,7 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -104,14 +104,14 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
         );
         if(shopGoods==null||shopGoods.size()==0){
             // 新增商品
-            goods.setCreateOn(new Date());
+            goods.setCreateOn(LocalDateTime.now());
             this.baseMapper.insert(goods);
             shopGoodsId = goods.getId();
             log.info("==========新增shopGoods==========");
         }else{
             // 修改商品
             goods.setId(shopGoods.get(0).getId());
-            goods.setUpdateOn(new Date());
+            goods.setUpdateOn(LocalDateTime.now());
             this.baseMapper.updateById(goods);
             shopGoodsId =shopGoods.get(0).getId();
             log.info("==========修改shopGoods==========");
@@ -146,7 +146,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                 if(shopGoodsSkus==null||shopGoodsSkus.size()==0){
                     //新增
                     goodsSku.setShopGoodsId(goods.getId());
-                    goodsSku.setCreateOn(new Date());
+                    goodsSku.setCreateOn(LocalDateTime.now());
                     shopGoodsSkuMapper.insert(goodsSku);
                     shopGoodsSkuId = goodsSku.getId();
                     log.info("==========新增shopGoodsSku==========");
@@ -157,7 +157,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                         goodsSku.setErpGoodsSkuId(null);
                     }
                     goodsSku.setId(shopGoodsSkus.get(0).getId());
-                    goodsSku.setUpdateOn(new Date());
+                    goodsSku.setUpdateOn(LocalDateTime.now());
                     shopGoodsSkuMapper.updateById(goodsSku);
                     shopGoodsSkuId = shopGoodsSkus.get(0).getId();
                     log.info("==========修改shopGoodsSku==========");
@@ -173,14 +173,14 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
 ////                        shopGoodsSkuMapping.setPlatformSkuId(goodsSku.getSkuId());
 ////                        shopGoodsSkuMapping.setShopGoodsId(shopGoodsId);
 ////                        shopGoodsSkuMapping.setShopGoodsSkuId(shopGoodsSkuId);
-////                        shopGoodsSkuMapping.setModifyOn(new Date());
+////                        shopGoodsSkuMapping.setModifyOn(LocalDateTime.now());
 ////                        shopGoodsSkuMappingService.updateById(shopGoodsSkuMapping);
 //                    } else {
 //                        // 新增
 //                        shopGoodsSkuMapping = new ShopGoodsSkuMapping();
 //                        shopGoodsSkuMapping.setErpGoodsId(erpGoodsId);
 //                        shopGoodsSkuMapping.setErpGoodsSkuId(erpGoodsSkuId);
-//                        shopGoodsSkuMapping.setCreateOn(new Date());
+//                        shopGoodsSkuMapping.setCreateOn(LocalDateTime.now());
 //                        shopGoodsSkuMapping.setShopId(goodsSku.getShopId());
 //                        shopGoodsSkuMapping.setShopType(goodsSku.getShopType());
 //                        shopGoodsSkuMapping.setPlatformProductId(goodsSku.getProductId());
@@ -246,7 +246,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             s.setStatus(1);
             s.setAddTime(c);
             s.setStock(sku.getStockNum());
-            s.setCreateOn(new Date());
+            s.setCreateOn(LocalDateTime.now());
             s.setBindShipSku(0);
             // 查询skucode
             List<OGoodsSku> oGoodsSkus = goodsSkuMapper.selectList(new LambdaQueryWrapper<OGoodsSku>().eq(OGoodsSku::getSkuCode, sku.getSkuCode()));
@@ -273,7 +273,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
         goods.setQuantity(total);
         goods.setErpGoodsId(Long.parseLong(erpGoodsId));
         goods.setAddTime(c);
-        goods.setCreateOn(new Date());
+        goods.setCreateOn(LocalDateTime.now());
         goods.setDeliverMethod(0);
         goods.setBindShipSku(0);
         this.baseMapper.insert(goods);
@@ -322,7 +322,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                 goods.setQuantity(0);
                 goods.setErpGoodsId(Long.parseLong(oGoodsSku.getGoodsId()));
                 goods.setAddTime(System.currentTimeMillis() / 100);
-                goods.setCreateOn(new Date());
+                goods.setCreateOn(LocalDateTime.now());
                 goods.setDeliverMethod(0);
                 goods.setBindShipSku(0);
                 this.baseMapper.insert(goods);
@@ -359,7 +359,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             s.setStatus(1);
             s.setAddTime(System.currentTimeMillis()/100);
             s.setStock(0);
-            s.setCreateOn(new Date());
+            s.setCreateOn(LocalDateTime.now());
             s.setBindShipSku(0);
             s.setErpGoodsSkuId(Long.parseLong(oGoodsSku.getId()));
             s.setErpGoodsId(Long.parseLong(oGoodsSku.getGoodsId()));
@@ -372,7 +372,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             s.setId(shopGoodsSkuId);
             s.setSkuId(request.getSkuId());
             s.setPrice(BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(request.getPrice())).intValue());
-            s.setUpdateOn(new Date());
+            s.setUpdateOn(LocalDateTime.now());
             s.setModifyTime(System.currentTimeMillis()/100);
             shopGoodsSkuMapper.updateById(s);
         }
@@ -413,7 +413,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
         s.setStatus(1);
         s.setAddTime(System.currentTimeMillis()/100);
         s.setStock(0);
-        s.setCreateOn(new Date());
+        s.setCreateOn(LocalDateTime.now());
         s.setBindShipSku(0);
         s.setErpGoodsSkuId(Long.parseLong(oGoodsSku.getId()));
         s.setErpGoodsId(Long.parseLong(oGoodsSku.getGoodsId()));
@@ -450,7 +450,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
         s.setPrice(BigDecimal.valueOf(100).multiply(BigDecimal.valueOf(request.getPrice())).intValue());
         s.setSkuCode(oGoodsSku.getSkuCode());
         s.setSkuName(request.getSkuName());
-        s.setUpdateOn(new Date());
+        s.setUpdateOn(LocalDateTime.now());
         s.setModifyTime(System.currentTimeMillis()/100);
         shopGoodsSkuMapper.updateById(s);
 
@@ -463,7 +463,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
         sku.setId(request.getId());
         sku.setStock(request.getStockNum());
         sku.setStockNum(request.getStockNum());
-        sku.setUpdateOn(new Date());
+        sku.setUpdateOn(LocalDateTime.now());
         shopGoodsSkuMapper.updateById(sku);
         return ResultVo.success();
     }
@@ -517,7 +517,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             goodsNew.setQuantity(shopGoods.getQuantity());
             goodsNew.setErpGoodsId(erpGoodsId);
             goodsNew.setAddTime(shopGoods.getAddTime());
-            goodsNew.setCreateOn(new Date());
+            goodsNew.setCreateOn(LocalDateTime.now());
             goodsNew.setDeliverMethod(0);
             goodsNew.setBindShipSku(0);
             this.baseMapper.insert(goodsNew);
@@ -526,7 +526,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             // 修改
             shopGoodsId = goods.getId();
             shopGoods.setId(goods.getId());
-            shopGoods.setUpdateOn(new Date());
+            shopGoods.setUpdateOn(LocalDateTime.now());
             this.baseMapper.updateById(shopGoods);
         }
 
@@ -555,7 +555,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
             if(shopGoodsSkus==null||shopGoodsSkus.size()==0){
                 //新增
                 goodsSku.setShopGoodsId(shopGoodsId);
-                goodsSku.setCreateOn(new Date());
+                goodsSku.setCreateOn(LocalDateTime.now());
                 shopGoodsSkuMapper.insert(goodsSku);
                 shopGoodsSkuId = goodsSku.getId();
                 log.info("==========新增shopGoodsSku==========");
@@ -566,7 +566,7 @@ public class ShopGoodsServiceImpl extends ServiceImpl<ShopGoodsMapper, ShopGoods
                     goodsSku.setErpGoodsSkuId(null);
                 }
                 goodsSku.setId(shopGoodsSkus.get(0).getId());
-                goodsSku.setUpdateOn(new Date());
+                goodsSku.setUpdateOn(LocalDateTime.now());
                 shopGoodsSkuMapper.updateById(goodsSku);
                 shopGoodsSkuId = shopGoodsSkus.get(0).getId();
                 log.info("==========修改shopGoodsSku==========");

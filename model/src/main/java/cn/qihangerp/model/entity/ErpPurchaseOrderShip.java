@@ -8,7 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 采购订单物流表
@@ -51,12 +51,12 @@ public class ErpPurchaseOrderShip implements Serializable {
     /**
      * 发货时间
      */
-    private Date shipTime;
+    private LocalDateTime shipTime;
 
     /**
      * 收货时间
      */
-    private Date receiptTime;
+    private LocalDateTime receiptTime;
 
     /**
      * 创建人
@@ -66,7 +66,7 @@ public class ErpPurchaseOrderShip implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 状态（0未收货1已收货2已入库）
@@ -86,7 +86,7 @@ public class ErpPurchaseOrderShip implements Serializable {
     /**
      * 入库时间
      */
-    private Date stockInTime;
+    private LocalDateTime stockInTime;
 
     /**
      * 入库数量
@@ -101,7 +101,7 @@ public class ErpPurchaseOrderShip implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 采购订单日期

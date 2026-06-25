@@ -6,7 +6,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 店铺更新最后时间记录
@@ -38,19 +37,19 @@ public class OShopPullLasttime implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;
     public OShopPullLasttime(){
 
     }
 
-    public OShopPullLasttime(Long shopId, Object pullType, LocalDateTime lasttime, Date createTime, Date updateTime) {
+    public OShopPullLasttime(Long shopId, Object pullType, LocalDateTime lasttime, LocalDateTime createTime, LocalDateTime updateTime) {
         this.shopId = shopId;
         this.pullType = pullType;
         this.lasttime = lasttime;

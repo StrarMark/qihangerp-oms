@@ -45,8 +45,7 @@ export default {
   },
   data() {
     return {
-      activeName: 'goodsList',
-      platformList: []
+      activeName: 'goodsList'
     }
   },
   created() {

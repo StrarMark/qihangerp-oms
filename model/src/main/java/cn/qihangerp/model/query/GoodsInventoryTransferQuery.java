@@ -2,7 +2,7 @@ package cn.qihangerp.model.query;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 跨门店调拨申请查询对象
@@ -40,10 +40,10 @@ public class GoodsInventoryTransferQuery {
     /**
      * 创建时间开始
      */
-    private Date createdTimeStart;
+    private LocalDateTime createdTimeStart;
 
     /**
      * 创建时间结束
      */
-    private Date createdTimeEnd;
+    private LocalDateTime createdTimeEnd;
 }

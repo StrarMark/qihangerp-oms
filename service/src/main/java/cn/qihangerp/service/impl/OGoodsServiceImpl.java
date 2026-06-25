@@ -28,7 +28,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -303,7 +303,7 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
         goods.setLowQty(0);
         goods.setHighQty(0);
         goods.setCreateBy(userName);
-        goods.setCreateTime(new Date());
+        goods.setCreateTime(LocalDateTime.now());
         goods.setProvince(bo.getProvince());
         goods.setCity(bo.getCity());
         goods.setTown(bo.getTown());
@@ -420,7 +420,7 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
 //                inventory.setSkuName(spec.getSkuName());
 //                inventory.setQuantity(0);
 //                inventory.setIsDelete(0);
-//                inventory.setCreateTime(new Date());
+//                inventory.setCreateTime(LocalDateTime.now());
 //                inventory.setCreateBy("添加商品");
 //                inventoryMapper.insert(inventory);
 //            }
@@ -534,7 +534,7 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
 //                inventory.setSkuName(spec.getSkuName());
 //                inventory.setQuantity(0);
 //                inventory.setIsDelete(0);
-//                inventory.setCreateTime(new Date());
+//                inventory.setCreateTime(LocalDateTime.now());
 //                inventory.setCreateBy("添加商品");
 //                inventoryMapper.insert(inventory);
 //            }
@@ -712,7 +712,7 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
         OGoods update = new OGoods();
         update.setId(id);
         update.setUpdateBy(userName);
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         update.setStatus(status);
         goodsMapper.updateById(update);
         // 同时修改sku状态
@@ -774,7 +774,7 @@ public class OGoodsServiceImpl extends ServiceImpl<OGoodsMapper, OGoods>
 //            goods.setLowQty(0);
 //            goods.setHighQty(0);
 //            goods.setCreateBy("后台推送");
-//            goods.setCreateTime(new Date());
+//            goods.setCreateTime(LocalDateTime.now());
 //            goods.setProvince(oGoods.getProvince());
 //            goods.setCity(oGoods.getCity());
 //            goods.setTown(oGoods.getTown());

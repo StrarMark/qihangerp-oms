@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 
@@ -100,12 +100,12 @@ public class ShopMember implements Serializable {
     /**
      * 系统创建时间
      */
-    private Date createOn;
+    private LocalDateTime createOn;
 
     /**
      * 系统更新时间
      */
-    private Date updateOn;
+    private LocalDateTime updateOn;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

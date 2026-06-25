@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * OMS售后处理表
@@ -237,7 +237,7 @@ public class ORefundAfterSale implements Serializable {
     /**
      * 
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 
@@ -247,7 +247,7 @@ public class ORefundAfterSale implements Serializable {
     /**
      * 
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 

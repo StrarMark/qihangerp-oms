@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -65,7 +65,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
         if(request.getType() == null ) return ResultVo.error(ResultVoEnum.ParamsError,"缺少参数type");
         if(request.getItemList().isEmpty()) return ResultVo.error(ResultVoEnum.ParamsError,"缺少参数itemList");
         if(StringUtils.isBlank(request.getOutNum())){
-            request.setOutNum(DateUtils.parseDateToStr("yyyyMMddHHmmss",new Date()));
+            request.setOutNum(DateUtils.parseDateToStr("yyyyMMddHHmmss",LocalDateTime.now()));
         }
         if(StringUtils.isBlank(request.getOperator())){
             request.setOperator(userName);
@@ -84,7 +84,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
         insert.setSourceId(0L);
         insert.setRemark(request.getRemark());
         insert.setCreateBy(userName);
-        insert.setCreateTime(new Date());
+        insert.setCreateTime(LocalDateTime.now());
         insert.setGoodsUnit(goodsGroup.size());
         insert.setSpecUnit(request.getItemList().size());
         insert.setSpecUnitTotal(total.intValue());
@@ -127,7 +127,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
             inItem.setOutQuantity(0);
             inItem.setStatus(0);
             inItem.setCreateBy(userName);
-            inItem.setCreateTime(new Date());
+            inItem.setCreateTime(LocalDateTime.now());
             inItem.setWarehouseId(0L);
             inItem.setMerchantId(request.getMerchantId());
             inItem.setVendorId(request.getVendorId());
@@ -191,7 +191,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
         ErpWarehouseGoodsStockBatch updateBatch = new ErpWarehouseGoodsStockBatch();
         updateBatch.setCurrentQty(batch.getCurrentQty() - request.getOutQty().intValue());
         updateBatch.setUpdateBy(userName);
-        updateBatch.setUpdateTime(new Date());
+        updateBatch.setUpdateTime(LocalDateTime.now());
 //        updateBatch.setRemark(batch.getRemark() + "出库扣减库存；");
         updateBatch.setId(batch.getId());
         goodsInventoryBatchService.updateById(updateBatch);
@@ -204,7 +204,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
         updateInventory.setUsableNum(goodsInventory.getUsableNum() - request.getOutQty().intValue());
         updateInventory.setUsableNumValue(updateInventory.getUsableNum().doubleValue());
         updateInventory.setUpdateBy(userName);
-        updateInventory.setUpdateTime(new Date());
+        updateInventory.setUpdateTime(LocalDateTime.now());
         goodsInventoryService.updateById(updateInventory);
 
         // 记录发货备货批次信息
@@ -228,7 +228,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
                     batchRecord.setLaborCost(batch.getLaborCost() != null ? new java.math.BigDecimal(batch.getLaborCost()) : null);
                     batchRecord.setCertificateNo(batch.getCertificateNo());
                     batchRecord.setPurPrice(batch.getPurPrice() != null ? new java.math.BigDecimal(batch.getPurPrice()) : null);
-                    batchRecord.setCreateTime(new Date());
+                    batchRecord.setCreateTime(LocalDateTime.now());
                     batchRecord.setCreateBy(userName);
             orderStockingItemBatchService.save(batchRecord);
         }
@@ -241,7 +241,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
         }else {
             outItemUpdate.setStatus(2);
         }
-        outItemUpdate.setCompleteTime(new Date());
+        outItemUpdate.setCompleteTime(LocalDateTime.now());
         outItemUpdate.setOutQuantity(outItem.getOutQuantity() + request.getOutQty().intValue());
         if(org.springframework.util.StringUtils.hasText(outItem.getOutBatch())){
             outItemUpdate.setOutBatch(outBatch+","+batch.getBatchNum());
@@ -250,7 +250,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
         }
 
         outItemUpdate.setUpdateBy(userName);
-        outItemUpdate.setUpdateTime(new Date());
+        outItemUpdate.setUpdateTime(LocalDateTime.now());
         outItemService.updateById(outItemUpdate);
 
         // 增加出库item erp_warehouse_stock_out_item_position
@@ -263,7 +263,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
         itemPosition.setLocationId(0);
         itemPosition.setOperatorId(0);
         itemPosition.setOperatorName(userName);
-        itemPosition.setOutTime(new Date());
+        itemPosition.setOutTime(LocalDateTime.now());
         itemPosition.setOutBatch(batch.getBatchNum());
         outItemPositionService.save(itemPosition);
 
@@ -279,7 +279,7 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
         if (itemList.isEmpty()) {
             // 全部入库完成了
             sUpdate.setStatus(2);
-            sUpdate.setCompleteTime(new Date());
+            sUpdate.setCompleteTime(LocalDateTime.now());
         } else {
             // 部分入库
             sUpdate.setStatus(1);
@@ -288,10 +288,10 @@ public class ErpWarehouseStockOutServiceImpl extends ServiceImpl<ErpWarehouseSto
         sUpdate.setId(outItem.getEntryId());
         sUpdate.setOperatorId(userId);
         sUpdate.setOperatorName(userName);
-        sUpdate.setOutTime(new Date());
+        sUpdate.setOutTime(LocalDateTime.now());
         sUpdate.setOutTotal(erpStockOut.getOutTotal() + request.getOutQty().intValue());
         sUpdate.setUpdateBy(userName);
-        sUpdate.setUpdateTime(new Date());
+        sUpdate.setUpdateTime(LocalDateTime.now());
         this.baseMapper.updateById(sUpdate);
 
         return ResultVo.success();

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 出库仓位详情
@@ -62,7 +62,7 @@ public class ErpStockOutItemPosition implements Serializable {
     /**
      * 出库时间
      */
-    private Date outTime;
+    private LocalDateTime outTime;
 
     private static final long serialVersionUID = 1L;
 }

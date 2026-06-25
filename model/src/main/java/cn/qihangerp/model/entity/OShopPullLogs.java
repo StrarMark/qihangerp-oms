@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 店铺更新日志表
@@ -53,14 +53,14 @@ public class OShopPullLogs implements Serializable {
     /**
      * 拉取时间
      */
-    private Date pullTime;
+    private LocalDateTime pullTime;
 
     /**
      * 耗时（毫秒）
      */
     private Long duration;
 
-    public OShopPullLogs(Long shopId, Integer shopType, String pullType, String pullWay, String pullParams, String pullResult, Date pullTime, Long duration,Long merchantId) {
+    public OShopPullLogs(Long shopId, Integer shopType, String pullType, String pullWay, String pullParams, String pullResult, LocalDateTime pullTime, Long duration,Long merchantId) {
         this.shopId = shopId;
         this.shopType = shopType;
         this.pullType = pullType;

@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @RestController
@@ -41,7 +41,7 @@ public class GoodsBrandController extends BaseController {
     {
         erpGoodsBrand.setStatus(1);
         erpGoodsBrand.setCreateBy(getUsername());
-        erpGoodsBrand.setCreateTime(new Date());
+        erpGoodsBrand.setCreateTime(LocalDateTime.now());
         return toAjax(brandService.save(erpGoodsBrand));
     }
 
@@ -52,7 +52,7 @@ public class GoodsBrandController extends BaseController {
     public AjaxResult edit(@RequestBody OGoodsBrand erpGoodsBrand)
     {
         erpGoodsBrand.setUpdateBy(getUsername());
-        erpGoodsBrand.setUpdateTime(new Date());
+        erpGoodsBrand.setUpdateTime(LocalDateTime.now());
         return toAjax(brandService.updateById(erpGoodsBrand));
     }
 

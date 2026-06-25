@@ -29,6 +29,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 /**
 * @author qilip
@@ -128,7 +129,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 // 更新订单item备注
                 OOrderItem updateOrderItem = new OOrderItem();
                 updateOrderItem.setId(item.getId());
-                updateOrderItem.setUpdateTime(new Date());
+                updateOrderItem.setUpdateTime(LocalDateTime.now());
                 updateOrderItem.setUpdateBy("供应商商品不存在");
                 updateOrderItem.setRemark("供应商商品不存在");
                 orderItemService.updateById(updateOrderItem);
@@ -144,7 +145,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 // 更新订单item备注
                 OOrderItem updateOrderItem = new OOrderItem();
                 updateOrderItem.setId(item.getId());
-                updateOrderItem.setUpdateTime(new Date());
+                updateOrderItem.setUpdateTime(LocalDateTime.now());
                 updateOrderItem.setUpdateBy("仓库商品不存在");
                 updateOrderItem.setRemark("仓库商品不存在");
                 orderItemService.updateById(updateOrderItem);
@@ -174,7 +175,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
             shipOrderItem.setSkuCode(item.getSkuNum());
             shipOrderItem.setBarcode(item.getBarcode());
             shipOrderItem.setSendStatus(EnumShipStatus.NOT.getIndex());
-            shipOrderItem.setCreateTime(new Date());
+            shipOrderItem.setCreateTime(LocalDateTime.now());
             if (item.getRefundCount() == null) item.setRefundCount(0);
             shipOrderItem.setQuantity(item.getQuantity() - item.getRefundCount());
             shipOrderItem.setUnshippedQuantity(shipOrderItem.getQuantity());
@@ -209,7 +210,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
         shipOrder.setBuyerMemo(oOrder1.getBuyerMemo());
         shipOrder.setSellerMemo(oOrder1.getSellerMemo());
         shipOrder.setSendStatus(1);
-        shipOrder.setCreateTime(new Date());
+        shipOrder.setCreateTime(LocalDateTime.now());
         shipOrder.setProvince(oOrder1.getProvince());
         shipOrder.setCity(oOrder1.getCity());
         shipOrder.setTown(oOrder1.getTown());
@@ -238,7 +239,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
             up.setShipperId(supplier.getId());
             up.setShipStatus(1);
             up.setHasPushErp(1);
-            up.setUpdateTime(new Date());
+            up.setUpdateTime(LocalDateTime.now());
             up.setUpdateBy("分配给供应商发货");
             orderItemService.updateById(up);
             success++;
@@ -269,7 +270,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //                        up.setId(item.getOOrderItemId().toString());
 //                        up.setShipSupplier(shipOrder.getShipperId());
 //                        up.setShipType(EnumShipType.SUPPLIER.getIndex());//发货类型
-//                        up.setUpdateTime(new Date());
+//                        up.setUpdateTime(LocalDateTime.now());
 ////                        updateItemList.add(up);
 //                        orderItemService.updateById(up);
 //                    }
@@ -396,7 +397,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                             log.error("==映射关系中没有找到该商品====");
                             OOrderItem updateOrderItem = new OOrderItem();
                             updateOrderItem.setId(item.getId());
-                            updateOrderItem.setUpdateTime(new Date());
+                            updateOrderItem.setUpdateTime(LocalDateTime.now());
                             updateOrderItem.setUpdateBy("店铺商品未绑定商品库商品skuId");
                             updateOrderItem.setRemark("店铺商品未绑定商品库商品skuId");
                             orderItemService.updateById(updateOrderItem);
@@ -420,7 +421,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //                            return ResultVo.error("仓库没有找到该商品SKU:" + goodsSkuId);
                         OOrderItem updateOrderItem = new OOrderItem();
                         updateOrderItem.setId(item.getId());
-                        updateOrderItem.setUpdateTime(new Date());
+                        updateOrderItem.setUpdateTime(LocalDateTime.now());
                         updateOrderItem.setUpdateBy("仓库没有找到该商品SKU");
                         updateOrderItem.setRemark("仓库没有找到该商品SKU");
                         orderItemService.updateById(updateOrderItem);
@@ -439,7 +440,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                         log.error("仓库库存不足:{}", goodsSkuId);
                         OOrderItem updateOrderItem = new OOrderItem();
                         updateOrderItem.setId(item.getId());
-                        updateOrderItem.setUpdateTime(new Date());
+                        updateOrderItem.setUpdateTime(LocalDateTime.now());
                         updateOrderItem.setUpdateBy("仓库库存不足");
                         updateOrderItem.setRemark("仓库库存不足");
                         orderItemService.updateById(updateOrderItem);
@@ -453,7 +454,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                         log.error("仓库库存不足:{}", goodsSkuId);
                         OOrderItem updateOrderItem = new OOrderItem();
                         updateOrderItem.setId(item.getId());
-                        updateOrderItem.setUpdateTime(new Date());
+                        updateOrderItem.setUpdateTime(LocalDateTime.now());
                         updateOrderItem.setUpdateBy("仓库库存不足");
                         updateOrderItem.setRemark("仓库库存不足");
                         orderItemService.updateById(updateOrderItem);
@@ -499,7 +500,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 shipOrder.setBuyerMemo(oOrder.getBuyerMemo());
                 shipOrder.setSellerMemo(oOrder.getSellerMemo());
                 shipOrder.setSendStatus(1);
-                shipOrder.setCreateTime(new Date());
+                shipOrder.setCreateTime(LocalDateTime.now());
                 shipOrder.setCreateBy("推送云仓发货");
 
                 shipOrder.setProvince(oOrder.getProvince());
@@ -537,7 +538,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                             // 更新订单item备注
                             OOrderItem updateOrderItem = new OOrderItem();
                             updateOrderItem.setId(item.getId());
-                            updateOrderItem.setUpdateTime(new Date());
+                            updateOrderItem.setUpdateTime(LocalDateTime.now());
                             updateOrderItem.setUpdateBy("供应商商品不存在");
                             updateOrderItem.setRemark("供应商商品不存在");
                             orderItemService.updateById(updateOrderItem);
@@ -553,7 +554,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                             // 更新订单item备注
                             OOrderItem updateOrderItem = new OOrderItem();
                             updateOrderItem.setId(item.getId());
-                            updateOrderItem.setUpdateTime(new Date());
+                            updateOrderItem.setUpdateTime(LocalDateTime.now());
                             updateOrderItem.setUpdateBy("仓库商品不存在");
                             updateOrderItem.setRemark("仓库商品不存在");
                             orderItemService.updateById(updateOrderItem);
@@ -575,7 +576,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                             // 更新订单item备注
                             OOrderItem updateOrderItem = new OOrderItem();
                             updateOrderItem.setId(item.getId());
-                            updateOrderItem.setUpdateTime(new Date());
+                            updateOrderItem.setUpdateTime(LocalDateTime.now());
                             updateOrderItem.setUpdateBy("仓库商品不存在");
                             updateOrderItem.setRemark("仓库商品不存在");
                             orderItemService.updateById(updateOrderItem);
@@ -608,7 +609,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                     shipOrderItem.setQuantity(item.getQuantity());
                     shipOrderItem.setUnshippedQuantity(item.getQuantity());
                     shipOrderItem.setSendStatus(EnumShipStatus.NOT.getIndex());
-                    shipOrderItem.setCreateTime(new Date());
+                    shipOrderItem.setCreateTime(LocalDateTime.now());
                     shipOrderItem.setCreateBy(shipOrder.getCreateBy());
                     shipOrderItem.setShipOrderId(shipOrder.getId());
                     
@@ -627,7 +628,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //                        up.setShipStatus(1);// 发货状态 0 待发货 1已分配发货 2全部发货
                     up.setHasPushErp(1);//是否推送到ERP（是否推送到供应商发货）0未推送1已推送
                     up.setRemark("");
-                    up.setUpdateTime(new Date());
+                    up.setUpdateTime(LocalDateTime.now());
                     up.setUpdateBy(shipOrder.getUpdateBy());
                     orderItemService.updateById(up);
                     success++;
@@ -751,7 +752,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 shipOrder.setBuyerMemo(oOrder.getBuyerMemo());
                 shipOrder.setSellerMemo(oOrder.getSellerMemo());
                 shipOrder.setSendStatus(1);
-                shipOrder.setCreateTime(new Date());
+                shipOrder.setCreateTime(LocalDateTime.now());
                 shipOrder.setCreateBy("推送供应商发货");
                 // 供应商是供应商，仓库id是仓库id
 
@@ -802,7 +803,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                         // 更新订单item备注
                         OOrderItem updateOrderItem = new OOrderItem();
                         updateOrderItem.setId(item.getId());
-                        updateOrderItem.setUpdateTime(new Date());
+                        updateOrderItem.setUpdateTime(LocalDateTime.now());
                         updateOrderItem.setUpdateBy("供应商商品不存在");
                         updateOrderItem.setRemark("供应商商品不存在");
                         orderItemService.updateById(updateOrderItem);
@@ -818,7 +819,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                         // 更新订单item备注
                         OOrderItem updateOrderItem = new OOrderItem();
                         updateOrderItem.setId(item.getId());
-                        updateOrderItem.setUpdateTime(new Date());
+                        updateOrderItem.setUpdateTime(LocalDateTime.now());
                         updateOrderItem.setUpdateBy("仓库商品不存在");
                         updateOrderItem.setRemark("仓库商品不存在");
                         orderItemService.updateById(updateOrderItem);
@@ -849,7 +850,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                     shipOrderItem.setQuantity(item.getQuantity());
                     shipOrderItem.setUnshippedQuantity(item.getQuantity());
                     shipOrderItem.setSendStatus(EnumShipStatus.NOT.getIndex());
-                    shipOrderItem.setCreateTime(new Date());
+                    shipOrderItem.setCreateTime(LocalDateTime.now());
                     shipOrderItem.setCreateBy(shipOrder.getCreateBy());
                     shipOrderItem.setShipOrderId(shipOrder.getId());
                     shipOrderItem.setWarehouseGoodsId(warehouseGoodsId); // 设置仓库商品ID
@@ -862,7 +863,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //                        up.setShipType(EnumShipType.SUPPLIER.getIndex());
 //                        up.setShipStatus(1);// 发货状态 0 待发货 1已分配发货 2全部发货
                     up.setHasPushErp(1);//是否推送到ERP（是否推送到供应商发货）0未推送1已推送
-                    up.setUpdateTime(new Date());
+                    up.setUpdateTime(LocalDateTime.now());
                     up.setUpdateBy(shipOrder.getUpdateBy());
                     orderItemService.updateById(up);
                     success++;
@@ -1291,7 +1292,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
             }
 
             itemUpdate.setUpdateBy("仓库手动发货");
-            itemUpdate.setUpdateTime(new Date());
+            itemUpdate.setUpdateTime(LocalDateTime.now());
             shipOrderItemService.updateById(itemUpdate);
 
             // 更新订单明细o_order_item
@@ -1301,7 +1302,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
             updateOrderItem.setWaybillCompany(bo.getLogisticsCompany());
             updateOrderItem.setShipStatus(itemUpdate.getSendStatus());
             updateOrderItem.setUpdateBy("仓库手动发货");
-            updateOrderItem.setUpdateTime(new Date());
+            updateOrderItem.setUpdateTime(LocalDateTime.now());
             orderItemService.updateById(updateOrderItem);
 
             // 更新原始订单item状态
@@ -1310,7 +1311,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 ErpSalesOrderItem erpSalesOrderItem = new ErpSalesOrderItem();
                 erpSalesOrderItem.setShipStatus(itemUpdate.getSendStatus());
                 erpSalesOrderItem.setUpdateBy("仓库发货手动确认");
-                erpSalesOrderItem.setUpdateTime(new Date());
+                erpSalesOrderItem.setUpdateTime(LocalDateTime.now());
                 erpSalesOrderItemMapper.update(erpSalesOrderItem, new LambdaQueryWrapper<ErpSalesOrderItem>()
                         .eq(ErpSalesOrderItem::getSubOrderNum, orderItem.getSubOrderNum())
                         .eq(ErpSalesOrderItem::getShopId, shipOrder.getShopId()));
@@ -1319,7 +1320,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
             else{
                 ShopOrderItem shopOrderItem = new ShopOrderItem();
                 shopOrderItem.setShipStatus(itemUpdate.getSendStatus());
-                shopOrderItem.setUpdateOn(new Date());
+                shopOrderItem.setUpdateOn(LocalDateTime.now());
                 shopOrderItem.setUpdateBy("仓库发货手动确认");
                 shopOrderItemMapper.update(shopOrderItem, new LambdaQueryWrapper<ShopOrderItem>()
                         .eq(ShopOrderItem::getSubOrderId, orderItem.getSubOrderNum())
@@ -1346,10 +1347,10 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
         oOrderStocking.setShipMode(0);//发货方式：0手动发货  1电子面单发货
         oOrderStocking.setWaybillCompany(bo.getLogisticsCompany());
         oOrderStocking.setWaybillCode(bo.getLogisticsCode());
-        oOrderStocking.setShippingTime(bo.getShipTime() != null ? bo.getShipTime() : new Date());
+        oOrderStocking.setShippingTime(bo.getShipTime() != null ? bo.getShipTime() : LocalDateTime.now());
         oOrderStocking.setShippingCompany(bo.getLogisticsCompany());
         oOrderStocking.setShippingNumber(bo.getLogisticsCode());
-        oOrderStocking.setUpdateTime(new Date());
+        oOrderStocking.setUpdateTime(LocalDateTime.now());
         oOrderStocking.setUpdateBy("仓库手动发货");
         oOrderStocking.setId(shipOrder.getId());
         shipOrderMapper.updateById(oOrderStocking);
@@ -1368,7 +1369,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
             update.setShipStatus(EnumShipStatus.ALL.getIndex());//发货状态 0 待发货 1 部分发货 2全部发货
             update.setWaybillCode(bo.getLogisticsCode());
             update.setWaybillCompany(bo.getLogisticsCompany());
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("仓库手动发货-全部发货完成");
             orderService.updateById(update);
         } else {
@@ -1379,7 +1380,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
             update.setOrderStatus(EnumOOrderStatus.SHIPPED_BF.getIndex());
             update.setWaybillCode(bo.getLogisticsCode());
             update.setWaybillCompany(bo.getLogisticsCompany());
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("仓库发货手动确认-部分发货");
             orderService.updateById(update);
         }
@@ -1410,9 +1411,9 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                     erpSalesOrderUpdate.setOrderStatus(EnumOOrderStatus.SHIPPED_BF.getIndex());
                     erpSalesOrderUpdate.setUpdateBy("仓库手动发货-部分发货");
                 }
-                erpSalesOrderUpdate.setUpdateTime(new Date());
+                erpSalesOrderUpdate.setUpdateTime(LocalDateTime.now());
                 erpSalesOrderUpdate.setShipType(shipOrder.getType());
-                erpSalesOrderUpdate.setShippingTime(bo.getShipTime() == null ? new Date() : bo.getShipTime());
+                erpSalesOrderUpdate.setShippingTime(bo.getShipTime() == null ? LocalDateTime.now() : bo.getShipTime());
                 erpSalesOrderUpdate.setShippingNumber(bo.getLogisticsCode());
                 erpSalesOrderUpdate.setShippingCompany(bo.getLogisticsCompany());
                 erpSalesOrderMapper.updateById(erpSalesOrderUpdate);
@@ -1433,7 +1434,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                         .lt(ShopOrderItem::getShipStatus, EnumShipStatus.ALL.getIndex()));//小于2
 
                 ShopOrder shopOrderUpdate = new ShopOrder();
-                shopOrderUpdate.setErpShipTime(new Date());
+                shopOrderUpdate.setErpShipTime(LocalDateTime.now());
                 if (shopOrderItems.isEmpty()) {
                     // 全部发货
                     shopOrderUpdate.setErpShipStatus(EnumShipStatus.ALL.getIndex());//发货状态 0 待发货 1 部分发货 2全部发货
@@ -1447,10 +1448,10 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                     }
                 }
 
-                shopOrderUpdate.setErpShipTime(bo.getShipTime() != null ? bo.getShipTime() : new Date());
+                shopOrderUpdate.setErpShipTime(bo.getShipTime() != null ? bo.getShipTime() : LocalDateTime.now());
                 shopOrderUpdate.setErpShipCompany(bo.getLogisticsCompany());
                 shopOrderUpdate.setErpShipCode(bo.getLogisticsCode());
-                shopOrderUpdate.setUpdateOn(new Date());
+                shopOrderUpdate.setUpdateOn(LocalDateTime.now());
                 shopOrderUpdate.setId(sh.getId());
                 shopOrderService.updateById(shopOrderUpdate);
             }
@@ -1459,7 +1460,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
         // 添加仓库出库单
         if(!stockOutItemList.isEmpty()) {
             ErpWarehouseStockOut stockOut = new ErpWarehouseStockOut();
-            stockOut.setOutNum("DDCK-" + DateUtils.parseDateToStr("yyyyMMdd", new Date()) + "-" + System.currentTimeMillis() / 1000);
+            stockOut.setOutNum("DDCK-" + DateUtils.parseDateToStr("yyyyMMdd", LocalDateTime.now()) + "-" + System.currentTimeMillis() / 1000);
             stockOut.setSourceId(shipOrder.getId());
             stockOut.setSourceNum(shipOrder.getOrderNum());
             stockOut.setType(EnumStockOutType.ORDER_STOCK_OUT.getIndex());
@@ -1470,13 +1471,13 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
             stockOut.setStatus(0);
             stockOut.setPrintStatus(0);
             stockOut.setCreateBy("订单发货生成出库单");
-            stockOut.setCreateTime(new Date());
+            stockOut.setCreateTime(LocalDateTime.now());
             stockOut.setVendorId(shipOrder.getWarehouseId());
             stockOut.setMerchantId(shipOrder.getMerchantId());
             warehouseStockOutMapper.insert(stockOut);
             for (var s : stockOutItemList) {
                 s.setEntryId(stockOut.getId());
-                s.setCreateTime(new Date());
+                s.setCreateTime(LocalDateTime.now());
                 s.setCreateBy("订单发货生成出库单");
                 warehouseStockOutItemMapper.insert(s);
             }
@@ -1500,10 +1501,10 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //            shipment.setLogisticsCompany(bo.getLogisticsCompany());
 //            shipment.setLogisticsCompanyCode(bo.getLogisticsCompany());
 //            shipment.setWaybillCode(bo.getLogisticsCode());
-//            shipment.setShippingTime(new Date());
+//            shipment.setShippingTime(LocalDateTime.now());
 //            shipment.setShippingOperator(shipOrder.getWarehouseName());
 //            shipment.setShippingStatus(1);
-//            shipment.setCreateTime(new Date());
+//            shipment.setCreateTime(LocalDateTime.now());
 //            shipment.setType(EnumShipType.CLOUD_WAREHOUSE.getIndex());
 //            shipment.setShipMode(0);
 //            shipment.setShipperId(shipOrder.getShipperId());
@@ -1570,8 +1571,8 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //            stockOutItem.setGoodsName(erpWarehouseGoods.get(0).getGoodsName());
 //            stockOutItem.setGoodsImage(erpWarehouseGoods.get(0).getImageUrl());
 //            stockOutItem.setSkuName(erpWarehouseGoods.get(0).getStandard());
-//            stockOutItem.setCreateTime(new Date());
-//            stockOutItem.setUpdateTime(new Date());
+//            stockOutItem.setCreateTime(LocalDateTime.now());
+//            stockOutItem.setUpdateTime(LocalDateTime.now());
 //            stockOutItem.setVendorId(oOrderStocking.getWarehouseId());
 //            total+= oOrderStockingItem.getQuantity();
 //            stockOutItemList.add(stockOutItem);
@@ -1580,7 +1581,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //            OOrderStockingItem up = new OOrderStockingItem();
 //            up.setId(oOrderStockingItem.getId());
 //            up.setStockingStatus(1);//状态0待备货(待出库)1部分备货(出库中)2全部备货(已出库)
-//            up.setUpdateTime(new Date());
+//            up.setUpdateTime(LocalDateTime.now());
 //            up.setUpdateBy("生成出库单");
 //            shipOrderItemService.updateById(up);
 //        }
@@ -1598,7 +1599,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //        stockOut.setStatus(0);
 //        stockOut.setPrintStatus(0);
 //        stockOut.setCreateBy("发货订单生成出库单");
-//        stockOut.setCreateTime(new Date());
+//        stockOut.setCreateTime(LocalDateTime.now());
 //        stockOut.setVendorId(oOrderStocking.getWarehouseId());
 //        stockOut.setMerchantId(oOrderStocking.getMerchantId());
 //        warehouseStockOutMapper.insert(stockOut);
@@ -1612,7 +1613,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //        up.setId(stockingId);
 //        up.setStockingStatus(1);
 //        up.setUpdateBy("生成出库单");
-//        up.setUpdateTime(new Date());
+//        up.setUpdateTime(LocalDateTime.now());
 //        shipOrderMapper.updateById(up);
 //        return ResultVo.success();
 //    }
@@ -1643,13 +1644,13 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 update.setShippingCompany(logisticsName);
                 update.setShippingCompanyCode(logisticsCode);
                 update.setShippingNumber(waybillCode);
-                update.setShippingTime(new Date());
+                update.setShippingTime(LocalDateTime.now());
                 update.setWaybillCode(waybillCode);
                 update.setWaybillCompany(logisticsName);
                 update.setWaybillStatus(1);
                 update.setSendStatus(EnumShipStatus.ALL.getIndex());
                 update.setOrderStatus(EnumOOrderStatus.SHIPPED.getIndex());
-                update.setUpdateTime(new Date());
+                update.setUpdateTime(LocalDateTime.now());
                 update.setUpdateBy("京东云仓发货物流回传");
                 shipOrderMapper.updateById(update);
                 //查询发货item
@@ -1661,7 +1662,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                         updateItem.setId(oOrderStockingItem.getId());
                         updateItem.setSendStatus(EnumShipStatus.ALL.getIndex());
                         updateItem.setWaybillCode(waybillCode);
-                        updateItem.setUpdateTime(new Date());
+                        updateItem.setUpdateTime(LocalDateTime.now());
                         updateItem.setUpdateBy("京东云仓发货物流同步");
                         shipOrderItemService.updateById(updateItem);
 
@@ -1671,7 +1672,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                         oOrderItem.setShipStatus(EnumShipStatus.ALL.getIndex());//发货状态 0 待发货 1部分发货 2全部发货
                         oOrderItem.setWaybillCode(waybillCode);
                         oOrderItem.setWaybillCompany(logisticsName);
-                        oOrderItem.setUpdateTime(new Date());
+                        oOrderItem.setUpdateTime(LocalDateTime.now());
                         oOrderItem.setUpdateBy("京东云仓发货物流同步");
                         orderItemService.updateById(oOrderItem);
 
@@ -1681,12 +1682,12 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                             ErpSalesOrderItem erpSalesOrderItem =new ErpSalesOrderItem();
                             erpSalesOrderItem.setOrderStatus(EnumOOrderStatus.SHIPPED.getIndex());
                             erpSalesOrderItem.setUpdateBy("京东云仓发货物流回传");
-                            erpSalesOrderItem.setUpdateTime(new Date());
+                            erpSalesOrderItem.setUpdateTime(LocalDateTime.now());
                             erpSalesOrderItemMapper.update(erpSalesOrderItem,new LambdaQueryWrapper<ErpSalesOrderItem>().eq(ErpSalesOrderItem::getSubOrderNum,oOrderStockingItem.getSubOrderNum()));
                         }else  if(oOrderStocking.getShopType().intValue() == EnumShopType.TANG_LANG.getIndex() || oOrderStocking.getShopType().intValue() == EnumShopType.OFFLINE.getIndex()){
                             ShopOrderItem shopOrderItem=new ShopOrderItem();
                             shopOrderItem.setOrderStatus(EnumOOrderStatus.SHIPPED.getIndex());
-                            shopOrderItem.setUpdateOn(new Date());
+                            shopOrderItem.setUpdateOn(LocalDateTime.now());
                             shopOrderItem.setUpdateBy("京东云仓发货物流回传");
                             shopOrderItemMapper.update(shopOrderItem,new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSubOrderId,oOrderStockingItem.getSubOrderNum()));
                         }
@@ -1708,7 +1709,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                         oOrder.setWaybillCode(waybillCode);
                         oOrder.setWaybillCompany(logisticsName);
                         oOrder.setOrderStatus(EnumOOrderStatus.SHIPPED_BF.getIndex());//订单状态0：新订单，1：待发货，2：已发货，3：已完成，11已取消；12退款中；21待付款；22锁定，29删除，31售后中，101部分发货
-                        oOrder.setUpdateTime(new Date());
+                        oOrder.setUpdateTime(LocalDateTime.now());
                         oOrder.setUpdateBy("京东云仓发货物流同步");
                         orderService.updateById(oOrder);
 
@@ -1729,9 +1730,9 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                                         erpSalesOrderUpdate.setOrderStatus(EnumShipStatus.BU_FEN.getIndex());
                                     }
                                     erpSalesOrderUpdate.setUpdateBy("仓库发货手动确认-部分发货");
-                                    erpSalesOrderUpdate.setUpdateTime(new Date());
+                                    erpSalesOrderUpdate.setUpdateTime(LocalDateTime.now());
                                     erpSalesOrderUpdate.setShipType(oOrderStocking.getType());
-                                    erpSalesOrderUpdate.setShippingTime(new Date());
+                                    erpSalesOrderUpdate.setShippingTime(LocalDateTime.now());
                                     erpSalesOrderUpdate.setShippingNumber(waybillCode);
                                     erpSalesOrderUpdate.setShippingCompany(logisticsName);
                                     erpSalesOrderMapper.updateById(erpSalesOrderUpdate);
@@ -1748,15 +1749,15 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                                 for(var sh:shopOrders){
                                     log.info("========TANGLANG&OFFLINE订单状态更新=====");
                                     ShopOrder shopOrderUpdate = new ShopOrder();
-                                    shopOrderUpdate.setErpShipTime(new Date());
+                                    shopOrderUpdate.setErpShipTime(LocalDateTime.now());
                                     shopOrderUpdate.setErpShipStatus(EnumShipStatus.BU_FEN.getIndex());//发货状态 0 待发货 1 部分发货 2全部发货
                                     if (sh.getOrderStatus() == EnumOOrderStatus.WAIT_SHIP.getIndex()) {
                                         shopOrderUpdate.setOrderStatus(EnumShipStatus.BU_FEN.getIndex());
                                     }
-                                    shopOrderUpdate.setErpShipTime(new Date());
+                                    shopOrderUpdate.setErpShipTime(LocalDateTime.now());
                                     shopOrderUpdate.setErpShipCompany(logisticsName);
                                     shopOrderUpdate.setErpShipCode(waybillCode);
-                                    shopOrderUpdate.setUpdateOn(new Date());
+                                    shopOrderUpdate.setUpdateOn(LocalDateTime.now());
                                     shopOrderUpdate.setId(sh.getId());
                                     shopOrderService.updateById(shopOrderUpdate);
                                 }
@@ -1770,7 +1771,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                         oOrder.setShipStatus(EnumShipStatus.ALL.getIndex());//发货状态 0 待发货 1部分发货 2全部发货
                         oOrder.setWaybillCode(waybillCode);
                         oOrder.setWaybillCompany(logisticsName);
-                        oOrder.setUpdateTime(new Date());
+                        oOrder.setUpdateTime(LocalDateTime.now());
                         oOrder.setUpdateBy("京东云仓发货物流同步");
                         orderService.updateById(oOrder);
 
@@ -1792,9 +1793,9 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                                         erpSalesOrderUpdate.setOrderStatus(EnumOOrderStatus.SHIPPED.getIndex());
                                     }
                                     erpSalesOrderUpdate.setUpdateBy("仓库发货手动确认-全部发货完成");
-                                    erpSalesOrderUpdate.setUpdateTime(new Date());
+                                    erpSalesOrderUpdate.setUpdateTime(LocalDateTime.now());
                                     erpSalesOrderUpdate.setShipType(oOrderStocking.getType());
-                                    erpSalesOrderUpdate.setShippingTime(new Date());
+                                    erpSalesOrderUpdate.setShippingTime(LocalDateTime.now());
                                     erpSalesOrderUpdate.setShippingNumber(waybillCode);
                                     erpSalesOrderUpdate.setShippingCompany(logisticsName);
                                     erpSalesOrderMapper.updateById(erpSalesOrderUpdate);
@@ -1812,15 +1813,15 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                                 for(var sh:shopOrders){
                                     log.info("========TANGLANG&OFFLINE订单状态更新=====");
                                     ShopOrder shopOrderUpdate = new ShopOrder();
-                                    shopOrderUpdate.setErpShipTime(new Date());
+                                    shopOrderUpdate.setErpShipTime(LocalDateTime.now());
                                     shopOrderUpdate.setErpShipStatus(EnumShipStatus.ALL.getIndex());//发货状态 0 待发货 1 部分发货 2全部发货
                                     if (sh.getOrderStatus() == EnumOOrderStatus.WAIT_SHIP.getIndex()||sh.getOrderStatus() == EnumOOrderStatus.SHIPPED_BF.getIndex()) {
                                         shopOrderUpdate.setOrderStatus(EnumOOrderStatus.SHIPPED.getIndex());
                                     }
-                                    shopOrderUpdate.setErpShipTime(new Date());
+                                    shopOrderUpdate.setErpShipTime(LocalDateTime.now());
                                     shopOrderUpdate.setErpShipCompany(logisticsName);
                                     shopOrderUpdate.setErpShipCode(waybillCode);
-                                    shopOrderUpdate.setUpdateOn(new Date());
+                                    shopOrderUpdate.setUpdateOn(LocalDateTime.now());
                                     shopOrderUpdate.setId(sh.getId());
                                     shopOrderService.updateById(shopOrderUpdate);
                                 }
@@ -1844,7 +1845,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //                                updateOrder.setId(shopOrder.getId());
 //                                updateOrder.setOrderStatus(2);
 //                                updateOrder.setErpShipStatus(1);//erp发货状态0未发货1已发货
-//                                updateOrder.setErpShipTime(new Date());
+//                                updateOrder.setErpShipTime(LocalDateTime.now());
 //                                updateOrder.setErpShipCompany(logisticsName);
 //                                updateOrder.setErpShipCode(waybillCode);
 //                                shopOrderService.updateById(updateOrder);
@@ -1866,9 +1867,9 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //                                offlineOrderUpdate.setId(off.getId());
 //                                offlineOrderUpdate.setOrderStatus(2);
 //                                offlineOrderUpdate.setUpdateBy("京东云仓发货物流回传");
-//                                offlineOrderUpdate.setUpdateTime(new Date());
+//                                offlineOrderUpdate.setUpdateTime(LocalDateTime.now());
 //                                offlineOrderUpdate.setShipType(oOrderStocking.getType());
-//                                offlineOrderUpdate.setShippingTime(new Date());
+//                                offlineOrderUpdate.setShippingTime(LocalDateTime.now());
 //                                offlineOrderUpdate.setShippingNumber(waybillCode);
 //                                offlineOrderUpdate.setShippingCompany(logisticsName);
 //                                offlineOrderMapper.updateById(offlineOrderUpdate);
@@ -1911,10 +1912,10 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
         oOrderStocking.setShipMode(0);//发货方式：0手动发货  1电子面单发货
         oOrderStocking.setWaybillCompany(bo.getLogisticsCompany());
         oOrderStocking.setWaybillCode(bo.getLogisticsCode());
-        oOrderStocking.setShippingTime(bo.getShipTime()!=null?bo.getShipTime(): new Date());
+        oOrderStocking.setShippingTime(bo.getShipTime()!=null?bo.getShipTime(): LocalDateTime.now());
         oOrderStocking.setShippingCompany(bo.getLogisticsCompany());
         oOrderStocking.setShippingNumber(bo.getLogisticsCode());
-        oOrderStocking.setUpdateTime(new Date());
+        oOrderStocking.setUpdateTime(LocalDateTime.now());
         oOrderStocking.setUpdateBy("供应商发货确认");
         oOrderStocking.setId(shipOrder.getId());
         shipOrderMapper.updateById(oOrderStocking);
@@ -1930,7 +1931,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 // 更新子订单发货状态
                 OOrderStockingItem shipOrderItem=new OOrderStockingItem();
                 shipOrderItem.setSendStatus(EnumShipStatus.ALL.getIndex());
-                shipOrderItem.setUpdateTime(new Date());
+                shipOrderItem.setUpdateTime(LocalDateTime.now());
                 shipOrderItem.setUpdateBy("供应商发货确认");
                 shipOrderItem.setId(item.getId());
                 shipOrderItemService.updateById(shipOrderItem);
@@ -1942,7 +1943,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 updateOrderItem.setWaybillCompany(bo.getLogisticsCompany());
                 updateOrderItem.setShipStatus(EnumShipStatus.ALL.getIndex());
                 updateOrderItem.setUpdateBy("供应商发货确认");
-                updateOrderItem.setUpdateTime(new Date());
+                updateOrderItem.setUpdateTime(LocalDateTime.now());
                 orderItemService.updateById(updateOrderItem);
 
                 // 加入发货记录
@@ -1958,14 +1959,14 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                     // 更新子订单
                     ErpSalesOrderItem erpSalesOrderItemUpdate = new ErpSalesOrderItem();
                     erpSalesOrderItemUpdate.setOrderStatus(EnumOOrderStatus.SHIPPED.getIndex());
-                    erpSalesOrderItemUpdate.setUpdateTime(new Date());
+                    erpSalesOrderItemUpdate.setUpdateTime(LocalDateTime.now());
                     erpSalesOrderItemUpdate.setUpdateBy("供应商发货确认");
                     erpSalesOrderItemMapper.update(erpSalesOrderItemUpdate,new LambdaQueryWrapper<ErpSalesOrderItem>().eq(ErpSalesOrderItem::getSubOrderNum, item.getSubOrderNum()));
                 }else  if(shipOrder.getShopType().intValue() == EnumShopType.TANG_LANG.getIndex() || erpOrder.getShopType().intValue() == EnumShopType.OFFLINE.getIndex()){
                     ShopOrderItem shopOrderItemUpdate = new ShopOrderItem();
                     shopOrderItemUpdate.setOrderStatus(EnumOOrderStatus.SHIPPED.getIndex());
                     shopOrderItemUpdate.setUpdateBy("供应商发货确认");
-                    shopOrderItemUpdate.setUpdateOn(new Date());
+                    shopOrderItemUpdate.setUpdateOn(LocalDateTime.now());
                     shopOrderItemMapper.update(shopOrderItemUpdate,new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSubOrderId, item.getSubOrderNum()));
                 }
             }
@@ -1989,10 +1990,10 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //            shipment.setLogisticsCompany(bo.getLogisticsCompany());
 //            shipment.setLogisticsCompanyCode(bo.getLogisticsCompany());
 //            shipment.setWaybillCode(bo.getLogisticsCode());
-//            shipment.setShippingTime(new Date());
+//            shipment.setShippingTime(LocalDateTime.now());
 //            shipment.setShippingOperator(shipOrder.getWarehouseName());
 //            shipment.setShippingStatus(1);
-//            shipment.setCreateTime(new Date());
+//            shipment.setCreateTime(LocalDateTime.now());
 //            shipment.setType(EnumShipType.SUPPLIER.getIndex());
 //            shipment.setShipMode(0);
 //            shipment.setShipperId(shipOrder.getShipperId());
@@ -2016,7 +2017,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
             update.setOrderStatus(2);
             update.setWaybillCode(bo.getLogisticsCode());
             update.setWaybillCompany(bo.getLogisticsCompany());
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("供应商发货确认-全部发货完成");
             orderService.updateById(update);
 
@@ -2038,9 +2039,9 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                             erpSalesOrderUpdate.setOrderStatus(EnumOOrderStatus.SHIPPED.getIndex());
                         }
                         erpSalesOrderUpdate.setUpdateBy("供应商发货确认");
-                        erpSalesOrderUpdate.setUpdateTime(new Date());
+                        erpSalesOrderUpdate.setUpdateTime(LocalDateTime.now());
                         erpSalesOrderUpdate.setShipType(shipOrder.getType());
-                        erpSalesOrderUpdate.setShippingTime(bo.getShipTime() == null ? new Date() : bo.getShipTime());
+                        erpSalesOrderUpdate.setShippingTime(bo.getShipTime() == null ? LocalDateTime.now() : bo.getShipTime());
                         erpSalesOrderUpdate.setShippingNumber(bo.getLogisticsCode());
                         erpSalesOrderUpdate.setShippingCompany(bo.getLogisticsCompany());
                         erpSalesOrderMapper.updateById(erpSalesOrderUpdate);
@@ -2059,15 +2060,15 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 if(!shopOrders.isEmpty()){
                     for(var sh:shopOrders){
                         ShopOrder shopOrderUpdate = new ShopOrder();
-                        shopOrderUpdate.setErpShipTime(new Date());
+                        shopOrderUpdate.setErpShipTime(LocalDateTime.now());
                         shopOrderUpdate.setErpShipStatus(1);
                         if (sh.getOrderStatus() == EnumOOrderStatus.WAIT_SHIP.getIndex()||sh.getOrderStatus() == EnumOOrderStatus.SHIPPED_BF.getIndex()) {
                             shopOrderUpdate.setOrderStatus(EnumOOrderStatus.SHIPPED.getIndex());
                         }
-                        shopOrderUpdate.setErpShipTime(bo.getShipTime()!=null?bo.getShipTime():new Date());
+                        shopOrderUpdate.setErpShipTime(bo.getShipTime()!=null?bo.getShipTime():LocalDateTime.now());
                         shopOrderUpdate.setErpShipCompany(bo.getLogisticsCompany());
                         shopOrderUpdate.setErpShipCode(bo.getLogisticsCode());
-                        shopOrderUpdate.setUpdateOn(new Date());
+                        shopOrderUpdate.setUpdateOn(LocalDateTime.now());
                         shopOrderUpdate.setId(sh.getId());
                         shopOrderService.updateById(shopOrderUpdate);
                     }
@@ -2082,7 +2083,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
 //            update.setOrderStatus(2);
             update.setWaybillCode(bo.getLogisticsCode());
             update.setWaybillCompany(bo.getLogisticsCompany());
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("供应商发货确认-部分发货");
             orderService.updateById(update);
 
@@ -2103,9 +2104,9 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                             erpSalesOrderUpdate.setOrderStatus(EnumShipStatus.BU_FEN.getIndex());
                         }
                         erpSalesOrderUpdate.setUpdateBy("仓库发货手动确认-部分发货");
-                        erpSalesOrderUpdate.setUpdateTime(new Date());
+                        erpSalesOrderUpdate.setUpdateTime(LocalDateTime.now());
                         erpSalesOrderUpdate.setShipType(shipOrder.getType());
-                        erpSalesOrderUpdate.setShippingTime(bo.getShipTime() == null ? new Date() : bo.getShipTime());
+                        erpSalesOrderUpdate.setShippingTime(bo.getShipTime() == null ? LocalDateTime.now() : bo.getShipTime());
                         erpSalesOrderUpdate.setShippingNumber(bo.getLogisticsCode());
                         erpSalesOrderUpdate.setShippingCompany(bo.getLogisticsCompany());
                         erpSalesOrderMapper.updateById(erpSalesOrderUpdate);
@@ -2122,15 +2123,15 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                     for(var sh:shopOrders){
                         log.info("========TANGLANG&OFFLINE订单状态更新=====");
                         ShopOrder shopOrderUpdate = new ShopOrder();
-                        shopOrderUpdate.setErpShipTime(new Date());
+                        shopOrderUpdate.setErpShipTime(LocalDateTime.now());
                         shopOrderUpdate.setErpShipStatus(EnumShipStatus.BU_FEN.getIndex());//发货状态 0 待发货 1 部分发货 2全部发货
                         if (sh.getOrderStatus() == EnumOOrderStatus.WAIT_SHIP.getIndex()) {
                             shopOrderUpdate.setOrderStatus(EnumShipStatus.BU_FEN.getIndex());
                         }
-                        shopOrderUpdate.setErpShipTime(bo.getShipTime()!=null?bo.getShipTime():new Date());
+                        shopOrderUpdate.setErpShipTime(bo.getShipTime()!=null?bo.getShipTime():LocalDateTime.now());
                         shopOrderUpdate.setErpShipCompany(bo.getLogisticsCompany());
                         shopOrderUpdate.setErpShipCode(bo.getLogisticsCode());
-                        shopOrderUpdate.setUpdateOn(new Date());
+                        shopOrderUpdate.setUpdateOn(LocalDateTime.now());
                         shopOrderUpdate.setId(sh.getId());
                         shopOrderService.updateById(shopOrderUpdate);
                     }
@@ -2143,7 +2144,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
         // 生成仓库出库单（供应商发货时）- 内联实现避免跨事务问题
         if(shipOrder.getWarehouseId() != null && shipOrder.getWarehouseId() > 0){
             try {
-                String outNum = DateUtils.parseDateToStr("yyyyMMddHHmmss", new Date());
+                String outNum = DateUtils.parseDateToStr("yyyyMMddHHmmss", LocalDateTime.now());
                 Map<Long, List<OOrderStockingItem>> goodsGroup = shipOrderItemList.stream()
                         .collect(Collectors.groupingBy(OOrderStockingItem::getWarehouseGoodsId));
                 long totalQty = shipOrderItemList.stream().mapToLong(OOrderStockingItem::getQuantity).sum();
@@ -2158,7 +2159,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 stockOut.setSourceId(shipOrder.getId());
                 stockOut.setRemark("供应商手动发货生成出库单");
                 stockOut.setCreateBy(operator);
-                stockOut.setCreateTime(new Date());
+                stockOut.setCreateTime(LocalDateTime.now());
                 stockOut.setGoodsUnit(goodsGroup.size());
                 stockOut.setSpecUnit(shipOrderItemList.size());
                 stockOut.setSpecUnitTotal((int) totalQty);
@@ -2191,7 +2192,7 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                     outItem.setOutQuantity(0);
                     outItem.setStatus(0);
                     outItem.setCreateBy(operator);
-                    outItem.setCreateTime(new Date());
+                    outItem.setCreateTime(LocalDateTime.now());
                     outItem.setWarehouseId(shipOrder.getWarehouseId());
                     outItem.setMerchantId(shipOrder.getMerchantId());
                     outItem.setVendorId(shipOrder.getShipperId());
@@ -2240,16 +2241,16 @@ public class OOrderStockingServiceImpl extends ServiceImpl<OOrderStockingMapper,
                 customer.setTotalOrders(1);
                 customer.setTotalAmount(BigDecimal.ZERO);
                 customer.setStatus(1); // 默认启用
-                customer.setFirstOrderTime(new Date());
-                customer.setLastOrderTime(new Date());
-                customer.setCreateTime(new Date());
+                customer.setFirstOrderTime(LocalDateTime.now());
+                customer.setLastOrderTime(LocalDateTime.now());
+                customer.setCreateTime(LocalDateTime.now());
                 supplierCustomerMapper.insert(customer);
                 log.info("自动创建供应商客户记录成功: supplierId={}, shopId={}", supplierId, oOrder.getShopId());
             } else {
                 // 客户已存在，更新统计信息
                 existCustomer.setTotalOrders(existCustomer.getTotalOrders() + 1);
-                existCustomer.setLastOrderTime(new Date());
-                existCustomer.setUpdateTime(new Date());
+                existCustomer.setLastOrderTime(LocalDateTime.now());
+                existCustomer.setUpdateTime(LocalDateTime.now());
                 supplierCustomerMapper.updateById(existCustomer);
                 log.info("更新供应商客户统计: supplierId={}, shopId={}, totalOrders={}",
                         supplierId, oOrder.getShopId(), existCustomer.getTotalOrders());

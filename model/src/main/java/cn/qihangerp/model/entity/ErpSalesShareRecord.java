@@ -3,12 +3,11 @@ package cn.qihangerp.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 分账记录表
@@ -60,11 +59,9 @@ public class ErpSalesShareRecord implements Serializable {
 
     private String failReason;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date processTime;
+    private LocalDateTime processTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private static final long serialVersionUID = 1L;
 }

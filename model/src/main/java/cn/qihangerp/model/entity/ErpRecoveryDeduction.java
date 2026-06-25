@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 回收抵扣记录表
@@ -39,7 +39,7 @@ public class ErpRecoveryDeduction {
     /**
      * 
      */
-    private Date deductionTime;
+    private LocalDateTime deductionTime;
 
     /**
      * 

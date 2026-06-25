@@ -25,7 +25,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,11 +88,11 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
         if (shopRefundList != null && shopRefundList.size() > 0) {
             // 更新
             refund.setId(shopRefundList.get(0).getId());
-            refund.setUpdateOn(new Date());
+            refund.setUpdateOn(LocalDateTime.now());
             this.baseMapper.updateById(refund);
         }else{
             if(refund.getOrderAmount()==null) refund.setOrderAmount(0);
-            refund.setCreateOn(new Date());
+            refund.setCreateOn(LocalDateTime.now());
             this.baseMapper.insert(refund);
         }
         return ResultVo.success(refund.getId());
@@ -141,7 +140,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
         refund.setShopType(shopOrder.getShopType());
         refund.setShopOrderId(shopOrder.getId());
         refund.setShopOrderId(shopOrderItem.getId());
-        String refundId = shopOrder.getShopId()+"-"+DateUtils.format(new Date(),"yyyyMMdd")+"-"+System.currentTimeMillis()/1000;
+        String refundId = shopOrder.getShopId()+"-"+DateUtils.format(LocalDateTime.now(),"yyyyMMdd")+"-"+System.currentTimeMillis()/1000;
         refund.setAfterId(StringUtils.hasText(addRequest.getRefundId())?addRequest.getRefundId():refundId);
         refund.setType(addRequest.getType());
         refund.setOrderId(shopOrderItem.getOrderId());
@@ -178,7 +177,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
         refund.setRemark(addRequest.getRemark());
         refund.setCreateTime(System.currentTimeMillis()/1000);
         refund.setUpdateTime(0L);
-        refund.setCreateOn(new Date());
+        refund.setCreateOn(LocalDateTime.now());
         this.baseMapper.insert(refund);
 
         // 更新自己的状态
@@ -186,7 +185,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
         itemUpdate.setId(addRequest.getOrderItemId());
         itemUpdate.setRefundStatus(2);
         itemUpdate.setUpdateBy("手动添加售后");
-        itemUpdate.setUpdateOn(new Date());
+        itemUpdate.setUpdateOn(LocalDateTime.now());
         shopOrderItemMapper.updateById(itemUpdate);
 
         // 更新订单库
@@ -194,7 +193,7 @@ public class ShopRefundServiceImpl extends ServiceImpl<ShopRefundMapper, ShopRef
         orderItem.setRefundStatus(2);
         orderItem.setRefundCount(shopOrderItem.getQuantity());
         orderItem.setUpdateBy("手动添加售后");
-        orderItem.setUpdateTime(new Date());
+        orderItem.setUpdateTime(LocalDateTime.now());
         orderItemMapper.update(orderItem,new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getSubOrderNum,shopOrderItem.getSubOrderId()));
 
         return ResultVo.success();

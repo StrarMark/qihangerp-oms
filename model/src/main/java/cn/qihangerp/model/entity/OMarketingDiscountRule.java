@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 订单折扣规则表（营销模块-手动订单折扣）
@@ -102,12 +102,12 @@ public class OMarketingDiscountRule {
     /**
      * 创建时间
      */
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 
     /**
      * 备注说明

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 退换货表
@@ -110,7 +110,7 @@ public class ORefund implements Serializable {
     /**
      * 收货时间
      */
-    private Date receiveTime;
+    private LocalDateTime receiveTime;
 
     /**
      * 备注
@@ -129,7 +129,7 @@ public class ORefund implements Serializable {
     /**
      * 订单创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 创建人
@@ -139,7 +139,7 @@ public class ORefund implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 更新人
@@ -148,7 +148,7 @@ public class ORefund implements Serializable {
 
     private Integer erpPushStatus;
     private String erpPushResult;
-    private Date erpPushTime;
+    private LocalDateTime erpPushTime;
     /**
      * 是否处理0未处理1已处理9无需处理
      */

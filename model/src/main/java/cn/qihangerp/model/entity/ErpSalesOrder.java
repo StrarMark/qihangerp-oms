@@ -3,12 +3,11 @@ package cn.qihangerp.model.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -143,8 +142,7 @@ public class ErpSalesOrder implements Serializable {
     /**
      * 订单时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date orderTime;
+    private LocalDateTime orderTime;
 
     /**
      * 发货类型（0仓库发货；1供应商代发）
@@ -154,8 +152,7 @@ public class ErpSalesOrder implements Serializable {
     /**
      * 发货时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date shippingTime;
+    private LocalDateTime shippingTime;
 
     /**
      * 快递单号
@@ -180,8 +177,7 @@ public class ErpSalesOrder implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 创建人
@@ -201,8 +197,7 @@ public class ErpSalesOrder implements Serializable {
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 更新人

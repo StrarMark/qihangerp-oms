@@ -16,7 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
 * @author 1
@@ -49,9 +49,9 @@ public class ErpRecoveryRecordServiceImpl extends ServiceImpl<ErpRecoveryRecordM
     public ResultVo<Long> add(String createBy, RecoveryAddRequest bo) {
         ErpRecoveryRecord recoveryRecord = new ErpRecoveryRecord();
         BeanUtils.copyProperties(bo, recoveryRecord);
-        recoveryRecord.setRecoveryNo("REC"+ DateUtils.format(new Date(), "yyyyMMddHHmmss"));
-        recoveryRecord.setRecoveryDate(new Date());
-        recoveryRecord.setCreatedTime(new Date());
+        recoveryRecord.setRecoveryNo("REC"+ DateUtils.format(LocalDateTime.now(), "yyyyMMddHHmmss"));
+        recoveryRecord.setRecoveryDate(LocalDateTime.now());
+        recoveryRecord.setCreatedTime(LocalDateTime.now());
         recoveryRecord.setCreatedBy(createBy);
         recoveryRecord.setSettlementType(0);//未知
         recoveryRecord.setStatus(1);//1-有效，2-已作废

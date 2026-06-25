@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -90,7 +90,7 @@ public class GoodsInventoryLockServiceImpl extends ServiceImpl<GoodsInventoryLoc
     @Transactional(rollbackFor = Exception.class)
     public void autoReleaseExpiredLocks() {
         QueryWrapper<GoodsInventoryLock> wrapper = new QueryWrapper<>();
-        wrapper.lt("expire_time", new Date())
+        wrapper.lt("expire_time", LocalDateTime.now())
                .eq("status", 1);
     }
 

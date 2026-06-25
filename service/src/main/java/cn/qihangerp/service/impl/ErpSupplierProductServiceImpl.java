@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -87,7 +87,7 @@ public class ErpSupplierProductServiceImpl extends ServiceImpl<ErpSupplierProduc
             warehouse.setWarehouseSource(0);
             warehouse.setStatus("1");
             warehouse.setCreateBy(username);
-            warehouse.setCreateTime(new Date());
+            warehouse.setCreateTime(LocalDateTime.now());
             warehouseMapper.insert(warehouse);
 
             // 更新供应商的仓库ID
@@ -111,7 +111,7 @@ public class ErpSupplierProductServiceImpl extends ServiceImpl<ErpSupplierProduc
                 newWarehouse.setShopId(0L);//(云仓库和供应商仓库不受该字段现在)
                 newWarehouse.setStatus("1");
                 newWarehouse.setCreateBy(username);
-                newWarehouse.setCreateTime(new Date());
+                newWarehouse.setCreateTime(LocalDateTime.now());
                 warehouseMapper.insert(newWarehouse);
 
                 // 更新供应商的仓库ID
@@ -177,7 +177,7 @@ public class ErpSupplierProductServiceImpl extends ServiceImpl<ErpSupplierProduc
                 warehouseGoods.setBrandNo(item.getBrandNo());
                 warehouseGoods.setBrandName(item.getBrandName());
                 warehouseGoods.setCreateBy(username);
-                warehouseGoods.setCreateTime(new Date());
+                warehouseGoods.setCreateTime(LocalDateTime.now());
                 warehouseGoodsMapper.insert(warehouseGoods);
                 
                 // 更新供应商商品SKU的仓库商品ID
@@ -237,7 +237,7 @@ public class ErpSupplierProductServiceImpl extends ServiceImpl<ErpSupplierProduc
             warehouse.setWarehouseSource(0);
             warehouse.setStatus("1");
             warehouse.setCreateBy(username);
-            warehouse.setCreateTime(new Date());
+            warehouse.setCreateTime(LocalDateTime.now());
             warehouseMapper.insert(warehouse);
 
             // 更新供应商的仓库ID
@@ -261,7 +261,7 @@ public class ErpSupplierProductServiceImpl extends ServiceImpl<ErpSupplierProduc
                 newWarehouse.setWarehouseSource(0);
                 newWarehouse.setStatus("1");
                 newWarehouse.setCreateBy(username);
-                newWarehouse.setCreateTime(new Date());
+                newWarehouse.setCreateTime(LocalDateTime.now());
                 warehouseMapper.insert(newWarehouse);
 
                 // 更新供应商的仓库ID
@@ -337,7 +337,7 @@ public class ErpSupplierProductServiceImpl extends ServiceImpl<ErpSupplierProduc
                     warehouseGoods.setBrandNo(item.getBrandNo());
                     warehouseGoods.setBrandName(item.getBrandName());
                     warehouseGoods.setCreateBy(username);
-                    warehouseGoods.setCreateTime(new Date());
+                    warehouseGoods.setCreateTime(LocalDateTime.now());
                     warehouseGoodsMapper.insert(warehouseGoods);
 
                     // 更新供应商商品SKU的仓库商品ID

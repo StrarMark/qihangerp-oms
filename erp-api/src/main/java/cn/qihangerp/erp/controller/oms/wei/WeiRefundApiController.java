@@ -19,8 +19,7 @@
 //import org.springframework.web.bind.annotation.RestController;
 //
 //import java.time.LocalDateTime;
-//import java.util.Date;
-//
+////
 //@RequestMapping("/api/oms-api/wei/refund")
 //@RestController
 //@AllArgsConstructor
@@ -34,7 +33,7 @@
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 //        }
 //
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long beginTime = System.currentTimeMillis();
 //
 //        var checkResult = apiCommon.checkBefore(params.getShopId());

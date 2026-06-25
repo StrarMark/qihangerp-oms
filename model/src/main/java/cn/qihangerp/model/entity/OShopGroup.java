@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 
@@ -35,7 +35,7 @@ public class OShopGroup implements Serializable {
     /**
      * 
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 
@@ -45,7 +45,7 @@ public class OShopGroup implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 更新人

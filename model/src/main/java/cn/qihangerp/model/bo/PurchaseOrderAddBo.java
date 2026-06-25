@@ -3,7 +3,7 @@ package cn.qihangerp.model.bo;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ public class PurchaseOrderAddBo
     private String orderNo;
 
     /** 订单日期 */
-    private Date orderDate;
+    private LocalDateTime orderDate;
 
 
     /** 订单总金额 */

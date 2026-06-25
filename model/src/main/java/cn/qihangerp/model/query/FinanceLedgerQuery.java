@@ -3,7 +3,7 @@ package cn.qihangerp.model.query;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class FinanceLedgerQuery {
@@ -14,8 +14,8 @@ public class FinanceLedgerQuery {
     private Long shopId;
     private Long orderId;
     private String orderNo;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private BigDecimal minAmount;
     private BigDecimal maxAmount;
 }

@@ -30,8 +30,7 @@
 //import java.time.LocalDateTime;
 //import java.time.format.DateTimeFormatter;
 //import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.List;
+////import java.util.List;
 //
 //@RequestMapping("/api/oms-api/jd/order")
 //@RestController
@@ -50,7 +49,7 @@
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 //        }
 //
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long beginTime = System.currentTimeMillis();
 //
 //        var checkResult = jdApiCommon.checkBefore(params.getShopId());
@@ -133,7 +132,7 @@
 //                // 新增
 //                OShopPullLasttime insertLasttime = new OShopPullLasttime();
 //                insertLasttime.setShopId(params.getShopId());
-//                insertLasttime.setCreateTime(new Date());
+//                insertLasttime.setCreateTime(LocalDateTime.now());
 //                insertLasttime.setLasttime(endTime);
 //                insertLasttime.setPullType("ORDER");
 //                pullLasttimeService.save(insertLasttime);
@@ -142,7 +141,7 @@
 //                // 修改
 //                OShopPullLasttime updateLasttime = new OShopPullLasttime();
 //                updateLasttime.setId(lasttime.getId());
-//                updateLasttime.setUpdateTime(new Date());
+//                updateLasttime.setUpdateTime(LocalDateTime.now());
 //                updateLasttime.setLasttime(endTime);
 //                pullLasttimeService.updateById(updateLasttime);
 //            }
@@ -179,7 +178,7 @@
 //        if (params.getOrderId() == null) {
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，缺少orderId");
 //        }
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long beginTime = System.currentTimeMillis();
 //
 //        var checkResult = jdApiCommon.checkBefore(params.getShopId());

@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -71,7 +71,7 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
                         shop.setId(oShops.get(0).getId());
                         shop.setStatus("1");
                         shop.setUpdateBy("同步更新店铺数据");
-                        shop.setUpdateTime(new Date());
+                        shop.setUpdateTime(LocalDateTime.now());
                         mapper.updateById(shop);
                         log.info("=====同步店铺===更新===");
                     }else{
@@ -79,7 +79,7 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
                         shop.setType(EnumShopType.OFFLINE.getIndex());
                         shop.setStatus("1");
                         shop.setCreateBy("同步店铺数据");
-                        shop.setCreateTime(new Date());
+                        shop.setCreateTime(LocalDateTime.now());
                         mapper.insert(shop);
                         log.info("=====同步店铺===新增===");
                     }
@@ -205,7 +205,7 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
         shop.setAccessTokenBegin(System.currentTimeMillis()/1000);
         shop.setApiStatus(1);
         shop.setUpdateBy("更新Token");
-        shop.setUpdateTime(new Date());
+        shop.setUpdateTime(LocalDateTime.now());
         mapper.updateById(shop);
     }
 
@@ -232,7 +232,7 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
         shop.setId(shopId);
         shop.setManageUserId(userId);
         shop.setShopGroupId(groupId);
-        shop.setUpdateTime(new Date());
+        shop.setUpdateTime(LocalDateTime.now());
 
         mapper.updateById(shop);
     }
@@ -262,7 +262,7 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
             shopUpdate.setSellerId(apiAddShopRequest.getSellerId());
             shopUpdate.setStatus("1");
             shopUpdate.setUpdateBy("API接口修改店铺");
-            shopUpdate.setUpdateTime(new Date());
+            shopUpdate.setUpdateTime(LocalDateTime.now());
             mapper.updateById(shopUpdate);
             return ResultVo.success(apiAddShopRequest);
         }else {
@@ -279,7 +279,7 @@ public class OShopServiceImpl extends ServiceImpl<OShopMapper, OShop>
             shop.setSellerId("");
             shop.setStatus("1");
             shop.setCreateBy("API接口添加店铺");
-            shop.setCreateTime(new Date());
+            shop.setCreateTime(LocalDateTime.now());
             mapper.insert(shop);
             apiAddShopRequest.setShopId(shop.getId());
             return ResultVo.success(apiAddShopRequest);

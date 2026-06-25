@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -45,7 +45,7 @@ public class ErpSalesGoodsPackageServiceImpl extends ServiceImpl<ErpSalesGoodsPa
         if (pkg.getPackageNo() == null || pkg.getPackageNo().isEmpty()) {
             pkg.setPackageNo(generatePackageNo());
         }
-        pkg.setCreateTime(new Date());
+        pkg.setCreateTime(LocalDateTime.now());
         pkg.setStatus(1);
         return baseMapper.insert(pkg) > 0;
     }
@@ -55,7 +55,7 @@ public class ErpSalesGoodsPackageServiceImpl extends ServiceImpl<ErpSalesGoodsPa
         if (pkg.getPackageNo() == null || pkg.getPackageNo().isEmpty()) {
             pkg.setPackageNo(generatePackageNo());
         }
-        pkg.setCreateTime(new Date());
+        pkg.setCreateTime(LocalDateTime.now());
         pkg.setStatus(1);
         baseMapper.insert(pkg);
         return pkg.getId();
@@ -64,7 +64,7 @@ public class ErpSalesGoodsPackageServiceImpl extends ServiceImpl<ErpSalesGoodsPa
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updatePackage(ErpSalesGoodsPackage pkg) {
-        pkg.setUpdateTime(new Date());
+        pkg.setUpdateTime(LocalDateTime.now());
         return baseMapper.updateById(pkg) > 0;
     }
 
@@ -103,7 +103,7 @@ public class ErpSalesGoodsPackageServiceImpl extends ServiceImpl<ErpSalesGoodsPa
                 }
             }
             item.setPackageId(packageId);
-            item.setCreateTime(new Date());
+            item.setCreateTime(LocalDateTime.now());
             packageItemMapper.insert(item);
         }
         return true;

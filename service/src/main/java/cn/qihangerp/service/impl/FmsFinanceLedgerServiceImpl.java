@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Slf4j
 @AllArgsConstructor
@@ -69,14 +69,14 @@ public class FmsFinanceLedgerServiceImpl extends ServiceImpl<FmsFinanceLedgerMap
         if (ledger.getVoucherNo() == null || ledger.getVoucherNo().isEmpty()) {
             ledger.setVoucherNo(generateVoucherNo());
         }
-        ledger.setCreatedTime(new Date());
+        ledger.setCreatedTime(LocalDateTime.now());
         return baseMapper.insert(ledger) > 0;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateLedger(FmsFinanceLedger ledger) {
-        ledger.setUpdatedTime(new Date());
+        ledger.setUpdatedTime(LocalDateTime.now());
         return baseMapper.updateById(ledger) > 0;
     }
 

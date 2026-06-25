@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 店铺订单优惠明细表
@@ -48,5 +48,5 @@ public class ShopOrderPromotion {
     /**
      * 创建时间
      */
-    private Date createOn;
+    private LocalDateTime createOn;
 }

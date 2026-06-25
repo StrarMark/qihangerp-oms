@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -211,7 +211,7 @@ public class ShopOrder implements Serializable {
     /**
      * 确认时间
      */
-    private Date confirmTime;
+    private LocalDateTime confirmTime;
 
     /**
      * erp发货状态 0 待发货 1 部分发货 2全部发货
@@ -221,19 +221,19 @@ public class ShopOrder implements Serializable {
     /**
      * ERP发货时间
      */
-    private Date erpShipTime;
+    private LocalDateTime erpShipTime;
     private String erpShipCompany;
     private String erpShipCode;
 
     /**
      * 系统创建时间
      */
-    private Date createOn;
+    private LocalDateTime createOn;
 
     /**
      * 系统更新时间
      */
-    private Date updateOn;
+    private LocalDateTime updateOn;
 
     private Long shopMemberId;
     private String platformUserId;

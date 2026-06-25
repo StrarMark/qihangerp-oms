@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -42,7 +42,7 @@ public class FmsExpense {
     /**
      * 费用发生日期
      */
-    private Date expenseDate;
+    private LocalDateTime expenseDate;
 
     /**
      * 收款方
@@ -84,17 +84,17 @@ public class FmsExpense {
     /**
      * 结算时间
      */
-    private Date settlementTime;
+    private LocalDateTime settlementTime;
 
     private Long approvalId;
 
-    private Date paidTime;
+    private LocalDateTime paidTime;
 
     private String createdBy;
 
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 
     @TableField(exist = false)
     private List<FmsExpenseItem> items;

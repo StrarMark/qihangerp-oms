@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -94,7 +94,7 @@ public class GoodsInventoryTransferServiceImpl extends ServiceImpl<GoodsInventor
 
         application.setApprovalRemark(remark);
         application.setApprovedBy(operator);
-        application.setApprovedTime(new Date());
+        application.setApprovedTime(LocalDateTime.now());
         return updateById(application);
     }
 
@@ -107,7 +107,7 @@ public class GoodsInventoryTransferServiceImpl extends ServiceImpl<GoodsInventor
         }
 
         application.setStatus(4);
-        application.setOutboundTime(new Date());
+        application.setOutboundTime(LocalDateTime.now());
         return updateById(application);
     }
 
@@ -120,7 +120,7 @@ public class GoodsInventoryTransferServiceImpl extends ServiceImpl<GoodsInventor
         }
 
         application.setStatus(5);
-        application.setInboundTime(new Date());
+        application.setInboundTime(LocalDateTime.now());
         return updateById(application);
     }
 

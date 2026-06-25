@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -74,7 +74,7 @@ public class ErpStockIn implements Serializable {
     /**
      * 入库时间
      */
-    private Date stockInTime;
+    private LocalDateTime stockInTime;
 
     /**
      * 状态（0待入库1部分入库2全部入库）
@@ -89,7 +89,7 @@ public class ErpStockIn implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新人
@@ -99,7 +99,7 @@ public class ErpStockIn implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
     private Long merchantId;
     private Long shopId;
     private Long warehouseId;
@@ -111,7 +111,7 @@ public class ErpStockIn implements Serializable {
     private String senderAddress;
     private String entryOrderCode;//jd采购入库编码
     private String pushResult;//推送结果
-    private Date pushTime;
+    private LocalDateTime pushTime;
     private Integer pushStatus;
 
     @TableField(exist = false)

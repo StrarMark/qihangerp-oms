@@ -3,7 +3,7 @@ package cn.qihangerp.model.vo;
 import cn.qihangerp.utils.poi.Excel;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class OrderItemListVo {
@@ -62,10 +62,10 @@ public class OrderItemListVo {
     private String orderStatusStr;
     private Integer orderStatus;
     private Integer hasPushErp;
-    private Date createTime;
+    private LocalDateTime createTime;
     @Excel(name = "下单时间",sort = 15)
     private String orderTimeStr;
-    private Date orderTime;
+    private LocalDateTime orderTime;
     private Integer shipType;
     private Long shipperId;
     private String shipperName;

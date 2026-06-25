@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @TableName("fms_finance_ledger")
@@ -36,13 +36,13 @@ public class FmsFinanceLedger {
 
     private String orderNo;
 
-    private Date expenseDate;
+    private LocalDateTime expenseDate;
 
     private String remark;
 
     private String createdBy;
 
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 }

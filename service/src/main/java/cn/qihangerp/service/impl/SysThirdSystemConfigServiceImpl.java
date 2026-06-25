@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -89,7 +89,7 @@ public class SysThirdSystemConfigServiceImpl extends ServiceImpl<SysThirdSystemC
             oShop.setRegionId(1L);
             oShop.setApiStatus(0);
             oShop.setStatus("1");
-            oShop.setCreateTime(new Date());
+            oShop.setCreateTime(LocalDateTime.now());
             oShopMapper.insert(oShop);
             // 更新上面的店铺id-使用isvSource字段
             SysThirdSystemConfig update = new SysThirdSystemConfig();

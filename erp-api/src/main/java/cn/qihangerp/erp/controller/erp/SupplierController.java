@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @RestController
@@ -54,7 +55,7 @@ public class SupplierController extends BaseController {
     @PostMapping
     public AjaxResult add(@RequestBody ErpSupplier scmSupplier)
     {
-//        scmSupplier.setCreatetime(new Date());
+//        scmSupplier.setCreatetime(LocalDateTime.now());
 //        scmSupplier.setIsdelete(0);
         return toAjax(supplierService.save(scmSupplier));
     }

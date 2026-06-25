@@ -25,7 +25,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -298,7 +298,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
             insert.setPlatformStatus(platformStatus);
             insert.setPlatformStatusText(platformStatusText);
             insert.setErpStatus(0);
-            insert.setCreateTime(new Date());
+            insert.setCreateTime(LocalDateTime.now());
             insert.setCreateBy("REFUND_MESSAGE");
             mapper.insert(insert);
             //更新子订单状态
@@ -308,7 +308,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     OOrderItem itemUpdate = new OOrderItem();
                     itemUpdate.setRefundStatus(2);
                     itemUpdate.setUpdateBy("退款消息");
-                    itemUpdate.setUpdateTime(new Date());
+                    itemUpdate.setUpdateTime(LocalDateTime.now());
                     itemUpdate.setId(oOrderItem.getId());
                     orderItemMapper.updateById(itemUpdate);
                     // 更新发货子订单状态
@@ -318,7 +318,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             OOrderStockingItem stockingItem = new OOrderStockingItem();
                             stockingItem.setId(oOrderStockingItem.getId());
                             stockingItem.setRefundStatus(2);
-                            stockingItem.setUpdateTime(new Date());
+                            stockingItem.setUpdateTime(LocalDateTime.now());
                             stockingItem.setUpdateBy("退款消息");
                             orderStockingItemMapper.updateById(stockingItem);
                         }
@@ -361,7 +361,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                 update.setGoodsId(0L);
                 update.setGoodsSkuId(0L);
             }
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("REFUND_MESSAGE");
             mapper.updateById(update);
         }
@@ -382,7 +382,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     orderUpdate.setOrderStatus(11);
                     orderUpdate.setCancelReason("子订单全部退款");
                     orderUpdate.setUpdateBy("子订单全部退款");
-                    orderUpdate.setUpdateTime(new Date());
+                    orderUpdate.setUpdateTime(LocalDateTime.now());
                     orderMapper.updateById(orderUpdate);
                 }
 
@@ -402,7 +402,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             updateShip.setId(oOrderStocking.getId());
                             updateShip.setOrderStatus(11);
                             updateShip.setUpdateBy("子订单全部退款");
-                            updateShip.setUpdateTime(new Date());
+                            updateShip.setUpdateTime(LocalDateTime.now());
                             orderStockingMapper.updateById(updateShip);
                         }
                     }
@@ -544,7 +544,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
             insert.setErpStatus(0);
             insert.setRefundFee(refundDetail.getDouble("roApplyFee"));
             // todo:少了一個退款申請時間
-            insert.setCreateTime(new Date());
+            insert.setCreateTime(LocalDateTime.now());
             insert.setCreateBy("REFUND_MESSAGE");
             mapper.insert(insert);
             //更新子订单状态
@@ -554,7 +554,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     OOrderItem itemUpdate = new OOrderItem();
                     itemUpdate.setRefundStatus(2);
                     itemUpdate.setUpdateBy("退款消息");
-                    itemUpdate.setUpdateTime(new Date());
+                    itemUpdate.setUpdateTime(LocalDateTime.now());
                     itemUpdate.setId(oOrderItem.getId());
                     orderItemMapper.updateById(itemUpdate);
                     // 更新发货子订单状态
@@ -564,7 +564,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             OOrderStockingItem stockingItem = new OOrderStockingItem();
                             stockingItem.setId(oOrderStockingItem.getId());
                             stockingItem.setRefundStatus(2);
-                            stockingItem.setUpdateTime(new Date());
+                            stockingItem.setUpdateTime(LocalDateTime.now());
                             stockingItem.setUpdateBy("退款消息");
                             orderStockingItemMapper.updateById(stockingItem);
                         }
@@ -595,7 +595,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
             update.setPlatformStatus(platformStatus);
             update.setPlatformStatusText(platformStatusText);
 //                update.setStatus(jdAfter.getServiceStatus());
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("REFUND_MESSAGE");
             mapper.updateById(update);
         }
@@ -615,7 +615,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     orderUpdate.setOrderStatus(11);
                     orderUpdate.setCancelReason("子订单全部退款");
                     orderUpdate.setUpdateBy("子订单全部退款");
-                    orderUpdate.setUpdateTime(new Date());
+                    orderUpdate.setUpdateTime(LocalDateTime.now());
                     orderMapper.updateById(orderUpdate);
                 }
 
@@ -635,7 +635,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             updateShip.setId(oOrderStocking.getId());
                             updateShip.setOrderStatus(11);
                             updateShip.setUpdateBy("子订单全部退款");
-                            updateShip.setUpdateTime(new Date());
+                            updateShip.setUpdateTime(LocalDateTime.now());
                             orderStockingMapper.updateById(updateShip);
                         }
                     }
@@ -795,7 +795,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
 //            insert.setMobile(taoRefund.getCustomerTel());
 //            insert.setAddress(taoRefund.getPickwareAddress());
 
-            insert.setCreateTime(new Date());
+            insert.setCreateTime(LocalDateTime.now());
             insert.setCreateBy("REFUND_MESSAGE");
             mapper.insert(insert);
 
@@ -810,7 +810,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     OOrderItem itemUpdate = new OOrderItem();
                     itemUpdate.setRefundStatus(2);
                     itemUpdate.setUpdateBy("退款消息");
-                    itemUpdate.setUpdateTime(new Date());
+                    itemUpdate.setUpdateTime(LocalDateTime.now());
                     itemUpdate.setId(oOrderItem.getId());
                     orderItemMapper.updateById(itemUpdate);
                     // 更新发货子订单状态
@@ -820,7 +820,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             OOrderStockingItem stockingItem = new OOrderStockingItem();
                             stockingItem.setId(oOrderStockingItem.getId());
                             stockingItem.setRefundStatus(2);
-                            stockingItem.setUpdateTime(new Date());
+                            stockingItem.setUpdateTime(LocalDateTime.now());
                             stockingItem.setUpdateBy("退款消息");
                             orderStockingItemMapper.updateById(stockingItem);
                         }
@@ -878,7 +878,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
             if(oRefunds.get(0).getHasProcessing().intValue() ==0) update.setHasProcessing(hasProcessing);
             update.setPlatformStatus(platformStatus);
             update.setPlatformStatusText(platformStatusText);
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("REFUND_MESSAGE");
             mapper.updateById(update);
         }
@@ -898,7 +898,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     orderUpdate.setOrderStatus(11);
                     orderUpdate.setCancelReason("子订单全部退款");
                     orderUpdate.setUpdateBy("子订单全部退款");
-                    orderUpdate.setUpdateTime(new Date());
+                    orderUpdate.setUpdateTime(LocalDateTime.now());
                     orderMapper.updateById(orderUpdate);
                 }
 
@@ -918,7 +918,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             updateShip.setId(oOrderStocking.getId());
                             updateShip.setOrderStatus(11);
                             updateShip.setUpdateBy("子订单全部退款");
-                            updateShip.setUpdateTime(new Date());
+                            updateShip.setUpdateTime(LocalDateTime.now());
                             orderStockingMapper.updateById(updateShip);
                         }
                     }
@@ -1165,7 +1165,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
 //            insert.setMobile(taoRefund.getCustomerTel());
 //            insert.setAddress(taoRefund.getPickwareAddress());
 
-            insert.setCreateTime(new Date());
+            insert.setCreateTime(LocalDateTime.now());
             insert.setCreateBy("REFUND_MESSAGE");
             mapper.insert(insert);
 
@@ -1176,7 +1176,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     OOrderItem itemUpdate = new OOrderItem();
                     itemUpdate.setRefundStatus(2);
                     itemUpdate.setUpdateBy("退款消息");
-                    itemUpdate.setUpdateTime(new Date());
+                    itemUpdate.setUpdateTime(LocalDateTime.now());
                     itemUpdate.setId(oOrderItem.getId());
                     orderItemMapper.updateById(itemUpdate);
                     // 更新发货子订单状态
@@ -1186,7 +1186,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             OOrderStockingItem stockingItem = new OOrderStockingItem();
                             stockingItem.setId(oOrderStockingItem.getId());
                             stockingItem.setRefundStatus(2);
-                            stockingItem.setUpdateTime(new Date());
+                            stockingItem.setUpdateTime(LocalDateTime.now());
                             stockingItem.setUpdateBy("退款消息");
                             orderStockingItemMapper.updateById(stockingItem);
                         }
@@ -1230,7 +1230,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
             update.setHasGoodReturn(hasGoodReturn);
             update.setPlatformStatus(platformStatus);
             update.setPlatformStatusText(platformStatusText);
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("REFUND_MESSAGE");
             mapper.updateById(update);
         }
@@ -1250,7 +1250,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     orderUpdate.setOrderStatus(EnumOOrderStatus.CLOSED.getIndex());
                     orderUpdate.setCancelReason("子订单全部退款");
                     orderUpdate.setUpdateBy("子订单全部退款");
-                    orderUpdate.setUpdateTime(new Date());
+                    orderUpdate.setUpdateTime(LocalDateTime.now());
                     orderMapper.updateById(orderUpdate);
                 }
 
@@ -1270,7 +1270,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             updateShip.setId(oOrderStocking.getId());
                             updateShip.setOrderStatus(EnumOOrderStatus.CLOSED.getIndex());
                             updateShip.setUpdateBy("子订单全部退款");
-                            updateShip.setUpdateTime(new Date());
+                            updateShip.setUpdateTime(LocalDateTime.now());
                             orderStockingMapper.updateById(updateShip);
                         }
                     }
@@ -1457,7 +1457,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
 //            insert.setMobile(taoRefund.getCustomerTel());
 //            insert.setAddress(taoRefund.getPickwareAddress());
 
-            insert.setCreateTime(new Date());
+            insert.setCreateTime(LocalDateTime.now());
             insert.setCreateBy("REFUND_MESSAGE");
             mapper.insert(insert);
 
@@ -1472,7 +1472,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     OOrderItem itemUpdate = new OOrderItem();
                     itemUpdate.setRefundStatus(2);
                     itemUpdate.setUpdateBy("退款消息");
-                    itemUpdate.setUpdateTime(new Date());
+                    itemUpdate.setUpdateTime(LocalDateTime.now());
                     itemUpdate.setId(oOrderItem.getId());
                     orderItemMapper.updateById(itemUpdate);
                     // 更新发货子订单状态
@@ -1482,7 +1482,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             OOrderStockingItem stockingItem = new OOrderStockingItem();
                             stockingItem.setId(oOrderStockingItem.getId());
                             stockingItem.setRefundStatus(2);
-                            stockingItem.setUpdateTime(new Date());
+                            stockingItem.setUpdateTime(LocalDateTime.now());
                             stockingItem.setUpdateBy("退款消息");
                             orderStockingItemMapper.updateById(stockingItem);
                         }
@@ -1511,7 +1511,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
             if(oRefunds.get(0).getHasProcessing().intValue() ==0) update.setHasProcessing(hasProcessing);
             update.setPlatformStatus(platformStatus+"");
             update.setPlatformStatusText(platformStatusText);
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("REFUND_MESSAGE");
             mapper.updateById(update);
         }
@@ -1531,7 +1531,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     orderUpdate.setOrderStatus(11);
                     orderUpdate.setCancelReason("子订单全部退款");
                     orderUpdate.setUpdateBy("子订单全部退款");
-                    orderUpdate.setUpdateTime(new Date());
+                    orderUpdate.setUpdateTime(LocalDateTime.now());
                     orderMapper.updateById(orderUpdate);
                 }
 
@@ -1551,7 +1551,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             updateShip.setId(oOrderStocking.getId());
                             updateShip.setOrderStatus(11);
                             updateShip.setUpdateBy("子订单全部退款");
-                            updateShip.setUpdateTime(new Date());
+                            updateShip.setUpdateTime(LocalDateTime.now());
                             orderStockingMapper.updateById(updateShip);
                         }
                     }
@@ -1727,7 +1727,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
 //            insert.setMobile(taoRefund.getCustomerTel());
 //            insert.setAddress(taoRefund.getPickwareAddress());
 
-            insert.setCreateTime(new Date());
+            insert.setCreateTime(LocalDateTime.now());
             insert.setCreateBy("REFUND_MESSAGE");
             mapper.insert(insert);
 
@@ -1738,7 +1738,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     OOrderItem itemUpdate = new OOrderItem();
                     itemUpdate.setRefundStatus(2);
                     itemUpdate.setUpdateBy("退款消息");
-                    itemUpdate.setUpdateTime(new Date());
+                    itemUpdate.setUpdateTime(LocalDateTime.now());
                     itemUpdate.setId(oOrderItem.getId());
                     orderItemMapper.updateById(itemUpdate);
                     // 更新发货子订单状态
@@ -1748,7 +1748,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             OOrderStockingItem stockingItem = new OOrderStockingItem();
                             stockingItem.setId(oOrderStockingItem.getId());
                             stockingItem.setRefundStatus(2);
-                            stockingItem.setUpdateTime(new Date());
+                            stockingItem.setUpdateTime(LocalDateTime.now());
                             stockingItem.setUpdateBy("退款消息");
                             orderStockingItemMapper.updateById(stockingItem);
                         }
@@ -1780,7 +1780,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
             if(oRefunds.get(0).getHasProcessing().intValue() ==0) update.setHasProcessing(hasProcessing);
             update.setPlatformStatus(platformStatus);
             update.setPlatformStatusText(platformStatusText);
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("REFUND_MESSAGE");
             mapper.updateById(update);
         }
@@ -1800,7 +1800,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     orderUpdate.setOrderStatus(11);
                     orderUpdate.setCancelReason("子订单全部退款");
                     orderUpdate.setUpdateBy("子订单全部退款");
-                    orderUpdate.setUpdateTime(new Date());
+                    orderUpdate.setUpdateTime(LocalDateTime.now());
                     orderMapper.updateById(orderUpdate);
                 }
 
@@ -1820,7 +1820,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                             updateShip.setId(oOrderStocking.getId());
                             updateShip.setOrderStatus(11);
                             updateShip.setUpdateBy("子订单全部退款");
-                            updateShip.setUpdateTime(new Date());
+                            updateShip.setUpdateTime(LocalDateTime.now());
                             orderStockingMapper.updateById(updateShip);
                         }
                     }
@@ -1936,7 +1936,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                     insert.setExchangeErpGoodsSkuId(0L);
                 }
                 insert.setExchangeErpOrderId(0L);
-                insert.setCreateTime(new Date());
+                insert.setCreateTime(LocalDateTime.now());
                 insert.setCreateBy("REFUND_MESSAGE");
                 mapper.insert(insert);
 
@@ -1951,7 +1951,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                         OOrderItem itemUpdate = new OOrderItem();
                         itemUpdate.setRefundStatus(2);
                         itemUpdate.setUpdateBy("退款消息");
-                        itemUpdate.setUpdateTime(new Date());
+                        itemUpdate.setUpdateTime(LocalDateTime.now());
                         itemUpdate.setId(oOrderItem.getId());
                         orderItemMapper.updateById(itemUpdate);
                         // 更新发货子订单状态
@@ -1961,7 +1961,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                                 OOrderStockingItem stockingItem = new OOrderStockingItem();
                                 stockingItem.setId(oOrderStockingItem.getId());
                                 stockingItem.setRefundStatus(2);
-                                stockingItem.setUpdateTime(new Date());
+                                stockingItem.setUpdateTime(LocalDateTime.now());
                                 stockingItem.setUpdateBy("退款消息");
                                 orderStockingItemMapper.updateById(stockingItem);
                             }
@@ -2002,7 +2002,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                 update.setRefundFee(refundAmount.doubleValue());
                 update.setRemark(shopRefund.getRemark());
                 update.setRefundReason(shopRefund.getReason());
-                update.setUpdateTime(new Date());
+                update.setUpdateTime(LocalDateTime.now());
                 update.setUpdateBy("REFUND_MESSAGE");
                 if(StringUtils.hasText(shopRefund.getExchangeSkuId())) {
                     if(shopRefund.getExchangeSkuId().equals(oRefunds.get(0).getExchangeSkuId())) {
@@ -2056,7 +2056,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                         orderUpdate.setOrderStatus(11);
                         orderUpdate.setCancelReason("子订单全部退款");
                         orderUpdate.setUpdateBy("子订单全部退款");
-                        orderUpdate.setUpdateTime(new Date());
+                        orderUpdate.setUpdateTime(LocalDateTime.now());
                         orderMapper.updateById(orderUpdate);
                     }
 
@@ -2076,7 +2076,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
                                 updateShip.setId(oOrderStocking.getId());
                                 updateShip.setOrderStatus(11);
                                 updateShip.setUpdateBy("子订单全部退款");
-                                updateShip.setUpdateTime(new Date());
+                                updateShip.setUpdateTime(LocalDateTime.now());
                                 orderStockingMapper.updateById(updateShip);
                             }
                         }
@@ -2167,7 +2167,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
 //            updateRefund.setStatus(10010);
             updateRefund.setStatus(4);
             updateRefund.setUpdateBy("管理员操作");
-            updateRefund.setUpdateTime(new Date());
+            updateRefund.setUpdateTime(LocalDateTime.now());
             mapper.updateById(updateRefund);
             return ResultVo.success();
         }
@@ -2298,7 +2298,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
             afterSale.setStatus(10);
         }
 //        afterSale.setStatus(processingBo.getType() == 0?10:0);
-        afterSale.setCreateTime(new Date());
+        afterSale.setCreateTime(LocalDateTime.now());
         afterSale.setCreateBy(createBy);
         //发货信息
         afterSale.setSendShipType(shipOrderItem.getShipType());
@@ -2348,7 +2348,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
         ORefund update = new ORefund();
         update.setId(refund.getId());
         update.setUpdateBy(createBy+"操作售后处理");
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         update.setProcessType(processingBo.getType());
         update.setHasProcessing(1);
 //        if(refund.getStatus()==10001){
@@ -2382,7 +2382,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
         }
 
         ORefund refund = new ORefund();
-        refund.setRefundNum("SA"+ DateUtils.format(new Date(),"yyyyMMdd")+"-"+System.currentTimeMillis()/1000);
+        refund.setRefundNum("SA"+ DateUtils.format(LocalDateTime.now(),"yyyyMMdd")+"-"+System.currentTimeMillis()/1000);
         //类型(1-售前退款 10-退货 20-换货 30-维修 40-大家电安装 50-大家电移机 60-大家电增值服务 70-上门维修 90-优鲜赔 80-补发商品 100-试用收回 11-仅退款)
         refund.setRefundType(addRequest.getType());
         refund.setShopId(0L);
@@ -2408,7 +2408,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
         refund.setMerchantId(0L);
         refund.setErpStatus(0);
         refund.setStatus(10001);
-        refund.setCreateTime(new Date());
+        refund.setCreateTime(LocalDateTime.now());
         refund.setCreateBy("手动添加售后");
         mapper.insert(refund);
         // 更新自己的状态
@@ -2417,7 +2417,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
         itemUpdate.setRefundCount(erpSalesOrderItem.getQuantity());
         itemUpdate.setRefundStatus(2);
         itemUpdate.setUpdateBy("手动添加售后");
-        itemUpdate.setUpdateTime(new Date());
+        itemUpdate.setUpdateTime(LocalDateTime.now());
         erpSalesOrderItemMapper.updateById(itemUpdate);
 
         // 更新订单库
@@ -2425,7 +2425,7 @@ public class ORefundServiceImpl extends ServiceImpl<ORefundMapper, ORefund>
         orderItem.setRefundStatus(2);
         orderItem.setRefundCount(erpSalesOrderItem.getQuantity());
         orderItem.setUpdateBy("手动添加售后");
-        orderItem.setUpdateTime(new Date());
+        orderItem.setUpdateTime(LocalDateTime.now());
         orderItemMapper.update(orderItem,new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getSubOrderNum, erpSalesOrderItem.getSubOrderNum()));
 
         return ResultVo.success();

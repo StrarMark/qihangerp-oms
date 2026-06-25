@@ -10,7 +10,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -160,7 +159,7 @@ public class OOrder implements Serializable {
     /**
      * 发货时间
      */
-//    private Date shippingTime;
+//    private LocalDateTime shippingTime;
 
     /**
      * 快递单号
@@ -183,7 +182,7 @@ public class OOrder implements Serializable {
 //    private BigDecimal shippingCost;
     private Integer erpPushStatus;
     private String erpPushResult;
-    private Date erpPushTime;
+    private LocalDateTime erpPushTime;
 
     /**
      * 长
@@ -208,7 +207,7 @@ public class OOrder implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 创建人
@@ -228,7 +227,7 @@ public class OOrder implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 更新人
@@ -245,11 +244,11 @@ public class OOrder implements Serializable {
      */
     private Integer waybillStatus;
     private Integer shareStatus; // 分账状态：0未分账，1已分账
-    private Date shareTime; // 分账时间
+    private LocalDateTime shareTime; // 分账时间
 
     private Integer settlementStatus; // 结算状态：0-未结算，1-已结算
     private Long settlementId; // 结算单ID
-    private Date settlementTime; // 结算时间
+    private LocalDateTime settlementTime; // 结算时间
 
     @TableField(exist = false)
     private List<OOrderItem> itemList;

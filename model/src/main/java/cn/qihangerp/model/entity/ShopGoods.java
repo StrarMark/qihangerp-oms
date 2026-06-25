@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -121,12 +121,12 @@ public class ShopGoods implements Serializable {
     /**
      * 系统创建时间
      */
-    private Date createOn;
+    private LocalDateTime createOn;
 
     /**
      * 系统更新时间
      */
-    private Date updateOn;
+    private LocalDateTime updateOn;
 
     private Integer deliverMethod;
     // 是否绑定有发货实物sku,0没有1有

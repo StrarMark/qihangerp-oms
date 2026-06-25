@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -132,7 +132,7 @@ public class ErpWarehouseGoodsServiceImpl extends ServiceImpl<ErpWarehouseGoodsM
             bo.setWarehouseId(warehouseId);
             bo.setWarehouseNo(warehouseNo);
             bo.setWarehouseType(warehouseType);
-            bo.setUpdateTime(new Date());
+            bo.setUpdateTime(LocalDateTime.now());
             if(!StringUtils.hasText(bo.getUpdateBy())) {
                 bo.setUpdateBy("同步更新");
             }
@@ -144,7 +144,7 @@ public class ErpWarehouseGoodsServiceImpl extends ServiceImpl<ErpWarehouseGoodsM
             bo.setWarehouseId(warehouseId);
             bo.setWarehouseNo(warehouseNo);
             bo.setWarehouseType(warehouseType);
-            bo.setCreateTime(new Date());
+            bo.setCreateTime(LocalDateTime.now());
             if(!StringUtils.hasText(bo.getCreateBy())){
                 bo.setCreateBy("手动同步");
             }
@@ -176,7 +176,7 @@ public class ErpWarehouseGoodsServiceImpl extends ServiceImpl<ErpWarehouseGoodsM
             stock.setTotalNumValue(0.0);
             stock.setUsableNum(0);
             stock.setUsableNumValue(0.0);
-            stock.setCreateTime(new Date());
+            stock.setCreateTime(LocalDateTime.now());
             warehouseGoodsStockMapper.insert(stock);
         }
 
@@ -195,7 +195,7 @@ public class ErpWarehouseGoodsServiceImpl extends ServiceImpl<ErpWarehouseGoodsM
         List<ErpWarehouseGoods> erpWarehouseGoods = this.baseMapper.selectList(queryWrapper);
         if(erpWarehouseGoods.size()>0){
             // 存在，更新
-            bo.setUpdateTime(new Date());
+            bo.setUpdateTime(LocalDateTime.now());
             bo.setId(erpWarehouseGoods.get(0).getId());
 
             this.baseMapper.updateById(bo);
@@ -203,7 +203,7 @@ public class ErpWarehouseGoodsServiceImpl extends ServiceImpl<ErpWarehouseGoodsM
             // 不存在，新增
             bo.setWarehouseNo(warehouse.getWarehouseNo());
             bo.setWarehouseType(warehouse.getWarehouseType());
-            bo.setCreateTime(new Date());
+            bo.setCreateTime(LocalDateTime.now());
             this.baseMapper.insert(bo);
         }
         return ResultVo.success();
@@ -276,7 +276,7 @@ public class ErpWarehouseGoodsServiceImpl extends ServiceImpl<ErpWarehouseGoodsM
             stock.setGoodsNo(bo.getGoodsNo());
             stock.setGoodsName(bo.getGoodsName());
             stock.setUpdateBy("手动修改商品更新");
-            stock.setUpdateTime(new Date());
+            stock.setUpdateTime(LocalDateTime.now());
             warehouseGoodsStockMapper.updateById(stock);
         }
 

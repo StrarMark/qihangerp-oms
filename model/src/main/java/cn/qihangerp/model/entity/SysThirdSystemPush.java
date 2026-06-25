@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 外部WMS推送记录
@@ -40,12 +40,12 @@ public class SysThirdSystemPush implements Serializable {
     /**
      * 推送日期
      */
-    private Date pushDate;
+    private LocalDateTime pushDate;
 
     /**
      * 推送时间
      */
-    private Date pushTime;
+    private LocalDateTime pushTime;
 
     /**
      * 推送参数JSON

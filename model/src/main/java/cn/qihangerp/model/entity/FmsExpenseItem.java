@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @TableName("fms_expense_item")
@@ -47,7 +47,7 @@ public class FmsExpenseItem {
     /**
      * 结算时间
      */
-    private Date settlementTime;
+    private LocalDateTime settlementTime;
     
     /**
      * 备注
@@ -57,5 +57,5 @@ public class FmsExpenseItem {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 }

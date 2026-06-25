@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -183,7 +183,7 @@ public class OOrderItemServiceImpl extends ServiceImpl<OOrderItemMapper, OOrderI
         update.setGoodsSkuId(goodsSkuId);
         update.setSkuNum(goodsSkuCode);
         update.setUpdateBy("手动修改商品库SKU ID");
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         mapper.updateById(update);
         return ResultVo.success();
     }
@@ -216,7 +216,7 @@ public class OOrderItemServiceImpl extends ServiceImpl<OOrderItemMapper, OOrderI
             update.setShipStatus(0);
             update.setShipType(EnumShipType.LOCAL.getIndex());
             update.setUpdateBy("取消供应商发货");
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             mapper.updateById(update);
         }else {
             ErpSupplier erpSupplier = goodsSupplierMapper.selectById(supplierId);
@@ -233,7 +233,7 @@ public class OOrderItemServiceImpl extends ServiceImpl<OOrderItemMapper, OOrderI
             update.setShipType(EnumShipType.SUPPLIER.getIndex());
             update.setShipStatus(1);
             update.setUpdateBy("手动指定发货供应商");
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             mapper.updateById(update);
         }
         return ResultVo.success();
@@ -295,7 +295,7 @@ public class OOrderItemServiceImpl extends ServiceImpl<OOrderItemMapper, OOrderI
             update.setShipperType(shipperType);
             update.setShipperName(shipperName);
             update.setShipStatus(1);
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("修改发货人");
             mapper.updateById(update);
         }
@@ -339,7 +339,7 @@ public class OOrderItemServiceImpl extends ServiceImpl<OOrderItemMapper, OOrderI
 //        update.setSkuNum(oGoodsSku.getSkuCode());
 ////        update.setSupplierId(goods.getSupplierId());
 //        update.setUpdateBy("手动修改SkuId,原sku"+erpSaleOrderItem.getSkuNum());
-//        update.setUpdateTime(new Date());
+//        update.setUpdateTime(LocalDateTime.now());
 //        mapper.updateById(update);
 //        return 0;
 //    }

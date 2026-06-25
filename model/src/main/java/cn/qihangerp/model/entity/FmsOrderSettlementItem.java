@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @TableName("fms_order_settlement_item")
@@ -26,5 +26,5 @@ public class FmsOrderSettlementItem {
 
     private String remark;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * 店铺Controller
@@ -91,7 +92,7 @@ public class ShopController extends BaseController {
         if(shop.getType()==null) return AjaxResult.error("请选择店铺平台");
 //        shop.setModifyOn(System.currentTimeMillis()/1000);
 //        shop.setCreateOn(System.currentTimeMillis()/1000);
-//        shop.setCreateTime(new Date());
+//        shop.setCreateTime(LocalDateTime.now());
         return toAjax(shopService.save(shop));
     }
 
@@ -102,7 +103,7 @@ public class ShopController extends BaseController {
     @PutMapping("/shop")
     public AjaxResult edit(@RequestBody OShop shop)
     {
-//        shop.setUpdateTime(new Date());
+//        shop.setUpdateTime(LocalDateTime.now());
         return toAjax(shopService.updateById(shop));
     }
 

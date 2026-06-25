@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 跨门店调拨申请实体类
@@ -58,7 +58,7 @@ public class GoodsInventoryTransfer {
     /**
      * 期望完成时间
      */
-    private Date expectedTime;
+    private LocalDateTime expectedTime;
 
     /**
      * 申请理由
@@ -78,17 +78,17 @@ public class GoodsInventoryTransfer {
     /**
      * 审批时间
      */
-    private Date approvedTime;
+    private LocalDateTime approvedTime;
 
     /**
      * 调出方出库时间
      */
-    private Date outboundTime;
+    private LocalDateTime outboundTime;
 
     /**
      * 调入方入库时间
      */
-    private Date inboundTime;
+    private LocalDateTime inboundTime;
 
     /**
      * 出库单ID（关联erp_warehouse_stock_out）
@@ -108,10 +108,10 @@ public class GoodsInventoryTransfer {
     /**
      * 创建时间
      */
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 }

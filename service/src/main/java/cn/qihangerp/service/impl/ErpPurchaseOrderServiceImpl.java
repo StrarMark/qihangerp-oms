@@ -28,7 +28,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -119,7 +119,7 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
         ErpPurchaseOrder erpPurchaseOrder = new ErpPurchaseOrder();
         erpPurchaseOrder.setMerchantId(addBo.getMerchantId());
         erpPurchaseOrder.setShopId(addBo.getShopId());
-        erpPurchaseOrder.setOrderNum("PUR"+ DateUtils.parseDateToStr("yyyyMMddHHmmss",new Date()));
+        erpPurchaseOrder.setOrderNum("PUR"+ DateUtils.parseDateToStr("yyyyMMddHHmmss",LocalDateTime.now()));
         erpPurchaseOrder.setOrderAmount(addBo.getOrderAmount());
         erpPurchaseOrder.setCreateTime(DateUtils.getNowDate());
         erpPurchaseOrder.setOrderDate(addBo.getOrderDate());
@@ -229,7 +229,7 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
 //            cost.setActualAmount(request.getTotalAmount());
 //            cost.setFreight(BigDecimal.ZERO);
 //            cost.setConfirmUser(request.getConfirmUser());
-//            cost.setConfirmTime(new Date());
+//            cost.setConfirmTime(LocalDateTime.now());
 //            cost.setCreateBy(request.getUpdateBy());
 //            cost.setPayAmount(BigDecimal.ZERO);
 //            cost.setPayCount(0);
@@ -243,7 +243,7 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
             erpPurchaseOrder.setUpdateTime(DateUtils.getNowDate());
             erpPurchaseOrder.setStatus(101);
             erpPurchaseOrder.setRemark(request.getRemark());
-            erpPurchaseOrder.setSupplierConfirmTime(new Date());
+            erpPurchaseOrder.setSupplierConfirmTime(LocalDateTime.now());
             erpPurchaseOrderMapper.updateById(erpPurchaseOrder);
         }
         else if (request.getOptionType().equals("SupplierShip")) {
@@ -275,7 +275,7 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
             ship.setShipTime(request.getSupplierDeliveryTime());
             ship.setCreateBy(request.getUpdateBy());
             ship.setRemark(request.getRemark());
-            ship.setCreateTime(new Date());
+            ship.setCreateTime(LocalDateTime.now());
             ship.setStatus(0);
             ship.setBackCount(0);
             ship.setStockInCount(0);
@@ -289,11 +289,11 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
 //            payable.setSupplierId(order.getSupplierId());
 ////            fmsPP.setSupplierName(scmSupplier!=null ? scmSupplier.getName():"数据库未找到供应商信息");
 //            payable.setAmount(order.getOrderAmount().add(request.getShipCost()));
-//            payable.setDate(new Date());
+//            payable.setDate(LocalDateTime.now());
 //            payable.setPurchaseOrderNum(order.getOrderNum());
 //            payable.setPurchaseDesc("{采购商品总数量:"+total+",不同款式:"+goodsGroup.size()+",不同SKU:"+items.size()+",商品总价:"+order.getOrderAmount()+",运费:"+request.getShipCost()+"}");
 //            payable.setStatus(0);
-//            payable.setCreateTime(new Date());
+//            payable.setCreateTime(LocalDateTime.now());
 //            payable.setCreateBy(request.getUpdateBy());
 //            payableMapper.insert(payable);
 
@@ -304,7 +304,7 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
             erpPurchaseOrder.setUpdateTime(DateUtils.getNowDate());
             erpPurchaseOrder.setStatus(102);
             erpPurchaseOrder.setRemark(request.getRemark());
-            erpPurchaseOrder.setSupplierDeliveryTime(new Date());
+            erpPurchaseOrder.setSupplierDeliveryTime(LocalDateTime.now());
             erpPurchaseOrder.setShipAmount(request.getShipCost());
             erpPurchaseOrderMapper.updateById(erpPurchaseOrder);
         }

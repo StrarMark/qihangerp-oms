@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
 * @author qilip
@@ -36,7 +36,7 @@ public class OGoodsCategoryServiceImpl extends ServiceImpl<OGoodsCategoryMapper,
         if(category.getParentId()==null){
             category.setParentId(0L);
         }
-        category.setCreateTime(new Date());
+        category.setCreateTime(LocalDateTime.now());
         category.setIsdelete(0);
         oGoodsCategoryMapper.insert(category);
         // 如果是已经分类，添加默认规格

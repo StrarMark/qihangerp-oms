@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @RestController
@@ -49,7 +49,7 @@ public class GoodsCategoryController  extends BaseController {
     public AjaxResult edit(@RequestBody OGoodsCategory category)
     {
         category.setUpdateBy(getUsername());
-        category.setUpdateTime(new Date());
+        category.setUpdateTime(LocalDateTime.now());
         return toAjax(categoryService.updateById(category));
     }
     /**

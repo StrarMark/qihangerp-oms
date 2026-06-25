@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
 * @author 1
@@ -70,7 +70,7 @@ public class ErpMerchantGoodsPriceServiceImpl extends ServiceImpl<ErpMerchantGoo
         price.setPurPrice(request.getPrice());
         price.setRetailPrice(request.getPrice());
         price.setStatus(1);
-        price.setCreateTime(new Date());
+        price.setCreateTime(LocalDateTime.now());
         price.setCreateBy(username);
         this.baseMapper.insert(price);
 

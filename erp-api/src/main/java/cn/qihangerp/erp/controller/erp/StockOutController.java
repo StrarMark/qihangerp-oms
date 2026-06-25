@@ -12,7 +12,7 @@ import cn.qihangerp.service.ErpStockOutService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @RestController
@@ -50,7 +50,7 @@ public class StockOutController extends BaseController {
         ErpStockOut out = new ErpStockOut();
         out.setId(id);
         out.setPrintStatus(1);
-        out.setPrintTime(new Date());
+        out.setPrintTime(LocalDateTime.now());
         stockOutService.updateById(out);
         return AjaxResult.success();
     }

@@ -24,7 +24,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -300,7 +299,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ResultVo<Long> updateShopOrderLogistic(String shopOrderNo, String tradeNo, String logisticCompany, String logisticCode, Date consignTime) {
+    public ResultVo<Long> updateShopOrderLogistic(String shopOrderNo, String tradeNo, String logisticCompany, String logisticCode, LocalDateTime consignTime) {
         List<ShopOrder> shopOrderList = this.baseMapper.selectList(new LambdaQueryWrapper<ShopOrder>().eq(ShopOrder::getOrderId, shopOrderNo));
         if(shopOrderList!=null&&shopOrderList.size()>0){
             log.info("======更新店铺订单物流，找到订单了：{}",shopOrderList.size());
@@ -310,13 +309,13 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             shopOrder.setLogisticsPartnerCode(logisticCompany);
             shopOrder.setLogisticsOrderNo(logisticCode);
             if(consignTime!=null){
-                shopOrder.setShipDoneTime(consignTime.toInstant().getEpochSecond());
+                shopOrder.setShipDoneTime(consignTime.atZone(java.time.ZoneId.systemDefault()).toInstant().getEpochSecond());
             }
             shopOrder.setErpShipStatus(2);
             shopOrder.setErpShipCompany(logisticCompany);
             shopOrder.setErpShipCode(logisticCode);
             shopOrder.setErpShipTime(consignTime);
-            shopOrder.setUpdateOn(new Date());
+            shopOrder.setUpdateOn(LocalDateTime.now());
             this.baseMapper.updateById(shopOrder);
 
             // 更新订单库
@@ -329,7 +328,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                 oOrder.setWaybillCompany(logisticCompany);
                 oOrder.setWaybillCode(logisticCode);
                 oOrder.setUpdateBy("自动更新物流");
-                oOrder.setUpdateTime(new Date());
+                oOrder.setUpdateTime(LocalDateTime.now());
                 orderMapper.updateById(oOrder);
             }else{
                 log.error("======更新店铺订单物流，未找到订单库订单");
@@ -399,7 +398,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
 //            update.setRefundStatus(order.getRefundStatus());
 //            update.setUpdateTime(order.getUpdateTime());
 //            update.setUpdateTimeText(order.getUpdateTimeText());
-//            update.setUpdateOn(new Date());
+//            update.setUpdateOn(LocalDateTime.now());
             if(StringUtils.isEmpty(order.getProvince())) order.setProvince(null);
             if(StringUtils.isEmpty(order.getCity())) order.setCity(null);
             if(StringUtils.isEmpty(order.getTown())) order.setTown(null);
@@ -411,7 +410,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             if(StringUtils.isEmpty(order.getEncryptPostTel())) order.setEncryptPostTel(null);
             if(StringUtils.isEmpty(order.getEncryptPostReceiver())) order.setEncryptPostReceiver(null);
             order.setId(shopOrderList.get(0).getId());
-            order.setUpdateOn(new Date());
+            order.setUpdateOn(LocalDateTime.now());
             this.baseMapper.updateById(order);
             shopOrderId = order.getId();
         } else {
@@ -420,7 +419,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             order.setOrderMode(0);
             order.setErpShipStatus(0);
             order.setConfirmStatus(0);
-            order.setCreateOn(new Date());
+            order.setCreateOn(LocalDateTime.now());
             this.baseMapper.insert(order);
             shopOrderId = order.getId();
             // 如果平台会员ID存在，则添加会员到会员表
@@ -439,7 +438,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                 shopMember.setTown(order.getTown());
                 shopMember.setAddress(order.getAddress());
                 shopMember.setStatus(0);
-                shopMember.setCreateOn(new Date());
+                shopMember.setCreateOn(LocalDateTime.now());
                 shopMemberMapper.insert(shopMember);
             }
         }
@@ -487,12 +486,12 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                 // 更新
                 item.setId(orderItems.get(0).getId());
                 item.setShopOrderId(shopOrderId);
-                item.setUpdateOn(new Date());
+                item.setUpdateOn(LocalDateTime.now());
                 itemMapper.updateById(item);
             } else {
                 // 新增
                 item.setShopOrderId(shopOrderId);
-                item.setCreateOn(new Date());
+                item.setCreateOn(LocalDateTime.now());
                 itemMapper.insert(item);
             }
         }
@@ -561,9 +560,9 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         shopOrderNew.setCounty(confirmAndNewBo.getCounty());
         shopOrderNew.setAddress(confirmAndNewBo.getAddress());
         shopOrderNew.setConfirmStatus(1);
-        shopOrderNew.setConfirmTime(new Date());
+        shopOrderNew.setConfirmTime(LocalDateTime.now());
         shopOrderNew.setErpShipStatus(0);
-        shopOrderNew.setCreateOn(new Date());
+        shopOrderNew.setCreateOn(LocalDateTime.now());
         shopOrderNew.setDeliverMethod(0);
         shopOrderNew.setShopMemberId(shopMemberId);
         shopOrderNew.setOrderTimeText(order.getOrderTimeText());
@@ -595,7 +594,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             shopOrderItem.setOrderId(shopOrderNew.getOrderId());
             shopOrderItem.setSubOrderId(shopOrderItem.getOrderId()+"-"+shopOrderItem.getErpGoodsSkuId());
             shopOrderItem.setOrderTime(shopOrderNew.getOrderTime());
-            shopOrderItem.setCreateOn(new Date());
+            shopOrderItem.setCreateOn(LocalDateTime.now());
             shopOrderItem.setRefundStatus(1);
             shopOrderItem.setRefundAmount(0);
 
@@ -604,9 +603,9 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         // 更新自己
         ShopOrder update =new ShopOrder();
         update.setId(order.getId());
-        update.setUpdateOn(new Date());
+        update.setUpdateOn(LocalDateTime.now());
         update.setConfirmStatus(1);
-        update.setConfirmTime(new Date());
+        update.setConfirmTime(LocalDateTime.now());
         this.baseMapper.updateById(update);
         log.info("=============螳螂虚拟订单确认创建发货订单成功：{}================",shopOrderNew.getId());
         return ResultVo.success(shopOrderNew.getId());
@@ -629,7 +628,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         ShopOrder update = new ShopOrder();
         update.setId(id);
         update.setCancelReason(man+" 操作取消订单，取消原因："+cancelReason);
-        update.setUpdateOn(new Date());
+        update.setUpdateOn(LocalDateTime.now());
         update.setOrderStatus(11);
         this.baseMapper.updateById(update);
 
@@ -643,7 +642,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
                     ShopOrder shopOrderUpdate = new ShopOrder();
                     shopOrderUpdate.setId(order.getId());
                     shopOrderUpdate.setConfirmStatus(0);
-                    shopOrderUpdate.setUpdateOn(new Date());
+                    shopOrderUpdate.setUpdateOn(LocalDateTime.now());
                     this.baseMapper.updateById(shopOrderUpdate);
                 }
             }
@@ -701,7 +700,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             orderItem.setErpGoodsSkuId(shopGoodsSku.getErpGoodsSkuId());
             orderItem.setOrderId(order.getOrderNum());
             orderItem.setOrderTime(System.currentTimeMillis()/1000);
-            orderItem.setCreateOn(new Date());
+            orderItem.setCreateOn(LocalDateTime.now());
             orderItem.setRefundStatus(1);
             orderItem.setRefundAmount(0);
             orderItem.setSubOrderId(order.getOrderNum()+"-"+item.getId());
@@ -755,7 +754,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         shopOrder.setShipDoneTime(0L);
         shopOrder.setConfirmStatus(0);
         shopOrder.setErpShipStatus(0);
-        shopOrder.setCreateOn(new Date());
+        shopOrder.setCreateOn(LocalDateTime.now());
         shopOrder.setShopMemberId(0L);
         shopOrder.setPlatformUserId("0");
         shopOrder.setDeliverMethod(0);
@@ -784,7 +783,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             newMember.setCounty(order.getTown());
             newMember.setAddress(order.getAddress());
             newMember.setStatus(1);
-            newMember.setCreateOn(new Date());
+            newMember.setCreateOn(LocalDateTime.now());
             shopMemberMapper.insert(newMember);
             order.setShopMemberId(newMember.getId());
         }
@@ -845,8 +844,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         // 处理 回收抵扣
         if(shopOrder.getDeductionPrice()>0 && order.getIsRecoveryDeduction()==1){
             ErpRecoveryRecord recoveryRecord = new ErpRecoveryRecord();
-            recoveryRecord.setRecoveryNo("RE"+ DateUtils.format(new Date(), "yyyyMMddHHmmss"));
-            recoveryRecord.setRecoveryDate(new Date());
+            recoveryRecord.setRecoveryNo("RE"+ DateUtils.format(LocalDateTime.now(), "yyyyMMddHHmmss"));
+            recoveryRecord.setRecoveryDate(LocalDateTime.now());
             recoveryRecord.setCustomerId(shopOrder.getShopMemberId());
             recoveryRecord.setCustomerName(order.getReceiverName());
             recoveryRecord.setCustomerPhone(order.getReceiverPhone());
@@ -866,7 +865,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             recoveryRecord.setTotalAmount(goldPrice.add(silverPrice));
 //            Integer recoveryTotalAmount=recoveryRecord.getTotalAmount().multiply(BigDecimal.valueOf(100)).intValue();
             recoveryRecord.setRemark(order.getDeductionRemark());
-            recoveryRecord.setCreatedTime(new Date());
+            recoveryRecord.setCreatedTime(LocalDateTime.now());
             recoveryRecord.setCreatedBy(man);
 
             /** 抵扣金额和订单金额对比*/
@@ -893,7 +892,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             erpRecoveryDeduction.setOrderId(shopOrder.getId());
             erpRecoveryDeduction.setRecoveryId(recoveryRecord.getId());
             erpRecoveryDeduction.setDeductionAmount(BigDecimal.valueOf(shopOrder.getDeductionPrice()).multiply(BigDecimal.valueOf(100)));
-            erpRecoveryDeduction.setDeductionTime(new Date());
+            erpRecoveryDeduction.setDeductionTime(LocalDateTime.now());
             erpRecoveryDeduction.setCreatedBy(man);
             recoveryDeductionMapper.insert(erpRecoveryDeduction);
         }
@@ -946,7 +945,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             orderItem.setErpGoodsSkuId(shopGoodsSku.getErpGoodsSkuId());
             orderItem.setOrderId(orderNum);
             orderItem.setOrderTime(System.currentTimeMillis()/1000);
-            orderItem.setCreateOn(new Date());
+            orderItem.setCreateOn(LocalDateTime.now());
             orderItem.setRefundStatus(1);
             orderItem.setRefundAmount(0);
             orderItem.setSubOrderId(orderNum+"-"+item.getSkuId());
@@ -985,7 +984,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
         shopOrder.setShipDoneTime(0L);
         shopOrder.setConfirmStatus(0);
         shopOrder.setErpShipStatus(0);
-        shopOrder.setCreateOn(new Date());
+        shopOrder.setCreateOn(LocalDateTime.now());
         shopOrder.setPlatformUserId("0");
         shopOrder.setDeliverMethod(0);
         shopOrder.setOrderMode(1);
@@ -1031,7 +1030,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             erpRecoveryDeduction.setOrderId(shopOrder.getId());
             erpRecoveryDeduction.setRecoveryId(order.getRecoveryId());
             erpRecoveryDeduction.setDeductionAmount(order.getRecoveryDeductionAmount().multiply(BigDecimal.valueOf(100)));
-            erpRecoveryDeduction.setDeductionTime(new Date());
+            erpRecoveryDeduction.setDeductionTime(LocalDateTime.now());
             erpRecoveryDeduction.setCreatedBy(man);
             recoveryDeductionMapper.insert(erpRecoveryDeduction);
         }

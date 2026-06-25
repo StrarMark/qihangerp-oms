@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -96,7 +96,7 @@ public class ErpWarehouseGoodsStockAlertServiceImpl extends ServiceImpl<ErpWareh
         alert.setAlertQty(alertQty);
         alert.setStatus(1);
         alert.setCreateBy(userName);
-        alert.setCreateTime(new Date());
+        alert.setCreateTime(LocalDateTime.now());
 
         this.save(alert);
         return ResultVo.success(alert.getId());
@@ -113,7 +113,7 @@ public class ErpWarehouseGoodsStockAlertServiceImpl extends ServiceImpl<ErpWareh
 
         alert.setAlertQty(alertQty);
         alert.setUpdateBy(userName);
-        alert.setUpdateTime(new Date());
+        alert.setUpdateTime(LocalDateTime.now());
 
         this.updateById(alert);
         return ResultVo.success(alert.getId());
@@ -141,7 +141,7 @@ public class ErpWarehouseGoodsStockAlertServiceImpl extends ServiceImpl<ErpWareh
         if (alert == null) return ResultVo.error("记录不存在");
 
         alert.setStatus(status);
-        alert.setUpdateTime(new Date());
+        alert.setUpdateTime(LocalDateTime.now());
 
         this.updateById(alert);
         return ResultVo.success();

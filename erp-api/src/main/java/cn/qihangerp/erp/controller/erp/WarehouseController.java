@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -43,7 +43,7 @@ public class WarehouseController extends BaseController {
     public AjaxResult add(@RequestBody ErpWarehouse warehouse)
     {
         warehouse.setCreateBy(getUsername());
-        warehouse.setCreateTime(new Date());
+        warehouse.setCreateTime(LocalDateTime.now());
         boolean save = warehouseService.save(warehouse);
         if(save){
             ErpWarehousePosition position = new ErpWarehousePosition();
@@ -57,7 +57,7 @@ public class WarehouseController extends BaseController {
             position.setAddress(warehouse.getAddress());
             position.setRemark(warehouse.getRemark());
             position.setCreateBy(getUsername());
-            position.setCreateTime(new Date());
+            position.setCreateTime(LocalDateTime.now());
             positionService.save(position);
         }
         return AjaxResult.success();
@@ -66,7 +66,7 @@ public class WarehouseController extends BaseController {
     public AjaxResult edit(@RequestBody ErpWarehouse warehouse)
     {
         warehouse.setUpdateBy(getUsername());
-        warehouse.setUpdateTime(new Date());
+        warehouse.setUpdateTime(LocalDateTime.now());
         return toAjax(warehouseService.updateById(warehouse));
     }
 	@DeleteMapping("/{ids}")
@@ -99,7 +99,7 @@ public class WarehouseController extends BaseController {
     @PostMapping("/position")
     public AjaxResult positionAdd(@RequestBody ErpWarehousePosition position) {
         position.setCreateBy(getUsername());
-        position.setCreateTime(new Date());
+        position.setCreateTime(LocalDateTime.now());
         position.setParentId1(0l);
         position.setParentId2(0l);
         positionService.save(position);
@@ -117,7 +117,7 @@ public class WarehouseController extends BaseController {
     public AjaxResult positionEdit(@RequestBody ErpWarehousePosition position)
     {
         position.setUpdateBy(getUsername());
-        position.setUpdateTime(new Date());
+        position.setUpdateTime(LocalDateTime.now());
         return toAjax(positionService.updateById(position));
     }
     @DeleteMapping("/position/{ids}")

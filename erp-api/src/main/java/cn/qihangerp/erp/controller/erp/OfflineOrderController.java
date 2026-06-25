@@ -57,9 +57,9 @@
 ////                    pushUpdate.setErpPushStatus(resultVo.getCode() == 0 ? 100 : resultVo.getCode());//推送状态200 订单推送成功 100 取消订单推送成功
 ////                }
 ////                pushUpdate.setErpPushResult(resultVo.getMsg());
-////                pushUpdate.setErpPushTime(new Date());
+////                pushUpdate.setErpPushTime(LocalDateTime.now());
 ////                pushUpdate.setUpdateBy("手动推送到ERP");
-////                pushUpdate.setUpdateTime(new Date());
+////                pushUpdate.setUpdateTime(LocalDateTime.now());
 ////                pushUpdate.setId(id.toString());
 ////                orderService.updateById(pushUpdate);
 ////            }

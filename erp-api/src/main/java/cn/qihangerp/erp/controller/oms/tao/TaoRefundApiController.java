@@ -33,8 +33,7 @@
 //import java.io.IOException;
 //import java.time.Duration;
 //import java.time.LocalDateTime;
-//import java.util.Date;
-//
+////
 //@AllArgsConstructor
 //@RestController
 //@RequestMapping("/api/oms-api/tao/refund")
@@ -59,7 +58,7 @@
 ////            return new ApiResult<>(EnumResultVo.ParamsError.getIndex(), "参数错误，没有店铺Id");
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR,  "参数错误，没有店铺Id");
 //        }
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long beginTime = System.currentTimeMillis();
 //
 //        Long shopId = taoRequest.getShopId();
@@ -141,7 +140,7 @@
 //                // 新增
 //                OShopPullLasttime insertLasttime = new OShopPullLasttime();
 //                insertLasttime.setShopId(taoRequest.getShopId());
-//                insertLasttime.setCreateTime(new Date());
+//                insertLasttime.setCreateTime(LocalDateTime.now());
 //                insertLasttime.setLasttime(endTime);
 //                insertLasttime.setPullType("REFUND");
 //                pullLasttimeService.save(insertLasttime);
@@ -150,7 +149,7 @@
 //                // 修改
 //                OShopPullLasttime updateLasttime = new OShopPullLasttime();
 //                updateLasttime.setId(lasttime.getId());
-//                updateLasttime.setUpdateTime(new Date());
+//                updateLasttime.setUpdateTime(LocalDateTime.now());
 //                updateLasttime.setLasttime(endTime);
 //                pullLasttimeService.updateById(updateLasttime);
 //            }
@@ -181,7 +180,7 @@
 //        if (StringUtils.isEmpty(taoRequest.getRefundId())) {
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有refundId");
 //        }
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long beginTime = System.currentTimeMillis();
 //
 //        Long shopId = taoRequest.getShopId();

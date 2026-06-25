@@ -12,7 +12,7 @@ import cn.qihangerp.mapper.GoodsDailyQuotationMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -68,7 +68,7 @@ public class GoodsDailyQuotationServiceImpl extends ServiceImpl<GoodsDailyQuotat
         goodsDailyQuotation.setPrice2(bo.getPrice2());
         goodsDailyQuotation.setPrice3(bo.getPrice3());
         goodsDailyQuotation.setStatus(0);
-        goodsDailyQuotation.setCreateTime(new Date());
+        goodsDailyQuotation.setCreateTime(LocalDateTime.now());
         this.baseMapper.insert(goodsDailyQuotation);
         return ResultVo.success(goodsDailyQuotation.getId());
     }
@@ -79,7 +79,7 @@ public class GoodsDailyQuotationServiceImpl extends ServiceImpl<GoodsDailyQuotat
         if(bo.getPrice1()==null) return ResultVo.error("金价不能为空");
         if(bo.getPrice2()==null) return ResultVo.error("银价不能为空");
         if(bo.getPrice3()==null) return ResultVo.error("工费不能为空");
-        bo.setUpdateTime(new Date());
+        bo.setUpdateTime(LocalDateTime.now());
         bo.setCreateTime(null);
         bo.setPriceDate(null);
         bo.setPriceType(null);

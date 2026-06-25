@@ -11,7 +11,7 @@ import cn.qihangerp.model.entity.ShopOrder;
 import cn.qihangerp.model.entity.ShopOrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -35,7 +35,7 @@ public interface ShopOrderService extends IService<ShopOrder> {
      * @param consignTime
      * @return
      */
-    ResultVo<Long> updateShopOrderLogistic(String shopOrderNo, String tradeNo, String logisticCompany, String logisticCode, Date consignTime);
+    ResultVo<Long> updateShopOrderLogistic(String shopOrderNo, String tradeNo, String logisticCompany, String logisticCode, LocalDateTime consignTime);
     /**
      * 保存店铺订单
      * @param shopId

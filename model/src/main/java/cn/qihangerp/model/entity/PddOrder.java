@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -348,17 +348,17 @@ public class PddOrder implements Serializable {
     /**
      * 发货时间（仓库真实发货时间）
      */
-    private Date auditTime;
+    private LocalDateTime auditTime;
 
     /**
      * 系统创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 系统更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     private String openAddressId;
     private String openAddressId2;

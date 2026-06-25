@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 拼多多订单退款表
@@ -169,12 +169,12 @@ public class PddRefund implements Serializable {
     /**
      * 
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 系统更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 商品id(o_goods外键)

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 供应商商品报价表
@@ -54,12 +54,12 @@ public class ErpSupplierGoodsPrice {
     /**
      * 有效期开始时间
      */
-    private Date validStartTime;
+    private LocalDateTime validStartTime;
 
     /**
      * 有效期结束时间
      */
-    private Date validEndTime;
+    private LocalDateTime validEndTime;
 
     /**
      * 所属商户0总部，大于0就是商户
@@ -84,7 +84,7 @@ public class ErpSupplierGoodsPrice {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新人
@@ -94,5 +94,5 @@ public class ErpSupplierGoodsPrice {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }

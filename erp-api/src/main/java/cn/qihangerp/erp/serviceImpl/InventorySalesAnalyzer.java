@@ -1,12 +1,12 @@
 package cn.qihangerp.erp.serviceImpl;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import okhttp3.*;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 public class InventorySalesAnalyzer {
 
@@ -58,22 +58,22 @@ public class InventorySalesAnalyzer {
         for (InventoryItem item : inventory) {
             SkuAnalysis analysis = new SkuAnalysis();
             analysis.id = item.id;
-            analysis.goodsTitle = item.goodsTitle;
-            analysis.skuName = item.skuName;
-            analysis.stockNum = item.stockNum;
+            analysis.goodsTitle = item.goods_title;
+            analysis.skuName = item.sku_name;
+            analysis.stockNum = item.stock_num;
             analysisMap.put(item.id, analysis);
         }
 
         // 统计销售数据
         for (SalesOrder order : sales) {
-            if (analysisMap.containsKey(order.skuId)) {
-                SkuAnalysis analysis = analysisMap.get(order.skuId);
+            if (analysisMap.containsKey(order.sku_id)) {
+                SkuAnalysis analysis = analysisMap.get(order.sku_id);
                 analysis.totalSales += order.count;
-                analysis.totalRevenue += order.itemAmount;
+                analysis.totalRevenue += order.item_amount;
                 analysis.orderCount++;
 
                 // 记录销售时间（用于趋势分析）
-                analysis.salesTimes.add(order.orderTime);
+                analysis.salesTimes.add(order.order_time);
             }
         }
 
@@ -110,7 +110,7 @@ public class InventorySalesAnalyzer {
 
         prompt.append("=== 数据概览 ===\n");
         prompt.append("产品名称：雷士照明 LED 吸顶灯灯芯\n");
-        prompt.append("分析时间：").append(new Date()).append("\n\n");
+        prompt.append("分析时间：").append(LocalDateTime.now()).append("\n\n");
 
         prompt.append("=== 详细数据 ===\n");
         prompt.append(String.format("%-8s %-12s %-8s %-8s %-12s %-10s %-15s\n",
@@ -234,27 +234,20 @@ public class InventorySalesAnalyzer {
                 new TypeReference<List<SalesOrder>>() {});
     }
 
-    // 数据类定义
+    // 数据类定义（字段名与 JSON key 一致，无需 @JsonProperty）
     static class InventoryItem {
         public int id;
-        @JsonProperty("goods_title")
-        public String goodsTitle;
-        @JsonProperty("sku_name")
-        public String skuName;
-        @JsonProperty("stock_num")
-        public int stockNum;
+        public String goods_title;
+        public String sku_name;
+        public int stock_num;
     }
 
     static class SalesOrder {
-        @JsonProperty("order_num")
-        public String orderNum;
-        @JsonProperty("sku_id")
-        public int skuId;
+        public String order_num;
+        public int sku_id;
         public int count;
-        @JsonProperty("item_amount")
-        public double itemAmount;
-        @JsonProperty("order_time")
-        public String orderTime;
+        public double item_amount;
+        public String order_time;
     }
 
     static class SkuAnalysis {

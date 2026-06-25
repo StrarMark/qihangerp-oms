@@ -29,8 +29,7 @@
 //
 //import java.time.LocalDateTime;
 //import java.time.format.DateTimeFormatter;
-//import java.util.Date;
-//
+////
 //@RequestMapping("/api/oms-api/jd/refund")
 //@RestController
 //@AllArgsConstructor
@@ -53,7 +52,7 @@
 //        if (params.getShopId() == null || params.getShopId() <= 0) {
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 //        }
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long beginTime = System.currentTimeMillis();
 //        var checkResult = jdApiCommon.checkBefore(params.getShopId());
 //        if (checkResult.getCode() != HttpStatus.SUCCESS) {
@@ -155,7 +154,7 @@
 //            // 新增
 //            OShopPullLasttime insertLasttime = new OShopPullLasttime();
 //            insertLasttime.setShopId(params.getShopId());
-//            insertLasttime.setCreateTime(new Date());
+//            insertLasttime.setCreateTime(LocalDateTime.now());
 //            insertLasttime.setLasttime(endTime);
 //            insertLasttime.setPullType("REFUND");
 //            pullLasttimeService.save(insertLasttime);
@@ -164,7 +163,7 @@
 //            // 修改
 //            OShopPullLasttime updateLasttime = new OShopPullLasttime();
 //            updateLasttime.setId(lasttime.getId());
-//            updateLasttime.setUpdateTime(new Date());
+//            updateLasttime.setUpdateTime(LocalDateTime.now());
 //            updateLasttime.setLasttime(endTime);
 //            pullLasttimeService.updateById(updateLasttime);
 //        }

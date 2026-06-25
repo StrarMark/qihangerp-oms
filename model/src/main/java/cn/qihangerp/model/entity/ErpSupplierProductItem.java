@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 供应商商品表(SKU维度)
@@ -135,7 +135,7 @@ public class ErpSupplierProductItem {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新人
@@ -145,7 +145,7 @@ public class ErpSupplierProductItem {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 商品库SKU信息（非数据库字段，用于列表展示）

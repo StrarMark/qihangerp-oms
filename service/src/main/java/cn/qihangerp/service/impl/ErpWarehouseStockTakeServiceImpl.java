@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,7 +90,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
             stockTake.setMerchantName("总部");
         }
         stockTake.setStatus(0);
-        stockTake.setCreateTime(new Date());
+        stockTake.setCreateTime(LocalDateTime.now());
         stockTake.setCreateBy(userName);
         this.baseMapper.insert(stockTake);
         return ResultVo.success();
@@ -136,7 +136,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
         //盘点结果（0未出结果10盘平20盘盈30盘亏）
         stockTakeItem.setResult(0);
         stockTakeItem.setStatus(0);
-        stockTakeItem.setCreateTime(new Date());
+        stockTakeItem.setCreateTime(LocalDateTime.now());
         stockTakeItem.setCreateBy(userName);
         stockTakeItemMapper.insert(stockTakeItem);
 
@@ -146,10 +146,10 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
         update.setId(stockTake.getId());
         update.setStatus(1);
         if(stockTake.getFirstTakeTime()==null){
-            update.setFirstTakeTime(new Date());
+            update.setFirstTakeTime(LocalDateTime.now());
         }
         update.setSkuUnit(stockTake.getSkuUnit()+1);
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         update.setUpdateBy(userName);
         this.baseMapper.updateById(update);
 
@@ -175,7 +175,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
                 update.setSkuUnit(stockTake.getSkuUnit()-1);
             }
 
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             this.baseMapper.updateById(update);
         }
         return ResultVo.success();
@@ -215,7 +215,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
                 }
                 itemUpdate.setResult(result);
                 itemUpdate.setStatus(2);
-                itemUpdate.setUpdateTime(new Date());
+                itemUpdate.setUpdateTime(LocalDateTime.now());
                 itemUpdate.setUpdateBy(userName);
                 stockTakeItemMapper.updateById(itemUpdate);
             }
@@ -262,7 +262,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
                 }
                 stockTakeItemUpdate.setResult(result);
                 stockTakeItemUpdate.setStatus(2);
-                stockTakeItemUpdate.setUpdateTime(new Date());
+                stockTakeItemUpdate.setUpdateTime(LocalDateTime.now());
                 stockTakeItemUpdate.setUpdateBy(userName);
                 stockTakeItemMapper.updateById(stockTakeItemUpdate);
             }else {
@@ -298,7 +298,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
                 }
                 stockTakeItem.setResult(result);
                 stockTakeItem.setStatus(2);
-                stockTakeItem.setCreateTime(new Date());
+                stockTakeItem.setCreateTime(LocalDateTime.now());
                 stockTakeItem.setCreateBy(userName);
                 stockTakeItemMapper.insert(stockTakeItem);
             }
@@ -309,9 +309,9 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
         update.setId(stockTake.getId());
         update.setStatus(1);
         if(stockTake.getFirstTakeTime()==null){
-            update.setFirstTakeTime(new Date());
+            update.setFirstTakeTime(LocalDateTime.now());
         }
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         update.setUpdateBy(userName);
         this.baseMapper.updateById(update);
         return ResultVo.success();
@@ -346,17 +346,17 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
             ErpWarehouseStockIn stockIn = new ErpWarehouseStockIn();
             stockIn.setVendorId(stockTake.getWarehouseId());
             stockIn.setMerchantId(stockTake.getMerchantId());
-            stockIn.setStockInNum("PYRK-" + DateUtils.parseDateToStr("yyyyMMdd", new Date()) + "-" + System.currentTimeMillis() / 1000);
+            stockIn.setStockInNum("PYRK-" + DateUtils.parseDateToStr("yyyyMMdd", LocalDateTime.now()) + "-" + System.currentTimeMillis() / 1000);
             stockIn.setStockInType(EnumStockInType.TAKE_STOCK_IN.getIndex());
             stockIn.setSourceType(0);//来源（0自己入库1商户申请入库）
             stockIn.setApplyId(0L);
             stockIn.setStockInOperator(userName);
             stockIn.setStockInOperatorId(userId);
-//        insert.setStockInTime(new Date());
+//        insert.setStockInTime(LocalDateTime.now());
             stockIn.setSourceNo(stockTake.getId().toString());
             stockIn.setRemark("盘盈生成入库单");
             stockIn.setCreateBy(userName);
-            stockIn.setCreateTime(new Date());
+            stockIn.setCreateTime(LocalDateTime.now());
             stockIn.setGoodsUnit(panying.size());
             stockIn.setGoodsSkuUnit(panying.size());
             stockIn.setStatus(0);//状态（0待入库1部分入库2全部入库）
@@ -378,7 +378,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
                 inItem.setInQuantity(0);
                 inItem.setStatus(0);
                 inItem.setCreateBy(userName);
-                inItem.setCreateTime(new Date());
+                inItem.setCreateTime(LocalDateTime.now());
                 inItemList.add(inItem);
                 total+=inItem.getQuantity();
             }
@@ -401,13 +401,13 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
             ErpWarehouseStockOut stockOut = new ErpWarehouseStockOut();
             stockOut.setVendorId(stockTake.getWarehouseId());
             stockOut.setMerchantId(stockTake.getMerchantId());
-            stockOut.setOutNum("PKCK-" + DateUtils.parseDateToStr("yyyyMMdd", new Date()) + "-" + System.currentTimeMillis() / 1000);
+            stockOut.setOutNum("PKCK-" + DateUtils.parseDateToStr("yyyyMMdd", LocalDateTime.now()) + "-" + System.currentTimeMillis() / 1000);
             stockOut.setType(EnumStockOutType.TAKE_STOCK_OUT.getIndex());
             stockOut.setSourceNum(stockTake.getId().toString());
             stockOut.setSourceId(stockTake.getId());
             stockOut.setRemark("盘亏生成出库单");
             stockOut.setCreateBy(userName);
-            stockOut.setCreateTime(new Date());
+            stockOut.setCreateTime(LocalDateTime.now());
             stockOut.setGoodsUnit(pankui.size());
             stockOut.setSpecUnit(pankui.size());
 
@@ -433,7 +433,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
                 inItem.setOutQuantity(0);
                 inItem.setStatus(0);
                 inItem.setCreateBy(userName);
-                inItem.setCreateTime(new Date());
+                inItem.setCreateTime(LocalDateTime.now());
                 inItem.setWarehouseId(stockOut.getVendorId());
                 outItemList.add(inItem);
                 total+=inItem.getOriginalQuantity();
@@ -449,7 +449,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
         // 更新自己
         ErpWarehouseStockTake update = new ErpWarehouseStockTake();
         update.setId(stockTake.getId());
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         update.setUpdateBy(userName);
         update.setSkuUnit(items.size());
         update.setPanyingUnit(panying.size());
@@ -457,7 +457,7 @@ public class ErpWarehouseStockTakeServiceImpl extends ServiceImpl<ErpWarehouseSt
         update.setTotalQuantity(items.stream().mapToInt(item -> item.getQuantity()).sum());
         update.setResultQuantity(items.stream().mapToInt(item -> item.getTakeQuantity()).sum());
         update.setStatus(2);
-        update.setCompleteTime(new Date());
+        update.setCompleteTime(LocalDateTime.now());
         update.setRemark("生成出入库单");
         this.baseMapper.updateById(update);
         return ResultVo.success();

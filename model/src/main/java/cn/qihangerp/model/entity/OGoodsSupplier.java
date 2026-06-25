@@ -1,7 +1,7 @@
 //package cn.qihangerp.model.entity;
 //
 //import java.io.Serializable;
-//import java.util.Date;
+//import java.time.LocalDateTime;
 //
 //import com.baomidou.mybatisplus.annotation.IdType;
 //import com.baomidou.mybatisplus.annotation.TableId;
@@ -52,7 +52,7 @@
 //    /**
 //     * 余额日期
 //     */
-//    private Date begindate;
+//    private LocalDateTime begindate;
 //
 //    /**
 //     * 备注
@@ -117,7 +117,7 @@
 //    /**
 //     * 创建时间
 //     */
-//    private Date createtime;
+//    private LocalDateTime createtime;
 //
 //    private static final long serialVersionUID = 1L;
 //}

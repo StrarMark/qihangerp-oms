@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 其他渠道店铺商品SKU
@@ -128,12 +128,12 @@ public class ShopGoodsSku implements Serializable {
     /**
      * 创建时间
      */
-    private Date createOn;
+    private LocalDateTime createOn;
 
     /**
      * 更新时间
      */
-    private Date updateOn;
+    private LocalDateTime updateOn;
     // 是否绑定有发货实物sku,0没有1有
     private Integer bindShipSku;
     @TableField(exist = false)

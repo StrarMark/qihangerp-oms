@@ -25,7 +25,7 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -109,7 +109,7 @@ public class ErpWarehouseGoodsStockServiceImpl extends ServiceImpl<ErpWarehouseG
             stock.setWarehouseId(warehouseList.get(0).getId());
             stock.setWarehouseName(warehouseList.get(0).getWarehouseName());
             stock.setWarehouseType(warehouseList.get(0).getWarehouseType());
-            stock.setCreateTime(new Date());
+            stock.setCreateTime(LocalDateTime.now());
             stock.setCreateBy("拉取云仓库存");
             this.baseMapper.insert(stock);
         } else {
@@ -118,7 +118,7 @@ public class ErpWarehouseGoodsStockServiceImpl extends ServiceImpl<ErpWarehouseG
             stock.setWarehouseName(warehouseList.get(0).getWarehouseName());
             stock.setWarehouseType(warehouseList.get(0).getWarehouseType());
             stock.setUpdateBy("更新云仓库存");
-            stock.setUpdateTime(new Date());
+            stock.setUpdateTime(LocalDateTime.now());
             stock.setId(stockList.get(0).getId());
             this.baseMapper.updateById(stock);
         }
@@ -148,7 +148,7 @@ public class ErpWarehouseGoodsStockServiceImpl extends ServiceImpl<ErpWarehouseG
             stock.setWarehouseId(warehouseList.get(0).getId());
             stock.setWarehouseName(warehouseList.get(0).getWarehouseName());
             stock.setWarehouseType(warehouseList.get(0).getWarehouseType());
-            stock.setCreateTime(new Date());
+            stock.setCreateTime(LocalDateTime.now());
             stock.setCreateBy("拉取云仓库存");
             this.baseMapper.insert(stock);
         } else {
@@ -158,7 +158,7 @@ public class ErpWarehouseGoodsStockServiceImpl extends ServiceImpl<ErpWarehouseG
             stock.setWarehouseName(warehouseList.get(0).getWarehouseName());
             stock.setWarehouseType(warehouseList.get(0).getWarehouseType());
             stock.setUpdateBy("更新云仓库存");
-            stock.setUpdateTime(new Date());
+            stock.setUpdateTime(LocalDateTime.now());
             stock.setId(stockList.get(0).getId());
             this.baseMapper.updateById(stock);
         }
@@ -214,13 +214,13 @@ public class ErpWarehouseGoodsStockServiceImpl extends ServiceImpl<ErpWarehouseG
         if (stockList.isEmpty()) {
             // 新增
             stock.setMerchantId(warehouseGoods.getMerchantId());
-            stock.setCreateTime(new Date());
+            stock.setCreateTime(LocalDateTime.now());
             stock.setCreateBy("API添加库存");
             this.baseMapper.insert(stock);
         } else {
             // 修改
             stock.setUpdateBy("API更新库存");
-            stock.setUpdateTime(new Date());
+            stock.setUpdateTime(LocalDateTime.now());
             stock.setId(stockList.get(0).getId());
             this.baseMapper.updateById(stock);
         }

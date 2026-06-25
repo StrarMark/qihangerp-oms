@@ -30,8 +30,7 @@
 //import java.time.ZoneOffset;
 //import java.time.format.DateTimeFormatter;
 //import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.List;
+////import java.util.List;
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
 //
@@ -76,7 +75,7 @@
 //            return AjaxResult.error("下单日期格式错误");
 //        }
 //
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        Long currTimeMillis = System.currentTimeMillis();
 //
 //        var checkResult = douApiCommon.checkBefore(req.getShopId());
@@ -207,7 +206,7 @@
 ////                // 新增
 ////                OShopPullLasttime insertLasttime = new OShopPullLasttime();
 ////                insertLasttime.setShopId(req.getShopId());
-////                insertLasttime.setCreateTime(new Date());
+////                insertLasttime.setCreateTime(LocalDateTime.now());
 ////                insertLasttime.setLasttime(endTime);
 ////                insertLasttime.setPullType("ORDER");
 ////                pullLasttimeService.save(insertLasttime);
@@ -216,7 +215,7 @@
 ////                // 修改
 ////                OShopPullLasttime updateLasttime = new OShopPullLasttime();
 ////                updateLasttime.setId(lasttime.getId());
-////                updateLasttime.setUpdateTime(new Date());
+////                updateLasttime.setUpdateTime(LocalDateTime.now());
 ////                updateLasttime.setLasttime(endTime);
 ////                pullLasttimeService.updateById(updateLasttime);
 ////            }

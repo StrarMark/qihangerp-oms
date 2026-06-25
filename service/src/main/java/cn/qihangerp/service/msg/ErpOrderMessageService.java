@@ -17,7 +17,6 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -81,17 +80,10 @@ public class ErpOrderMessageService {
             insert.setCity(originOrder.getCity());
             insert.setTown(originOrder.getTown());
 
-            // 转换为 LocalDateTime
-            LocalDateTime localDateTime = originOrder.getOrderTime().toInstant()
-                    .atZone(ZoneId.of("Asia/Shanghai"))
-                    .toLocalDateTime();
-
-            insert.setOrderTime(localDateTime);
+            insert.setOrderTime(originOrder.getOrderTime());
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDateTime updateTime = originOrder.getUpdateTime().toInstant()
-                        .atZone(ZoneId.of("Asia/Shanghai"))
-                        .toLocalDateTime();
+                LocalDateTime updateTime = originOrder.getUpdateTime();
                 insert.setOrderModifiedTime(updateTime.format(formatter));
                 if (originOrder.getOrderStatus()==3||originOrder.getOrderStatus()==11||originOrder.getOrderStatus()==29){
                     insert.setOrderFinishTime(updateTime.atZone(ZoneId.systemDefault())
@@ -100,7 +92,7 @@ public class ErpOrderMessageService {
                 }
             }catch (Exception e){}
 //            insert.setShipType(0);
-            insert.setCreateTime(new Date());
+            insert.setCreateTime(LocalDateTime.now());
             insert.setCreateBy("ORDER_MESSAGE");
             insert.setHasGift(originOrder.getHasGift());
             insert.setSalesmanId(originOrder.getSalesmanId());
@@ -116,7 +108,7 @@ public class ErpOrderMessageService {
             ErpSalesOrder offlineUpdate = new ErpSalesOrder();
             offlineUpdate.setId(originOrder.getId());
             offlineUpdate.setOmsPushStatus(1);
-            offlineUpdate.setUpdateTime(new Date());
+            offlineUpdate.setUpdateTime(LocalDateTime.now());
             offlineUpdate.setUpdateBy("推送状态更新");
             erpSalesOrderMapper.updateById(offlineUpdate);
         } else {
@@ -143,14 +135,12 @@ public class ErpOrderMessageService {
             update.setProvince(originOrder.getProvince());
             update.setCity(originOrder.getCity());
             update.setTown(originOrder.getTown());
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             update.setUpdateBy("ORDER_MESSAGE");
             update.setHasGift(originOrder.getHasGift());
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDateTime updateTime = originOrder.getUpdateTime().toInstant()
-                        .atZone(ZoneId.of("Asia/Shanghai"))
-                        .toLocalDateTime();
+                LocalDateTime updateTime = originOrder.getUpdateTime();
                 update.setOrderModifiedTime(updateTime.format(formatter));
                 if (originOrder.getOrderStatus()==3||originOrder.getOrderStatus()==11||originOrder.getOrderStatus()==29){
                     update.setOrderFinishTime(updateTime.atZone(ZoneId.systemDefault())
@@ -171,7 +161,7 @@ public class ErpOrderMessageService {
                     stockingUpdate.setId(oOrderStocking.getId());
                     stockingUpdate.setOrderStatus(update.getOrderStatus());
                     stockingUpdate.setUpdateBy("通知更新订单状态");
-                    stockingUpdate.setUpdateTime(new Date());
+                    stockingUpdate.setUpdateTime(LocalDateTime.now());
                     shipOrderMapper.updateById(stockingUpdate);
                 }
             }
@@ -240,14 +230,14 @@ public class ErpOrderMessageService {
                 );
                 if(oOrderItems.isEmpty()) {
                     // 添加
-                    orderItem.setCreateTime(new Date());
+                    orderItem.setCreateTime(LocalDateTime.now());
                     orderItem.setCreateBy("ORDER_MESSAGE");
                     orderItemMapper.insert(orderItem);
                 }else{
                     // 修改
                     //修改
                     orderItem.setId(oOrderItems.get(0).getId());
-                    orderItem.setUpdateTime(new Date());
+                    orderItem.setUpdateTime(LocalDateTime.now());
                     orderItem.setUpdateBy("ORDER_MESSAGE");
                     orderItemMapper.updateById(orderItem);
                     // 更新发货子表状态
@@ -260,7 +250,7 @@ public class ErpOrderMessageService {
                             updateShip.setId(oOrderStockingItem.getId());
                             updateShip.setRefundStatus(orderItem.getRefundStatus());
                             updateShip.setUpdateBy("通知修改订单状态");
-                            updateShip.setUpdateTime(new Date());
+                            updateShip.setUpdateTime(LocalDateTime.now());
                             shipOrderItemMapper.updateById(updateShip);
                         }
                     }
@@ -278,7 +268,7 @@ public class ErpOrderMessageService {
                 updateShip.setId(shipOrderId);
                 updateShip.setOrderStatus(EnumOOrderStatus.CLOSED.getIndex());
                 updateShip.setUpdateBy("子订单全部退款");
-                updateShip.setUpdateTime(new Date());
+                updateShip.setUpdateTime(LocalDateTime.now());
                 shipOrderMapper.updateById(updateShip);
             }
 
@@ -294,7 +284,7 @@ public class ErpOrderMessageService {
                 orderUpdate.setOrderStatus(EnumOOrderStatus.CLOSED.getIndex());
                 orderUpdate.setCancelReason("子订单全部退款");
                 orderUpdate.setUpdateBy("子订单全部退款");
-                orderUpdate.setUpdateTime(new Date());
+                orderUpdate.setUpdateTime(LocalDateTime.now());
                 orderMapper.updateById(orderUpdate);
             }
             log.info("===========同步erpOrder====成功");

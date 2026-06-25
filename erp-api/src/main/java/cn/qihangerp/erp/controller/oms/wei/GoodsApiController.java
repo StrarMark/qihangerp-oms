@@ -20,7 +20,7 @@
 //import org.springframework.web.bind.annotation.RestController;
 //
 //import java.util.ArrayList;
-//import java.util.Date;
+//import java.time.LocalDateTime;
 //import java.util.List;
 //
 //@RequestMapping("/api/oms-api/wei/goods")
@@ -38,7 +38,7 @@
 ////            return ApiResul new ApiResult(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 //        }
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long startTime = System.currentTimeMillis();
 //        var checkResult = apiCommon.checkBefore(params.getShopId());
 //        if (checkResult.getCode() != ResultVoEnum.SUCCESS.getIndex()) {

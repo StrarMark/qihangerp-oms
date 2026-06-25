@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -154,8 +155,8 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
             stockOutItem.setMerchantId(oOrderStockingItem.getMerchantId());
             stockOutItem.setShopId(0L);
             stockOutItem.setPurPrice(0.0);
-            stockOutItem.setCreateTime(new Date());
-            stockOutItem.setUpdateTime(new Date());
+            stockOutItem.setCreateTime(LocalDateTime.now());
+            stockOutItem.setUpdateTime(LocalDateTime.now());
 
             total+= oOrderStockingItem.getQuantity();
             stockOutItemList.add(stockOutItem);
@@ -174,7 +175,7 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
             up.setWarehouseId(warehouse.getId());
             up.setWarehouseType(warehouse.getWarehouseType());
             up.setWarehouseName(warehouse.getWarehouseName());
-            up.setUpdateTime(new Date());
+            up.setUpdateTime(LocalDateTime.now());
             up.setUpdateBy("生成备货单");
             stockingItemMapper.updateById(up);
         }
@@ -190,7 +191,7 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
         stockOut.setOutTotal(0);
         stockOut.setStatus(0);
         stockOut.setPrintStatus(0);
-        stockOut.setCreateTime(new Date());
+        stockOut.setCreateTime(LocalDateTime.now());
         stockOut.setMerchantId(stockOutItemList.get(0).getMerchantId());
         stockOutMapper.insert(stockOut);
         for(var item :stockOutItemList ) {
@@ -211,7 +212,7 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
                 up.setWarehouseName(warehouse.getWarehouseName());
                 up.setWarehouseNo(warehouse.getWarehouseNo());
                 up.setUpdateBy("生成备货单");
-                up.setUpdateTime(new Date());
+                up.setUpdateTime(LocalDateTime.now());
                 stockingMapper.updateById(up);
             }else{
                 // 部分备货
@@ -223,7 +224,7 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
                 up.setWarehouseName(warehouse.getWarehouseName());
                 up.setWarehouseNo(warehouse.getWarehouseNo());
                 up.setUpdateBy("生成备货单");
-                up.setUpdateTime(new Date());
+                up.setUpdateTime(LocalDateTime.now());
                 stockingMapper.updateById(up);
             }
 
@@ -297,8 +298,8 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
             stockOutItem.setMerchantId(oOrderStocking.getMerchantId());
             stockOutItem.setShopId(oOrderStocking.getShopId());
             stockOutItem.setPurPrice(0.0);
-            stockOutItem.setCreateTime(new Date());
-            stockOutItem.setUpdateTime(new Date());
+            stockOutItem.setCreateTime(LocalDateTime.now());
+            stockOutItem.setUpdateTime(LocalDateTime.now());
 
             total+= oOrderStockingItem.getQuantity();
             stockOutItemList.add(stockOutItem);
@@ -311,7 +312,7 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
             up.setWarehouseId(warehouse.getId());
             up.setWarehouseType(warehouse.getWarehouseType());
             up.setWarehouseName(warehouse.getWarehouseName());
-            up.setUpdateTime(new Date());
+            up.setUpdateTime(LocalDateTime.now());
             up.setUpdateBy("生成出库单");
             stockingItemMapper.updateById(up);
         }
@@ -321,7 +322,7 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
         if(StringUtils.hasText(bo.getStockOutNum())) {
             stockOut.setOutNum(bo.getStockOutNum());
         }else{
-            stockOut.setOutNum("DDCK"+ DateUtils.parseDateToStr("yyyyMMddHHmmss", new Date()));
+            stockOut.setOutNum("DDCK"+ DateUtils.parseDateToStr("yyyyMMddHHmmss", LocalDateTime.now()));
         }
         stockOut.setType(1);//出库类型1订单拣货出库2采购退货出库3盘点出库4报损出库
         stockOut.setWarehouseId(bo.getWarehouseId());
@@ -338,7 +339,7 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
         stockOut.setOutTotal(0);
         stockOut.setStatus(0);
         stockOut.setPrintStatus(0);
-        stockOut.setCreateTime(new Date());
+        stockOut.setCreateTime(LocalDateTime.now());
 
         stockOutMapper.insert(stockOut);
 
@@ -356,7 +357,7 @@ public class OOrderStockingItemServiceImpl extends ServiceImpl<OOrderStockingIte
         up.setWarehouseName(warehouse.getWarehouseName());
         up.setWarehouseNo(warehouse.getWarehouseNo());
         up.setUpdateBy("生成出库单");
-        up.setUpdateTime(new Date());
+        up.setUpdateTime(LocalDateTime.now());
         stockingMapper.updateById(up);
         return ResultVo.success();
     }

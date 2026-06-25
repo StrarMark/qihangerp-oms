@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 线下渠道退款表
@@ -64,7 +64,7 @@ public class ErpSalesAfter implements Serializable {
     /**
      * 
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 
@@ -74,12 +74,12 @@ public class ErpSalesAfter implements Serializable {
     /**
      * 
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 
      */
-    private Date updateBy;
+    private LocalDateTime updateBy;
 
     /**
      * 第三方平台skuId
@@ -154,7 +154,7 @@ public class ErpSalesAfter implements Serializable {
     /**
      * 收货时间
      */
-    private Date receiveTime;
+    private LocalDateTime receiveTime;
 
     private static final long serialVersionUID = 1L;
 }

@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 开放接口授权
@@ -40,7 +40,7 @@ public class SysOpenAuth implements Serializable {
     /**
      * 最后一次请求时间
      */
-    private Date requestTime;
+    private LocalDateTime requestTime;
 
     /**
      * 请求总次数
@@ -70,7 +70,7 @@ public class SysOpenAuth implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新者
@@ -80,7 +80,7 @@ public class SysOpenAuth implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
     /*
     * 类型：10回传配置；20开放平台；99其他appkey
     */

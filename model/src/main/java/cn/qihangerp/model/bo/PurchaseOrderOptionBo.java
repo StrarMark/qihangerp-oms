@@ -1,7 +1,7 @@
 package cn.qihangerp.model.bo;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class PurchaseOrderOptionBo {
     private Long id;
@@ -12,7 +12,7 @@ public class PurchaseOrderOptionBo {
     private String confirmUser;//采购单确认人
 
     // 供应商发货
-    private Date supplierDeliveryTime;
+    private LocalDateTime supplierDeliveryTime;
     private String shipCompany;
     private String shipNo;
 
@@ -45,11 +45,11 @@ public class PurchaseOrderOptionBo {
         this.totalAmount = totalAmount;
     }
 
-    public Date getSupplierDeliveryTime() {
+    public LocalDateTime getSupplierDeliveryTime() {
         return supplierDeliveryTime;
     }
 
-    public void setSupplierDeliveryTime(Date supplierDeliveryTime) {
+    public void setSupplierDeliveryTime(LocalDateTime supplierDeliveryTime) {
         this.supplierDeliveryTime = supplierDeliveryTime;
     }
 

@@ -1,7 +1,7 @@
 package cn.qihangerp.model.entity;
 
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +65,7 @@ public class SysUser
     private String loginIp;
 
     /** 最后登录时间 */
-    private Date loginDate;
+    private LocalDateTime loginDate;
 
     /** 角色组 */
     private Long[] roleIds;
@@ -76,14 +76,14 @@ public class SysUser
     /** 角色ID */
     private Long roleId;
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /** 更新者 */
     private String updateBy;
 
     /** 更新时间 */
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
+    private LocalDateTime updateTime;
     /** 创建者 */
     private String createBy;
     private String remark;
@@ -252,12 +252,12 @@ public class SysUser
         this.loginIp = loginIp;
     }
 
-    public Date getLoginDate()
+    public LocalDateTime getLoginDate()
     {
         return loginDate;
     }
 
-    public void setLoginDate(Date loginDate)
+    public void setLoginDate(LocalDateTime loginDate)
     {
         this.loginDate = loginDate;
     }
@@ -293,11 +293,11 @@ public class SysUser
         this.roleId = roleId;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
@@ -309,11 +309,11 @@ public class SysUser
         this.updateBy = updateBy;
     }
 
-    public Date getUpdateTime() {
+    public LocalDateTime getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
 

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 商户-商品价格历史表（数据来源：总部定价）
@@ -82,5 +82,5 @@ public class ErpMerchantGoodsPrice {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 }

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -74,7 +74,7 @@ public class FmsExpenseServiceImpl extends ServiceImpl<FmsExpenseMapper, FmsExpe
     public boolean addExpense(FmsExpense expense, List<FmsExpenseItem> items) {
         // 生成申请单号
         expense.setExpenseNo("EXP" + System.currentTimeMillis() + UUID.randomUUID().toString().substring(0, 8));
-        expense.setCreatedTime(new Date());
+        expense.setCreatedTime(LocalDateTime.now());
         expense.setSettlementStatus(0);
         expense.setOrderCount(items != null ? items.size() : 0);
 
@@ -91,7 +91,7 @@ public class FmsExpenseServiceImpl extends ServiceImpl<FmsExpenseMapper, FmsExpe
             for (FmsExpenseItem item : items) {
                 item.setExpenseId(expense.getId());
                 item.setSettlementStatus(0);
-                item.setCreateTime(new Date());
+                item.setCreateTime(LocalDateTime.now());
                 expenseItemMapper.insert(item);
             }
         }
@@ -102,7 +102,7 @@ public class FmsExpenseServiceImpl extends ServiceImpl<FmsExpenseMapper, FmsExpe
     @Override
     @Transactional
     public boolean updateExpense(FmsExpense expense, List<FmsExpenseItem> items) {
-        expense.setUpdatedTime(new Date());
+        expense.setUpdatedTime(LocalDateTime.now());
         expense.setOrderCount(items != null ? items.size() : 0);
         boolean result = updateById(expense);
 
@@ -116,7 +116,7 @@ public class FmsExpenseServiceImpl extends ServiceImpl<FmsExpenseMapper, FmsExpe
             for (FmsExpenseItem item : items) {
                 item.setExpenseId(expense.getId());
                 item.setSettlementStatus(0);
-                item.setCreateTime(new Date());
+                item.setCreateTime(LocalDateTime.now());
                 expenseItemMapper.insert(item);
             }
         }
@@ -148,7 +148,7 @@ public class FmsExpenseServiceImpl extends ServiceImpl<FmsExpenseMapper, FmsExpe
         FmsExpense expense = getById(id);
         if (expense != null && expense.getStatus() == 3) {
             expense.setStatus(5); // 已支付
-            expense.setPaidTime(new Date());
+            expense.setPaidTime(LocalDateTime.now());
             return updateById(expense);
         }
         return false;
@@ -202,7 +202,7 @@ public class FmsExpenseServiceImpl extends ServiceImpl<FmsExpenseMapper, FmsExpe
                 }
                 
                 expense.setExpenseNo("EXP" + System.currentTimeMillis() + String.format("%04d", successCount));
-                expense.setCreatedTime(new Date());
+                expense.setCreatedTime(LocalDateTime.now());
                 expense.setCreatedBy(operator);
                 expense.setSettlementStatus(0);
                 expense.setOrderCount(expense.getItems() != null ? expense.getItems().size() : 0);
@@ -213,7 +213,7 @@ public class FmsExpenseServiceImpl extends ServiceImpl<FmsExpenseMapper, FmsExpe
                         for (FmsExpenseItem item : expense.getItems()) {
                             item.setExpenseId(expense.getId());
                             item.setSettlementStatus(0);
-                            item.setCreateTime(new Date());
+                            item.setCreateTime(LocalDateTime.now());
                             expenseItemMapper.insert(item);
                         }
                     }

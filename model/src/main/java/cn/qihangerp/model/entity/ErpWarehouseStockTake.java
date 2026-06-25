@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -92,7 +92,7 @@ public class ErpWarehouseStockTake {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新人
@@ -102,9 +102,9 @@ public class ErpWarehouseStockTake {
     /**
      * 更新时间
      */
-    private Date updateTime;
-    private Date firstTakeTime;
-    private Date completeTime;
+    private LocalDateTime updateTime;
+    private LocalDateTime firstTakeTime;
+    private LocalDateTime completeTime;
 
     @TableField(exist = false)
     private List<ErpWarehouseStockTakeItem> itemList;

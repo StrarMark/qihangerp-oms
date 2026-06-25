@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -52,11 +52,11 @@ public class FmsOrderSettlement {
 
     private String createBy;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private String updateBy;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     @TableField(exist = false)
     private List<FmsOrderSettlementItem> items;

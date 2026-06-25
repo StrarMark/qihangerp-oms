@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 
@@ -186,12 +186,12 @@ public class ShopOrderItem implements Serializable {
     /**
      * 创建时间
      */
-    private Date createOn;
+    private LocalDateTime createOn;
 
     /**
      * 更新时间
      */
-    private Date updateOn;
+    private LocalDateTime updateOn;
     /**
      * 售后状态 1：无售后或售后关闭，2：售后处理中，3：退款中，4： 退款成功
      */

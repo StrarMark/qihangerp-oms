@@ -4,7 +4,7 @@ import cn.qihangerp.utils.poi.Excel;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 供应商发货订单
@@ -45,7 +45,7 @@ public class CloudWarehouseShipOrderExcelVo implements Serializable {
      * 创建时间
      */
     @Excel(name = "推送时间",sort = 5,dateFormat = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    private LocalDateTime createTime;
 
 
 }

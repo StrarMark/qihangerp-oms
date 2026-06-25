@@ -13,7 +13,7 @@ import cn.qihangerp.model.entity.ShopMember;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -60,7 +60,7 @@ public class ShopMemberServiceImpl extends ServiceImpl<ShopMemberMapper, ShopMem
             shopMember.setShopId(0L);
             shopMember.setShopType(-1);
         }
-        shopMember.setCreateOn(new Date());
+        shopMember.setCreateOn(LocalDateTime.now());
         shopMember.setStatus(1);
         this.baseMapper.insert(shopMember);
         return ResultVo.success(shopMember.getId());

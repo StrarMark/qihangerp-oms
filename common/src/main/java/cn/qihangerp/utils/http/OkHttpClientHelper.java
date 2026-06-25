@@ -1,6 +1,6 @@
 package cn.qihangerp.utils.http;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import okhttp3.*;
 
 import java.io.IOException;

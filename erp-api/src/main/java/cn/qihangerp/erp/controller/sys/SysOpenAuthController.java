@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 店铺Controller
@@ -56,7 +56,7 @@ public class SysOpenAuthController extends BaseController {
         if(StringUtils.hasText(bo.getWhiteList())){
             bo.setWhiteList(bo.getWhiteList().replace("\r\n",",").replace("\n",","));
         }
-        bo.setCreateTime(new Date());
+        bo.setCreateTime(LocalDateTime.now());
         bo.setCreateBy(getUsername());
         return toAjax(sysOpenAuthService.save(bo));
     }
@@ -71,7 +71,7 @@ public class SysOpenAuthController extends BaseController {
         if(StringUtils.hasText(bo.getWhiteList())){
             bo.setWhiteList(bo.getWhiteList().replace("\r\n",",").replace("\n",","));
         }
-        bo.setUpdateTime(new Date());
+        bo.setUpdateTime(LocalDateTime.now());
         bo.setUpdateBy(getUsername());
         sysOpenAuthService.updateById(bo);
         return toAjax(1);

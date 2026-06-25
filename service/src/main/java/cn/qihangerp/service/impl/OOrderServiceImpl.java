@@ -36,7 +36,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -149,7 +148,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
 //                insert.setOrderTime(new Date(shopOrder.getOrderTime()));
 //            insert.setShipType(0);
-                insert.setCreateTime(new Date());
+                insert.setCreateTime(LocalDateTime.now());
                 insert.setCreateBy("ORDER_MESSAGE");
                 insert.setOrderFinishTime(shopOrder.getFinishTime());
                 insert.setSalesmanId(shopOrder.getFinderId());
@@ -226,7 +225,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                         stockingUpdate.setId(oOrderStocking.getId());
                         stockingUpdate.setOrderStatus(update.getOrderStatus());
                         stockingUpdate.setUpdateBy("通知更新订单状态");
-                        stockingUpdate.setUpdateTime(new Date());
+                        stockingUpdate.setUpdateTime(LocalDateTime.now());
                         shipOrderMapper.updateById(stockingUpdate);
                     }
                 }
@@ -282,7 +281,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //                orderItem.setOrderStatus(oOrder.getOrderStatus());
                 orderItem.setRefundStatus(itemObject.getRefundStatus());
                 orderItem.setRefundCount(0);
-                orderItem.setCreateTime(new Date());
+                orderItem.setCreateTime(LocalDateTime.now());
                 orderItem.setCreateBy("ORDER_MESSAGE");
 
                 // 查找item是否存在
@@ -321,7 +320,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
                 if (oOrderItems.isEmpty()) {
                     // 新增
-                    orderItem.setCreateTime(new Date());
+                    orderItem.setCreateTime(LocalDateTime.now());
                     orderItem.setCreateBy("ORDER_MESSAGE");
                     orderItemMapper.insert(orderItem);
                 } else {
@@ -331,7 +330,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                         orderItem.setGoodsId(null);
                         orderItem.setGoodsSkuId(null);
                     }
-                    orderItem.setUpdateTime(new Date());
+                    orderItem.setUpdateTime(LocalDateTime.now());
                     orderItem.setUpdateBy("ORDER_MESSAGE");
                     orderItemMapper.updateById(orderItem);
                     // 更新发货子表状态
@@ -344,7 +343,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                             updateShip.setId(oOrderStockingItem.getId());
                             updateShip.setRefundStatus(orderItem.getRefundStatus());
                             updateShip.setUpdateBy("通知修改订单状态");
-                            updateShip.setUpdateTime(new Date());
+                            updateShip.setUpdateTime(LocalDateTime.now());
                             shipOrderItemMapper.updateById(updateShip);
                         }
                     }
@@ -392,7 +391,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 updateShip.setId(shipOrderId);
                 updateShip.setOrderStatus(EnumOOrderStatus.CLOSED.getIndex());
                 updateShip.setUpdateBy("子订单全部退款");
-                updateShip.setUpdateTime(new Date());
+                updateShip.setUpdateTime(LocalDateTime.now());
                 shipOrderMapper.updateById(updateShip);
             }
 
@@ -408,7 +407,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 orderUpdate.setOrderStatus(EnumOOrderStatus.CLOSED.getIndex());
                 orderUpdate.setCancelReason("子订单全部退款");
                 orderUpdate.setUpdateBy("子订单全部退款");
-                orderUpdate.setUpdateTime(new Date());
+                orderUpdate.setUpdateTime(LocalDateTime.now());
                 orderMapper.updateById(orderUpdate);
             }
 
@@ -564,7 +563,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             update.setId(shopOrders.get(0).getId());
             update.setOrderStatus(orderStatus);
             update.setUpdateBy("更新订单状态");
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             orderMapper.updateById(update);
             return ResultVo.success(Long.parseLong(shopOrders.get(0).getId()));
         }
@@ -779,13 +778,13 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         stocking.setRemark(erpOrder.getRemark());
         stocking.setBuyerMemo(erpOrder.getBuyerMemo());
         stocking.setSellerMemo(erpOrder.getSellerMemo());
-        stocking.setShippingTime(new Date());
+        stocking.setShippingTime(LocalDateTime.now());
         stocking.setShippingCompany(erpLogisticsCompany.getName());
         stocking.setShippingNumber(shipBo.getShippingNumber());
         stocking.setOrderStatus(erpOrder.getOrderStatus());
         stocking.setWaybillStatus(0);//取号状态0未取号1已取号
         stocking.setStockingStatus(0);//状态0待备货1备货中2备货完成
-        stocking.setCreateTime(new Date());
+        stocking.setCreateTime(LocalDateTime.now());
         stocking.setCreateBy("本地手动发货");
         stocking.setProvince(erpOrder.getProvince());
         stocking.setCity(erpOrder.getCity());
@@ -822,7 +821,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //        erpShipment.setLogisticsCompanyCode(erpLogisticsCompany.getCode());
 //        erpShipment.setWaybillCode(shipBo.getShippingNumber());
 ////        erpShipment.setShipFee(shipBo.getShippingCost());
-//        erpShipment.setShippingTime(new Date());
+//        erpShipment.setShippingTime(LocalDateTime.now());
 //        erpShipment.setShippingOperator(shipBo.getShippingMan());
 //        erpShipment.setShippingStatus(1);//物流状态（1运输中2已完成）
 //
@@ -831,11 +830,11 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //        erpShipment.setPackageLength(shipBo.getLength());
 //        erpShipment.setPackageWidth(shipBo.getWidth());
 //        erpShipment.setPackageOperator(shipBo.getShippingMan());
-//        erpShipment.setPackageTime(new Date());
+//        erpShipment.setPackageTime(LocalDateTime.now());
 //        erpShipment.setPackages(JSONObject.toJSONString(oOrderItems));
 //        erpShipment.setRemark(shipBo.getRemark());
 //        erpShipment.setCreateBy(createBy);
-//        erpShipment.setCreateTime(new Date());
+//        erpShipment.setCreateTime(LocalDateTime.now());
 //        erpShipment.setShipperId(0L);//总部自己发货
 //        shipmentMapper.insert(erpShipment);
 
@@ -873,7 +872,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             listItem.setStockingStatus(0);//状态0待备货1备货中2备货完成
             listItem.setOrderTime(erpOrder.getOrderTime());
             listItem.setCreateBy("本地手动发货");
-            listItem.setCreateTime(new Date());
+            listItem.setCreateTime(LocalDateTime.now());
             orderStockingItemMapper.insert(listItem);
 //            // 添加发货明细
 //            OShipmentItem erpShipmentItem = new OShipmentItem();
@@ -888,7 +887,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             OOrderItem orderItemUpdate = new OOrderItem();
             orderItemUpdate.setId(orderItem.getId());
             orderItemUpdate.setUpdateBy("本地手动发货");
-            orderItemUpdate.setUpdateTime(new Date());
+            orderItemUpdate.setUpdateTime(LocalDateTime.now());
             orderItemUpdate.setShipStatus(2);//发货状态（0未发货1以推送到供应商或已推送到云仓2已发货）
             orderItemUpdate.setShipType(EnumShipType.LOCAL.getIndex());//发货类型
             orderItemUpdate.setWaybillCode(shipBo.getShippingNumber());
@@ -901,7 +900,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 ErpSalesOrderItem erpSalesOrderItemUpdate = new ErpSalesOrderItem();
                 erpSalesOrderItemUpdate.setOrderStatus(2);
                 erpSalesOrderItemUpdate.setShipStatus(2);
-                erpSalesOrderItemUpdate.setUpdateTime(new Date());
+                erpSalesOrderItemUpdate.setUpdateTime(LocalDateTime.now());
                 erpSalesOrderItemUpdate.setUpdateBy("本地手动发货");
                 erpSalesOrderItemMapper.update(erpSalesOrderItemUpdate,new LambdaQueryWrapper<ErpSalesOrderItem>().eq(ErpSalesOrderItem::getSubOrderNum, orderItem.getSubOrderNum()));
             }
@@ -913,7 +912,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 shopOrderItemUpdate.setLogisticsCode(shipBo.getShippingNumber());
                 shopOrderItemUpdate.setLogisticsCompany(erpLogisticsCompany.getName());
                 shopOrderItemUpdate.setUpdateBy("本地手动发货");
-                shopOrderItemUpdate.setUpdateOn(new Date());
+                shopOrderItemUpdate.setUpdateOn(LocalDateTime.now());
                 shopOrderItemMapper.update(shopOrderItemUpdate,new LambdaQueryWrapper<ShopOrderItem>().eq(ShopOrderItem::getSubOrderId, orderItem.getSubOrderNum()));
             }
         }
@@ -926,7 +925,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         update.setOrderStatus(2);
         update.setWaybillCode(shipBo.getShippingNumber());
         update.setWaybillCompany(erpLogisticsCompany.getName());
-        update.setUpdateTime(new Date());
+        update.setUpdateTime(LocalDateTime.now());
         update.setUpdateBy("本地手动发货");
         orderMapper.updateById(update);
 
@@ -945,9 +944,9 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                         erpSalesOrderUpdate.setId(off.getId());
                         erpSalesOrderUpdate.setOrderStatus(2);
                         erpSalesOrderUpdate.setUpdateBy("本地手动发货");
-                        erpSalesOrderUpdate.setUpdateTime(new Date());
+                        erpSalesOrderUpdate.setUpdateTime(LocalDateTime.now());
                         erpSalesOrderUpdate.setShipType(0);
-                        erpSalesOrderUpdate.setShippingTime(new Date());
+                        erpSalesOrderUpdate.setShippingTime(LocalDateTime.now());
                         erpSalesOrderUpdate.setShippingNumber(shipBo.getShippingNumber());
                         erpSalesOrderUpdate.setShippingCompany(erpLogisticsCompany.getName());
                         erpSalesOrderMapper.updateById(erpSalesOrderUpdate);
@@ -955,7 +954,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //                        // 更新子订单
 //                        OfflineOrderItem orderItemUpdate = new OfflineOrderItem();
 //                        orderItemUpdate.setOrderStatus(2);
-//                        orderItemUpdate.setUpdateTime(new Date());
+//                        orderItemUpdate.setUpdateTime(LocalDateTime.now());
 //                        orderItemUpdate.setUpdateBy("手动发货");
 //                        offlineOrderItemMapper.update(orderItemUpdate,new LambdaQueryWrapper<OfflineOrderItem>().eq(OfflineOrderItem::getOrderId, offlineOrderUpdate.getId()));
                     }else{
@@ -975,14 +974,14 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             if(!shopOrders.isEmpty()){
                 for(var sh:shopOrders){
                     ShopOrder shopOrderUpdate = new ShopOrder();
-                    shopOrderUpdate.setErpShipTime(new Date());
+                    shopOrderUpdate.setErpShipTime(LocalDateTime.now());
                     shopOrderUpdate.setErpShipStatus(1);
                     if(sh.getOrderStatus() == 1){
                         shopOrderUpdate.setOrderStatus(2);
                     }
                     shopOrderUpdate.setErpShipCompany(erpLogisticsCompany.getName());
                     shopOrderUpdate.setErpShipCode(shipBo.getShippingNumber());
-                    shopOrderUpdate.setUpdateOn(new Date());
+                    shopOrderUpdate.setUpdateOn(LocalDateTime.now());
                     shopOrderUpdate.setId(sh.getId());
                     shopOrderService.updateById(shopOrderUpdate);
                 }
@@ -1129,7 +1128,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         stocking.setPlatformNo(bo.getShopPlatformCode());
         stocking.setShopNo(bo.getShopNo());
         stocking.setStockingStatus(0);//状态0待备货1备货中2备货完成
-        stocking.setCreateTime(new Date());
+        stocking.setCreateTime(LocalDateTime.now());
         stocking.setCreateBy("推送订单到云仓");
 
         stocking.setProvince(erpOrder.getProvince());
@@ -1216,14 +1215,14 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             listItem.setStockingStatus(0);//状态0待备货1备货中2备货完成
             listItem.setOrderTime(erpOrder.getOrderTime());
             listItem.setCreateBy("手动发货");
-            listItem.setCreateTime(new Date());
+            listItem.setCreateTime(LocalDateTime.now());
             orderStockingItemMapper.insert(listItem);
 
             // 更新订单item发货状态
             OOrderItem orderItemUpdate = new OOrderItem();
             orderItemUpdate.setId(orderItem.getId());
             orderItemUpdate.setUpdateBy("手动发货");
-            orderItemUpdate.setUpdateTime(new Date());
+            orderItemUpdate.setUpdateTime(LocalDateTime.now());
             orderItemUpdate.setShipperId(warehouse.getId());//0自己，大于0发货供应商id或者云仓id
             orderItemUpdate.setShipperType(warehouse.getWarehouseType());
             orderItemUpdate.setShipperNo(warehouse.getWarehouseNo());
@@ -1259,7 +1258,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                     warehouseShop.setShopContacts(oShop.getContact());
                     warehouseShop.setShopPhone(oShop.getPhone());
                     warehouseShop.setShopAddress(oShop.getAddress());
-                    warehouseShop.setCreateTime(new Date());
+                    warehouseShop.setCreateTime(LocalDateTime.now());
                     erpWarehouseShopMapper.insert(warehouseShop);
                 }
             }
@@ -1271,11 +1270,11 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //        update.setId(erpOrder.getId());
 ////        update.setErpPushStatus(pushStatus);
 ////        update.setErpPushResult(pushResult);
-////        update.setErpPushTime(new Date());
+////        update.setErpPushTime(LocalDateTime.now());
 //
 ////        update.setShipStatus(1);//发货状态（0未发货1以推送到供应商或已推送到云仓2已发货）
 //        update.setDistStatus(2);//发货分配状态（0未分配1部分分配2全部分配）
-//        update.setUpdateTime(new Date());
+//        update.setUpdateTime(LocalDateTime.now());
 //        update.setUpdateBy("推送到云仓");
 //        orderMapper.updateById(update);
         // 更新订单库主表状态
@@ -1325,8 +1324,8 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
         push.setPushType(10);
         push.setOrderId(oOrderStocking.getId());
         push.setPushCount(1);
-        push.setPushDate(new Date());
-        push.setPushTime(new Date());
+        push.setPushDate(LocalDateTime.now());
+        push.setPushTime(LocalDateTime.now());
         push.setPushParams("");
         push.setPushResult(pushResult);
         push.setTargetId(cloudWarehouseId);
@@ -1338,7 +1337,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //        update.setId(orderId.toString());
 //        update.setErpPushStatus(pushStatus);
 //        update.setErpPushResult(pushResult);
-//        update.setErpPushTime(new Date());
+//        update.setErpPushTime(LocalDateTime.now());
 //        orderMapper.updateById(update);
         //更新推送的订单记录状态
 //        List<OOrderStocking> oOrderStockings = orderStockingMapper.selectList(new LambdaQueryWrapper<OOrderStocking>()
@@ -1366,7 +1365,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 
 
             up.setErpPushResult(pushResult);
-            up.setUpdateTime(new Date());
+            up.setUpdateTime(LocalDateTime.now());
             orderStockingMapper.updateById(up);
 //        }
 
@@ -1388,7 +1387,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
 //                update.setId(order.getId());
 //                update.setOrderStatus(11);
 //                update.setCancelReason(shopOrder.getCancelReason());
-//                update.setUpdateTime(new Date());
+//                update.setUpdateTime(LocalDateTime.now());
 //                update.setUpdateBy("系统通知取消订单");
 //                orderMapper.updateById(update);
 
@@ -1425,14 +1424,14 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                 update.setId(order.getId());
                 update.setOrderStatus(11);
                 update.setCancelReason("");
-                update.setUpdateTime(new Date());
+                update.setUpdateTime(LocalDateTime.now());
                 update.setUpdateBy("平台通知取消订单");
                 orderMapper.updateById(update);
 
                 // 更新子订单
                 OOrderItem item = new OOrderItem();
                 item.setRefundStatus(4);
-                item.setUpdateTime(new Date());
+                item.setUpdateTime(LocalDateTime.now());
                 item.setUpdateBy("平台通知取消订单");
 
                 orderItemMapper.update(item, new LambdaQueryWrapper<OOrderItem>().eq(OOrderItem::getOrderId, order.getId()));
@@ -1445,13 +1444,13 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
                         oOrderStockingUpdate.setId(oOrderStocking.getId());
                         oOrderStockingUpdate.setOrderStatus(11);
                         oOrderStockingUpdate.setUpdateBy("取消订单");
-                        oOrderStockingUpdate.setUpdateTime(new Date());
+                        oOrderStockingUpdate.setUpdateTime(LocalDateTime.now());
                         shipOrderMapper.updateById(oOrderStockingUpdate);
 
                         // 取消子订单
                         OOrderStockingItem shipItem = new OOrderStockingItem();
                         shipItem.setRefundStatus(4);
-                        shipItem.setUpdateTime(new Date());
+                        shipItem.setUpdateTime(LocalDateTime.now());
                         shipItem.setUpdateBy("平台通知取消订单");
                         shipOrderItemMapper.update(shipItem,new LambdaQueryWrapper<OOrderStockingItem>().eq(OOrderStockingItem::getShipOrderId,oOrderStocking.getId()));
                     }

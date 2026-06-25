@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -201,7 +201,7 @@ public class ErpWarehouseServiceImpl extends ServiceImpl<ErpWarehouseMapper, Erp
                     vendorMerchant.setStatus(0);
                     vendorMerchant.setDelFlag(0);
                     vendorMerchant.setCreateBy("后台分配");
-                    vendorMerchant.setCreateTime(new Date());
+                    vendorMerchant.setCreateTime(LocalDateTime.now());
                     vendorMerchant.setUsci(erpMerchant.getUsci());
                     vendorMerchant.setFaren(erpMerchant.getFaren());
                     vendorMerchant.setBank(erpMerchant.getBank());
@@ -260,7 +260,7 @@ public class ErpWarehouseServiceImpl extends ServiceImpl<ErpWarehouseMapper, Erp
             warehouse.setWarehouseSource(0);
             warehouse.setStatus("1");
             warehouse.setCreateBy(username);
-            warehouse.setCreateTime(new Date());
+            warehouse.setCreateTime(LocalDateTime.now());
             this.baseMapper.insert(warehouse);
 
             // 更新供应商的仓库ID

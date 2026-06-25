@@ -1384,15 +1384,17 @@ public class ExcelUtil<T>
         String str;
         if (val instanceof Date)
         {
-            str = DateUtils.parseDateToStr(dateFormat, (Date) val);
+            java.util.Date d = (java.util.Date) val;
+            LocalDateTime ldt = d.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+            str = DateUtils.parseDateToStr(dateFormat, ldt);
         }
         else if (val instanceof LocalDateTime)
         {
-            str = DateUtils.parseDateToStr(dateFormat, DateUtils.toDate((LocalDateTime) val));
+            str = DateUtils.parseDateToStr(dateFormat, (LocalDateTime) val);
         }
         else if (val instanceof LocalDate)
         {
-            str = DateUtils.parseDateToStr(dateFormat, DateUtils.toDate((LocalDate) val));
+            str = DateUtils.parseDateToStr(dateFormat, ((LocalDate) val).atStartOfDay());
         }
         else
         {

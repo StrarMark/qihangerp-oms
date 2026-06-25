@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -66,7 +66,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
         if(request.getStockInType() == null ) return ResultVo.error(ResultVoEnum.ParamsError,"缺少参数stockInType");
         if(request.getItemList().isEmpty()) return ResultVo.error(ResultVoEnum.ParamsError,"缺少参数itemList");
         if(StringUtils.isBlank(request.getStockInNum())){
-            request.setStockInNum(DateUtils.parseDateToStr("yyyyMMddHHmmss",new Date()));
+            request.setStockInNum(DateUtils.parseDateToStr("yyyyMMddHHmmss",LocalDateTime.now()));
         }
         if(StringUtils.isBlank(request.getStockInOperator())){
             request.setStockInOperator(userName);
@@ -85,11 +85,11 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
         insert.setApplyId(0L);
         insert.setStockInOperator(request.getStockInOperator());
         insert.setStockInOperatorId(userId);
-//        insert.setStockInTime(new Date());
+//        insert.setStockInTime(LocalDateTime.now());
         insert.setSourceNo(request.getSourceNo());
         insert.setRemark(request.getRemark());
         insert.setCreateBy(userName);
-        insert.setCreateTime(new Date());
+        insert.setCreateTime(LocalDateTime.now());
         insert.setGoodsUnit(request.getItemList().size());
         insert.setGoodsSkuUnit(request.getItemList().size());
         insert.setTotal(total.intValue());
@@ -118,7 +118,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
                     inItem.setInQuantity(0);
                     inItem.setStatus(0);
                     inItem.setCreateBy(userName);
-                    inItem.setCreateTime(new Date());
+                    inItem.setCreateTime(LocalDateTime.now());
                     itemList.add(inItem);
                 }
             }
@@ -204,7 +204,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
                 inventory.setTotalNumValue(item.getIntoQuantity().doubleValue());
                 inventory.setUsableNumValue(item.getIntoQuantity().doubleValue());
                 inventory.setCreateBy("首次入库"+userName);
-                inventory.setCreateTime(new Date());
+                inventory.setCreateTime(LocalDateTime.now());
                 warehouseGoodsStockService.save(inventory);
                 goodsStockId = inventory.getId();
             } else {
@@ -212,7 +212,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
                 ErpWarehouseGoodsStock update = new ErpWarehouseGoodsStock();
                 update.setId(warehouseGoodsStockList.get(0).getId());
                 update.setUpdateBy(userName);
-                update.setUpdateTime(new Date());
+                update.setUpdateTime(LocalDateTime.now());
                 update.setTotalNum(warehouseGoodsStockList.get(0).getTotalNum() + item.getIntoQuantity());
                 update.setTotalNumValue(update.getTotalNum().doubleValue());
                 update.setUsableNum(warehouseGoodsStockList.get(0).getUsableNum()+item.getIntoQuantity());
@@ -224,7 +224,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
             // 增加商品库存批次表
             ErpWarehouseGoodsStockBatch inventoryBatch = new ErpWarehouseGoodsStockBatch();
             inventoryBatch.setInventoryId(goodsStockId);
-            inventoryBatch.setBatchNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", new Date()));
+            inventoryBatch.setBatchNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", LocalDateTime.now()));
             inventoryBatch.setOriginQty(item.getIntoQuantity());
             inventoryBatch.setCurrentQty(item.getIntoQuantity());
             inventoryBatch.setGoodsNo(stockInItem.getGoodsNo());
@@ -238,7 +238,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
             }
 
             inventoryBatch.setPositionNum(item.getPositionNum());
-            inventoryBatch.setCreateTime(new Date());
+            inventoryBatch.setCreateTime(LocalDateTime.now());
             inventoryBatch.setCreateBy(userName);
             warehouseGoodsStockBatchService.save(inventoryBatch);
 
@@ -251,7 +251,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
             update.setPositionId(item.getPositionId());
             update.setPositionNum(item.getPositionNum());
             update.setUpdateBy(userName);
-            update.setUpdateTime(new Date());
+            update.setUpdateTime(LocalDateTime.now());
             inItemService.updateById(update);
         }
 
@@ -271,9 +271,9 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
         sUpdate.setId(erpStockIn.getId());
         sUpdate.setStockInOperatorId(userId);
         sUpdate.setStockInOperator(request.getStockInOperator());
-        sUpdate.setStockInTime(new Date());
+        sUpdate.setStockInTime(LocalDateTime.now());
         sUpdate.setUpdateBy(userName);
-        sUpdate.setUpdateTime(new Date());
+        sUpdate.setUpdateTime(LocalDateTime.now());
         this.baseMapper.updateById(sUpdate);
 
 
@@ -327,7 +327,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
             warehouseGoods.setWarehouseNo(erpWarehouse.getWarehouseNo());
             warehouseGoods.setWarehouseId(warehouseId);
             warehouseGoods.setWarehouseType(erpWarehouse.getWarehouseType());
-            warehouseGoods.setCreateTime(new Date());
+            warehouseGoods.setCreateTime(LocalDateTime.now());
             // 添加仓库商品数据
             warehouseGoodsService.save(warehouseGoods);
             warehouseGoodsId = warehouseGoods.getId();
@@ -358,7 +358,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
             insert.setUsableNum(qty);
             insert.setUsableNumValue(qty.doubleValue());
             insert.setMerchantId(goodsSku.getMerchantId());
-            insert.setCreateTime(new Date());
+            insert.setCreateTime(LocalDateTime.now());
             insert.setCreateBy("手动同步库存");
             warehouseGoodsStockService.save(insert);
 
@@ -366,7 +366,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
             if (initBatch) {
                 ErpWarehouseGoodsStockBatch insertBatch = new ErpWarehouseGoodsStockBatch();
                 insertBatch.setInventoryId(insert.getId());
-//                    insertBatch.setBatchNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", new Date()));
+//                    insertBatch.setBatchNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", LocalDateTime.now()));
                 insertBatch.setBatchNum("000000");
                 insertBatch.setGoodsId(warehouseGoodsId);
                 insertBatch.setWarehouseId(warehouseId);
@@ -376,9 +376,9 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
                 insertBatch.setCurrentQty(qty);
 //                    insertBatch.setRemark("手动同步库存");
                 insertBatch.setPositionId(0L);
-                insertBatch.setCreateTime(new Date());
+                insertBatch.setCreateTime(LocalDateTime.now());
                 insertBatch.setCreateBy("手动同步库存");
-                insertBatch.setUpdateTime(new Date());
+                insertBatch.setUpdateTime(LocalDateTime.now());
                 warehouseGoodsStockBatchService.save(insertBatch);
             }
         }else{
@@ -395,7 +395,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
                 update.setTotalNumValue(qty.doubleValue());
                 update.setUsableNum(qty);
                 update.setUsableNumValue(qty.doubleValue());
-                update.setUpdateTime(new Date());
+                update.setUpdateTime(LocalDateTime.now());
                 update.setUpdateBy("手动修改库存数量");
                 warehouseGoodsStockService.updateById(update);
 
@@ -407,7 +407,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
                     // 新增批次
                     ErpWarehouseGoodsStockBatch insertBatch = new ErpWarehouseGoodsStockBatch();
                     insertBatch.setInventoryId(update.getId());
-//                        insertBatch.setBatchNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", new Date()));
+//                        insertBatch.setBatchNum(DateUtils.parseDateToStr("yyyyMMddHHmmss", LocalDateTime.now()));
                     insertBatch.setBatchNum("000000");
                     insertBatch.setGoodsId(warehouseGoodsId);
                     insertBatch.setWarehouseId(warehouseId);
@@ -417,9 +417,9 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
                     insertBatch.setCurrentQty(qty);
 //                        insertBatch.setRemark("手动同步库存");
                     insertBatch.setPositionId(0L);
-                    insertBatch.setCreateTime(new Date());
+                    insertBatch.setCreateTime(LocalDateTime.now());
                     insertBatch.setCreateBy("手动同步库存");
-                    insertBatch.setUpdateTime(new Date());
+                    insertBatch.setUpdateTime(LocalDateTime.now());
                     warehouseGoodsStockBatchService.save(insertBatch);
                 }else{
                     // 修改批次
@@ -427,7 +427,7 @@ public class ErpWarehouseStockInServiceImpl extends ServiceImpl<ErpWarehouseStoc
                     inventoryBatch.setId(batch1.get(0).getId());
                     inventoryBatch.setOriginQty(qty);
                     inventoryBatch.setCurrentQty(qty);
-                    inventoryBatch.setUpdateTime(new Date());
+                    inventoryBatch.setUpdateTime(LocalDateTime.now());
                     inventoryBatch.setUpdateBy("飞书库存初始化--修改");
                     warehouseGoodsStockBatchService.updateById(inventoryBatch);
                 }

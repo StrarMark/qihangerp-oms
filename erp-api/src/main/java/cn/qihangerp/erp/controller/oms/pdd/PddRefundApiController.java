@@ -26,8 +26,7 @@
 //
 //import java.time.LocalDateTime;
 //import java.time.format.DateTimeFormatter;
-//import java.util.Date;
-//
+////
 ///**
 // * 更新
 // */
@@ -55,7 +54,7 @@
 //        if (req.getShopId() == null || req.getShopId() <= 0) {
 //            return AjaxResult.error(HttpStatus.PARAMS_ERROR, "参数错误，没有店铺Id");
 //        }
-//        Date currDateTime = new Date();
+//        Date currDateTime = LocalDateTime.now();
 //        long beginTime = System.currentTimeMillis();
 //
 //        var checkResult = pddApiCommon.checkBefore(req.getShopId());
@@ -132,7 +131,7 @@
 //                // 新增
 //                OShopPullLasttime insertLasttime = new OShopPullLasttime();
 //                insertLasttime.setShopId(req.getShopId());
-//                insertLasttime.setCreateTime(new Date());
+//                insertLasttime.setCreateTime(LocalDateTime.now());
 //                insertLasttime.setLasttime(endTime);
 //                insertLasttime.setPullType("REFUND");
 //                pullLasttimeService.save(insertLasttime);
@@ -141,7 +140,7 @@
 //                // 修改
 //                OShopPullLasttime updateLasttime = new OShopPullLasttime();
 //                updateLasttime.setId(lasttime.getId());
-//                updateLasttime.setUpdateTime(new Date());
+//                updateLasttime.setUpdateTime(LocalDateTime.now());
 //                updateLasttime.setLasttime(endTime);
 //                pullLasttimeService.updateById(updateLasttime);
 //            }

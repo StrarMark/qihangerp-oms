@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 库存锁定实体类
@@ -53,15 +53,15 @@ public class GoodsInventoryLock {
     /**
      * 锁定过期时间（临时锁库）
      */
-    private Date expireTime;
+    private LocalDateTime expireTime;
 
     /**
      * 创建时间
      */
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 }

@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -69,7 +69,7 @@ public class OShopDailyServiceImpl extends ServiceImpl<OShopDailyMapper, OShopDa
         } else {
             bo.setUnitPrice(BigDecimal.ZERO);
         }
-        bo.setCreateTime(new Date());
+        bo.setCreateTime(LocalDateTime.now());
         dailyMapper.insert(bo);
         for (OShopDailyDetail item:bo.getItemList()){
             item.setDailyId(bo.getId());
@@ -77,7 +77,7 @@ public class OShopDailyServiceImpl extends ServiceImpl<OShopDailyMapper, OShopDa
             item.setShopId(bo.getShopId());
             item.setPlatformId(bo.getPlatformId());
             item.setRegionId(bo.getRegionId());
-            item.setCreateTime(new Date());
+            item.setCreateTime(LocalDateTime.now());
             item.setCreateBy(bo.getCreateBy());
             if(item.getFalseOrderTotal() == null) item.setFalseOrderTotal(0);
             if(item.getFalseOrderAmount()==null)item.setFalseOrderAmount(BigDecimal.ZERO);
@@ -135,11 +135,11 @@ public class OShopDailyServiceImpl extends ServiceImpl<OShopDailyMapper, OShopDa
         } else {
             bo.setUnitPrice(BigDecimal.ZERO);
         }
-        bo.setUpdateTime(new Date());
+        bo.setUpdateTime(LocalDateTime.now());
         dailyMapper.updateById(bo);
         for (OShopDailyDetail item : bo.getItemList()){
             item.setUpdateBy(bo.getUpdateBy());
-            item.setUpdateTime(new Date());
+            item.setUpdateTime(LocalDateTime.now());
             dailyDetailMapper.updateById(item);
         }
         return ResultVo.success();

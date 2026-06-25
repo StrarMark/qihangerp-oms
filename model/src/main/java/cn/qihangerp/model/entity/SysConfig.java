@@ -1,7 +1,7 @@
 package cn.qihangerp.model.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
@@ -43,7 +43,7 @@ public class SysConfig implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新者
@@ -53,7 +53,7 @@ public class SysConfig implements Serializable {
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 备注
