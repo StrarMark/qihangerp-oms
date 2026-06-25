@@ -146,7 +146,6 @@
 <script>
 import {listGoodsSpec} from "@/api/goods/goodsSpec";
 import { listMerchant } from '@/api/shop/merchant'
-import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: 'PopupSkuList',
@@ -186,51 +185,8 @@ export default {
       },
     }
   },
+  // mounted中不加载数据，只在openDialog打开时加载
   mounted() {
-    getUserProfile().then(res=> {
-      this.loading = false;
-      if (res.data.userType == 0) {
-        // 总部
-        console.log('===总部');
-        this.isMerchant = false;
-        this.isShop = false;
-        listMerchant({ }).then(resp => {
-          this.merchantList = resp.rows
-          this.getList()
-        })
-      } else if (res.data.userType == 20) {
-        // 商户
-        this.isMerchant = true;
-        this.isShop = false;
-        this.ownerList = []
-        this.ownerList.push({id: '', name: '全部'})
-        this.ownerList.push({id: '-9', name: '自营'})
-        this.ownerList.push({id: '0', name: '总部'})
-        this.getList()
-      } else if (res.data.userType == 40) {
-        // 店铺
-        this.isMerchant = false;
-        this.isShop = true;
-        this.ownerList = []
-        this.ownerList.push({id: '', name: '全部'})
-        this.ownerList.push({id: '-99', name: '自营'})
-        this.ownerList.push({id: '-9', name: '商户'})
-        this.ownerList.push({id: '0', name: '总部'})
-        this.getList()
-      }
-    })
-
-    // listMerchant({ }).then(resp => {
-    //   this.merchantList = resp.rows
-    //   if (this.merchantList.length > 0) {
-    //     this.queryParams.merchantId = ''
-    //     this.queryParams.merchantId = this.merchantList[0].id
-    //   }
-    //   if(resp.rows.length === 1&&resp.rows[0].id>0) {
-    //     this.isMerchant = true;
-    //   }
-    //   this.getList()
-    // })
   },
   methods: {
     // 打开弹出框

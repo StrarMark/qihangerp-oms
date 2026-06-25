@@ -35,20 +35,11 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item v-if="!isShop && (shopType==null || shopType==0)" label="平台" prop="shopType">
-        <el-select v-model="queryParams.shopType" placeholder="请选择平台" @change="platformChange">
-          <el-option
-            v-for="item in platformList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
 
       <el-form-item v-if="!isShop" label="店铺" prop="shopId">
         <el-select
           v-model="queryParams.shopId"
+          :key="'shop_' + queryParams.merchantId"
           placeholder="请选择店铺"
           :loading="shopLoading"
           filterable
@@ -62,10 +53,6 @@
             :value="item.id"
           >
             <span style="float: left">{{ item.name }}</span>
-            <el-tag> {{ platformList.find(x=>x.id === item.type)?platformList.find(x=>x.id === item.type).name:'未知平台' }}</el-tag>
-
-            <!--           <span style="float: right; color: #8492a6; font-size: 13px"  v-if="item.merchantId === 0">自营店铺</span>-->
-            <!--           <span style="float: right; color: #8492a6; font-size: 13px"  v-else>{{item.merchantName}}</span>-->
           </el-option>
         </el-select>
       </el-form-item>
@@ -333,7 +320,6 @@ import { MessageBox } from 'element-ui'
 import { isRelogin } from '@/utils/request'
 import { listMerchant } from '@/api/shop/merchant'
 import { amountFormatter, rowDataItemIndex } from '@/utils/zhijian'
-import { getUserProfile } from '@/api/system/user'
 import PopupSkuList from '@/views/goods/PopupSkuList.vue'
 
 export default {
@@ -353,11 +339,6 @@ export default {
       type: String,
       required: false,
       default: ''
-    },
-    platformList: {
-      type: Array,
-      required: false,
-      default: () => []
     }
   },
   data() {
@@ -381,7 +362,6 @@ export default {
       // 商品管理表格数据
       goodsList: [],
       shopList: [],
-      platformList: [],
       skuList: [],
       skuOpen: false,
       openSkuAdd: false,
@@ -433,8 +413,8 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
-        // 检测到refresh参数时重新加载数据
-        if (to.query.refresh === '1') {
+        // 检测到refresh参数时重新加载数据（不处理初始化，mounted已处理）
+        if (to.query.refresh === '1' && from && from.path) {
           // 更新查询参数
           if (to.query.shopType) {
             this.queryParams.shopType = to.query.shopType
@@ -447,8 +427,7 @@ export default {
           }
           this.getList()
         }
-      },
-      immediate: true
+      }
     }
   },
   mounted() {
@@ -462,43 +441,23 @@ export default {
       this.refreshWithTargetShop()
       return
     }
-    getUserProfile().then(res => {
-      this.loading = false
-      this.isMerchant = false
-      this.isShop = false
-
-      listMerchant({}).then(resp => {
-        this.merchantList = resp.rows
-        if (this.merchantList.length > 0) {
-          this.queryParams.merchantId = this.merchantList[0].id
+    // 加载商户和店铺数据（不使用getUserProfile，它不需要改动组件状态）
+    listMerchant({}).then(resp => {
+      this.merchantList = resp.rows
+      if (this.merchantList.length > 0) {
+        this.queryParams.merchantId = this.merchantList[0].id
+      }
+      listShop({merchantId: this.queryParams.merchantId, type: this.queryParams.shopType}).then(response => {
+        this.shopList = response.rows
+        if (this.shopList.length > 0) {
+          this.queryParams.shopId = this.shopList[0].id
         }
-        listShop({ merchantId: this.queryParams.merchantId, type: this.queryParams.shopType }).then(response => {
-          this.shopList = response.rows
-          if (this.shopList.length > 0) {
-            this.queryParams.shopId = this.shopList[0].id
-          }
-          this.shopLoading = false
-          this.getList()
-        })
+        this.shopLoading = false
+        this.getList()
       })
     })
   },
   created() {
-    // listMerchant({ pageNum: 1, pageSize: 100 }).then(resp => {
-    //   this.merchantList = resp.rows
-    // })
-    // this.shopLoading=true
-    // listShop({type:this.shopType}).then(response => {
-    //   this.shopList = response.rows;
-    //   this.shopLoading=false
-    //   // if (this.shopList && this.shopList.length > 0) {
-    //   //   this.queryParams.shopId = this.shopList[0].id
-    //   // }
-    //   // this.getList();
-    // });
-    // this.getList();
-    // this.loading = false;
-
   },
 
   methods: {

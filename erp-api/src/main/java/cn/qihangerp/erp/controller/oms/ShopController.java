@@ -42,6 +42,7 @@ public class ShopController extends BaseController {
     {
         LambdaQueryWrapper<OShop> qw = new LambdaQueryWrapper<OShop>()
                 .eq(shop.getType()!=null,OShop::getType,shop.getType())
+                .eq(shop.getMerchantId()!=null,OShop::getMerchantId,shop.getMerchantId())
 //                .ne(shop.getType()==null,OShop::getType,999)
                 ;
         List<OShop> list = shopService.list(qw);

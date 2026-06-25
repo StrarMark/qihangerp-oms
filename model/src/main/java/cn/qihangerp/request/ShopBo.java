@@ -28,6 +28,7 @@ public class ShopBo implements Serializable {
      * 状态（1正常2已删除）
      */
     private Integer status;
+    private Long merchantId;
 
 
 
