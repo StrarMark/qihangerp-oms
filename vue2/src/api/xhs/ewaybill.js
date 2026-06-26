@@ -1,14 +1,5 @@
 import request from '@/utils/request'
 
-// 列表
-export function getWaybillAccountList(query) {
-  return request({
-    url: '/api/oms-api/xhs/ewaybill/get_waybill_account_list',
-    method: 'get',
-    params: query
-  })
-}
-
 // 更新电子面单账户
 export function pullWaybillAccountXhs(data) {
   return request({

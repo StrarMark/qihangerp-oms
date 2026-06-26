@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row>
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form v-show="showSearch" ref="queryForm" :model="queryParams" size="small" :inline="true" label-width="68px">
         <el-form-item label="订单号" prop="tid">
           <el-input
             v-model="queryParams.tid"
@@ -10,14 +10,14 @@
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="商户" prop="merchantId" v-if="!isMerchant">
-          <el-select v-model="queryParams.merchantId"  placeholder="请选择商户"  @change="merchantChange">
+        <el-form-item v-if="!isMerchant" label="商户" prop="merchantId">
+          <el-select v-model="queryParams.merchantId" placeholder="请选择商户" @change="merchantChange">
             <el-option
               v-for="item in merchantList"
               :key="item.id"
               :label="item.name"
-              :value="item.id">
-            </el-option>
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="店铺" prop="shopId">
@@ -26,20 +26,20 @@
               v-for="item in shopList"
               :key="item.id"
               :label="item.name"
-              :value="item.id">
-            </el-option>
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
-<!--        <el-form-item label="店铺" prop="shopId">-->
-<!--          <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">-->
-<!--            <el-option-->
-<!--              v-for="item in shopList"-->
-<!--              :key="item.id"-->
-<!--              :label="item.name"-->
-<!--              :value="item.id">-->
-<!--            </el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="店铺" prop="shopId">-->
+        <!--          <el-select v-model="queryParams.shopId" placeholder="请选择店铺" clearable @change="handleQuery">-->
+        <!--            <el-option-->
+        <!--              v-for="item in shopList"-->
+        <!--              :key="item.id"-->
+        <!--              :label="item.name"-->
+        <!--              :value="item.id">-->
+        <!--            </el-option>-->
+        <!--          </el-select>-->
+        <!--        </el-form-item>-->
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -50,15 +50,14 @@
               v-for="item in printerList"
               :key="item.name"
               :label="item.name"
-              :value="item.name">
-            </el-option>
+              :value="item.name"
+            />
           </el-select>
 
         </el-form-item>
       </el-form>
 
     </el-row>
-
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -93,12 +92,12 @@
           @click="handleShipSend"
         >电子面单发货</el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar :show-search.sync="showSearch" @queryTable="getList" />
     </el-row>
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
-       <el-table-column type="selection" width="55" align="center" />
-<!--      <el-table-column label="ID" align="center" prop="id" />-->
+      <el-table-column type="selection" width="55" align="center" />
+      <!--      <el-table-column label="ID" align="center" prop="id" />-->
       <el-table-column label="订单号" align="left" prop="orderNum" width="200px">
         <template slot-scope="scope">
           <el-button
@@ -106,12 +105,12 @@
             type="text"
             icon="el-icon-view"
             @click="handleDetail(scope.row)"
-          >{{scope.row.orderNum}} </el-button><br/>
+          >{{ scope.row.orderNum }} </el-button><br>
           <el-tag type="info">{{ shopList.find(x=>x.id === scope.row.shopId) ? shopList.find(x=>x.id === scope.row.shopId).name : '' }}</el-tag>
         </template>>
       </el-table-column>
 
-      <el-table-column label="商品明细" align="center" width="760px" >
+      <el-table-column label="商品明细" align="center" width="760px">
         <template slot="header">
           <table>
             <th>
@@ -123,27 +122,27 @@
             </th>
           </table>
         </template>
-        <template slot-scope="scope" >
-          <el-table :data="scope.row.itemList" :show-header="false" :cell-style="{border:0 + 'px' }"  :row-style="{border:0 + 'px' }" >
+        <template slot-scope="scope">
+          <el-table :data="scope.row.itemList" :show-header="false" :cell-style="{border:0 + 'px' }" :row-style="{border:0 + 'px' }">
             <el-table-column label="商品图片" width="50px">
               <template slot-scope="scope">
                 <!--                <el-image  style="width: 40px; height: 40px;" :src="scope.row.goodsImg" :preview-src-list="[scope.row.goodsImg]"></el-image>-->
-                <image-preview :src="scope.row.goodsImg" :width="40" :height="40"/>
+                <image-preview :src="scope.row.goodsImg" :width="40" :height="40" />
               </template>
             </el-table-column>
-            <el-table-column label="商品标题" align="left" width="250px" prop="goodsTitle" >
+            <el-table-column label="商品标题" align="left" width="250px" prop="goodsTitle">
               <template slot-scope="scope">
-                {{scope.row.goodsTitle}}
+                {{ scope.row.goodsTitle }}
                 <!--                <el-tag size="small" v-if="scope.row.refundStatus === 1">无售后或售后关闭</el-tag>-->
-                <el-tag size="small" v-if="scope.row.refundStatus === 2">售后处理中</el-tag>
-                <el-tag size="small" v-if="scope.row.refundStatus === 3">退款中</el-tag>
-                <el-tag size="small" v-if="scope.row.refundStatus === 4">退款成功</el-tag>
+                <el-tag v-if="scope.row.refundStatus === 2" size="small">售后处理中</el-tag>
+                <el-tag v-if="scope.row.refundStatus === 3" size="small">退款中</el-tag>
+                <el-tag v-if="scope.row.refundStatus === 4" size="small">退款成功</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="规格" align="left" prop="goodsSpec" width="150"  :show-overflow-tooltip="true">
+            <el-table-column label="规格" align="left" prop="goodsSpec" width="150" :show-overflow-tooltip="true">
               <template slot-scope="scope">
-                <div>{{scope.row.goodsSpec}}&nbsp;<br/>
-                  <el-tag size="small" type="info" v-if="scope.row.skuNum">{{scope.row.skuNum}}</el-tag>
+                <div>{{ scope.row.goodsSpec }}&nbsp;<br>
+                  <el-tag v-if="scope.row.skuNum" size="small" type="info">{{ scope.row.skuNum }}</el-tag>
                 </div>
                 <!--                {{ getSkuValues(scope.row.goodsSpec)}}-->
                 <!--                {{scope.row.goodsSkuId}}-->
@@ -151,15 +150,15 @@
             </el-table-column>
             <el-table-column label="规格ID" align="left" prop="skuNum" width="200">
               <template slot-scope="scope">
-                <div style="float: left;display: flex;align-items: center;padding-right: 20px" >
+                <div style="float: left;display: flex;align-items: center;padding-right: 20px">
                   <div style="margin-left:10px">
                     <div>
                       <span style="color: #5a5e66;font-size: 11px">平台ID：</span>
-                      {{scope.row.skuId}}&nbsp
+                      {{ scope.row.skuId }}&nbsp
                     </div>
                     <div>
                       <span style="color: #5a5e66;font-size: 11px">规格ID：</span>
-                      {{scope.row.goodsSkuId}}&nbsp;&nbsp
+                      {{ scope.row.goodsSkuId }}&nbsp;&nbsp
                     </div>
                   </div>
                 </div>
@@ -167,7 +166,7 @@
             </el-table-column>
             <el-table-column label="商品数量" align="center" prop="quantity" width="50px">
               <template slot-scope="scope">
-                <el-tag size="small" type="danger">{{scope.row.quantity}}</el-tag>
+                <el-tag size="small" type="danger">{{ scope.row.quantity }}</el-tag>
               </template>
             </el-table-column>
           </el-table>
@@ -176,25 +175,25 @@
 
       <el-table-column label="收件人" prop="receiverName" width="200px">
         <template slot-scope="scope">
-          {{scope.row.receiverName}}&nbsp;
-          {{scope.row.receiverMobile}} <br />
-          {{scope.row.province}} {{scope.row.city}} {{scope.row.town}} <br />
+          {{ scope.row.receiverName }}&nbsp;
+          {{ scope.row.receiverMobile }} <br>
+          {{ scope.row.province }} {{ scope.row.city }} {{ scope.row.town }} <br>
 
         </template>
       </el-table-column>
-      <el-table-column label="面单号" align="center" prop="waybillCode" >
+      <el-table-column label="面单号" align="center" prop="waybillCode">
         <template slot-scope="scope">
-          {{scope.row.waybillCode}}
+          {{ scope.row.waybillCode }}
           <div>
-            <el-tag size="small" v-if="scope.row.waybillStatus==0">未取号</el-tag>
-            <el-tag size="small" v-if="scope.row.waybillStatus==1">已取号</el-tag>
-            <el-tag size="small" v-if="scope.row.waybillStatus==2">已打印</el-tag>
-            <el-tag size="small" v-if="scope.row.waybillStatus==3">已发货</el-tag>
-            <el-tag size="small" v-if="scope.row.waybillStatus==10">手动发货</el-tag>
+            <el-tag v-if="scope.row.waybillStatus==0" size="small">未取号</el-tag>
+            <el-tag v-if="scope.row.waybillStatus==1" size="small">已取号</el-tag>
+            <el-tag v-if="scope.row.waybillStatus==2" size="small">已打印</el-tag>
+            <el-tag v-if="scope.row.waybillStatus==3" size="small">已发货</el-tag>
+            <el-tag v-if="scope.row.waybillStatus==10" size="small">手动发货</el-tag>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="发货状态" align="center" prop="shipStatus" >
+      <el-table-column label="发货状态" align="center" prop="shipStatus">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.shipStatus === 0" style="margin-bottom: 6px;">待发货</el-tag>
           <el-tag v-if="scope.row.shipStatus === 1" style="margin-bottom: 6px;">部分发货</el-tag>
@@ -202,26 +201,29 @@
 
           <el-col :span="24">
             <el-tag v-if="scope.row.distStatus === 0" type="info" style="margin-bottom: 6px;">未推送三方发货</el-tag>
-            <el-tag v-if="scope.row.distStatus === 1" type="info"  style="margin-bottom: 6px;">部分推送三方发货</el-tag>
-            <el-tag v-if="scope.row.distStatus === 2" type="info"  style="margin-bottom: 6px;">全部推送三方发货</el-tag>
+            <el-tag v-if="scope.row.distStatus === 1" type="info" style="margin-bottom: 6px;">部分推送三方发货</el-tag>
+            <el-tag v-if="scope.row.distStatus === 2" type="info" style="margin-bottom: 6px;">全部推送三方发货</el-tag>
           </el-col>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
-            size="mini"
             v-if="scope.row.waybillCode"
+            size="mini"
             plain
             type="text"
             icon="el-icon-delete"
             @click="handleCancelWaybill(scope.row)"
           >回收单号</el-button>
-          <el-button style="padding-right: 6px;padding-left: 6px"
-                     size="mini" plain
-                     type="success" v-if="scope.row.waybillStatus!==0"
-                     icon="el-icon-guid"
-                     @click="handleShipSend(scope.row)"
+          <el-button
+            v-if="scope.row.waybillStatus!==0"
+            style="padding-right: 6px;padding-left: 6px"
+            size="mini"
+            plain
+            type="success"
+            icon="el-icon-guid"
+            @click="handleShipSend(scope.row)"
           >发货</el-button>
 
         </template>
@@ -239,17 +241,18 @@
     <el-dialog title="取号" :visible.sync="getCodeOpen" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="电子面单账户" prop="accountId">
-            <el-select v-model="form.accountId" placeholder="请选择电子面单账户" clearable>
-              <el-option
-                v-for="item in deliverList"
-                :key="item.id"
-                :label="item.cpCode"
-                :value="item.id">
-                <span style="float: left">{{ item.cpCode }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px" >{{item.branchName}}:{{item.quantity}}</span>
-              </el-option>
-            </el-select>
-          <el-button type="success" plain @click="updateWaybillAccount" >更新电子面单账户信息</el-button>
+          <el-select v-model="form.accountId" placeholder="请选择电子面单账户" clearable>
+            <el-option
+              v-for="item in deliverList"
+              :key="item.id"
+              :label="item.cpCode"
+              :value="item.id"
+            >
+              <span style="float: left">{{ item.cpCode }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.branchName }}:{{ item.quantity }}</span>
+            </el-option>
+          </el-select>
+          <el-button type="success" plain @click="updateWaybillAccount">更新电子面单账户信息</el-button>
         </el-form-item>
 
       </el-form>
@@ -263,18 +266,18 @@
 
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import {listShop} from "@/api/shop/shop";
-import {waitDistOrderList, getOrder } from "@/api/order/order";
+import { listShop } from '@/api/shop/shop'
+import { waitDistOrderList, getOrder } from '@/api/order/order'
 import {
-  getWaybillAccountList,
   getWaybillCode,
   getWaybillPrintData,
   pushWaybillPrintSuccess, pushShipSend
-} from "@/api/tao/ewaybill";
-import {listMerchant} from "@/api/shop/merchant";
+} from '@/api/tao/ewaybill'
+import { getWaybillAccountList } from '@/api/shop/ewaybill'
+import { listMerchant } from '@/api/shop/merchant'
 
 export default {
-  name: "printTao",
+  name: 'PrintTao',
   data() {
     return {
       // 遮罩层
@@ -291,7 +294,7 @@ export default {
       // 总条数
       total: 0,
       // 弹出层标题
-      title: "",
+      title: '',
       // 取号弹出
       getCodeOpen: false,
       shipOpen: false,
@@ -299,7 +302,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        shopType:100,
+        shopType: 100,
         refundStatus: 1,
         orderStatus: '1',
         shopId: null
@@ -312,15 +315,15 @@ export default {
       // 表单参数
       form: {},
       form2: {
-        itemVoList:[],
-        warehouseId:null,
-        shipperId:null,
-        shopId:null,
-        supplierId:null,
-        orderList: [],
+        itemVoList: [],
+        warehouseId: null,
+        shipperId: null,
+        shopId: null,
+        supplierId: null,
+        orderList: []
       },
       orderList: [],
-      printerOpened:false,
+      printerOpened: false,
       isMerchant: false,
       printerList: [],
       deliverList: [],
@@ -328,14 +331,14 @@ export default {
       logisticsList: [],
       // 表单校验
       rules: {
-        accountId: [{ required: true, message: '请选择电子面单账户' }],
+        accountId: [{ required: true, message: '请选择电子面单账户' }]
       },
       rules2: {
         shippingNumber: [{ required: true, message: '不能为空' }],
         shippingCompany: [{ required: true, message: '不能为空' }],
-        warehouseId: [{ required: true, message: '请选择仓库' }],
-      },
-    };
+        warehouseId: [{ required: true, message: '请选择仓库' }]
+      }
+    }
   },
   created() {
     this.openWs()
@@ -346,86 +349,86 @@ export default {
     //   // }
     //   this.getList();
     // });
-    listMerchant({pageNum: 1, pageSize: 1000}).then(resp => {
+    listMerchant({ pageNum: 1, pageSize: 1000 }).then(resp => {
       this.merchantList = resp.rows
       if (this.merchantList.length > 0) {
         this.queryParams.merchantId = this.merchantList[0].id
       }
       if (resp.rows.length === 1 && resp.rows[0].id > 0) {
-        this.isMerchant = true;
+        this.isMerchant = true
       }
-      listShop({merchantId: this.queryParams.merchantId,type:100}).then(response => {
-        this.shopList = response.rows;
+      listShop({ merchantId: this.queryParams.merchantId, type: 100 }).then(response => {
+        this.shopList = response.rows
         this.shopLoading = false
-        if(this.shopList&&this.shopList.length>0){
+        if (this.shopList && this.shopList.length > 0) {
           this.queryParams.shopId = this.shopList[0].id
         }
-        getWaybillAccountList({merchantId: this.queryParams.merchantId,shopId: this.queryParams.shopId}).then(response => {
-          this.deliverList = response.rows;
+        getWaybillAccountList({ merchantId: this.queryParams.merchantId, shopId: this.queryParams.shopId }).then(response => {
+          this.deliverList = response.rows
           if (this.deliverList && this.deliverList.length > 0) {
             this.form.accountId = this.deliverList[0].id
           }
-        });
+        })
         this.getList()
       })
-    });
+    })
   },
   methods: {
-    merchantChange(nv){
-      console.log('==============',nv);
+    merchantChange(nv) {
+      console.log('==============', nv)
       this.shopList = []
       this.deliverList = []
       this.form.accountId = null
       this.queryParams.shopId = null
-      listShop({merchantId:nv,type:100}).then(response => {
-        this.shopList = response.rows;
+      listShop({ merchantId: nv, type: 100 }).then(response => {
+        this.shopList = response.rows
         this.shopLoading = false
         this.handleQuery()
-      });
+      })
     },
-    shopChange(nv){
+    shopChange(nv) {
       this.deliverList = []
-      getWaybillAccountList({merchantId: this.queryParams.merchantId,shopId: nv}).then(response => {
-        this.deliverList = response.rows;
+      getWaybillAccountList({ merchantId: this.queryParams.merchantId, shopId: nv }).then(response => {
+        this.deliverList = response.rows
         if (this.deliverList && this.deliverList.length > 0) {
           this.form.accountId = this.deliverList[0].id
         }
-      });
+      })
       this.handleQuery()
     },
     /** 查询商品管理列表 */
     getList() {
-      this.loading = true;
+      this.loading = true
 
       waitDistOrderList(this.queryParams).then(response => {
-        this.orderList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+        this.orderList = response.rows
+        this.total = response.total
+        this.loading = false
+      })
     },
     // 取消按钮
     cancel() {
-      this.getCodeOpen = false;
-      this.shipOpen = false;
-      this.reset();
+      this.getCodeOpen = false
+      this.shipOpen = false
+      this.reset()
     },
     // 表单重置
     reset() {
       this.form = {
         id: null,
         erpSkuId: null
-      };
-      this.resetForm("form");
+      }
+      this.resetForm('form')
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+      this.queryParams.pageNum = 1
+      this.getList()
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
+      this.resetForm('queryForm')
+      this.handleQuery()
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -434,79 +437,78 @@ export default {
       this.multiple = !selection.length
     },
     openWs() {
-      const ws = new WebSocket('ws://127.0.0.1:13528');
+      const ws = new WebSocket('ws://127.0.0.1:13528')
       ws.onopen = () => {
-        console.log('与打印组件建立连接成功: ');
+        console.log('与打印组件建立连接成功: ')
         // 或打印机
         ws.send(JSON.stringify({
           requestID: '12345',
           cmd: 'getPrinters',
-          "version": "1.0"
+          'version': '1.0'
         }))
-      };
-      let obj = this.$modal;
+      }
+      const obj = this.$modal
       ws.onmessage = (e) => {
         const resp = JSON.parse(e.data || '{}')
         if (resp.cmd === 'getPrinters') {
           this.printerList = resp.printers
-          obj.msgSuccess("打印组件连接成功！");
+          obj.msgSuccess('打印组件连接成功！')
           this.printerOpened = true
-          console.log('打印机列表: ', resp.printers);
+          console.log('打印机列表: ', resp.printers)
         }
-      };
+      }
       // 当发生错误时触发
-      ws.onerror = function (error) {
-        obj.msgError("打印组件连接失败！请安装并启动菜鸟云打印组件！");
-        console.error('WebSocket error:', error);
+      ws.onerror = function(error) {
+        obj.msgError('打印组件连接失败！请安装并启动菜鸟云打印组件！')
+        console.error('WebSocket error:', error)
         // alert('WebSocket error occurred. Check the console for more details.');
-      };
+      }
     },
     // 取号弹窗
     handleGetEwaybillCode() {
-      const ids = this.ids;
+      const ids = this.ids
       this.openWs()
       if (ids) {
-        if(this.printerOpened){
-          getWaybillAccountList({shopId: this.queryParams.shopId}).then(response => {
-            this.deliverList = response.data;
+        if (this.printerOpened) {
+          getWaybillAccountList({ merchantId: this.queryParams.merchantId, shopId: this.queryParams.shopId }).then(response => {
+            this.deliverList = response.data
             this.getCodeOpen = true
-          });
-        }else{
-          this.$modal.msgError("请开启打印组件")
+          })
+        } else {
+          this.$modal.msgError('请开启打印组件')
         }
-
       } else {
-        this.$modal.msgError("请选择订单")
+        this.$modal.msgError('请选择订单')
       }
     },
     // 更新电子面单信息
     updateWaybillAccount() {
-      pullWaybillAccount({shopId: this.queryParams.shopId}).then(response => {
-        this.deliverList = response.data;
-      });
+      pullWaybillAccount({ shopId: this.queryParams.shopId }).then(response => {
+        this.deliverList = response.data
+      })
     },
     /** 取号提交按钮 */
     getCodeOpenForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs['form'].validate(valid => {
         if (valid) {
-          const ids = this.ids;
+          const ids = this.ids
           console.log('=========3333========', ids)
           if (ids) {
-            console.log('===请求参数=====', {shopId: this.queryParams.shopId, ids: ids, accountId: this.form.accountId})
+            console.log('===请求参数=====', { shopId: this.queryParams.shopId, ids: ids, accountId: this.form.accountId })
             getWaybillCode({
               shopId: this.queryParams.shopId,
               ids: ids,
               accountId: this.form.accountId
             }).then(response => {
-              this.$modal.msgSuccess("取号成功")
+              this.$modal.msgSuccess('取号成功')
               this.getList()
               this.getCodeOpen = false
-            });
+            })
           } else {
-            this.$modal.msgError("请选择订单")
+            this.$modal.msgError('请选择订单')
           }
         }
-      });
+      })
     },
     handlePrintEwaybill() {
       // if (!this.ws) {
@@ -518,84 +520,83 @@ export default {
       //   return
       // }
       if (!this.printParams.printer) {
-        this.$modal.msgError('请选择打印机！');
+        this.$modal.msgError('请选择打印机！')
         return
       }
-      const ids = this.ids;
-      getWaybillPrintData({shopId: this.queryParams.shopId, ids: ids}).then(response => {
-        console.log("======打印======", response.data)
+      const ids = this.ids
+      getWaybillPrintData({ shopId: this.queryParams.shopId, ids: ids }).then(response => {
+        console.log('======打印======', response.data)
         if (response.data) {
-          const ws = new WebSocket('ws://127.0.0.1:13528');
+          const ws = new WebSocket('ws://127.0.0.1:13528')
           ws.onopen = () => {
-            let printData = []
+            const printData = []
             response.data.forEach(x => printData.push(JSON.parse(x.printData)))
-            console.log('开始打印: 组合打印数据：', printData);
+            console.log('开始打印: 组合打印数据：', printData)
             // 打印
             ws.send(JSON.stringify({
-              "cmd": "print",
-              "requestID": this.getUUID(8, 16),
-              "version": "1.0",
-              "task": {
-                "taskID": this.getUUID(8,10),
-                "preview": false,
-                "printer": this.printParams.printer,
-                "previewType": "pdf",
-                "firstDocumentNumber": 10,
-                "totalDocumentCount": 100,
-                "documents": [{
-                  "documentID": this.getUUID(8,10),
-                  "contents": printData
+              'cmd': 'print',
+              'requestID': this.getUUID(8, 16),
+              'version': '1.0',
+              'task': {
+                'taskID': this.getUUID(8, 10),
+                'preview': false,
+                'printer': this.printParams.printer,
+                'previewType': 'pdf',
+                'firstDocumentNumber': 10,
+                'totalDocumentCount': 100,
+                'documents': [{
+                  'documentID': this.getUUID(8, 10),
+                  'contents': printData
                 }]
               }
             }))
-          };
-          let obj = this.$modal;
+          }
+          const obj = this.$modal
           ws.onmessage = (e) => {
             const resp = JSON.parse(e.data || '{}')
             if (resp.cmd === 'print') {
-              console.log('打印结果: ', resp);
-              obj.msgSuccess("打印成功！" + JSON.stringify(resp));
+              console.log('打印结果: ', resp)
+              obj.msgSuccess('打印成功！' + JSON.stringify(resp))
               // 请求回调
-              return pushWaybillPrintSuccess({shopId: this.queryParams.shopId, ids: ids})
+              return pushWaybillPrintSuccess({ shopId: this.queryParams.shopId, ids: ids })
             }
-          };
-
+          }
 
           // 当发生错误时触发
-          ws.onerror = function (error) {
-            obj.msgError("打印失败！");
-            console.error('WebSocket error:', error);
+          ws.onerror = function(error) {
+            obj.msgError('打印失败！')
+            console.error('WebSocket error:', error)
             // alert('WebSocket error occurred. Check the console for more details.');
-          };
+          }
         }
-      });
+      })
     },
-    handleShipSend(){
+    handleShipSend() {
       // this.$modal.msgError("开源版本未实现平台发货！请自行对接发货");
-      pushShipSend({shopId: this.queryParams.shopId, ids: ids}).then(response => {
-        this.$modal.msgSuccess("发货成功！");
+      pushShipSend({ shopId: this.queryParams.shopId, ids: ids }).then(response => {
+        this.$modal.msgSuccess('发货成功！')
         this.getList()
       })
     },
     getUUID(len, radix) {
-      var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-      var uuid = [], i;
-      radix = radix || chars.length;
+      var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
+      var uuid = []; var i
+      radix = radix || chars.length
       if (len) {
-        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix]
       } else {
-        var r;
-        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-        uuid[14] = '4';
+        var r
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'
+        uuid[14] = '4'
         for (i = 0; i < 36; i++) {
           if (!uuid[i]) {
-            r = 0 | Math.random() * 16;
-            uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+            r = 0 | Math.random() * 16
+            uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r]
           }
         }
       }
-      return uuid.join('');
+      return uuid.join('')
     }
   }
-};
+}
 </script>

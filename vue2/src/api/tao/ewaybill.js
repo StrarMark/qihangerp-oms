@@ -1,15 +1,5 @@
 import request from '@/utils/request'
 
-
-// 获取电子面单账户list
-export function getWaybillAccountList(query) {
-  return request({
-    url: '/api/oms-api/tao/ewaybill/get_waybill_account_list',
-    method: 'get',
-    params: query
-  })
-}
-
 // 更新电子面单账户
 export function pullWaybillAccountTao(data) {
   return request({
@@ -45,7 +35,6 @@ export function pushWaybillPrintSuccess(data) {
     data: data
   })
 }
-
 
 export function pushShipSend(data) {
   return request({
