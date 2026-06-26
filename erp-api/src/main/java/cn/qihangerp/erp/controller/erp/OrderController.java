@@ -1,11 +1,13 @@
 package cn.qihangerp.erp.controller.erp;
 
+import cn.qihangerp.enums.EnumUserType;
 import cn.qihangerp.erp.request.OrderCancelRequest;
 import cn.qihangerp.common.*;
 import cn.qihangerp.model.bo.OrderAllocateShipRequest;
 import cn.qihangerp.model.bo.OrderShipRequest;
 import cn.qihangerp.request.OrderSearchRequest;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.security.common.SecurityUtils;
 import cn.qihangerp.service.OOrderItemService;
 import cn.qihangerp.service.OOrderService;
 import lombok.AllArgsConstructor;
@@ -67,7 +69,30 @@ public class OrderController extends BaseController
         return getDataTable(new ArrayList<>());
     }
 
+    /**
+     * 待分配发货订单list（部分分配）
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping("/wait_dist_order_list")
+    public TableDataInfo wait_send_orderlist(OrderSearchRequest bo, PageQuery pageQuery) {
 
+        var pageList = orderService.queryWaitDistOrderPageList(bo,pageQuery);
+        return getDataTable(pageList);
+    }
+
+    /**
+     * 待分配发货订单item list
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    @GetMapping("/wait_dist_order_item_list")
+    public TableDataInfo wait_send_orderItemList(OrderSearchRequest bo, PageQuery pageQuery) {
+        var pageList = orderItemService.queryWaitDistOrderItemPageList(bo,pageQuery);
+        return getDataTable(pageList);
+    }
 
 //    @PostMapping
 //    public AjaxResult add(@RequestBody OrderCreateBo order)

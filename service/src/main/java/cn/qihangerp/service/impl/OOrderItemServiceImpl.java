@@ -11,6 +11,7 @@ import cn.qihangerp.model.entity.ErpSupplier;
 import cn.qihangerp.mapper.OGoodsMapper;
 import cn.qihangerp.mapper.OGoodsSkuMapper;
 import cn.qihangerp.mapper.ErpSupplierMapper;
+import cn.qihangerp.request.OrderSearchRequest;
 import cn.qihangerp.service.OGoodsSkuService;
 import cn.qihangerp.model.query.OrderItemQuery;
 import cn.qihangerp.model.vo.OrderItemListVo;
@@ -141,6 +142,73 @@ public class OOrderItemServiceImpl extends ServiceImpl<OOrderItemMapper, OOrderI
         Page<OOrderItem> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
         return PageResult.build(pages);
     }
+
+    /**
+     * 获取待发货未分配的订单item
+     * @param request
+     * @param pageQuery
+     * @return
+     */
+    @Override
+    public PageResult<OrderItemListVo> queryWaitDistOrderItemPageList(OrderSearchRequest request, PageQuery pageQuery) {
+        if(org.springframework.util.StringUtils.hasText(request.getStartTime())){
+            boolean b = DateHelper.isValidDate(request.getStartTime());
+            if(!b){
+//                request.setStartTime(request.getStartTime()+" 00:00:00");
+                request.setStartTime("");
+            }
+        }
+        if(org.springframework.util.StringUtils.hasText(request.getEndTime())){
+            boolean b = DateHelper.isValidDate(request.getEndTime());
+            if(!b){
+//                request.setEndTime(request.getEndTime()+" 23:59:59");
+                request.setEndTime("");
+            }
+        }
+        if(StringUtils.hasText(request.getStartTime())){
+            request.setStartTime(request.getStartTime()+" 00:00:00");
+            request.setEndTime(request.getEndTime()+" 23:59:59");
+        }
+        OrderItemQuery bo = new OrderItemQuery();
+        bo.setStartTime(request.getStartTime());
+        bo.setEndTime(request.getEndTime());
+        bo.setRefundStatus(1);
+        bo.setOrderStatus(1);
+        bo.setOrderNum(request.getOrderNum());
+        bo.setShopType(request.getShopType());
+        bo.setShopId(request.getShopId());
+        bo.setShipType(request.getShipType());
+//        bo.setShipType(EnumShipType.LOCAL_WAREHOUSE.getIndex());
+//        bo.setShipSupplier(0L);
+//        bo.setShipStatus(0);//发货状态（0未发货1以推送到供应商2已发货）
+        bo.setHasPushErp(0);
+        bo.setMerchantId(request.getMerchantId());
+
+//        LambdaQueryWrapper<OOrderItem> queryWrapper = new LambdaQueryWrapper<OOrderItem>()
+//                .eq(bo.getShopId() != null, OOrderItem::getShopId, bo.getShopId())
+//                .eq(bo.getMerchantId() != null, OOrderItem::getMerchantId, bo.getMerchantId())
+//                .eq(org.springframework.util.StringUtils.hasText(bo.getOrderNum()), OOrderItem::getOrderNum, bo.getOrderNum())
+//                .eq(bo.getOrderStatus() != null, OOrderItem::getOrderStatus, bo.getOrderStatus())
+//                .eq(bo.getRefundStatus()!=null,OOrderItem::getRefundStatus,bo.getRefundStatus())
+//                .eq(bo.getShopType() != null, OOrderItem::getShopType, bo.getShopType())
+//                .ge(org.springframework.util.StringUtils.hasText(bo.getStartTime()), OOrderItem::getOrderTime, bo.getStartTime())
+//                .le(org.springframework.util.StringUtils.hasText(bo.getEndTime()), OOrderItem::getOrderTime, bo.getEndTime())
+//                .eq(bo.getShipStatus() != null, OOrderItem::getShipStatus, bo.getShipStatus())
+////                .eq(bo.getErpPushStatus()!=null && bo.getErpPushStatus() == 0,OOrder::getErpPushStatus,0)
+////                .eq(bo.getErpPushStatus()!=null && bo.getErpPushStatus() == 100,OOrder::getErpPushStatus,100)
+////                .eq(bo.getErpPushStatus()!=null && bo.getErpPushStatus() == 200,OOrder::getErpPushStatus,200)
+////                .gt(bo.getErpPushStatus()!=null && bo.getErpPushStatus() == 500,OOrder::getErpPushStatus,200)
+////                .eq(org.springframework.util.StringUtils.hasText(bo.getReceiverName()),OOrder::getReceiverName,bo.getReceiverName())
+////                .like(org.springframework.util.StringUtils.hasText(bo.getReceiverMobile()),OOrder::getReceiverMobile,bo.getReceiverMobile())
+//                ;
+//
+//        pageQuery.setOrderByColumn("order_time");
+//        pageQuery.setIsAsc("desc");
+//        Page<OOrderItem> pages = mapper.selectPage(pageQuery.build(), queryWrapper);
+        Page<OrderItemListVo> pages = mapper.selectPageVo(pageQuery.build(), bo);
+        return PageResult.build(pages);
+    }
+
 
     @Override
     public ResultVo<Integer> updateErpSkuId(Long orderItemId,String skuId) {

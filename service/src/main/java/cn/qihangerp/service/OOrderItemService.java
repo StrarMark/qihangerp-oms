@@ -7,6 +7,7 @@ import cn.qihangerp.common.ResultVo;
 import cn.qihangerp.model.entity.OOrderItem;
 import cn.qihangerp.model.query.OrderItemQuery;
 import cn.qihangerp.model.vo.OrderItemListVo;
+import cn.qihangerp.request.OrderSearchRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 
@@ -21,7 +22,13 @@ public interface OOrderItemService extends IService<OOrderItem> {
     PageResult<OrderItemListVo> selectPageVo(PageQuery pageQuery, OrderItemQuery bo);
     List<OrderItemListVo> selectExportListVo(OrderItemQuery bo);
     PageResult<OOrderItem> queryPageList(OOrderItem bo, PageQuery pageQuery);
-
+    /**
+     * 查询待发货的orderitem（不含未分配）
+     * @param bo
+     * @param pageQuery
+     * @return
+     */
+    PageResult<OrderItemListVo> queryWaitDistOrderItemPageList(OrderSearchRequest bo, PageQuery pageQuery);
     ResultVo<Integer>  updateErpSkuId(Long orderItemId,String skuId);
     ResultVo<Long>  updateShipSupplierId(Long orderItemId,Long supplierId);
 
