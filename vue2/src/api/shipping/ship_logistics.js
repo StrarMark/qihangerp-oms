@@ -8,11 +8,12 @@ export function getPlatformList() {
   })
 }
 
-// 获取常用快递公司列表
-export function getFavoriteList() {
+// 获取常用快递公司列表（支持按平台筛选）
+export function getFavoriteList(query) {
   return request({
     url: 'api/erp-api/ship/logistics/favorite_list',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 

@@ -757,11 +757,14 @@ export default {
         this.form.weight=0.0
         this.form.shippingCost=4.0
         this.form.packageAmount=1.0
-        getFavoriteList({shopType:response.data.shopType,status:1}).then(resp=>{
+
+        // 平台为0(ERP内销)或999(线下渠道)时显示全部常用快递，其他平台按平台筛选
+        const shopType = response.data.shopType
+        const queryParams = (shopType > 0 && shopType !== 999) ? { shopType } : {}
+        getFavoriteList(queryParams).then(resp=>{
           this.logisticsList = resp.data || []
-          this.shipOpen = true;
+          this.shipOpen = true
         })
-        // this.detailTitle = "订单详情";
       });
     },
     // 获取平台名称

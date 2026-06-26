@@ -77,12 +77,21 @@ public class ShipLogisticsController extends BaseController {
     }
 
     /**
-     * 获取当前用户的常用快递公司列表
+     * 获取当前用户的常用快递公司列表（支持按平台筛选）
+     * @param shopType 平台类型，传0或不传表示不过滤（显示全部），传具体平台ID则按平台筛选
      */
     @GetMapping("/favorite_list")
-    public AjaxResult favoriteList() {
-
+    public AjaxResult favoriteList(@RequestParam(required = false) Integer shopType) {
         List<ErpShipLogistics> list = shipLogisticsService.queryListByEntity();
+
+        // 如果传了具体平台ID且不是0，按平台过滤
+        if (shopType != null && shopType > 0) {
+            list = list.stream()
+                    .filter(item -> shopType.equals(item.getShopType()))
+                    .collect(Collectors.toList());
+        }
+        // shopType=0 或不传 → 返回全部，不过滤
+
         return success(list);
     }
 
