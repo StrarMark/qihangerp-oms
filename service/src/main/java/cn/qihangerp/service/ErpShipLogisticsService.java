@@ -13,7 +13,7 @@ public interface ErpShipLogisticsService {
     /**
      * 根据实体类型和实体ID查询常用快递公司列表
      */
-    List<ErpShipLogistics> queryListByEntity(String entityType, Long entityId);
+    List<ErpShipLogistics> queryListByEntity();
 
     /**
      * 添加常用快递公司

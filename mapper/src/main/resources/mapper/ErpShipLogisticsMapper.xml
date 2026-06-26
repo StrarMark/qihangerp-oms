@@ -30,8 +30,7 @@
             l.platform_id as platformId
         FROM erp_ship_logistics e
         LEFT JOIN erp_logistics_company l ON e.logistics_id = l.id
-        WHERE e.entity_type = #{entityType}
-          AND e.entity_id = #{entityId}
+
         ORDER BY e.is_default DESC, e.sort ASC, e.create_time DESC
     </select>
 

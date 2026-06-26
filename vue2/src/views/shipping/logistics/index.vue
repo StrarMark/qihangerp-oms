@@ -2,17 +2,29 @@
   <div class="app-container">
     <!-- 搜索区域 -->
     <div class="search-form">
+      <el-form :inline="true" :model="filterForm" class="demo-form-inline">
+        <el-form-item label="平台筛选">
+          <el-select v-model="filterForm.platformId" placeholder="全部平台" clearable @change="handleFilterChange">
+            <el-option
+              v-for="item in platformList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
       <el-button type="primary" icon="el-icon-plus" @click="openAddDialog">添加快递公司</el-button>
     </div>
 
     <!-- 常用快递公司列表 -->
     <el-card title="常用快递公司">
-      <div v-if="favoriteList.length === 0" class="empty-state">
+      <div v-if="filteredFavoriteList.length === 0" class="empty-state">
         <el-empty description="暂无常用快递公司" />
         <el-button type="primary" @click="openAddDialog" style="margin-top: 20px;">添加快递公司</el-button>
       </div>
 
-      <el-table v-else :data="favoriteList" border style="width: 100%">
+      <el-table v-else :data="filteredFavoriteList" border style="width: 100%">
         <el-table-column prop="logisticsName" label="快递公司名称" width="200">
           <template slot-scope="scope">
             <span v-if="scope.row.isDefault === 1" class="default-tag">默认</span>
@@ -27,9 +39,9 @@
         <el-table-column prop="logisticsCode" label="快递公司编码" width="150" />
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button 
-              v-if="scope.row.isDefault !== 1" 
-              type="text" 
+            <el-button
+              v-if="scope.row.isDefault !== 1"
+              type="text"
               @click="handleSetDefault(scope.row)"
             >设为默认</el-button>
             <span v-else class="text-success">默认快递公司</span>
@@ -60,15 +72,17 @@
           </el-select>
         </el-form-item>
         <el-form-item label="快递公司" prop="logisticsId">
-          <el-select 
-            v-model="addForm.logisticsId" 
-            style="width: 300px;" 
-            placeholder="选择平台后搜索快递公司"
+          <el-select
+            v-model="addForm.logisticsId"
+            style="width: 300px"
+            placeholder="请选择或搜索快递公司"
             filterable
             remote
             :remote-method="searchLogistics"
             :loading="logisticsLoading"
             :disabled="!addForm.shopType"
+            :popper-class="'logistics-select-dropdown'"
+            @focus="handleLogisticsFocus"
             @change="handleLogisticsChange"
           >
             <el-option
@@ -80,15 +94,6 @@
               <span style="float: right; color: #8492a6; font-size: 13px">{{ item.code || '-' }}</span>
             </el-option>
           </el-select>
-          <div v-if="showNoDataTip" class="no-data-tip">
-            <el-alert
-              title="未找到该快递公司，请联系管理员添加到快递公司库"
-              type="warning"
-              :closable="false"
-              show-icon
-              size="small"
-            />
-          </div>
         </el-form-item>
         <el-form-item label="设为默认">
           <el-switch v-model="addForm.isDefault" active-value="1" inactive-value="0" />
@@ -120,12 +125,16 @@ export default {
       platformList: [],
       // 常用快递公司列表
       favoriteList: [],
-      // 搜索结果选项（按需加载）
+      // 筛选后的常用快递公司列表
+      filteredFavoriteList: [],
+      // 搜索表单
+      filterForm: {
+        platformId: null
+      },
+      // 搜索结果选项
       logisticsOptions: [],
       // 搜索loading状态
       logisticsLoading: false,
-      // 显示无数据提示
-      showNoDataTip: false,
       // 添加弹窗
       addDialogVisible: false,
       addForm: {
@@ -180,39 +189,57 @@ export default {
     loadFavoriteList() {
       getFavoriteList().then(response => {
         this.favoriteList = response.data || []
+        this.applyFilter()
       })
+    },
+
+    // 平台筛选变化
+    handleFilterChange() {
+      this.applyFilter()
+    },
+
+    // 应用平台筛选
+    applyFilter() {
+      if (this.filterForm.platformId) {
+        this.filteredFavoriteList = this.favoriteList.filter(item => item.shopType === this.filterForm.platformId)
+      } else {
+        this.filteredFavoriteList = this.favoriteList
+      }
     },
 
     // 平台选择变化
     handlePlatformChange() {
       this.addForm.logisticsId = ''
       this.logisticsOptions = []
-      this.showNoDataTip = false
     },
 
-    // 远程搜索快递公司
+    // 远程搜索快递公司（输入字符触发搜索）
     searchLogistics(keyword) {
-      if (!keyword || keyword.trim() === '') {
-        this.logisticsOptions = []
-        this.showNoDataTip = false
-        return
-      }
-
       if (!this.addForm.shopType) {
         this.$message.warning('请先选择平台')
         return
       }
-      
+
       this.logisticsLoading = true
-      getAvailableList({ name: keyword, platformId: this.addForm.shopType }).then(response => {
+      getAvailableList({ name: keyword || '', platformId: this.addForm.shopType }).then(response => {
         this.logisticsOptions = response.data || []
-        this.showNoDataTip = this.logisticsOptions.length === 0
         this.logisticsLoading = false
       }).catch(() => {
         this.logisticsOptions = []
-        this.showNoDataTip = false
         this.logisticsLoading = false
       })
+    },
+
+    // 输入框聚焦时加载全部快递公司（支持滚动浏览）
+    handleLogisticsFocus() {
+      if (!this.addForm.shopType) {
+        return
+      }
+      // 如果选项已加载过且不为空，直接展示（用户可能想重新打开下拉）
+      if (this.logisticsOptions.length > 0) {
+        return
+      }
+      this.searchLogistics('')
     },
 
     // 选择快递公司时自动获取平台
@@ -231,7 +258,6 @@ export default {
         isDefault: '0'
       }
       this.logisticsOptions = []
-      this.showNoDataTip = false
       this.addDialogVisible = true
     },
 
@@ -253,8 +279,9 @@ export default {
             this.$message.success('添加成功')
             this.addDialogVisible = false
             this.loadFavoriteList()
-          }).catch(() => {
-            this.$message.error('添加失败')
+          }).catch(error => {
+            const msg = error.data && error.data.msg ? error.data.msg : '添加失败'
+            this.$message.error(msg)
           })
         }
       })
@@ -313,8 +340,21 @@ export default {
 .search-form {
   margin-bottom: 20px;
 }
+</style>
 
-.no-data-tip {
-  margin-top: 8px;
+<!-- 快递公司下拉框滚动样式 -->
+<style>
+.logistics-select-dropdown {
+  max-height: 400px !important;
+  overflow-y: auto !important;
+}
+
+.logistics-select-dropdown .el-select-dropdown__wrap {
+  max-height: 380px !important;
+  overflow-y: auto !important;
+}
+
+.logistics-select-dropdown .el-scrollbar__wrap {
+  overflow-x: hidden !important;
 }
 </style>

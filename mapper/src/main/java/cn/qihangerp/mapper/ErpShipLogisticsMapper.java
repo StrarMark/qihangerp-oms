@@ -12,7 +12,7 @@ public interface ErpShipLogisticsMapper extends BaseMapper<ErpShipLogistics> {
     /**
      * 根据实体类型和实体ID查询常用快递公司列表
      */
-    java.util.List<ErpShipLogistics> selectByEntity(@Param("entityType") String entityType, @Param("entityId") Long entityId);
+    java.util.List<ErpShipLogistics> selectByEntity();
 
     /**
      * 根据实体类型和实体ID取消所有默认设置

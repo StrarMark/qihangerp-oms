@@ -25,8 +25,8 @@ public class ErpShipLogisticsServiceImpl extends ServiceImpl<ErpShipLogisticsMap
     private final ErpShipLogisticsMapper shipLogisticsMapper;
 
     @Override
-    public List<ErpShipLogistics> queryListByEntity(String entityType, Long entityId) {
-        return shipLogisticsMapper.selectByEntity(entityType, entityId);
+    public List<ErpShipLogistics> queryListByEntity() {
+        return shipLogisticsMapper.selectByEntity();
     }
 
     @Override
