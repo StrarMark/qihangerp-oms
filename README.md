@@ -2,7 +2,16 @@
 
 > 🚀 **不想折腾环境？** 官方提供【一键运行包】——已打包完整环境（免装 Java/MySQL/Redis），下载即用！
 >
-> 👉 前往官网下载：**[https://qihangerp.cn/demo](https://qihangerp.cn/demo)**（关注公众号获取下载权限）
+> 👉 前往官网下载：**[开源版一键演示包](https://qihangerp.cn/open/download.html)**（关注公众号获取下载权限）
+
+## 🔗 相关链接
+
+| 链接 | 地址 |
+|------|------|
+| 🌐 官网 | [https://qihangerp.cn/](https://qihangerp.cn/) |
+| 🧩 开源版及服务 | [https://qihangerp.cn/open/](https://qihangerp.cn/open/) |
+| 📦 开源版一键演示包下载 | [https://qihangerp.cn/open/download.html](https://qihangerp.cn/open/download.html) |
+| 💼 商业版预约演示 | [https://qihangerp.cn/demo.html](https://qihangerp.cn/demo.html) |
 
 > **欢迎来到我们的开源项目！创新、协作、高质量的代码。您的Star🌟，是我们前进的动力！ 💪✨🏆**
 
@@ -94,7 +103,7 @@
 
 **商业版支持多商户、多供应商、多仓库独立子系统处理业务，还对接了京东云仓可以直接将订单推送到京东云仓发货**
 
-**该系统可作为电商企业数字化转型的订单中台系统底座使用，教程及文档请阅读开源文档或者访问官网：qihangerp.cn**
+**该系统可作为电商企业数字化转型的订单中台系统底座使用，教程及文档请阅读开源文档或者访问[开源版及服务](https://qihangerp.cn/open/)。**
 
 ---
 
@@ -107,12 +116,14 @@
 
 **欢迎升级到启航电商ERP商业版：**
 
-👉 **[启航电商ERP商业版](https://qihangerp.cn)**
+👉 **[启航电商ERP商业版](https://qihangerp.cn/)**
 
 * **API无忧**：提供平台API协助申请，或者采用第三方API接口服务（商业版内置了第三方API）
 * **一键部署**：专业运维团队协助上线
 * **专属支持**：7x24小时技术支持服务
 * **更多功能**：多商户架构、多仓库支持、第三方API支持、三方云仓（如：京东云仓）支持、AI智能分析
+
+👉 **[商业版预约演示](https://qihangerp.cn/demo.html)**
 
 ---
 
@@ -468,7 +479,7 @@ graph TD
 
 官网提供**已打包好的演示环境**（548MB，免装 Java 17 / MySQL 8 / Redis 7），下载后按包内说明即可运行：
 
-👉 **[https://qihangerp.cn/demo](https://qihangerp.cn/demo)**（关注公众号获取下载权限）
+👉 **[开源版一键演示包下载](https://qihangerp.cn/open/download.html)**（关注公众号获取下载权限）
 
 #### 3.1、启动环境
 
@@ -589,7 +600,7 @@ location /prod-api/ {
 
 ## 💼 商业版
 
-👉 **[启航电商ERP商业版](https://qihangerp.cn)**
+👉 **[启航电商ERP商业版](https://qihangerp.cn/)**（[在线预约演示](https://qihangerp.cn/demo.html)）
 
 👉 **了解更多？→** 邮箱：qihangerp@qq.com
 
