@@ -11,7 +11,11 @@
 | 🌐 官网 | [https://qihangerp.cn/](https://qihangerp.cn/) |
 | 🧩 开源版及服务 | [https://qihangerp.cn/open/](https://qihangerp.cn/open/) |
 | 📦 开源版一键演示包下载 | [https://qihangerp.cn/open/download.html](https://qihangerp.cn/open/download.html) |
-| 💼 商业版预约演示 | [https://qihangerp.cn/demo.html](https://qihangerp.cn/demo.html) |
+| 💼 企业版预约演示 | [https://qihangerp.cn/demo.html](https://qihangerp.cn/demo.html) |
+| ⚙️ ERP | [https://qihangerp.cn/open/erp.html](https://qihangerp.cn/open/erp.html) |
+| 🧩 OMS | [https://qihangerp.cn/open/oms.html](https://qihangerp.cn/open/oms.html) |
+| 🏪 零售ERP | [https://qihangerp.cn/open/retail-erp.html](https://qihangerp.cn/open/retail-erp.html) |
+| 🌍 跨境ERP | [https://qihangerp.cn/open/cross-border.html](https://qihangerp.cn/open/cross-border.html) |
 
 > **欢迎来到我们的开源项目！创新、协作、高质量的代码。您的Star🌟，是我们前进的动力！ 💪✨🏆**
 
@@ -101,7 +105,7 @@
 
 **系统拥有完善的对外开放接口，可以很方便地与企业原有其他ERP、WMS、财务等系统进行对接。**
 
-**商业版支持多商户、多供应商、多仓库独立子系统处理业务，还对接了京东云仓可以直接将订单推送到京东云仓发货**
+**企业版支持多商户、多供应商、多仓库独立子系统处理业务，还对接了京东云仓可以直接将订单推送到京东云仓发货**
 
 **该系统可作为电商企业数字化转型的订单中台系统底座使用，教程及文档请阅读开源文档或者访问[开源版及服务](https://qihangerp.cn/open/)。**
 
@@ -114,22 +118,22 @@
 * ❌ 需要快速部署生产环境，不想折腾开源版
 * ❌ 需要专业的技术支持和售后服务
 
-**欢迎升级到启航电商ERP商业版：**
+**欢迎升级到启航电商ERP企业版：**
 
-👉 **[启航电商ERP商业版](https://qihangerp.cn/)**
+👉 **[启航电商ERP企业版](https://qihangerp.cn/)**
 
-* **API无忧**：提供平台API协助申请，或者采用第三方API接口服务（商业版内置了第三方API）
+* **API无忧**：提供平台API协助申请，或者采用第三方API接口服务（企业版内置了第三方API）
 * **一键部署**：专业运维团队协助上线
 * **专属支持**：7x24小时技术支持服务
 * **更多功能**：多商户架构、多仓库支持、第三方API支持、三方云仓（如：京东云仓）支持、AI智能分析
 
-👉 **[商业版预约演示](https://qihangerp.cn/demo.html)**
+👉 **[企业版预约演示](https://qihangerp.cn/demo.html)**
 
 ---
 
 **如果您只需要订单处理功能，不需要完整ERP：**
 
-👉 **[启航电商OMS订单中台](https://qihangerp.cn/oms.html)**
+👉 **[启航电商OMS订单中台](https://qihangerp.cn/open/oms.html)**
 
 * **多平台聚合**：支持淘宝、京东、拼多多、抖店、微信等平台订单统一管理
 * **灵活处理**：支持API自动拉单 + 手动导入订单双模式
@@ -140,19 +144,19 @@
 
 ### 💡 自研 vs 购买：算一笔账
 
-有能力部署开源版的团队，通常会纠结一个问题：**用开源版自己维护，还是直接买商业版？**
+有能力部署开源版的团队，通常会纠结一个问题：**用开源版自己维护，还是直接买企业版？**
 
-| 成本项 | 自研（基于开源版二次开发） | 购买商业版 |
+| 成本项 | 自研（基于开源版二次开发） | 购买企业版 |
 |:------|:------------------------|:----------|
 | 技术团队 | 至少 1-2 人维护（年薪 30-50 万） | 无需组建 |
 | 开发周期 | 3-6 个月熟悉代码和二次开发 | 即买即用 |
 | 平台对接 | 逐个申请 AppKey、调试接口 | 已对接所有主流平台 |
-| 持续迭代 | 自己跟进平台 API 变更 | 商业版负责更新 |
-| 多商户/多仓库 | 需自行开发 | 商业版内置 |
+| 持续迭代 | 自己跟进平台 API 变更 | 企业版负责更新 |
+| 多商户/多仓库 | 需自行开发 | 企业版内置 |
 | 风险 | 人员离职、代码质量问题 | 厂商保障 |
 | **年成本** | **30-50 万+** | 源码买断，永久授权，无需年费|
 
-> **结论：** 如果你的团队有技术能力且有空闲人力，开源版是不错的底层框架；如果你需要快速上线、降低风险，**商业版是更经济的选择**。
+> **结论：** 如果你的团队有技术能力且有空闲人力，开源版是不错的底层框架；如果你需要快速上线、降低风险，**企业版是更经济的选择**。
 
 ---
 ## 二、核心流程与功能
@@ -591,16 +595,16 @@ location /prod-api/ {
 
 启航电商旗下开源项目矩阵：
 
-| 项目               | 定位                                     | Gitee | GitHub                                                  |
-|:-------------------|:-----------------------------------------|:-----|:--------------------------------------------------------|
-| **启航电商ERP ⬅** | **电商业务AI底座（单体应用，v4.1）**     | [Gitee](https://gitee.com/qiliping/qihang-erp-open) | [GitHub](https://github.com/zeasin/qihang-erp-open)     |
-| OMS 订单中台       | 轻量级订单管理                           | [Gitee](https://gitee.com/qiliping/qihang-oms) | [GitHub](https://github.com/zeasin/qihang-oms)          |
-| 启航零售ERP       | 线下零售管理平台                         | [Gitee](https://gitee.com/qiliping/qihang-retail) | [GitHub](https://github.com/zeasin/qihang-retail)          |
-| 启航跨境电商ERP    | 跨境电商专用版       | [Gitee](https://gitee.com/qiliping/qihang-cb-erp) | [GitHub](https://github.com/zeasin/qihang-cb-erp)                                          |
+| 项目               | 定位                                     | 官网 | Gitee | GitHub                                                  |
+|:-------------------|:-----------------------------------------|:-----|:-----|:--------------------------------------------------------|
+| **启航电商ERP ⬅** | **电商业务AI底座（单体应用，v4.1）**     | [官网](https://qihangerp.cn/open/erp.html) | [Gitee](https://gitee.com/qiliping/qihang-erp-open) | [GitHub](https://github.com/zeasin/qihang-erp-open)     |
+| OMS 订单中台       | 轻量级订单管理                           | [官网](https://qihangerp.cn/open/oms.html) | [Gitee](https://gitee.com/qiliping/qihang-oms) | [GitHub](https://github.com/zeasin/qihang-oms)          |
+| 启航零售ERP       | 线下零售管理平台                         | [官网](https://qihangerp.cn/open/retail-erp.html) | [Gitee](https://gitee.com/qiliping/qihang-retail) | [GitHub](https://github.com/zeasin/qihang-retail)          |
+| 启航跨境电商ERP    | 跨境电商专用版       | [官网](https://qihangerp.cn/open/cross-border.html) | [Gitee](https://gitee.com/qiliping/qihang-cb-erp) | [GitHub](https://github.com/zeasin/qihang-cb-erp)                                          |
 
-## 💼 商业版
+## 💼 企业版
 
-👉 **[启航电商ERP商业版](https://qihangerp.cn/)**（[在线预约演示](https://qihangerp.cn/demo.html)）
+👉 **[启航电商ERP企业版](https://qihangerp.cn/)**（[在线预约演示](https://qihangerp.cn/demo.html)）
 
 👉 **了解更多？→** 邮箱：qihangerp@qq.com
 
