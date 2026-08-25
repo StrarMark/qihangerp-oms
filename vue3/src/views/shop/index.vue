@@ -4,7 +4,7 @@
       <el-form-item label="店铺名" prop="name">
         <el-input v-model="queryParams.name" placeholder="请输入店铺名" clearable @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item v-if="!isMerchant" label="商户" prop="merchantId">
+      <el-form-item label="商户" prop="merchantId">
         <el-select v-model="queryParams.merchantId" clearable placeholder="请选择商户" @change="handleQuery">
           <el-option v-for="item in merchantList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
@@ -78,12 +78,7 @@
 
     <el-dialog :title="title" v-model="open" width="800px" append-to-body :close-on-click-modal="false">
       <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="国家/地区" prop="regionId">
-          <el-select v-model="form.regionId" placeholder="请选择国家/地区">
-            <el-option v-for="item in regionList" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="!isMerchant" label="商户" prop="merchantId">
+        <el-form-item label="商户" prop="merchantId" required>
           <el-select v-model="form.merchantId" placeholder="请选择商户">
             <el-option v-for="item in merchantList" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
@@ -116,9 +111,6 @@
         </el-form-item>
         <el-form-item v-if="form.apiStatus==1||form.apiStatus==2" label="AccessToken" prop="accessToken">
           <el-input v-model="form.accessToken" placeholder="请输入AccessToken" />
-        </el-form-item>
-        <el-form-item label="省市区">
-          <el-cascader v-model="form.provinces" :options="regionTree" :props="{value:'id',label:'name',children:'children'}" placeholder="请选择省市区" style="width:300px" clearable />
         </el-form-item>
         <el-form-item label="详细地址">
           <el-input v-model="form.address" placeholder="请输入详细地址" />
@@ -153,40 +145,137 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Refresh, Plus } from '@element-plus/icons-vue'
 import { listShopPage, listShop, addShop, updateShop, delShop } from '@/api/shop/shop'
 import { listPlatform } from '@/api/shop/shop'
-import { listRegion } from '@/api/shop/region'
 import { listMerchant } from '@/api/shop/merchant'
 import { parseTime } from '@/utils/zhijian'
 import Pagination from '@/components/Pagination/index.vue'
 import RightToolbar from '@/components/RightToolbar/index.vue'
 import { getUserProfile } from '@/api/system/user'
 
-const loading=ref(true);const showSearch=ref(true);const total=ref(0)
-const shopList=ref<any[]>([]);const typeList=ref<any[]>([]);const merchantList=ref<any[]>([]);const regionList=ref<any[]>([]);const regionTree=ref<any[]>([])
-const isMerchant=ref(false);const open=ref(false);const title=ref('')
+const loading = ref(true)
+const showSearch = ref(true)
+const total = ref(0)
+const shopList = ref<any[]>([])
+const typeList = ref<any[]>([])
+const merchantList = ref<any[]>([])
+const isMerchant = ref(false)
+const open = ref(false)
+const title = ref('')
 
-const queryParams=reactive({pageNum:1,pageSize:10,name:null as string|null,merchantId:null as number|null,type:null as number|null,status:null as string|null})
-const form=reactive<Record<string,any>>({})
-const rules={name:[{required:true,message:'不能为空'}],type:[{required:true,message:'请选择平台'}]}
-
-function getList(){loading.value=true;listShop(queryParams).then((res:any)=>{shopList.value=res.rows||[];total.value=res.total||0;loading.value=false}).catch(()=>{loading.value=false})}
-function handleQuery(){queryParams.pageNum=1;getList()}
-function resetQuery(){queryParams.name=null;queryParams.merchantId=null;queryParams.type=null;queryParams.status=null;handleQuery()}
-function handleSelectionChange(){}
-function handleAdd(){title.value='新增店铺';open.value=true;Object.assign(form,{regionId:null,merchantId:null,type:null,name:null,sellerId:null,sellerNum:null,apiStatus:'1',appKey:null,appSecret:null,accessToken:null,provinces:[],address:null,contact:null,phone:null,remark:null,status:1,allowInventoryShare:0})}
-function handleUpdate(row:any){Object.assign(form,row||{});title.value='修改店铺';open.value=true}
-function handleDelete(row:any){ElMessageBox.confirm('确认删除？').then(()=>delShop(row.id)).then(()=>{ElMessage.success('删除成功');getList()})}
-function handleUpdateToken(row:any){ElMessage.info('更新授权: '+row.name)}
-function handleSettingPullLasttime(row:any){ElMessage.info('设置最后拉取时间: '+row.name)}
-function submitForm(){
-  const api=form.id?updateShop:addShop
-  api({...form}).then((res:any)=>{if(res.code===200){ElMessage.success('保存成功');open.value=false;getList()}else ElMessage.error(res.msg||'保存失败')})
+const queryParams = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  name: null as string | null,
+  merchantId: null as number | null,
+  type: null as number | null,
+  status: null as string | null,
+})
+const form = reactive<Record<string, any>>({})
+const rules = {
+  name: [{ required: true, message: '不能为空' }],
+  type: [{ required: true, message: '请选择平台' }],
+  merchantId: [{ required: true, message: '请选择商户' }],
 }
-function cancel(){open.value=false}
 
-onMounted(()=>{
-  listPlatform({status:0}).then((res:any)=>{typeList.value=res.rows||[]})
-  listMerchant({}).then((res:any)=>{merchantList.value=res.rows||[]})
-  listRegion({}).then((res:any)=>{const data=res.data||[];regionTree.value=data;regionList.value=data})
-  getUserProfile().then((res:any)=>{const user=res.data||res.user;if(user?.userType!==0)isMerchant.value=true;getList()})
+function getList() {
+  loading.value = true
+  listShop(queryParams).then((res: any) => {
+    shopList.value = res.rows || []
+    total.value = res.total || 0
+    loading.value = false
+  }).catch(() => {
+    loading.value = false
+  })
+}
+
+function handleQuery() {
+  queryParams.pageNum = 1
+  getList()
+}
+
+function resetQuery() {
+  queryParams.name = null
+  queryParams.merchantId = null
+  queryParams.type = null
+  queryParams.status = null
+  handleQuery()
+}
+
+function handleSelectionChange() {
+}
+
+function handleAdd() {
+  title.value = '新增店铺'
+  open.value = true
+  Object.assign(form, {
+    regionId: 1,
+    merchantId: null,
+    type: null,
+    name: null,
+    sellerId: null,
+    sellerNum: null,
+    apiStatus: '1',
+    appKey: null,
+    appSecret: null,
+    accessToken: null,
+    provinces: [],
+    address: null,
+    contact: null,
+    phone: null,
+    remark: null,
+    status: 1,
+    allowInventoryShare: 0,
+  })
+}
+
+function handleUpdate(row: any) {
+  Object.assign(form, row || {})
+  title.value = '修改店铺'
+  open.value = true
+}
+
+function handleDelete(row: any) {
+  ElMessageBox.confirm('确认删除？').then(() => delShop(row.id)).then(() => {
+    ElMessage.success('删除成功')
+    getList()
+  })
+}
+
+function handleUpdateToken(row: any) {
+  ElMessage.info('更新授权: ' + row.name)
+}
+
+function handleSettingPullLasttime(row: any) {
+  ElMessage.info('设置最后拉取时间: ' + row.name)
+}
+
+function submitForm() {
+  const api = form.id ? updateShop : addShop
+  api({ ...form }).then((res: any) => {
+    if (res.code === 200) {
+      ElMessage.success('保存成功')
+      open.value = false
+      getList()
+    } else {
+      ElMessage.error(res.msg || '保存失败')
+    }
+  })
+}
+
+function cancel() {
+  open.value = false
+}
+
+onMounted(() => {
+  listPlatform({ status: 0 }).then((res: any) => {
+    typeList.value = res.rows || []
+  })
+  listMerchant({}).then((res: any) => {
+    merchantList.value = res.rows || []
+  })
+  getUserProfile().then((res: any) => {
+    const user = res.data || res.user
+    if (user?.userType !== 0) isMerchant.value = true
+    getList()
+  })
 })
 </script>

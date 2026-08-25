@@ -1,11 +1,11 @@
 server:
-  port: 8088
+  port: 6149
 
 spring:
   application:
     name: erp-api
   profiles:
-    active: demo
+    active: dev
 
   data:
     # redis 配置
