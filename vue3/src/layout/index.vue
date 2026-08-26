@@ -10,11 +10,12 @@
       <app-main />
       <ChatWidget />
     </div>
+    <Onboarding />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useAppStore } from '@/store/modules/app'
 import { useSettingsStore } from '@/store/modules/settings'
 import Sidebar from './components/Sidebar.vue'
@@ -22,11 +23,21 @@ import Navbar from './components/Navbar.vue'
 import TagsView from './components/TagsView.vue'
 import AppMain from './components/AppMain.vue'
 import ChatWidget from '@/components/ChatWidget/index.vue'
+import Onboarding from '@/components/Onboarding/index.vue'
+import { useGuideStore } from '@/store/modules/guide'
 
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
+const guideStore = useGuideStore()
 
 const sidebar = computed(() => appStore.sidebar)
+
+onMounted(() => {
+  // 首次登录后自动弹出新手引导（用户可勾选"下次不再显示"关闭）
+  if (guideStore.shouldShowOnboarding) {
+    guideStore.setOnboardingVisible(true)
+  }
+})
 const device = computed(() => appStore.device)
 
 const classObj = computed(() => ({

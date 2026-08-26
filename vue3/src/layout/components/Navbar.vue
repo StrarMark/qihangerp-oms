@@ -34,6 +34,10 @@
         </div>
       </el-popover>
 
+      <el-tooltip content="帮助中心" placement="bottom">
+        <el-icon :size="20" class="help-icon" @click="guideStore.setHelpVisible(true)"><QuestionFilled /></el-icon>
+      </el-tooltip>
+
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <el-avatar :size="30" :src="avatar" />
@@ -52,6 +56,7 @@
         </template>
       </el-dropdown>
     </div>
+    <HelpCenter />
   </div>
 </template>
 
@@ -59,17 +64,20 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessageBox } from 'element-plus'
-import { ArrowDown, Bell } from '@element-plus/icons-vue'
+import { ArrowDown, Bell, QuestionFilled } from '@element-plus/icons-vue'
 import { useAppStore } from '@/store/modules/app'
 import { useUserStore } from '@/store/modules/user'
 import { getUnreadMessages, markMessageRead, markAllMessagesRead } from '@/api/sys/message'
 import { getToken } from '@/utils/auth'
 import Hamburger from '@/components/Hamburger/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import HelpCenter from '@/components/HelpCenter/index.vue'
+import { useGuideStore } from '@/store/modules/guide'
 
 const router = useRouter()
 const appStore = useAppStore()
 const userStore = useUserStore()
+const guideStore = useGuideStore()
 
 const sidebar = computed(() => appStore.sidebar)
 const avatar = computed(() => userStore.avatar)
@@ -205,6 +213,7 @@ async function logout() {
       :deep(.el-badge__content) { font-size: 11px; }
     }
     .notif-icon { color: #606266; }
+    .help-icon { color: #606266; cursor: pointer; }
 
     .avatar-container {
       cursor: pointer;
