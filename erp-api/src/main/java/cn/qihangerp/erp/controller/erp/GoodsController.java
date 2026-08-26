@@ -1,24 +1,28 @@
 package cn.qihangerp.erp.controller.erp;
 
 import cn.qihangerp.common.*;
-import cn.qihangerp.model.entity.OGoods;
-import cn.qihangerp.model.entity.OGoodsSku;
-import cn.qihangerp.model.entity.ErpSupplierProductItem;
+import cn.qihangerp.model.entity.*;
 import cn.qihangerp.model.bo.GoodsAddBo;
 import cn.qihangerp.model.query.GoodsQuery;
 import cn.qihangerp.model.query.GoodsSkuQuery;
 import cn.qihangerp.model.vo.GoodsSpecListVo;
 import cn.qihangerp.security.common.BaseController;
+import cn.qihangerp.service.OGoodsBrandService;
+import cn.qihangerp.service.OGoodsCategoryService;
 import cn.qihangerp.service.OGoodsService;
 import cn.qihangerp.service.OGoodsSkuService;
 import cn.qihangerp.mapper.ErpSupplierProductItemMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
+import net.sourceforge.pinyin4j.PinyinHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static cn.qihangerp.common.AjaxResult.CODE_TAG;
+import static cn.qihangerp.common.AjaxResult.MSG_TAG;
 
 /**
  * 商品管理Controller
@@ -34,7 +38,8 @@ public class GoodsController extends BaseController
     private final OGoodsService goodsService;
     private final OGoodsSkuService skuService;
     private final ErpSupplierProductItemMapper supplierProductItemMapper;
-
+    private final OGoodsBrandService goodsBrandService;
+    private final OGoodsCategoryService goodsCategoryService;
     /**
      * 搜索商品SKU
      * 条件：商品编码、SKU、商品名称
@@ -175,6 +180,65 @@ public class GoodsController extends BaseController
         if(result==0) return AjaxResult.success();
         else if (result==-100) return AjaxResult.error("有关联的订单，不能删除！");
         else return AjaxResult.error();
+    }
+
+    @PostMapping("/generateGoodsNumber")
+    public AjaxResult generateGoodsNumber(@RequestBody GoodsAddBo goods) {
+        if(goods.getCategoryId()==null||goods.getCategoryId()<=0) return AjaxResult.error("请选择商品分类");
+        String number = "";
+        String outNum = "";
+        if(goods.getBrandId()!=null&& goods.getBrandId()>0){
+            OGoodsBrand brand = goodsBrandService.getById(goods.getBrandId());
+            if(brand!=null&&StringUtils.hasText(brand.getNum())){
+                number+=brand.getNum()+"-";
+            }
+        }
+        OGoodsCategory category = goodsCategoryService.getById(goods.getCategoryId());
+        if(category!=null&&StringUtils.hasText(category.getNumber())){
+            number+=category.getNumber()+"-";
+            outNum += category.getNumber()+"-";
+        }
+        StringBuilder pinyinInitials = new StringBuilder();
+        if(StringUtils.hasText(goods.getName())){
+            String s = goods.getName().substring(0,goods.getName().length()>3?3:goods.getName().length());
+            // 遍历中文字符
+            for (int i = 0; i < s.length(); i++) {
+                char character = s.charAt(i);
+
+                // 如果是汉字
+                if (Character.toString(character).matches("[\\u4e00-\\u9fa5]")) {
+                    // 获取拼音首字母
+                    String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(character);
+                    if (pinyinArray != null) {
+                        pinyinInitials.append(pinyinArray[0].charAt(0));  // 获取拼音的首字母
+                    }
+                }
+            }
+            number+= pinyinInitials.toString().toUpperCase();
+            outNum+= pinyinInitials.toString().toUpperCase();
+        }else{
+            Long categoryGoodsTotal = goodsService.getCategoryGoodsTotal(goods.getCategoryId());
+            Long numberIndex = 1L;
+            if(categoryGoodsTotal!=null||categoryGoodsTotal>0){
+                numberIndex = categoryGoodsTotal+1;
+            }
+            if(numberIndex.toString().length()<3){
+                for (int i=0;i<3-numberIndex.toString().length();i++){
+                    number+="0";
+                    outNum+="0";
+                }
+                number+=numberIndex;
+                outNum+=numberIndex;
+            }
+        }
+
+
+
+        AjaxResult ajaxResult = AjaxResult.success();
+        ajaxResult.put("data",number);
+        ajaxResult.put(CODE_TAG, 200);
+        ajaxResult.put(MSG_TAG, outNum);
+        return ajaxResult;
     }
 
 //    @RequestMapping(value = "/api/erp-api/goods_sku_import", method = RequestMethod.POST)

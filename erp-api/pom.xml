@@ -78,6 +78,11 @@
             <artifactId>open-sdk</artifactId>
             <version>2.1.12</version>
         </dependency>
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.1</version>
+        </dependency>
         <!-- 移除老旧冲突依赖 -->
         <!--        <dependency>-->
         <!--            <groupId>org.codehaus.jackson</groupId>-->
