@@ -8,6 +8,7 @@ import cn.qihangerp.common.TableDataInfo;
 import cn.qihangerp.erp.service.ShopPullApiService;
 import cn.qihangerp.model.entity.ShopOrder;
 import cn.qihangerp.model.entity.ShopOrderItem;
+import cn.qihangerp.model.bo.ShopOrderCreateBo;
 import cn.qihangerp.model.query.ShopOrderQueryBo;
 import cn.qihangerp.model.request.OrderPullRequest;
 import cn.qihangerp.security.common.BaseController;
@@ -48,6 +49,22 @@ public class ShopOrderController extends BaseController {
     public TableDataInfo itemList(ShopOrderQueryBo bo, PageQuery pageQuery) {
         PageResult<ShopOrderItem> pageList = shopOrderItemService.queryPageList(bo, pageQuery);
         return getDataTable(pageList);
+    }
+
+    /**
+     * 手动创建店铺订单（金额单位：元，后端转换为分）。
+     * 前端：{@code /api/oms-api/shop/order/create}
+     */
+    @PostMapping("/create")
+    public AjaxResult create(@RequestBody ShopOrderCreateBo bo) {
+        if (bo == null || bo.getShopId() == null) {
+            return AjaxResult.error("参数错误，缺少店铺信息");
+        }
+        ResultVo<Long> result = shopOrderService.createOrder(bo, getUsername());
+        if (result.getCode() == 0) {
+            return AjaxResult.success("创建成功", result.getData());
+        }
+        return AjaxResult.error(result.getCode(), result.getMsg());
     }
 
     /**

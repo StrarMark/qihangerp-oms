@@ -28,5 +28,7 @@ public class ShopGoodsSkuBo implements Serializable {
     private Long merchantId;
     private Integer hasLink;//是否关联 0 未关联 1已关联
     private Integer status;//状态
+    // 商品标题（模糊查询）
+    private String productTitle;
 
 }

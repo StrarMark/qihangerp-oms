@@ -87,8 +87,9 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             startTimestamp = startTime.toEpochSecond(ZoneOffset.ofHours(8));
             endTimestamp = endTime.toEpochSecond(ZoneOffset.ofHours(8));
         }
-        pageQuery.setOrderByColumn("order_time");
-        pageQuery.setIsAsc("desc");
+        // 按订单在系统中的创建时间倒序（新拉取/新建的订单排在最前），id 作为次级排序保证稳定
+        pageQuery.setOrderByColumn("create_on,id");
+        pageQuery.setIsAsc("desc,desc");
 
 
         LambdaQueryWrapper<ShopOrder> queryWrapper = new LambdaQueryWrapper<ShopOrder>()
@@ -532,7 +533,7 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             ShopGoodsSku shopGoodsSku = shopGoodsSkuMapper.selectById(item.getId());
             if(shopGoodsSku==null) return ResultVo.error("找不到商品数据，id:"+item.getId());
             if(shopGoodsSku.getShopId()!=shop.getId()) return ResultVo.error("店铺商品不属于你");
-            if(shopGoodsSku.getErpGoodsSkuId()==null||shopGoodsSku.getErpGoodsSkuId()==0) return ResultVo.error("店铺skuId："+item.getId()+"未关联商品库商品sku");
+            // 未关联商品库商品sku时不拦截，erpGoodsSkuId记为0，支持快速下单（后续可在订单库中补关联）
             // 组合
             ShopOrderItem orderItem = new ShopOrderItem();
             orderItem.setMerchantId(shop.getMerchantId());
@@ -557,8 +558,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             orderItem.setIsChangePrice("false");
             orderItem.setIsDiscounted("false");
             orderItem.setDiscountAmount(0);
-            orderItem.setErpGoodsId(shopGoodsSku.getErpGoodsId());
-            orderItem.setErpGoodsSkuId(shopGoodsSku.getErpGoodsSkuId());
+            orderItem.setErpGoodsId(shopGoodsSku.getErpGoodsId()==null?0L:shopGoodsSku.getErpGoodsId());
+            orderItem.setErpGoodsSkuId(shopGoodsSku.getErpGoodsSkuId()==null?0L:shopGoodsSku.getErpGoodsSkuId());
             orderItem.setOrderId(order.getOrderNum());
             orderItem.setOrderTime(System.currentTimeMillis()/1000);
             orderItem.setCreateOn(LocalDateTime.now());

@@ -46,6 +46,7 @@ public class ShopGoodsSkuServiceImpl extends ServiceImpl<ShopGoodsSkuMapper, Sho
                 .eq(StringUtils.hasText(bo.getOuterSkuId()),ShopGoodsSku::getOuterSkuId,bo.getOuterSkuId())
                 .eq(StringUtils.hasText(bo.getSkuId()),ShopGoodsSku::getSkuId,bo.getSkuId())
                 .eq(StringUtils.hasText(bo.getSkuCode()),ShopGoodsSku::getSkuCode,bo.getSkuCode())
+                .like(StringUtils.hasText(bo.getProductTitle()),ShopGoodsSku::getProductTitle,bo.getProductTitle())
                 .eq(bo.getShopId()!=null,ShopGoodsSku::getShopId,bo.getShopId())
                 .eq(bo.getShopType()!=null,ShopGoodsSku::getShopType,bo.getShopType())
                 .eq(bo.getMerchantId()!=null,ShopGoodsSku::getMerchantId,bo.getMerchantId())

@@ -18,9 +18,6 @@ export function createShopOrder(data: Record<string, any>) {
 export function cancelOrder(data: Record<string, any>) {
   return request({ url: '/api/oms-api/shop/order/cancelOrder', method: 'post', data })
 }
-export function offlineOrderCreate(data: Record<string, any>) {
-  return request({ url: '/api/oms-api/shop/order/offlineOrderCreate', method: 'post', data })
-}
 
 export function pullOrderDetail(data: Record<string, any>) {
   return request({ url: '/api/oms-api/shop/order/pull_detail', method: 'post', data })

@@ -358,7 +358,7 @@ function handleSelectionChange(selection: any[]) {
 }
 
 function handleAdd() {
-  router.push('/shop/shop_order_create?shopType=' + (props.shopType || '') + '&shopId=' + (queryParams.shopId || ''))
+  router.push('/sale/shop_order_create?shopType=' + (props.shopType || '') + '&shopId=' + (queryParams.shopId || ''))
 }
 
 function handlePull() {
