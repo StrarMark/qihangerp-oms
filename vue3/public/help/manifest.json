@@ -1,0 +1,38 @@
+{
+  "categories": [
+    {
+      "id": "guide",
+      "title": "指引文章",
+      "articles": [
+        { "id": "guide-appkey", "title": "配置小红书、快手平台 appkey", "file": "guide-appkey" },
+        { "id": "guide-weishop", "title": "配置微信小店", "file": "guide-weishop" },
+        { "id": "guide-shop", "title": "添加店铺", "file": "guide-shop" },
+        { "id": "guide-pull", "title": "拉取店铺商品/订单", "file": "guide-pull" },
+        { "id": "guide-ship", "title": "打单发货（电子面单）", "file": "guide-ship" },
+        { "id": "guide-aftersale", "title": "售后处理", "file": "guide-aftersale" }
+      ]
+    },
+    {
+      "id": "flow",
+      "title": "流程与逻辑",
+      "articles": [
+        { "id": "flow-order", "title": "平台订单处理流程", "file": "flow-order" },
+        { "id": "flow-stock", "title": "库存管理流程", "file": "flow-stock" },
+        { "id": "flow-intersect", "title": "两条流程的交汇与桥梁", "file": "flow-intersect" },
+        { "id": "flow-link-logic", "title": "店铺商品映射逻辑", "file": "flow-link-logic" }
+      ]
+    },
+    {
+      "id": "nav",
+      "title": "功能菜单导航",
+      "articles": [
+        { "id": "nav-goods", "title": "商品库管理", "file": "nav-goods" },
+        { "id": "nav-shopgoods", "title": "店铺商品管理", "file": "nav-shopgoods" },
+        { "id": "nav-purchase", "title": "采购管理", "file": "nav-purchase" },
+        { "id": "nav-stock", "title": "库存管理", "file": "nav-stock" },
+        { "id": "nav-order", "title": "订单管理", "file": "nav-order" },
+        { "id": "nav-aftersale", "title": "售后管理", "file": "nav-aftersale" }
+      ]
+    }
+  ]
+}

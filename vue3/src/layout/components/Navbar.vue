@@ -35,7 +35,7 @@
       </el-popover>
 
       <el-tooltip content="帮助中心" placement="bottom">
-        <el-icon :size="20" class="help-icon" @click="guideStore.setHelpVisible(true)"><QuestionFilled /></el-icon>
+        <el-icon :size="20" class="help-icon" @click="router.push('/help')"><QuestionFilled /></el-icon>
       </el-tooltip>
 
       <el-dropdown class="avatar-container" trigger="click">
@@ -56,7 +56,6 @@
         </template>
       </el-dropdown>
     </div>
-    <HelpCenter />
   </div>
 </template>
 
@@ -71,13 +70,10 @@ import { getUnreadMessages, markMessageRead, markAllMessagesRead } from '@/api/s
 import { getToken } from '@/utils/auth'
 import Hamburger from '@/components/Hamburger/index.vue'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
-import HelpCenter from '@/components/HelpCenter/index.vue'
-import { useGuideStore } from '@/store/modules/guide'
 
 const router = useRouter()
 const appStore = useAppStore()
 const userStore = useUserStore()
-const guideStore = useGuideStore()
 
 const sidebar = computed(() => appStore.sidebar)
 const avatar = computed(() => userStore.avatar)

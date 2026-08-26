@@ -10,8 +10,6 @@ interface GuideState {
   pageGuides: Record<string, boolean>
   // Onboarding 弹窗运行时显示状态（非持久化，供跨组件触发）
   onboardingVisible: boolean
-  // HelpCenter 抽屉运行时显示状态（非持久化，供跨组件触发）
-  helpVisible: boolean
 }
 
 function persist(disabled: boolean, pageGuides: Record<string, boolean>) {
@@ -26,10 +24,9 @@ export const useGuideStore = defineStore('guide', {
         onboardingDisabled: !!raw.onboardingDisabled,
         pageGuides: raw.pageGuides || {},
         onboardingVisible: false,
-        helpVisible: false,
       }
     } catch {
-      return { onboardingDisabled: false, pageGuides: {}, onboardingVisible: false, helpVisible: false }
+      return { onboardingDisabled: false, pageGuides: {}, onboardingVisible: false }
     }
   },
   getters: {
@@ -48,16 +45,12 @@ export const useGuideStore = defineStore('guide', {
     setOnboardingVisible(v: boolean) {
       this.onboardingVisible = v
     },
-    // 设置 HelpCenter 抽屉显示状态（运行时，供跨组件触发/关闭）
-    setHelpVisible(v: boolean) {
-      this.helpVisible = v
-    },
     // 用户勾选"下次不再显示"，永久关闭自动弹窗
     disableOnboarding() {
       this.onboardingDisabled = true
       persist(this.onboardingDisabled, this.pageGuides)
     },
-    // 重新启用自动弹窗（帮助中心"重新查看引导"重置用）
+    // 重新启用自动弹窗（帮助页"重新查看引导"重置用）
     enableOnboarding() {
       this.onboardingDisabled = false
       sessionStorage.removeItem(SESSION_KEY)

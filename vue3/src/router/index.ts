@@ -36,6 +36,19 @@ export const constantRoutes = [
     meta: { title: '404' },
   },
   {
+    path: '/help',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'Help',
+        component: () => import('@/views/help/index.vue'),
+        meta: { title: '帮助中心' },
+      },
+    ],
+  },
+  {
     path: '/',
     name: 'Index',
     component: Layout,

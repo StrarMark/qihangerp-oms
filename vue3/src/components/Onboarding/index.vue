@@ -46,11 +46,13 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { MagicStick, DataAnalysis, Connection, QuestionFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { useGuideStore } from '@/store/modules/guide'
 
 const guideStore = useGuideStore()
+const router = useRouter()
 
 const visible = computed({
   get: () => guideStore.onboardingVisible,
@@ -144,7 +146,7 @@ const steps = [
           <div class="entry-links">
             <a href="https://gitee.com/qiliping/qihang-erp-open/issues" target="_blank">Gitee Issue</a>
             <a href="https://github.com/zeasin/qihang-erp-open/issues" target="_blank">GitHub Issue</a>
-            <a href="https://qihangerp.cn/community/feedback" target="_blank">官网反馈</a>
+            <a href="https://qihangerp.cn/community/feedback?source=erp-open" target="_blank">官网反馈</a>
           </div>
         </div>
       </div>
@@ -168,10 +170,10 @@ function finish() {
   visible.value = false
 }
 
-// 打开系统内帮助中心并关闭引导
+// 跳转帮助中心页面并关闭引导
 function openHelp() {
   visible.value = false
-  guideStore.setHelpVisible(true)
+  router.push('/help')
 }
 
 // 弹窗关闭：标记本会话已弹过；若用户勾选"不再显示"则永久禁用
