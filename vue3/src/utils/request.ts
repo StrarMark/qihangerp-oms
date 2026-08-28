@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getToken } from './auth'
+import { getToken, removeToken } from './auth'
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
@@ -31,7 +31,7 @@ service.interceptors.response.use(
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        localStorage.clear()
+        removeToken()
         window.location.href = '/login'
       })
     } else {
