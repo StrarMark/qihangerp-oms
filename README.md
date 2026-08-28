@@ -1,21 +1,18 @@
 # 启航电商ERP系统-电商企业数字化底座
 
+> 🛠️ **开发者？** → [**开发者快速上手指南**](https://qihangerp.cn/docs/quickstart.html)（环境配置、3步启动、常见报错速查、技术支持）
+>
 > 🚀 **不想折腾环境？** 官方提供【一键运行包】——已打包完整环境（免装 Java/MySQL/Redis），下载即用！
 >
 > 👉 前往官网下载：**[开源版一键演示包](https://qihangerp.cn/open/download.html)**（关注公众号获取下载权限）
 
 ## 🔗 相关链接
 
-| 链接 | 地址 |
-|------|------|
-| 🌐 官网 | [https://qihangerp.cn/](https://qihangerp.cn/) |
-| 🧩 开源版及服务 | [https://qihangerp.cn/open/](https://qihangerp.cn/open/) |
-| 📦 开源版一键演示包下载 | [https://qihangerp.cn/open/download.html](https://qihangerp.cn/open/download.html) |
-| 💼 企业版预约演示 | [https://qihangerp.cn/demo.html](https://qihangerp.cn/demo.html) |
-| ⚙️ ERP | [https://qihangerp.cn/open/erp.html](https://qihangerp.cn/open/erp.html) |
-| 🧩 OMS | [https://qihangerp.cn/open/oms.html](https://qihangerp.cn/open/oms.html) |
-| 🏪 零售ERP | [https://qihangerp.cn/open/retail-erp.html](https://qihangerp.cn/open/retail-erp.html) |
-| 🌍 跨境ERP | [https://qihangerp.cn/open/cross-border.html](https://qihangerp.cn/open/cross-border.html) |
+| 链接              | 地址                                                                 |
+|-------------------|----------------------------------------------------------------------|
+| 🌐 官网           | [https://qihangerp.cn/](https://qihangerp.cn/)                       |
+| 📦 更多开源产品   | [https://qihangerp.cn/open/](https://qihangerp.cn/open/)             |
+| 💼 企业版 | [https://qihangerp.cn/enterprise/](https://qihangerp.cn/enterprise/) |
 
 > **欢迎来到我们的开源项目！创新、协作、高质量的代码。您的Star🌟，是我们前进的动力！ 💪✨🏆**
 
