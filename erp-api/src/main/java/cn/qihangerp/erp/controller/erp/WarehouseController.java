@@ -42,6 +42,9 @@ public class WarehouseController extends BaseController {
     @PostMapping
     public AjaxResult add(@RequestBody ErpWarehouse warehouse)
     {
+        warehouse.setMerchantId(0L);
+        warehouse.setShopId(0L);
+        warehouse.setWarehouseSource(0);
         warehouse.setCreateBy(getUsername());
         warehouse.setCreateTime(LocalDateTime.now());
         boolean save = warehouseService.save(warehouse);
