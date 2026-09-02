@@ -86,7 +86,7 @@
           <el-input v-model="form.accountToken" placeholder="请输入Token或Pin" />
         </el-form-item>
         <el-form-item v-if="form.warehouseType!=='JDYC'" label="省市区" prop="areaCode">
-          <el-cascader v-model="form.areaCode" :options="regionList" :props="{value:'id',label:'name',children:'children'}" placeholder="请选择省市区" style="width:300px" clearable />
+          <el-cascader v-model="form.areaCode" :options="pcaTextArr" placeholder="请选择省市区" style="width:300px" clearable />
         </el-form-item>
         <el-form-item v-if="form.warehouseType!=='JDYC'" label="详细地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入详细地址" />
@@ -121,13 +121,14 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Refresh, Plus } from '@element-plus/icons-vue'
 import { listWarehouse, getLocation, addLocation, updateLocation, delLocation } from '@/api/wms/warehouse'
+import { pcaTextArr } from '@/utils/chinaAreaData'
 
 import Pagination from '@/components/Pagination/index.vue'
 import RightToolbar from '@/components/RightToolbar/index.vue'
 
 const router = useRouter()
 const loading=ref(true);const showSearch=ref(true);const total=ref(0)
-const locationList=ref<any[]>([]);const regionList=ref<any[]>([])
+const locationList=ref<any[]>([])
 const open=ref(false);const title=ref('')
 
 const queryParams=reactive({pageNum:1,pageSize:10,warehouseNo:null as string|null,warehouseName:null as string|null,status:null as string|null})
