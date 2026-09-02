@@ -117,6 +117,10 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
         ErpPurchaseOrderShip ship = shipMapper.selectById(bo.getId());
         if (ship == null) return ResultVo.error("采购物流不存在");
         else if (ship.getStatus().intValue() == 2) return ResultVo.error("已处理过了请勿重复操作");
+        ErpPurchaseOrder erpPurchaseOrder = orderMapper.selectById(ship.getOrderId());
+        if(erpPurchaseOrder==null) return ResultVo.error("采购单不存在");
+
+
         ErpWarehouse warehouse = warehouseMapper.selectById(bo.getWarehouseId());
         if (warehouse == null) return ResultVo.error("仓库不存在");
         // 子表（使用采购单item数据）
@@ -180,8 +184,8 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
         stockIn.setStatus(0); // 待入库
         stockIn.setCreateBy(userName);
         stockIn.setCreateTime(DateUtils.getNowDate());
-        stockIn.setMerchantId(order.getMerchantId());
-        stockIn.setShopId(order.getShopId());
+        stockIn.setMerchantId(erpPurchaseOrder.getMerchantId());
+        stockIn.setShopId(erpPurchaseOrder.getShopId());
         stockInMapper.insert(stockIn);
 
         // 创建入库单明细
@@ -207,8 +211,8 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
             stockInItem.setStatus(0); // 待入库
             stockInItem.setCreateBy(userName);
             stockInItem.setCreateTime(DateUtils.getNowDate());
-            stockInItem.setMerchantId(order.getMerchantId());
-            stockInItem.setShopId(order.getShopId());
+            stockInItem.setMerchantId(erpPurchaseOrder.getMerchantId());
+            stockInItem.setShopId(erpPurchaseOrder.getShopId());
             stockInItemMapper.insert(stockInItem);
         }
 
