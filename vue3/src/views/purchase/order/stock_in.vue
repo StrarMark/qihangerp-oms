@@ -1,34 +1,65 @@
 <template>
-  <div class="purchase-inbound">
+  <div class="app-container">
     <el-card class="form-card">
       <template #header>
-        <span>采购入库单</span>
-        <el-button type="primary" size="small" style="float: right;" @click="selectPurchaseOrder">选择采购单</el-button>
+        <span>采购单信息</span>
       </template>
-      <el-form :model="inboundForm" label-width="120px" size="small">
-        <el-form-item label="采购单号">
-          <el-input v-model="inboundForm.purchaseOrderNo" disabled />
-        </el-form-item>
-        <el-form-item label="供应商">
-          <el-input v-model="inboundForm.supplierName" disabled />
-        </el-form-item>
-        <el-form-item label="入库日期">
-          <el-date-picker v-model="inboundForm.inboundDate" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" />
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="inboundForm.remark" type="textarea" rows="2" />
-        </el-form-item>
+      <el-form ref="formRef" :model="form" size="small" :inline="true" label-width="128px">
+        <el-col :span="24">
+          <el-form-item label="采购单号">
+            <el-input v-model="form.orderNum" disabled style="width: 220px" />
+          </el-form-item>
+          <el-form-item label="供应商">
+            <el-input v-model="supplierName" disabled style="width: 220px" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="采购金额">
+            <el-input v-model="form.orderAmount" disabled style="width: 220px" />
+          </el-form-item>
+          <el-form-item label="采购日期">
+            <el-input v-model="form.orderDate" disabled style="width: 220px" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="发货物流公司">
+            <el-input v-model="ship.shipCompany" disabled style="width: 220px" />
+          </el-form-item>
+          <el-form-item label="发货物流单号">
+            <el-input v-model="ship.shipNum" disabled style="width: 220px" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="发货日期">
+            <el-input v-model="form.supplierDeliveryTime" disabled style="width: 220px" />
+          </el-form-item>
+          <el-form-item label="物流状态">
+            <el-tag :type="shipStatusType">{{ shipStatusText }}</el-tag>
+          </el-form-item>
+        </el-col>
       </el-form>
     </el-card>
 
     <el-card class="items-card" style="margin-top: 20px;">
       <template #header>
-        <span>入库商品明细</span>
-        <el-button type="primary" size="small" style="float: right;" @click="addItem" :disabled="!inboundForm.purchaseOrderId">添加商品</el-button>
+        <span>商品明细</span>
       </template>
-      <el-table :data="inboundItems" border stripe>
-        <el-table-column label="SKU编码" prop="skuCode" width="120" />
-        <el-table-column label="商品名称" prop="skuName" min-width="150" />
+      <el-table :data="itemList" border stripe style="width: 100%">
+        <el-table-column type="index" label="序号" width="60" />
+        <el-table-column prop="colorImage" label="商品图片" width="80">
+          <template #default="scope">
+            <image-preview :src="scope.row.colorImage" :width="50" :height="50" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="goodsName" label="商品名称" min-width="150" />
+        <el-table-column prop="specNum" label="SKU编码" width="120" />
+        <el-table-column prop="skuCode" label="SKU编码" width="120" />
+        <el-table-column prop="colorValue" label="规格1" width="80" />
+        <el-table-column prop="sizeValue" label="规格2" width="80" />
+        <el-table-column prop="styleValue" label="规格3" width="80" />
+        <el-table-column prop="price" label="单价" width="80" />
+        <el-table-column prop="quantity" label="数量" width="80" />
+        <el-table-column prop="amount" label="总金额" width="100" />
         <el-table-column label="库存模式" width="100">
           <template #default="scope">
             <el-tag size="small" :type="scope.row.inventoryMode === 1 ? 'success' : 'info'">
@@ -36,224 +67,214 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="计划数量" prop="planQuantity" width="80" align="center" />
-        <el-table-column label="已入库数量" prop="inboundQuantity" width="100" align="center" />
-        <el-table-column label="本次入库" width="180" align="center">
-          <template #default="scope">
-            <div v-if="scope.row.inventoryMode === 0">
-              <el-input-number v-model="scope.row.thisInboundQuantity" :min="0" :max="scope.row.planQuantity - scope.row.inboundQuantity" controls-position="right" size="small" />
-            </div>
-            <div v-else>
-              <el-button type="text" size="small" @click="openItemDetail(scope.row)">配置条码明细</el-button>
-              <span v-if="scope.row.batchList && scope.row.batchList.length">（已录 {{ scope.row.batchList.length }} 件）</span>
-            </div>
-          </template>
-        </el-table-column>
       </el-table>
-
-      <el-dialog :title="`录入条码明细 - ${currentSku?.skuName || ''}`" v-model="itemDetailVisible" width="800px" @close="resetBatchForm">
-        <div class="batch-actions">
-          <el-button type="primary" size="small" @click="addBatchRow"><el-icon><Plus /></el-icon>添加条码</el-button>
-          <el-button type="info" size="small"><el-icon><Upload /></el-icon>批量导入</el-button>
-          <div class="scan-hint">
-            <el-icon><Camera /></el-icon>支持扫码枪连续扫描，每次扫描后自动添加一行
-          </div>
-        </div>
-        <el-table :data="batchFormList" border stripe>
-          <el-table-column label="条码" width="160">
-            <template #default="scope">
-              <el-input v-model="scope.row.barcode" size="small" placeholder="扫描或输入" @keyup.enter="onBarcodeScan(scope.$index)" />
-            </template>
-          </el-table-column>
-          <el-table-column label="金重(g)" width="100">
-            <template #default="scope">
-              <el-input-number v-model="scope.row.goldWeight" :min="0" :precision="2" size="small" controls-position="right" />
-            </template>
-          </el-table-column>
-          <el-table-column label="银重(g)" width="100">
-            <template #default="scope">
-              <el-input-number v-model="scope.row.silverWeight" :min="0" :precision="2" size="small" controls-position="right" />
-            </template>
-          </el-table-column>
-          <el-table-column label="工费(元)" width="100">
-            <template #default="scope">
-              <el-input-number v-model="scope.row.laborCost" :min="0" :precision="2" size="small" controls-position="right" />
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" width="80">
-            <template #default="scope">
-              <el-button type="text" size="small" @click="removeBatchRow(scope.$index)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="batch-total">共 {{ batchFormList.length }} 件，总计金重 {{ totalGoldWeight }}g，银重 {{ totalSilverWeight }}g</div>
-        <template #footer>
-          <el-button @click="itemDetailVisible = false">取消</el-button>
-          <el-button type="primary" @click="saveBatchList">保存明细</el-button>
-        </template>
-      </el-dialog>
     </el-card>
 
-    <div class="submit-bar">
-      <el-button type="primary" @click="submitInbound" :loading="submitting">确认入库</el-button>
-      <el-button @click="saveDraft">暂存</el-button>
+    <el-card class="stockin-card" style="margin-top: 20px;" v-if="canCreateStockIn">
+      <template #header>
+        <span>生成入库单</span>
+      </template>
+      <el-form ref="stockInFormRef" :model="stockInForm" size="small" :rules="stockInRules" :inline="true" label-width="128px">
+        <el-row>
+          <el-form-item label="收货日期" prop="receiptTime">
+            <el-date-picker v-model="stockInForm.receiptTime" clearable type="date" value-format="yyyy-MM-dd" placeholder="请选择收货日期" style="width: 220px" />
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="入库仓库" prop="warehouseId">
+            <el-select v-model="stockInForm.warehouseId" filterable placeholder="请选择入库仓库" style="width: 220px">
+              <el-option v-for="item in warehouseList" :key="item.id" :label="item.warehouseName" :value="item.id">
+                <span style="float: left">{{ item.warehouseName }}</span>
+                <span v-if="item.warehouseType=='LOCAL'" style="float: right; color: #8492a6; font-size: 13px">本地仓</span>
+                <span v-else-if="item.warehouseType=='JDYC'" style="float: right; color: #8492a6; font-size: 13px">京东云仓</span>
+                <span v-else-if="item.warehouseType=='JKYYC'" style="float: right; color: #8492a6; font-size: 13px">吉客云云仓</span>
+                <span v-else-if="item.warehouseType=='CLOUD'" style="float: right; color: #8492a6; font-size: 13px">系统云仓</span>
+                <span v-else style="float: right; color: #8492a6; font-size: 13px">其他</span>
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="备注">
+            <el-input v-model="stockInForm.remark" type="textarea" style="width: 220px" />
+          </el-form-item>
+        </el-row>
+      </el-form>
+    </el-card>
+
+    <el-card v-else style="margin-top: 20px;">
+      <el-empty>
+        <template #description>
+          <span v-if="ship.status === 0">待收货，请先确认收货后再入库</span>
+          <span v-else-if="ship.status === 1">已收货，可以入库</span>
+          <span v-else-if="ship.status === 2">已入库</span>
+          <span v-else>物流状态异常</span>
+        </template>
+      </el-empty>
+    </el-card>
+
+    <div class="submit-bar" v-if="canCreateStockIn">
+      <el-button type="primary" style="margin-left: 128px;" :loading="submitting" @click="submitForm">生成采购入库单</el-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Plus, Upload, Camera } from '@element-plus/icons-vue'
+import type { FormInstance } from 'element-plus'
+import { getPurchaseOrder } from '@/api/purchase/purchaseOrder'
+import { getPurchaseOrderShip, createStockInEntry } from '@/api/purchase/purchaseOrderShip'
+import { listAllSupplier } from '@/api/goods/supplier'
+import { myAvailableList } from '@/api/wms/warehouse'
+import ImagePreview from '@/components/ImagePreview/index.vue'
 
-const inboundForm = reactive({
-  purchaseOrderId: null,
-  purchaseOrderNo: '',
-  supplierName: '',
-  inboundDate: new Date().toISOString().slice(0, 10),
-  remark: ''
-})
-
-const inboundItems = ref<any[]>([])
+const route = useRoute()
+const router = useRouter()
+const formRef = ref<FormInstance>()
+const stockInFormRef = ref<FormInstance>()
 const submitting = ref(false)
-const itemDetailVisible = ref(false)
-const currentSku = ref<any>(null)
-const batchFormList = ref<any[]>([])
 
-const totalGoldWeight = computed(() => {
-  return batchFormList.value.reduce((sum: number, item: any) => sum + (item.goldWeight || 0), 0).toFixed(2)
+const form = reactive<Record<string, any>>({
+  id: null,
+  orderNum: null,
+  supplierId: null,
+  contactId: null,
+  orderAmount: null,
+  orderDate: null,
+  supplierDeliveryTime: null,
+  createBy: null,
+  auditUser: null,
+  status: null
 })
 
-const totalSilverWeight = computed(() => {
-  return batchFormList.value.reduce((sum: number, item: any) => sum + (item.silverWeight || 0), 0).toFixed(2)
+const ship = reactive<Record<string, any>>({
+  id: null,
+  orderId: null,
+  shipCompany: null,
+  shipNum: null,
+  orderSpecUnitTotal: null,
+  status: null
 })
 
-function selectPurchaseOrder() {
-  ElMessage.info('请先选择采购单，商品由采购单自动带出')
-}
+const stockInForm = reactive<Record<string, any>>({
+  receiptTime: null,
+  warehouseId: null,
+  remark: null
+})
 
-function addItem() {
-  ElMessage.info('请先选择采购单，商品由采购单自动带出')
-}
+const itemList = ref<any[]>([])
+const supplierList = ref<any[]>([])
+const warehouseList = ref<any[]>([])
+const supplierName = ref('')
 
-function openItemDetail(row: any) {
-  currentSku.value = row
-  batchFormList.value = JSON.parse(JSON.stringify(row.batchList || []))
-  if (batchFormList.value.length === 0) {
-    addBatchRow()
+const rules = reactive<Record<string, any>>({})
+
+const stockInRules = reactive<Record<string, any>>({
+  receiptTime: [{ required: true, trigger: 'blur', message: '请选择收货日期' }],
+  warehouseId: [{ required: true, trigger: 'blur', message: '请选择入库仓库' }]
+})
+
+const canCreateStockIn = computed(() => {
+  return ship.status === 0 || ship.status === 1
+})
+
+const shipStatusText = computed(() => {
+  const map: Record<number, string> = {
+    0: '待收货',
+    1: '已收货',
+    2: '已入库'
   }
-  itemDetailVisible.value = true
-}
+  return map[ship.status] ?? '未知'
+})
 
-function addBatchRow() {
-  batchFormList.value.push({
-    barcode: '',
-    goldWeight: 0,
-    silverWeight: 0,
-    laborCost: 0,
-    tempId: Date.now() + Math.random()
-  })
-}
+const shipStatusType = computed(() => {
+  if (ship.status === 2) return 'success'
+  if (ship.status === 1) return 'warning'
+  return 'info'
+})
 
-function removeBatchRow(index: number) {
-  batchFormList.value.splice(index, 1)
-}
-
-function onBarcodeScan(index: number) {
-  const currentRow = batchFormList.value[index]
-  if (currentRow.barcode && currentRow.barcode.trim()) {
-    addBatchRow()
-  }
-}
-
-function saveBatchList() {
-  const emptyBarcode = batchFormList.value.some((item: any) => !item.barcode || !item.barcode.trim())
-  if (emptyBarcode) {
-    ElMessage.error('请完整填写所有条码')
+function getDetail() {
+  const id = route.query.id as string
+  if (!id) {
+    ElMessage.error('缺少ID参数')
     return
   }
-  currentSku.value.batchList = JSON.parse(JSON.stringify(batchFormList.value))
-  currentSku.value.thisInboundQuantity = batchFormList.value.length
-  itemDetailVisible.value = false
-  ElMessage.success('明细已保存')
-}
 
-function resetBatchForm() {
-  batchFormList.value = []
-  currentSku.value = null
-}
-
-function submitInbound() {
-  const items = inboundItems.value.map((item: any) => {
-    if (item.inventoryMode === 0) {
-      return {
-        skuId: item.skuId,
-        inventoryMode: 0,
-        quantity: item.thisInboundQuantity
-      }
-    } else {
-      return {
-        skuId: item.skuId,
-        inventoryMode: 1,
-        batchList: item.batchList
+  getPurchaseOrderShip(id).then((response: any) => {
+    if (response.data) {
+      Object.assign(ship, response.data)
+      if (ship.orderId) {
+        loadItemList(String(ship.orderId))
       }
     }
-  }).filter((item: any) => item.inventoryMode === 0 ? item.quantity > 0 : (item.batchList && item.batchList.length > 0))
-
-  if (items.length === 0) {
-    ElMessage.warning('请至少录入一种商品')
-    return
-  }
-
-  submitting.value = true
-  setTimeout(() => {
-    ElMessage.success('入库成功，库存已更新')
-    submitting.value = false
-    resetForm()
-  }, 1000)
-}
-
-function saveDraft() {
-  ElMessage.success('暂存成功')
-}
-
-function resetForm() {
-  Object.assign(inboundForm, {
-    purchaseOrderId: null,
-    purchaseOrderNo: '',
-    supplierName: '',
-    inboundDate: new Date().toISOString().slice(0, 10),
-    remark: ''
+  }).catch(() => {
+    ElMessage.error('物流记录不存在')
   })
-  inboundItems.value = []
 }
+
+function loadItemList(orderId: string) {
+  getPurchaseOrder(orderId).then((res: any) => {
+    if (res.data) {
+      itemList.value = res.data.itemList || []
+      form.orderNum = res.data.orderNum
+      form.orderAmount = res.data.orderAmount
+      form.orderDate = res.data.orderDate
+      form.supplierDeliveryTime = res.data.supplierDeliveryTime
+
+      const supplierId = res.data.supplierId || res.data.contactId
+      if (supplierId) {
+        const supplier = supplierList.value.find((s: any) => s.id === supplierId)
+        supplierName.value = supplier ? supplier.name : ''
+      }
+    }
+  })
+}
+
+function loadWarehouses() {
+  myAvailableList().then((response: any) => {
+    warehouseList.value = response.data || []
+  })
+}
+
+function submitForm() {
+  stockInFormRef.value?.validate((valid: boolean) => {
+    if (valid) {
+      submitting.value = true
+      const params = {
+        id: ship.id,
+        receiptTime: stockInForm.receiptTime,
+        warehouseId: stockInForm.warehouseId,
+        remark: stockInForm.remark,
+        goodsList: itemList.value
+      }
+      createStockInEntry(params).then((res: any) => {
+        if (res.code === 200) {
+          ElMessage.success('入库单创建成功')
+          router.push('/purchase/purchase_ship_list')
+        } else {
+          ElMessage.error(res.msg || '创建失败')
+          submitting.value = false
+        }
+      }).catch(() => {
+        submitting.value = false
+      })
+    }
+  })
+}
+
+onMounted(() => {
+  stockInForm.receiptTime = new Date().toISOString().slice(0, 10)
+  listAllSupplier({}).then((response: any) => {
+    supplierList.value = response.rows || []
+    loadWarehouses()
+    getDetail()
+  })
+})
 </script>
 
 <style scoped>
-.purchase-inbound {
-  padding: 20px;
-  background-color: #f0f2f5;
-}
-.form-card, .items-card {
-  border-radius: 8px;
-}
-.batch-actions {
-  margin-bottom: 15px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.scan-hint {
-  font-size: 12px;
-  color: #909399;
-  margin-left: auto;
-}
-.batch-total {
-  margin-top: 15px;
-  text-align: right;
-  font-size: 14px;
-  color: #409eff;
-}
 .submit-bar {
   margin-top: 20px;
   text-align: center;

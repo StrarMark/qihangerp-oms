@@ -59,7 +59,8 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button size="small" type="text" @click="handleDetail(scope.row)"><el-icon><View /></el-icon>详情</el-button>
-          <el-button v-if="scope.row.status === 0" size="small" type="text" @click="handleCreateEntry(scope.row)"><el-icon><DocumentAdd /></el-icon>入库</el-button>
+          <el-button v-if="scope.row.status === 0" size="small" type="text" @click="handleConfirmReceipt(scope.row)"><el-icon><Check /></el-icon>收货</el-button>
+          <el-button v-if="scope.row.status === 1" size="small" type="text" @click="handleCreateEntry(scope.row)"><el-icon><DocumentAdd /></el-icon>入库</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -117,7 +118,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Search, Refresh, View, DocumentAdd } from '@element-plus/icons-vue'
+import { Search, Refresh, View, DocumentAdd, Check } from '@element-plus/icons-vue'
 import type { FormInstance } from 'element-plus'
 import { listPurchaseOrderShip, getPurchaseOrderShip, confirmReceipt } from '@/api/purchase/purchaseOrderShip'
 import { listSupplier } from '@/api/goods/supplier'
