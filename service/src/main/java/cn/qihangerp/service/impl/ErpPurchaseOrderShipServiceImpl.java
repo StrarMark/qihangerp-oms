@@ -35,6 +35,8 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
     private final ErpPurchaseOrderMapper orderMapper;
     private final ErpPurchaseOrderItemMapper orderItemMapper;
     private final ErpWarehouseMapper warehouseMapper;
+    private final ErpStockInMapper stockInMapper;
+    private final ErpStockInItemMapper stockInItemMapper;
 
 
     @Override
@@ -161,6 +163,54 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
         order.setUpdateTime(DateUtils.getNowDate());
         order.setUpdateBy("生成入库单");
         orderMapper.updateById(order);
+
+        // 创建入库单
+        ErpStockIn stockIn = new ErpStockIn();
+        stockIn.setStockInNum("SI" + ship.getOrderNum());
+        stockIn.setStockInType(1); // 采购入库
+        stockIn.setSourceNo(ship.getOrderNum());
+        stockIn.setSourceId(ship.getOrderId());
+        stockIn.setSourceGoodsUnit(purchaseOrderItems.size());
+        int totalQty = purchaseOrderItems.stream().mapToInt(e -> e.getQuantity().intValue()).sum();
+        stockIn.setSourceSpecUnitTotal(totalQty);
+        stockIn.setSourceSpecUnit(purchaseOrderItems.size());
+        stockIn.setWarehouseId(warehouse.getId());
+        stockIn.setWarehouseName(warehouse.getWarehouseName());
+        stockIn.setWarehouseType(warehouse.getWarehouseType());
+        stockIn.setStatus(0); // 待入库
+        stockIn.setCreateBy(userName);
+        stockIn.setCreateTime(DateUtils.getNowDate());
+        stockIn.setMerchantId(order.getMerchantId());
+        stockIn.setShopId(order.getShopId());
+        stockInMapper.insert(stockIn);
+
+        // 创建入库单明细
+        for (ErpPurchaseOrderItem item : purchaseOrderItems) {
+            ErpStockInItem stockInItem = new ErpStockInItem();
+            stockInItem.setStockInId(stockIn.getId());
+            stockInItem.setStockInType(1);
+            stockInItem.setSourceNo(ship.getOrderNum());
+            stockInItem.setSourceId(ship.getOrderId());
+            stockInItem.setSourceItemId(Long.parseLong(item.getId()));
+            stockInItem.setGoodsId(item.getGoodsId() != null ? String.valueOf(item.getGoodsId()) : null);
+            stockInItem.setGoodsNum(item.getGoodsNum());
+            stockInItem.setGoodsName(item.getGoodsName());
+            stockInItem.setGoodsImage(item.getColorImage());
+            stockInItem.setSkuId(item.getId());
+            stockInItem.setSkuCode(item.getSpecNum());
+            stockInItem.setSkuName(buildSkuName(item));
+            stockInItem.setQuantity(item.getQuantity() != null ? item.getQuantity().intValue() : 0);
+            stockInItem.setInQuantity(0);
+            stockInItem.setInventoryMode(item.getInventoryMode());
+            stockInItem.setPurPrice(item.getPrice() != null ? item.getPrice().doubleValue() : 0);
+            stockInItem.setWarehouseId(warehouse.getId());
+            stockInItem.setStatus(0); // 待入库
+            stockInItem.setCreateBy(userName);
+            stockInItem.setCreateTime(DateUtils.getNowDate());
+            stockInItem.setMerchantId(order.getMerchantId());
+            stockInItem.setShopId(order.getShopId());
+            stockInItemMapper.insert(stockInItem);
+        }
 
         return ResultVo.success(ship.getId());
     }

@@ -260,15 +260,17 @@ function getDetail() {
         const supplier = supplierList.value.find((s: any) => s.id === supplierId)
         supplierName.value = supplier ? supplier.name : ''
       }
-    }
-  })
 
-  getPurchaseOrderShip(id).then((response: any) => {
-    if (response.data) {
-      Object.assign(shipData, response.data)
-      shipData.shipTimeText = formatTime(response.data.shipTime)
-      shipData.receiptTimeText = formatTime(response.data.receiptTime)
-      shipData.stockInTimeText = formatTime(response.data.stockInTime)
+      if (form.status !== 99) {
+        getPurchaseOrderShip(id).then((response: any) => {
+          if (response.data) {
+            Object.assign(shipData, response.data)
+            shipData.shipTimeText = formatTime(response.data.shipTime)
+            shipData.receiptTimeText = formatTime(response.data.receiptTime)
+            shipData.stockInTimeText = formatTime(response.data.stockInTime)
+          }
+        })
+      }
     }
   })
 }
