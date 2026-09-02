@@ -57,13 +57,17 @@ const pageSize = computed({
 })
 
 function handleSizeChange(val: number) {
-  if (currentPage.value * val > props.total) {
-    currentPage.value = 1
+  let page = currentPage.value
+  if (page * val > props.total) {
+    page = 1
   }
-  emit('pagination', { page: currentPage.value, limit: val })
+  emit('update:page', page)
+  emit('update:limit', val)
+  emit('pagination', { page, limit: val })
 }
 
 function handleCurrentChange(val: number) {
+  emit('update:page', val)
   emit('pagination', { page: val, limit: pageSize.value })
 }
 </script>
