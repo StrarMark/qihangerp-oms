@@ -210,6 +210,10 @@ function handleUpdateStatus(row: any, optionType: string) {
   form.orderAmount = row.orderAmount
   form.remark = row.remark
   form.auditUser = row.auditUser
+  form.supplierDeliveryTime = null
+  form.shipCompany = null
+  form.shipNo = null
+  form.shipCost = '0'
 
   if (optionType === 'audit') {
     form.optionType = 'audit'

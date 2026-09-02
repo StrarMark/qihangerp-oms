@@ -27,8 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -273,7 +276,9 @@ public class ErpPurchaseOrderServiceImpl extends ServiceImpl<ErpPurchaseOrderMap
             ship.setShipCompany(request.getShipCompany());
             ship.setShipNum(request.getShipNo());
             ship.setFreight(request.getShipCost());
-            ship.setShipTime(request.getSupplierDeliveryTime());
+            ship.setShipTime(request.getSupplierDeliveryTime() != null && !request.getSupplierDeliveryTime().isEmpty()
+                    ? LocalDateTime.of(LocalDate.parse(request.getSupplierDeliveryTime(), DateTimeFormatter.ISO_LOCAL_DATE), LocalTime.MIN)
+                    : LocalDateTime.now());
             ship.setCreateBy(request.getUpdateBy());
             ship.setRemark(request.getRemark());
             ship.setCreateTime(LocalDateTime.now());
