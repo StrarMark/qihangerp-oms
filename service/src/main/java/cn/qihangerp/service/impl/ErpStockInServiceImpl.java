@@ -100,7 +100,9 @@ public class ErpStockInServiceImpl extends ServiceImpl<ErpStockInMapper, ErpStoc
             request.setStockInOperator(userName);
         }
 
-        Map<String, List<StockInCreateItem>> goodsGroup = request.getItemList().stream().collect(Collectors.groupingBy(x -> x.getGoodsId()));
+        Map<String, List<StockInCreateItem>> goodsGroup = request.getItemList().stream()
+                .filter(x -> x.getGoodsId() != null)
+                .collect(Collectors.groupingBy(StockInCreateItem::getGoodsId));
         Long total = request.getItemList().stream().mapToLong(StockInCreateItem::getQuantity).sum();
         //添加主表信息
         ErpStockIn insert = new ErpStockIn();
@@ -123,6 +125,8 @@ public class ErpStockInServiceImpl extends ServiceImpl<ErpStockInMapper, ErpStoc
         insert.setWarehouseNo(erpWarehouse.getWarehouseNo());
         insert.setWarehouseName(erpWarehouse.getWarehouseName());
         insert.setWarehouseType(erpWarehouse.getWarehouseType());
+        insert.setMerchantId(0L);
+        insert.setShopId(0L);
         mapper.insert(insert);
 
         //添加子表信息
@@ -147,12 +151,15 @@ public class ErpStockInServiceImpl extends ServiceImpl<ErpStockInMapper, ErpStoc
                     inItem.setSkuName(item.getSkuName());
                     inItem.setSkuId(item.getSkuId());
                     inItem.setSkuCode(item.getSkuCode());
+                    inItem.setInventoryMode(0);
                     inItem.setQuantity(item.getQuantity());
                     inItem.setInQuantity(0);
                     inItem.setPurPrice(item.getPurPrice());
                     inItem.setStatus(0);
                     inItem.setCreateBy(userName);
                     inItem.setCreateTime(LocalDateTime.now());
+                    inItem.setMerchantId(0L);
+                    inItem.setShopId(0L);
                     itemList.add(inItem);
                 }
             }

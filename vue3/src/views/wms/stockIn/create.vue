@@ -8,7 +8,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="仓库" prop="warehouseId">
-        <el-select v-model="form.warehouseId" clearable filterable placeholder="请选择入库仓库">
+        <el-select v-model="form.warehouseId" clearable filterable placeholder="请选择入库仓库" style="width:220px">
           <el-option v-for="item in warehouseList" :key="item.id" :label="item.warehouseName" :value="item.id">
             <span style="float: left">{{ item.warehouseName }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px" v-if="item.warehouseType === 'LOCAL'">本地仓</span>
@@ -19,7 +19,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="入库类型" prop="stockInType">
-        <el-select v-model="form.stockInType" placeholder="入库类型">
+        <el-select v-model="form.stockInType" placeholder="入库类型" style="width:220px">
           <el-option label="采购入库" value="1" />
           <el-option label="退货入库" value="2" />
           <el-option label="盘盈入库" value="3" />
@@ -165,6 +165,7 @@ function skuChange(row: any, val: any) {
   if (spec) {
     row.quantity = 1
     row.skuId = spec.skuId
+    row.goodsId = spec.goodsId ? String(spec.goodsId) : ''
     row.goodsName = spec.goodsName
     row.skuName = spec.skuName
     row.goodsImg = spec.colorImage
