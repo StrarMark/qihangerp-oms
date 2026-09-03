@@ -175,7 +175,7 @@ function handleStockIn(row:any){
 
 function submitItemForm(row:any){
   if(!row.intoQuantity||row.intoQuantity<=0){ElMessage.warning('请填写入库数量');return}
-  stockInLocal({entryItemId:row.id,entryId:form.id,skuId:row.skuId,quantity:row.intoQuantity}).then((res:any)=>{
+  stockInLocal({id:form.id,items:[{itemId:row.id,skuId:row.skuId,quantity:row.intoQuantity}]}).then((res:any)=>{
     if(res.code===200){ElMessage.success('入库成功');handleStockIn({id:form.id});getList()}
     else ElMessage.error(res.msg||'入库失败')
   })
