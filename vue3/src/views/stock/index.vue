@@ -106,7 +106,7 @@ function handleSelectionChange(selection:any[]){ids.length=0;ids.push(...selecti
 function handleExport(){ElMessage.info('导出功能')}
 function handleViewBatch(row:any){
   getGoodsStockBatch(row.id).then((res:any)=>{
-    batchList.value=res.data?.detailList||res.data?.items||res.rows||[]
+    batchList.value=res.data||[]
     batchOpen.value=true
   }).catch(()=>{ElMessage.error('加载批次明细失败')})
 }

@@ -30,7 +30,7 @@ public class OGoodsInventoryServiceImpl
                 .eq(bo.getMerchantId() != null, OGoodsInventory::getMerchantId, bo.getMerchantId())
                 .eq(bo.getSkuId() != null, OGoodsInventory::getSkuId, bo.getSkuId())
                 .eq(bo.getGoodsId() != null, OGoodsInventory::getGoodsId, bo.getGoodsId())
-                .eq(OGoodsInventory::getSkuCode, bo.getSkuCode())
+                .eq(bo.getSkuCode() != null && !bo.getSkuCode().isEmpty(), OGoodsInventory::getSkuCode, bo.getSkuCode())
                 .like(bo.getGoodsName() != null, OGoodsInventory::getGoodsName, bo.getGoodsName());
         // 默认只查未删除的
         if (bo.getIsDelete() == null) {
