@@ -23,11 +23,5 @@ public interface ErpMerchantService extends IService<ErpMerchant> {
     ResultVo<ErpMerchant> add(MerchantAddBo bo,String createBy);
     ResultVo<ErpMerchant> setLoginName(Long id,MerchantAddBo bo,String updateBy);
 
-    /**
-     * 分配云仓给商户
-     * @param id 商户id
-     * @param warehouseList 分配的云仓List
-     * @return
-     */
-    ResultVo shareCloudWarehouse(Long id, List<ShareCloudWarehouseToMerchantWarehouse> warehouseList);
+
 }

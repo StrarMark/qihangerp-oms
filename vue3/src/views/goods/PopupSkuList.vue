@@ -52,8 +52,8 @@
 
     <el-table v-loading="loading" :data="goodsSpecList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="规格ID" align="center" prop="id" width="60" />
-      <el-table-column label="商品ID" align="center" prop="goodsId" width="60" />
+      <el-table-column label="规格ID" align="center" prop="id" width="80" />
+      <el-table-column label="商品ID" align="center" prop="goodsId" width="80" />
       <el-table-column label="图片" align="center" prop="colorImage" width="60">
         <template #default="scope">
           <image-preview :src="scope.row.colorImage" :width="35" :height="35" />

@@ -200,7 +200,7 @@ public class ErpPurchaseOrderShipServiceImpl extends ServiceImpl<ErpPurchaseOrde
             stockInItem.setGoodsNum(item.getGoodsNum());
             stockInItem.setGoodsName(item.getGoodsName());
             stockInItem.setGoodsImage(item.getColorImage());
-            stockInItem.setSkuId(item.getId());
+            stockInItem.setSkuId(item.getSpecId() != null ? String.valueOf(item.getSpecId()) : null);
             stockInItem.setSkuCode(item.getSpecNum());
             stockInItem.setSkuName(buildSkuName(item));
             stockInItem.setQuantity(item.getQuantity() != null ? item.getQuantity().intValue() : 0);

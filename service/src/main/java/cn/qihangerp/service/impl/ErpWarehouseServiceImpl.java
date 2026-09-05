@@ -8,11 +8,9 @@ import cn.qihangerp.mapper.ErpSupplierMapper;
 import cn.qihangerp.model.entity.ErpMerchant;
 import cn.qihangerp.model.entity.ErpSupplier;
 import cn.qihangerp.model.entity.ErpWarehouse;
-import cn.qihangerp.model.entity.ErpWarehouseMerchant;
 import cn.qihangerp.model.request.WarehouseCloudQuery;
 import cn.qihangerp.model.request.WarehousePageQuery;
 import cn.qihangerp.mapper.ErpMerchantMapper;
-import cn.qihangerp.mapper.ErpWarehouseMerchantMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -39,7 +37,6 @@ import java.util.List;
 @Service
 public class ErpWarehouseServiceImpl extends ServiceImpl<ErpWarehouseMapper, ErpWarehouse>
     implements ErpWarehouseService {
-    private final ErpWarehouseMerchantMapper warehouseMerchantMapper;
     private final ErpMerchantMapper merchantMapper;
     private final ErpSupplierMapper supplierMapper;
 //    private final WarehouseDataConverter warehouseDataConverter;
@@ -144,107 +141,6 @@ public class ErpWarehouseServiceImpl extends ServiceImpl<ErpWarehouseMapper, Erp
         return ResultVo.success(warehouseId);
     }
 
-    /**
-     * 云仓库分配给商户
-     * @param warehouseId
-     * @param merchantIds
-     * @return
-     */
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public ResultVo shareMerchant(Long warehouseId, Long[] merchantIds) {
-        var warehouse = this.baseMapper.selectById(warehouseId);
-        if(warehouse==null){
-            return ResultVo.error("没有找到仓库信息");
-        }
-        if(warehouse.getType().intValue()!=2) return ResultVo.error("当前仓库类型不支持分配给商户");
-
-        if(merchantIds==null || merchantIds.length==0){
-            // 清空仓库商户
-            ErpWarehouse update = new ErpWarehouse();
-            update.setId(warehouseId);
-            update.setMerchantIds("");
-            this.baseMapper.updateById(update);
-            // 清除该仓库的所有商户
-            warehouseMerchantMapper.delete(new LambdaQueryWrapper<ErpWarehouseMerchant>().eq(ErpWarehouseMerchant::getWarehouseId,warehouseId));
-            return ResultVo.success();
-        }else{
-            List<Long> newMerchantIds = new ArrayList<Long>();
-            String merchantIdsNew = "";
-            // 新增商户供应商(修改之后的)
-            for (Long merchantId : merchantIds) {
-                ErpMerchant erpMerchant = merchantMapper.selectById(merchantId);
-                if(erpMerchant==null){
-                    log.error("======分配的商户不存在{}",merchantId);
-                    return ResultVo.error("分配的商户不存在");
-                }
-                newMerchantIds.add(merchantId);
-                // 逐个添加到仓库商户表erp_warehouse_merchant
-                List<ErpWarehouseMerchant> erpWarehouseMerchants = warehouseMerchantMapper.selectList(new LambdaQueryWrapper<ErpWarehouseMerchant>()
-                        .eq(ErpWarehouseMerchant::getMerchantId, merchantId)
-                        .eq(ErpWarehouseMerchant::getWarehouseId, warehouseId));
-                if (erpWarehouseMerchants == null || erpWarehouseMerchants.size() == 0) {
-                    // 添加
-                    ErpWarehouseMerchant vendorMerchant = new ErpWarehouseMerchant();
-                    vendorMerchant.setWarehouseId(warehouseId);
-                    vendorMerchant.setWarehouseNo(warehouse.getWarehouseNo());
-                    vendorMerchant.setWarehouseType(warehouse.getWarehouseType());
-                    vendorMerchant.setWarehouseName(warehouse.getWarehouseName());
-                    vendorMerchant.setWarehouseAddress(warehouse.getAddress());
-                    vendorMerchant.setMerchantId(merchantId);
-                    vendorMerchant.setName(erpMerchant.getName());
-                    vendorMerchant.setRemark(erpMerchant.getRemark());
-                    vendorMerchant.setNumber(erpMerchant.getNumber());
-                    vendorMerchant.setNickName(erpMerchant.getNickName());
-                    vendorMerchant.setMobile(erpMerchant.getMobile());
-                    vendorMerchant.setAvatar(erpMerchant.getAvatar());
-                    vendorMerchant.setStatus(0);
-                    vendorMerchant.setDelFlag(0);
-                    vendorMerchant.setCreateBy("后台分配");
-                    vendorMerchant.setCreateTime(LocalDateTime.now());
-                    vendorMerchant.setUsci(erpMerchant.getUsci());
-                    vendorMerchant.setFaren(erpMerchant.getFaren());
-                    vendorMerchant.setBank(erpMerchant.getBank());
-                    vendorMerchant.setLinkMan(erpMerchant.getLinkMan());
-                    vendorMerchant.setAddress(erpMerchant.getAddress());
-                    warehouseMerchantMapper.insert(vendorMerchant);
-                }else{
-                    //更新信息
-                    ErpWarehouseMerchant vendorMerchant = new ErpWarehouseMerchant();
-                    vendorMerchant.setId(erpWarehouseMerchants.get(0).getId());
-                    vendorMerchant.setWarehouseAddress(warehouse.getAddress());
-                    vendorMerchant.setWarehouseNo(warehouse.getWarehouseNo());
-                    vendorMerchant.setWarehouseType(warehouse.getWarehouseType());
-                    vendorMerchant.setWarehouseName(warehouse.getWarehouseName());
-                    warehouseMerchantMapper.updateById(vendorMerchant);
-                }
-                merchantIdsNew += merchantId.toString() + ",";
-            }
-
-            // 删除不需要的 供应商（云仓）商户
-            warehouseMerchantMapper.delete(new LambdaQueryWrapper<ErpWarehouseMerchant>()
-                    .eq(ErpWarehouseMerchant::getWarehouseId, warehouseId)
-                    .notIn(ErpWarehouseMerchant::getMerchantId, newMerchantIds)
-            );
-            // 更新新的仓库商户
-            ErpWarehouse account = new ErpWarehouse();
-            account.setId(warehouseId);
-//            String result = Arrays.stream(Arrays.stream(merchantIds).toArray()).map(String::valueOf).collect(Collectors.joining(","));
-            account.setMerchantIds(","+merchantIdsNew);
-
-
-            this.baseMapper.updateById(account);
-        }
-        return ResultVo.success();
-    }
-
-    @Override
-    public ErpWarehouse getByLoginName(String loginName) {
-        LambdaQueryWrapper<ErpWarehouse> eq = new LambdaQueryWrapper<ErpWarehouse>().eq(ErpWarehouse::getLoginName, loginName);
-        List<ErpWarehouse> erpVendors = this.baseMapper.selectList(eq);
-        if(erpVendors.isEmpty()) return null;
-        else return erpVendors.get(0);
-    }
 
     @Transactional(rollbackFor = Exception.class)
     @Override

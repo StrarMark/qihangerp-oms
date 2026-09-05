@@ -60,9 +60,7 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
     private final ErpOrderMessageService erpOrderMessageService;
     private final ErpSalesOrderMapper erpSalesOrderMapper;
     private final ErpSalesOrderItemMapper erpSalesOrderItemMapper;
-
     private final ShopGoodsSkuService shopGoodsSkuMappingService;
-    private final ErpWarehouseShopMapper erpWarehouseShopMapper;
     private final OShopMapper oShopMapper;
     private final ErpLogisticsCompanyMapper erpLogisticsCompanyMapper;
     private final OOrderStockingMapper orderStockingMapper;
@@ -1223,38 +1221,6 @@ public class OOrderServiceImpl extends ServiceImpl<OOrderMapper, OOrder>
             orderItemMapper.updateById(orderItemUpdate);
         }
 
-        if(erpOrder.getShopType()!=0) {
-            // 添加店铺到仓库
-            List<ErpWarehouseShop> erpWarehouseShops = erpWarehouseShopMapper.selectList(new LambdaQueryWrapper<ErpWarehouseShop>()
-                    .eq(ErpWarehouseShop::getShopId, erpOrder.getShopId())
-                    .eq(ErpWarehouseShop::getWarehouseId, warehouse.getId())
-            );
-            OShop oShop = oShopMapper.selectById(erpOrder.getShopId());
-            if (oShop != null) {
-                if (erpWarehouseShops.isEmpty()) {
-                    // 没有    添加
-                    ErpWarehouseShop warehouseShop = new ErpWarehouseShop();
-                    warehouseShop.setWarehouseId(warehouse.getId());
-                    warehouseShop.setShopId(erpOrder.getShopId());
-                    warehouseShop.setShopType(erpOrder.getShopType());
-                    warehouseShop.setOwnerType(1);
-                    warehouseShop.setOwnerNo(erpOrder.getShopId().toString());
-                    warehouseShop.setShopNo(erpOrder.getShopId().toString());
-                    warehouseShop.setShopName(oShop.getName());
-                    warehouseShop.setErpShopNo(oShop.getId().toString());
-                    warehouseShop.setMerchantId(oShop.getMerchantId());
-                    warehouseShop.setMerchantName(oShop.getMerchantName());
-                    warehouseShop.setStatus("1");
-                    warehouseShop.setShopContacts(oShop.getContact());
-                    warehouseShop.setShopPhone(oShop.getPhone());
-                    warehouseShop.setShopAddress(oShop.getAddress());
-                    warehouseShop.setCreateTime(LocalDateTime.now());
-                    erpWarehouseShopMapper.insert(warehouseShop);
-                }
-            }
-
-
-        }
         //更新自己
 //        OOrder update = new OOrder();
 //        update.setId(erpOrder.getId());

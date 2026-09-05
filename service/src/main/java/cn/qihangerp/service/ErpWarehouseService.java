@@ -23,9 +23,6 @@ public interface ErpWarehouseService extends IService<ErpWarehouse> {
     List<ErpWarehouse> getJkyWarehouseList(ErpWarehouse bo);
     List<ErpWarehouse> getWarehouseList(ErpWarehouse bo);
     ResultVo<Long> saveErpCloudWarehouse(List<ErpWarehouse> list);
-    ResultVo shareMerchant(Long warehouseId,Long[] merchantIds);
-    ErpWarehouse getByLoginName(String loginName);
-
     /**
      * 自动创建供应商仓库
      * @param supplier
