@@ -45,7 +45,7 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
     @Override
     public PageResult<ErpStockOut> queryPageList(ErpStockOut bo, PageQuery pageQuery) {
         LambdaQueryWrapper<ErpStockOut> queryWrapper = new LambdaQueryWrapper<ErpStockOut>()
-                .eq(ErpStockOut::getMerchantId, bo.getMerchantId())
+                .eq(bo.getMerchantId()!=null, ErpStockOut::getMerchantId, bo.getMerchantId())
                 .eq( bo.getShopId()!=null, ErpStockOut::getShopId, bo.getShopId())
                 .eq( bo.getShopGroupId()!=null, ErpStockOut::getShopGroupId, bo.getShopGroupId())
                 .eq( bo.getStatus()!=null, ErpStockOut::getStatus, bo.getStatus())
