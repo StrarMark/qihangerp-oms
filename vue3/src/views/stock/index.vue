@@ -34,7 +34,7 @@
     <el-table v-loading="loading" :data="goodsInventoryList" border stripe>
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" align="center" prop="id" width="60" />
-      <el-table-column label="SKU ID" align="center" prop="skuId" width="70" />
+      <el-table-column label="SKU ID" align="center" prop="skuId" width="90" />
       <el-table-column label="商品编码" align="center" prop="goodsNum" width="110" />
       <el-table-column label="SKU编码" align="center" prop="skuCode" width="120" />
       <el-table-column label="商品名称" align="left" prop="goodsName" min-width="160" show-overflow-tooltip />
