@@ -114,14 +114,14 @@
         </el-descriptions>
         <el-divider content-position="center">入库明细</el-divider>
         <el-table :data="form.itemList||[]">
-          <el-table-column label="序号" align="center" type="index" width="50" />
+          <el-table-column label="序号" align="center" type="index" width="60" />
           <el-table-column label="ID" align="center" prop="id" width="70" />
-          <el-table-column label="图片" width="50"><template #default="scope"><el-image style="width:40px;height:40px" :src="scope.row.goodsImage" /></template></el-table-column>
+          <el-table-column label="图片" width="80"><template #default="scope"><el-image style="width:40px;height:40px" :src="scope.row.goodsImage" /></template></el-table-column>
           <el-table-column label="名称" prop="goodsName" />
           <el-table-column label="规格" prop="skuName" width="120" />
           <el-table-column label="sku编码" prop="skuCode" width="120" />
           <el-table-column label="数量" prop="quantity" width="60" />
-          <el-table-column label="已入库" prop="inQuantity" width="60" />
+          <el-table-column label="已入库" prop="inQuantity" width="80" />
           <el-table-column label="入库数量" width="100" v-if="isEdit">
             <template #default="scope">
               <el-input v-if="scope.row.status<2" v-model.number="scope.row.intoQuantity" placeholder="入库数量" />

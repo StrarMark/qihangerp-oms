@@ -44,14 +44,13 @@
           <el-tag :type="(scope.row.quantity||0)>0?'success':'danger'" size="small">{{ scope.row.quantity??0 }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="锁定库存" align="center" prop="lockedQuantity" width="70" />
-      <el-table-column label="可用库存" align="center" prop="availableQuantity" width="70" />
+      <el-table-column label="锁定库存" align="center" prop="lockedQuantity" width="86" />
+      <el-table-column label="可用库存" align="center" prop="availableQuantity" width="86" />
       <el-table-column label="仓库" align="center" prop="warehouseName" width="150">
         <template #default="scope">
-          <el-tag size="small" :type="scope.row.warehouseType==='LOCAL'?'':(scope.row.warehouseType==='CLOUD'?'warning':'info')">
-            {{ scope.row.warehouseName }}
+          <el-tag size="small" :type="getWarehouseType(scope.row.warehouseId)==='LOCAL'?'':(getWarehouseType(scope.row.warehouseId)==='CLOUD'?'warning':'info')">
+            {{ getWarehouseName(scope.row.warehouseId) }}
           </el-tag>
-          <br /><small>{{ warehouseTypeLabel(scope.row.warehouseType) }}</small>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="120">
@@ -99,6 +98,8 @@ const batchOpen=ref(false);const batchList=ref<any[]>([])
 const queryParams=reactive({pageNum:1,pageSize:10,warehouseId:null as number|null,goodsNum:null as string|null,skuCode:null as string|null,goodsName:null as string|null})
 
 function warehouseTypeLabel(t:string){const m:Record<string,string>={LOCAL:'本地仓',CLOUD:'系统云仓',JDYC:'京东云仓'};return m[t]||t||'未知'}
+function getWarehouseType(warehouseId:any){const w=warehouseList.value.find((x:any)=>x.id===warehouseId);return w?.warehouseType||''}
+function getWarehouseName(warehouseId:any){const w=warehouseList.value.find((x:any)=>x.id===warehouseId);return w?.warehouseName||''}
 function getList(){loading.value=true;getWarehouseGoodsStockList(queryParams).then((res:any)=>{goodsInventoryList.value=res.rows||[];total.value=res.total||0;loading.value=false}).catch(()=>{loading.value=false})}
 function handleQuery(){queryParams.pageNum=1;getList()}
 function resetQuery(){queryParams.warehouseId=null;queryParams.goodsNum=null;queryParams.skuCode=null;queryParams.goodsName=null;handleQuery()}
