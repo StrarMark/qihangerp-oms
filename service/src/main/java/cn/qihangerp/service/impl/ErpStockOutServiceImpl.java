@@ -186,7 +186,19 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
     public ErpStockOut getDetailAndItemById(Long id) {
         ErpStockOut erpStockOut = outMapper.selectById(id);
         if(erpStockOut !=null){
-            erpStockOut.setItemList(outItemService.list(new LambdaQueryWrapper<ErpStockOutItem>().eq(ErpStockOutItem::getEntryId,id)));
+            List<ErpStockOutItem> itemList = outItemService.list(
+                    new LambdaQueryWrapper<ErpStockOutItem>().eq(ErpStockOutItem::getEntryId,id));
+            // 填充批次信息
+            for(ErpStockOutItem item : itemList){
+                if(item.getBatchId() != null){
+                    OGoodsInventoryBatch batch = oGoodsInventoryBatchService.getById(item.getBatchId());
+                    if(batch != null){
+                        item.setBatchNum(batch.getBatchNum());
+                        item.setBatchCurrentQty(batch.getCurrentQty());
+                    }
+                }
+            }
+            erpStockOut.setItemList(itemList);
         }
         return erpStockOut;
     }

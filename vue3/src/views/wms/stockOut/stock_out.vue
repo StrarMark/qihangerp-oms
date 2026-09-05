@@ -57,6 +57,9 @@
             <el-tag v-if="scope.row.selectedBatch" size="small" closable @close="clearBatch(scope.row)">
               {{ scope.row.selectedBatch.batchNum }} (余{{ scope.row.selectedBatch.currentQty }})
             </el-tag>
+            <el-tag v-else-if="scope.row.batchNum" size="small" type="info">
+              {{ scope.row.batchNum }} (余{{ scope.row.batchCurrentQty }})
+            </el-tag>
             <span v-else-if="scope.row.batchStrategy === 'auto'" style="color:#909399">系统自动分配</span>
             <span v-else style="color:#E6A23C">未选批次</span>
           </template>

@@ -125,6 +125,9 @@
                 @close="scope.row.selectedBatch = null">
                 {{ scope.row.selectedBatch.batchNum }}
               </el-tag>
+              <el-tag v-else-if="scope.row.batchNum" size="small" type="info">
+                {{ scope.row.batchNum }}
+              </el-tag>
               <span v-else-if="scope.row.status >= 2" style="color:#909399">-</span>
               <span v-else-if="scope.row.batchStrategy === 'auto'" style="color:#909399">自动</span>
               <el-button v-else type="primary" link size="small" @click="openBatchDialog(scope.row, scope.$index)">

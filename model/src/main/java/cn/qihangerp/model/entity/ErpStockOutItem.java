@@ -157,6 +157,15 @@ public class ErpStockOutItem implements Serializable {
     private Long shopId;
     private Long shopGroupId;
     private Long merchantId;
+
+    /** 批次号（非数据库字段，查询时填充） */
+    @TableField(exist = false)
+    private String batchNum;
+
+    /** 批次当前库存（非数据库字段，查询时填充） */
+    @TableField(exist = false)
+    private Integer batchCurrentQty;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }
