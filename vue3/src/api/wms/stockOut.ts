@@ -24,3 +24,8 @@ export function stockOutCreate(data: Record<string, any>) {
 export function stockOut(data: Record<string, any>) {
   return request({ url: '/api/erp-api/stockOut/out', method: 'post', data })
 }
+
+/** 根据SKU+仓库查询可用库存批次 */
+export function getInventoryBatches(skuId: number | string, warehouseId: number | string) {
+  return request({ url: '/api/erp-api/goodsInventory/batches', method: 'get', params: { skuId, warehouseId } })
+}

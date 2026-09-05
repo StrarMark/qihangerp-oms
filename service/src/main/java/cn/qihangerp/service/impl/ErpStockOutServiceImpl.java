@@ -81,19 +81,21 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
             request.setOperator(userName);
         }
 
-        Map<Long, List<GoodsSkuInventoryVo>> goodsGroup = request.getItemList().stream().collect(Collectors.groupingBy(x -> x.getGoodsId()));
-        Long total = request.getItemList().stream().mapToLong(GoodsSkuInventoryVo::getQuantity).sum();
+        Map<Long, List<GoodsSkuInventoryVo>> goodsGroup = request.getItemList().stream()
+                .filter(x -> x.getGoodsId() != null)
+                .collect(Collectors.groupingBy(GoodsSkuInventoryVo::getGoodsId));
+        Long total = request.getItemList().stream().mapToLong(x -> x.getQuantity()!=null ? x.getQuantity() : 0).sum();
 
         //添加主表信息
         ErpStockOut stockOut = new ErpStockOut();
-        stockOut.setMerchantId(request.getMerchantId());
+        stockOut.setMerchantId(0L);
+        stockOut.setShopId(0L);
+        stockOut.setShopGroupId(0L);
         stockOut.setOutNum(request.getOutNum());
         stockOut.setType(request.getType());
-        stockOut.setShopId(request.getShopId()==null?0L:request.getShopId());
-        stockOut.setShopGroupId(request.getShopGroupId()==null?0L:request.getShopGroupId());
         stockOut.setSourceNum(request.getSourceNo());
         stockOut.setSourceId(0L);
-        stockOut.setWarehouseId(0L);
+        stockOut.setWarehouseId(request.getWarehouseId());
         stockOut.setRemark(request.getRemark());
         stockOut.setCreateBy(userName);
         stockOut.setCreateTime(LocalDateTime.now());
@@ -114,13 +116,13 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
         List<ErpStockOutItem> itemList = new ArrayList<>();
         for(GoodsSkuInventoryVo item: request.getItemList()){
             if(org.springframework.util.StringUtils.hasText(item.getBatchId())) {
+                // 指定了库存批次
                 OGoodsInventoryBatch batch = oGoodsInventoryBatchService.getById(item.getBatchId());
-
                 if(batch!=null) {
                     ErpStockOutItem outItem = new ErpStockOutItem();
-                    outItem.setMerchantId(request.getMerchantId());
-                    outItem.setShopId(request.getShopId()==null?0L:request.getShopId());
-                    outItem.setShopGroupId(request.getShopGroupId()==null?0L:request.getShopGroupId());
+                    outItem.setMerchantId(stockOut.getMerchantId());
+                    outItem.setShopId(stockOut.getShopId());
+                    outItem.setShopGroupId(stockOut.getShopGroupId());
                     outItem.setEntryId(stockOut.getId());
                     outItem.setType(request.getType());
                     outItem.setBatchId(batch.getId());
@@ -136,6 +138,9 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
                     outItem.setOriginalQuantity(item.getQuantity());
                     outItem.setOutQuantity(0);
                     outItem.setStatus(0);
+                    outItem.setWarehouseId(stockOut.getWarehouseId());
+                    outItem.setPositionId(0L);
+                    outItem.setPurPrice(0.0);
                     outItem.setCreateBy(userName);
                     outItem.setCreateTime(LocalDateTime.now());
                     outItem.setWarehouseId(batch.getWarehouseId());
@@ -143,6 +148,34 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
                     outItem.setPositionNum(batch.getPositionNum());
                     itemList.add(outItem);
                 }
+            } else {
+                // 未指定批次，仅记录SKU信息，出库时再分配批次
+                ErpStockOutItem outItem = new ErpStockOutItem();
+                outItem.setMerchantId(stockOut.getMerchantId());
+                outItem.setShopId(stockOut.getShopId());
+                outItem.setShopGroupId(stockOut.getShopGroupId());
+                outItem.setEntryId(stockOut.getId());
+                outItem.setType(request.getType());
+                outItem.setBatchId(null);
+                outItem.setInventoryMode(0);
+                outItem.setGoodsId(item.getGoodsId());
+                outItem.setSkuId(item.getSkuId());
+                outItem.setSkuCode(item.getSkuCode());
+                outItem.setGoodsName(item.getGoodsName());
+                outItem.setSkuName(item.getSkuName());
+                outItem.setGoodsImage(item.getGoodsImg());
+                outItem.setGoodsNum(item.getGoodsNum());
+                outItem.setPurPrice(item.getPurPrice() != null ? item.getPurPrice().doubleValue() : null);
+                outItem.setOriginalQuantity(item.getQuantity());
+                outItem.setOutQuantity(0);
+                outItem.setStatus(0);
+                outItem.setWarehouseId(stockOut.getWarehouseId());
+                outItem.setPositionId(0L);
+                outItem.setPurPrice(0.0);
+                outItem.setCreateBy(userName);
+                outItem.setCreateTime(LocalDateTime.now());
+                outItem.setWarehouseId(request.getWarehouseId());
+                itemList.add(outItem);
             }
         }
         outItemService.saveBatch(itemList);
@@ -166,6 +199,16 @@ public class ErpStockOutServiceImpl extends ServiceImpl<ErpStockOutMapper, ErpSt
 
         ErpStockOutItem outItem = outItemService.getById(request.getEntryItemId());
         if(outItem == null) return ResultVo.error(1500,"出库数据错误");
+
+        // 如果请求中指定了批次且出库明细未绑定批次，更新批次绑定
+        if(request.getBatchId() != null && outItem.getBatchId() == null) {
+            ErpStockOutItem batchUpdate = new ErpStockOutItem();
+            batchUpdate.setId(outItem.getId());
+            batchUpdate.setBatchId(request.getBatchId());
+            outItemService.updateById(batchUpdate);
+            outItem.setBatchId(request.getBatchId());
+        }
+
         // 判断库存够不够扣减的
         if(outItem.getBatchId()!=null) {
             /***指定了库存批次***减库存****/

@@ -7,7 +7,7 @@
           <el-button size="small" @click="genOrderNum">生成单号</el-button>
         </el-col>
       </el-form-item>
-      <el-form-item label="出库类型" prop="type">
+      <el-form-item label="出库类型" prop="type" style="width:320px">
         <el-select v-model="form.type" placeholder="出库类型">
           <el-option label="订单发货出库" value="1" />
           <el-option label="采购退货出库" value="2" />
@@ -15,7 +15,7 @@
           <el-option label="报损出库" value="4" />
         </el-select>
       </el-form-item>
-      <el-form-item label="仓库" prop="warehouseId">
+      <el-form-item label="仓库" prop="warehouseId" style="width:320px">
         <el-select v-model="form.warehouseId" clearable filterable placeholder="请选择出库仓库">
           <el-option v-for="item in warehouseList" :key="item.id" :label="item.warehouseName" :value="item.id">
             <span style="float:left">{{ item.warehouseName }}</span>
@@ -151,6 +151,7 @@ function skuChange(row: any, val: any) {
   if (spec) {
     row.quantity = 1
     row.skuId = spec.skuId
+    row.goodsId = spec.goodsId ? String(spec.goodsId) : ''
     row.goodsName = spec.goodsName
     row.skuName = spec.skuName
     row.goodsImg = spec.colorImage

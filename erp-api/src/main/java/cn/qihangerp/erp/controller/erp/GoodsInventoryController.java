@@ -9,10 +9,12 @@ import cn.qihangerp.model.entity.OGoodsInventoryBatch;
 import cn.qihangerp.security.common.BaseController;
 import cn.qihangerp.service.OGoodsInventoryBatchService;
 import cn.qihangerp.service.OGoodsInventoryService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -52,5 +54,22 @@ public class GoodsInventoryController extends BaseController {
             return AjaxResult.success(list);
         }
         return success();
+    }
+
+    /**
+     * 根据SKU+仓库查询可用库存批次（出库选批次用）
+     *
+     * @param skuId       SKU ID
+     * @param warehouseId 仓库ID
+     */
+    @GetMapping("/batches")
+    public AjaxResult getBatches(@RequestParam Long skuId, @RequestParam Long warehouseId) {
+        List<OGoodsInventoryBatch> list = inventoryBatchService.list(
+                new LambdaQueryWrapper<OGoodsInventoryBatch>()
+                        .eq(OGoodsInventoryBatch::getSkuId, skuId)
+                        .eq(OGoodsInventoryBatch::getWarehouseId, warehouseId)
+                        .gt(OGoodsInventoryBatch::getCurrentQty, 0)
+                        .orderByAsc(OGoodsInventoryBatch::getCreateTime));
+        return AjaxResult.success(list);
     }
 }

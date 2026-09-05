@@ -22,30 +22,18 @@
 
       <el-table :data="outboundItems" border stripe style="margin-top:20px">
         <el-table-column prop="skuCode" label="SKU编码" width="120" />
-        <el-table-column prop="skuName" label="商品名称" min-width="150" />
-        <el-table-column prop="planQuantity" label="应出库数量" width="100" align="center" />
-        <el-table-column prop="outboundQuantity" label="已出库数量" width="100" align="center" />
-        <el-table-column label="本次出库" width="300" align="center">
+        <el-table-column prop="goodsName" label="商品名称" min-width="150" show-overflow-tooltip />
+        <el-table-column prop="skuName" label="规格" width="120" show-overflow-tooltip />
+        <el-table-column prop="originalQuantity" label="应出数量" width="80" align="center" />
+        <el-table-column prop="outQuantity" label="已出数量" width="80" align="center" />
+        <el-table-column label="本次出库" width="320" align="center">
           <template #default="scope">
-            <div v-if="scope.row.inventoryMode === 1">
-              <div v-if="scope.row.lockedBarcodes?.length">
-                <el-tag v-for="bc in scope.row.lockedBarcodes" :key="bc.barcode" size="small" style="margin-right:5px">
-                  {{ bc.barcode }}
-                </el-tag>
-                <div class="text-muted">（已锁定，无需扫码）</div>
-              </div>
-              <div v-else>
-                <el-button type="text" size="small" @click="openScanDialog(scope.row, scope.$index)"
-                  :disabled="scope.row.remainingQuantity === 0">
-                  扫码出库
-                </el-button>
-                <span v-if="scope.row.scannedCount > 0">（已扫 {{ scope.row.scannedCount }} 件）</span>
-              </div>
-            </div>
+            <div v-if="scope.row.remainingQuantity === 0" style="color:#909399">已完成</div>
             <div v-else>
-              <el-select v-model="scope.row.batchStrategy" size="small" placeholder="批次策略" style="width:120px">
-                <el-option label="自动分配批次" value="auto" />
-                <el-option label="手动选择批次" value="manual" />
+              <el-select v-model="scope.row.batchStrategy" size="small" placeholder="批次策略" style="width:120px"
+                :disabled="scope.row.remainingQuantity === 0">
+                <el-option label="自动分配(FIFO)" value="auto" />
+                <el-option label="手动选批次" value="manual" />
               </el-select>
               <el-input-number
                 v-model="scope.row.thisQuantity"
@@ -53,17 +41,27 @@
                 :max="scope.row.remainingQuantity"
                 size="small"
                 controls-position="right"
-                style="margin-left:8px;width:110px"
+                style="margin-left:8px;width:100px"
                 :disabled="scope.row.remainingQuantity === 0"
               />
-              <el-button v-if="scope.row.batchStrategy === 'manual'" type="text" size="small"
-                @click="openBatchSelection(scope.row, scope.$index)" style="margin-left:5px">
+              <el-button v-if="scope.row.batchStrategy === 'manual'" type="primary" link size="small"
+                @click="openBatchSelection(scope.row, scope.$index)" style="margin-left:5px"
+                :disabled="scope.row.remainingQuantity === 0">
                 选批次
               </el-button>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="remainingQuantity" label="剩余可出库" width="100" align="center">
+        <el-table-column label="已选批次" min-width="180">
+          <template #default="scope">
+            <el-tag v-if="scope.row.selectedBatch" size="small" closable @close="clearBatch(scope.row)">
+              {{ scope.row.selectedBatch.batchNum }} (余{{ scope.row.selectedBatch.currentQty }})
+            </el-tag>
+            <span v-else-if="scope.row.batchStrategy === 'auto'" style="color:#909399">系统自动分配</span>
+            <span v-else style="color:#E6A23C">未选批次</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="remainingQuantity" label="剩余可出" width="80" align="center">
           <template #default="scope">
             <span :class="{ 'text-danger': scope.row.remainingQuantity === 0 }">{{ scope.row.remainingQuantity }}</span>
           </template>
@@ -74,9 +72,51 @@
         <el-button type="primary" size="large" @click="submitOutbound" :loading="submitting" :disabled="!canSubmit">
           确认出库
         </el-button>
-        <el-button @click="saveDraft">暂存</el-button>
       </div>
     </el-card>
+
+    <!-- 批次选择弹窗 -->
+    <el-dialog title="选择出库批次" v-model="batchDialogVisible" width="800px" append-to-body :close-on-click-modal="false">
+      <div style="margin-bottom:10px">
+        <el-tag size="small">{{ batchDialogItem?.goodsName }} {{ batchDialogItem?.skuName }}</el-tag>
+        <el-tag size="small" type="info" style="margin-left:5px">需出库: {{ batchDialogItem?.remainingQuantity }}</el-tag>
+      </div>
+      <el-table :data="batchList" border stripe highlight-current-row
+        @current-change="handleBatchRowClick" style="width:100%">
+        <el-table-column label="批次号" prop="batchNum" width="160" />
+        <el-table-column label="SKU编码" prop="skuCode" width="120" />
+        <el-table-column label="采购单价" prop="purPrice" width="100" align="right">
+          <template #default="scope">{{ amountFormatter(scope.row.purPrice) }}</template>
+        </el-table-column>
+        <el-table-column label="批次库存" prop="currentQty" width="80" align="center">
+          <template #default="scope">
+            <span :class="{ 'text-danger': scope.row.currentQty <= 0 }">{{ scope.row.currentQty }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="仓位" prop="positionNum" width="100" />
+        <el-table-column label="入库时间" prop="createTime" width="160">
+          <template #default="scope">{{ parseTime(scope.row.createTime) }}</template>
+        </el-table-column>
+        <el-table-column label="模式" width="90" align="center">
+          <template #default="scope">
+            <el-tag v-if="scope.row.inventoryMode === 1" size="small" type="warning">一物一码</el-tag>
+            <el-tag v-else size="small">传统</el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="margin-top:10px">
+        <span>出库数量：</span>
+        <el-input-number v-model="batchSelectQty" :min="1"
+          :max="batchDialogItem?.remainingQuantity || 9999"
+          size="small" controls-position="right" style="width:120px" />
+      </div>
+      <template #footer>
+        <el-button @click="batchDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmBatchSelection" :disabled="!selectedBatchRow || batchSelectQty <= 0">
+          确认选择
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -85,8 +125,8 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Back } from '@element-plus/icons-vue'
-import { getStockOutEntry, stockOut } from '@/api/wms/stockOut'
-import { parseTime } from '@/utils/zhijian'
+import { getStockOutEntry, stockOut, getInventoryBatches } from '@/api/wms/stockOut'
+import { parseTime, amountFormatter } from '@/utils/zhijian'
 
 const route = useRoute()
 const router = useRouter()
@@ -96,7 +136,11 @@ const outboundItems = ref<any[]>([])
 const submitting = ref(false)
 
 const canSubmit = computed(() => {
-  return outboundItems.value.some((item: any) => (item.thisQuantity || 0) > 0 || item.scannedCount > 0)
+  return outboundItems.value.some((item: any) => {
+    if ((item.thisQuantity || 0) <= 0) return false
+    if (item.batchStrategy === 'manual' && !item.selectedBatch) return false
+    return true
+  })
 })
 
 function loadData(id: number) {
@@ -106,44 +150,109 @@ function loadData(id: number) {
     outboundItems.value = (data.itemList || data.items || []).map((item: any) => ({
       ...item,
       thisQuantity: 0,
-      scannedCount: 0,
-      remainingQuantity: (item.planQuantity || 0) - (item.outboundQuantity || 0),
-      batchStrategy: 'auto',
-      lockedBarcodes: item.lockedBarcodes || [],
+      remainingQuantity: (item.originalQuantity || 0) - (item.outQuantity || 0),
+      batchStrategy: item.batchId ? 'auto' : 'auto',
+      selectedBatch: null,
     }))
   })
 }
 
-function openScanDialog(row: any, index: number) {
-  ElMessage.info('扫码出库功能开发中')
-}
+// 批次选择弹窗相关
+const batchDialogVisible = ref(false)
+const batchDialogItem = ref<any>(null)
+const batchDialogItemIndex = ref(-1)
+const batchList = ref<any[]>([])
+const selectedBatchRow = ref<any>(null)
+const batchSelectQty = ref(1)
 
 function openBatchSelection(row: any, index: number) {
-  ElMessage.info('批次选择功能开发中')
+  if (!outboundOrder.warehouseId) {
+    ElMessage.warning('出库单未关联仓库')
+    return
+  }
+  batchDialogItem.value = row
+  batchDialogItemIndex.value = index
+  selectedBatchRow.value = null
+  batchSelectQty.value = row.remainingQuantity || 1
+  batchDialogVisible.value = true
+
+  getInventoryBatches(row.skuId, outboundOrder.warehouseId).then((res: any) => {
+    batchList.value = (res.data || []).filter((b: any) => b.currentQty > 0)
+  })
+}
+
+function handleBatchRowClick(row: any) {
+  selectedBatchRow.value = row
+}
+
+function clearBatch(row: any) {
+  row.selectedBatch = null
+}
+
+function confirmBatchSelection() {
+  if (!selectedBatchRow.value || batchSelectQty.value <= 0) return
+  if (batchSelectQty.value > selectedBatchRow.value.currentQty) {
+    ElMessage.warning('出库数量不能超过批次库存')
+    return
+  }
+  const item = outboundItems.value[batchDialogItemIndex.value]
+  if (item) {
+    item.selectedBatch = { ...selectedBatchRow.value }
+    item.thisQuantity = batchSelectQty.value
+  }
+  batchDialogVisible.value = false
 }
 
 function submitOutbound() {
   const items = outboundItems.value
     .filter((item: any) => (item.thisQuantity || 0) > 0)
-    .map((item: any) => ({ itemId: item.id, quantity: item.thisQuantity }))
+    .map((item: any) => ({
+      entryItemId: item.id,
+      entryId: item.entryId || outboundOrder.id,
+      skuId: item.skuId,
+      outQty: item.thisQuantity,
+      originalQuantity: item.originalQuantity,
+      outQuantity: item.outQuantity,
+      batchId: item.selectedBatch?.id || null,
+    }))
 
   if (items.length === 0) {
     ElMessage.warning('请填写出库数量')
     return
   }
 
-  submitting.value = true
-  stockOut({ id: outboundOrder.id, items }).then(() => {
-    ElMessage.success('出库成功')
-    submitting.value = false
-    router.push('/wms/stock_out_list')
-  }).catch(() => {
-    submitting.value = false
-  })
-}
+  // 校验手动选批次模式是否都选了批次
+  const manualItems = outboundItems.value.filter((item: any) =>
+    (item.thisQuantity || 0) > 0 && item.batchStrategy === 'manual' && !item.selectedBatch
+  )
+  if (manualItems.length > 0) {
+    ElMessage.warning('手动选批次模式下，请先选择批次')
+    return
+  }
 
-function saveDraft() {
-  ElMessage.success('暂存成功')
+  submitting.value = true
+  // 逐条提交出库
+  let completed = 0
+  let failed = false
+  items.forEach((item: any) => {
+    stockOut(item).then((res: any) => {
+      if (res.code === 200 || res.code === 0) {
+        completed++
+        if (completed === items.length) {
+          ElMessage.success('出库成功')
+          submitting.value = false
+          loadData(outboundOrder.id)
+        }
+      } else {
+        failed = true
+        ElMessage.error(res.msg || '出库失败')
+        submitting.value = false
+      }
+    }).catch(() => {
+      failed = true
+      submitting.value = false
+    })
+  })
 }
 
 function goBack() {
@@ -158,5 +267,4 @@ onMounted(() => {
 
 <style scoped>
 .text-danger { color: #f56c6c; font-weight: bold; }
-.text-muted { color: #909399; font-size: 12px; }
 </style>
