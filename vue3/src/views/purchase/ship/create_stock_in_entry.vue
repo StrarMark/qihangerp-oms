@@ -25,10 +25,10 @@
         </el-col>
         <el-col :span="24">
           <el-form-item label="采购日期" prop="orderDate">
-            <el-date-picker v-model="form.orderDate" clearable disabled type="date" value-format="yyyy-MM-dd" placeholder="请选择订单日期" style="width: 220px" />
+            <el-date-picker v-model="form.orderDate" clearable disabled type="date" value-format="YYYY-MM-DD" placeholder="请选择订单日期" style="width: 220px" />
           </el-form-item>
           <el-form-item label="发货日期">
-            <el-date-picker v-model="form.supplierDeliveryTime" clearable disabled type="date" value-format="yyyy-MM-dd" placeholder="" style="width: 220px" />
+            <el-date-picker v-model="form.supplierDeliveryTime" clearable disabled type="date" value-format="YYYY-MM-DD" placeholder="" style="width: 220px" />
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -90,7 +90,7 @@
       <el-form ref="stockInFormRef" :model="stockInForm" size="small" :rules="stockInRules" :inline="true" label-width="128px">
         <el-row style="margin-top: 20px">
           <el-form-item label="收货日期">
-            <el-date-picker v-model="stockInForm.receiptTime" clearable type="date" value-format="yyyy-MM-dd" placeholder="" style="width: 220px" />
+            <el-date-picker v-model="stockInForm.receiptTime" clearable type="date" value-format="YYYY-MM-DD" placeholder="" style="width: 220px" />
           </el-form-item>
         </el-row>
         <el-row>
@@ -257,7 +257,8 @@ onMounted(() => {
     supplierList.value = response.rows || []
   })
   loadWarehouses()
-  stockInForm.receiptTime = new Date().toISOString().slice(0, 10)
+  const now = new Date()
+  stockInForm.receiptTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
   getDetail()
 })
 </script>

@@ -77,7 +77,7 @@
       <el-form ref="stockInFormRef" :model="stockInForm" size="small" :rules="stockInRules" :inline="true" label-width="128px">
         <el-row>
           <el-form-item label="收货日期" prop="receiptTime">
-            <el-date-picker v-model="stockInForm.receiptTime" clearable type="date" value-format="yyyy-MM-dd" placeholder="请选择收货日期" style="width: 220px" />
+            <el-date-picker v-model="stockInForm.receiptTime" clearable type="date" value-format="YYYY-MM-DD" placeholder="请选择收货日期" style="width: 220px" />
           </el-form-item>
         </el-row>
         <el-row>
@@ -265,7 +265,8 @@ function submitForm() {
 }
 
 onMounted(() => {
-  stockInForm.receiptTime = new Date().toISOString().slice(0, 10)
+  const now = new Date()
+  stockInForm.receiptTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
   listAllSupplier({}).then((response: any) => {
     supplierList.value = response.rows || []
     loadWarehouses()

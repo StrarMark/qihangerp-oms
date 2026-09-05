@@ -8,7 +8,7 @@
       </el-form-item>
 
       <el-form-item label="采购日期" prop="orderDate">
-        <el-date-picker clearable v-model="form.orderDate" type="date" value-format="yyyy-MM-dd" placeholder="请选择订单日期" />
+        <el-date-picker clearable v-model="form.orderDate" type="date" value-format="YYYY-MM-DD" placeholder="请选择订单日期" />
       </el-form-item>
 
       <el-row>
@@ -87,9 +87,12 @@ const formRef = ref<FormInstance>()
 const popupRef = ref()
 const submitBtn = ref(false)
 
+const now = new Date()
+const currentDateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+
 const form = reactive<Record<string, any>>({
   contactId: null,
-  orderDate: null,
+  orderDate: currentDateStr,
   goodsList: [],
   orderAmount: 0.00
 })
@@ -106,16 +109,6 @@ function supplierChange(val: number) {
   selectedSupplierId.value = val
   form.goodsList = []
   form.orderAmount = 0
-}
-
-function getDate() {
-  const now = new Date()
-  const year = now.getFullYear()
-  let month: string | number = now.getMonth() + 1
-  let date: string | number = now.getDate()
-  month = month.toString().padStart(2, '0')
-  date = date.toString().padStart(2, '0')
-  return `${year}-${month}-${date}`
 }
 
 function qtyChange() {
@@ -220,6 +213,5 @@ onMounted(() => {
   listAllSupplier({}).then((response: any) => {
     supplierList.value = response.rows || []
   })
-  form.orderDate = getDate()
 })
 </script>

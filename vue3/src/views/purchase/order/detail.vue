@@ -127,7 +127,7 @@
       </template>
       <el-table :data="itemList" border stripe style="width: 100%">
         <el-table-column type="index" label="序号" width="60" />
-        <el-table-column prop="colorImage" label="商品图片" width="80">
+        <el-table-column prop="colorImage" label="图片" width="80">
           <template #default="scope">
             <image-preview :src="scope.row.colorImage" :width="50" :height="50" />
           </template>
@@ -137,6 +137,8 @@
         <el-table-column prop="colorValue" label="颜色" width="80" />
         <el-table-column prop="sizeValue" label="尺码" width="80" />
         <el-table-column prop="styleValue" label="款式" width="80" />
+        <el-table-column prop="goodsId" label="商品ID" width="80" />
+        <el-table-column prop="skuId" label="规格ID" width="80" />
         <el-table-column prop="price" label="采购价" width="80" />
         <el-table-column prop="quantity" label="采购数量" width="80" />
       </el-table>
